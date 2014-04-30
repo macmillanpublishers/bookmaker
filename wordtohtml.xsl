@@ -3,6 +3,8 @@
  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
  xmlns="http://www.w3.org/TR/REC-html40">
 
+ <!-- v0.1: basic support just for paragraphs; to do: add support for char styles and other block elements -->
+
  <xsl:output omit-xml-declaration="yes"/>
 
  <!--adds the root html structure -->
