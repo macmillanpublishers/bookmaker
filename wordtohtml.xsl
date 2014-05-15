@@ -30,6 +30,8 @@
 
 <!-- converts main text tag to p or h1 and adds appropriate classes -->
 
+<!-- h1 rendering relies on the applicable paragraph styles being listed in the 'when' argument below -->
+
     <xsl:template match="w:p">
       <xsl:choose>
         <xsl:when test=".//w:pStyle[@w:val='TitlepageBookTitletit']|.//w:pStyle[@w:val='FMHeadfmh']|.//w:pStyle[@w:val='PartTitlept']|.//w:pStyle[@w:val='ChapTitlect']">
