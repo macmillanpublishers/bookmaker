@@ -1,96 +1,379 @@
-<xsl:stylesheet version="1.0"
- xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
- xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
- xmlns="http://www.w3.org/TR/REC-html40">
+<?xml version="1.0"?>
+<xsl:stylesheet version="2.0"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="w xs">
 
- <!-- v0.1: basic support just for headings, paragraphs, and char styles as spans -->
+  <!-- v0.1: basic support just for headings, paragraphs, and char
+       styles as spans -->
+  <!-- additions by Christopher R. Maden, crism consulting,
+       crism@maden.org
+       Switched to XSLT 2.0.
+       Made XHTML5 / HTMLBook valid. -->
 
- <xsl:output omit-xml-declaration="yes"/>
+  <!-- OPEN ISSUES:
+       If a chapter has a title and a number, two output chapters will
+       result. -->
 
- <!--adds the root html structure -->
+  <xsl:output indent="no" method="html" omit-xml-declaration="yes"
+    version="5"/>
 
-	<xsl:output method="html"/>
+  <!-- =-= Generalized mapping variables. =-= -->
+  <!-- Paragraph styles which should get aggregated in an epigraph
+       blockquote. -->
+  <xsl:variable name="epigraph-paras" as="xs:string*">
+    <xsl:sequence
+      select="'ChapEpigraphnon-versecepi',
+              'ChapEpigraphSourceceps',
+              'Epigraphnon-verseepi',
+              'EpigraphSourceeps'"/>
+  </xsl:variable>
 
-	<xsl:template match="/">
-		<html>
-		<head>
-		<title></title>
-		</head>
-		<body>
-		<xsl:apply-templates/>
-		</body>
-		</html>
-	</xsl:template>
+  <!-- Figure style names — these paragraphs are expected to have
+       content that gives an image filename. -->
+  <xsl:variable name="fig-paras" as="xs:string*">
+    <xsl:sequence
+      select="'Illustrationholderill'"/>
+  </xsl:variable>
 
-<!-- removes all extraneous tags -->
+  <!-- Caption styles — these paragraphs are expected to immediately
+       follow a style from $fig-paras. -->
+  <xsl:variable name="fig-cap-paras" as="xs:string*">
+    <xsl:sequence
+      select="'Captioncap'"/>
+  </xsl:variable>
 
-    <xsl:template match="@*|node()">
-        <xsl:apply-templates select="@*|node()"/>
-    </xsl:template>
+  <!-- List paragraph styles — divided by ordered and un-, but
+       aggregation will always(?) be homogeneous. -->
+  <xsl:variable name="list-num-paras" as="xs:string*">
+    <xsl:sequence
+      select="'ListNumnl'"/>
+  </xsl:variable>
+  <xsl:variable name="list-unnum-paras" as="xs:string*">
+    <xsl:sequence
+      select="'ListBulletbl',
+              'ListUnnumul'"/>
+  </xsl:variable>
 
-<!-- converts main text tag to p or h1 and adds appropriate classes -->
+  <!-- Paragraph styles used for print formatting only, to be dropped
+       in HTMLBook conversion. -->
+  <xsl:variable name="omit-paras" as="xs:string*">
+    <xsl:sequence
+      select="'PageBreakpb',
+              'PartStartpts',
+              'SectionBreaksbr'"/>
+  </xsl:variable>
 
-<!-- h1 rendering relies on the applicable paragraph styles being listed in the 'when' argument below -->
+  <!-- Top-level divider paragraphs — styles which signal the start of
+       a new top-level section such as a chapter or copyright
+       page. -->
+  <xsl:variable name="top-level-breaks" as="xs:string*">
+    <xsl:sequence
+      select="'AdCardMainHeadacmh',
+              'BMHeadbmh',
+              'ChapNumbercn',
+              'ChapTitlect',
+              'CopyrightTextsinglespacecrtx',
+              'Dedicationded',
+              'Epigraphnon-verseepi',
+              'FMHeadfmh',
+              'HalftitleBooktitlehtit',
+              'TitlepageBookTitletit'"/>
+  </xsl:variable>
 
-    <xsl:template match="w:p">
-      <xsl:choose>
-        <xsl:when test=".//w:pStyle[@w:val='TitlepageBookTitletit']|.//w:pStyle[@w:val='FMHeadfmh']|.//w:pStyle[@w:val='PartTitlept']|.//w:pStyle[@w:val='ChapTitlect']">
-          <h1>
-            <xsl:attribute name="class">
-              <xsl:value-of select=".//w:pStyle/@w:val"/>
-            </xsl:attribute>
-            <xsl:apply-templates select=".//w:t"/> 
-          </h1>
-        </xsl:when>
-        <xsl:otherwise>
-          <p>
-            <xsl:attribute name="class">
-              <xsl:value-of select=".//w:pStyle/@w:val"/>
-            </xsl:attribute>
-            <xsl:apply-templates select=".//w:t"/> 
-          </p>
-      </xsl:otherwise>
-      </xsl:choose>
-    </xsl:template>
+  <!-- Headings for top-level dividers; when they arise, they are
+       converted to h1 elements. -->
+  <xsl:variable name="top-level-heads" as="xs:string*">
+    <xsl:sequence
+      select="'BMHeadbmh',
+              'ChapNumbercn',
+              'ChapTitlect',
+              'FMHeadfmh',
+              'TitlepageBookTitletit'"/>
+  </xsl:variable>
 
-<!-- preserves character styles -->
+  <!-- Paragraph styles which should get aggregated in other
+       blockquotes.  NOTE that we do not distinguish between letters
+       and lyrics; one conceives that a single quote might consist of
+       both. -->
+  <xsl:variable name="quotation-paras" as="xs:string*">
+    <xsl:sequence
+      select="'LetterExtClosinglcl',
+              'LetterExtGeneralextl',
+              'LetterExtSalutationlsa',
+              'LetterExtSignaturelsig'"/>
+  </xsl:variable>
 
-    <xsl:template match="w:t">
-        <xsl:choose>
-        <xsl:when test="preceding-sibling::*[1][self::w:rPr]">
-          <span>
-            <xsl:attribute name="class">
-              <xsl:value-of select="preceding::w:rStyle[1]/@w:val"/>
-            </xsl:attribute>
-            <xsl:value-of select="."/>
-          </span>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="."/>
-        </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+  <!-- Default rule removes all extraneous data, including
+       content. -->
+  <xsl:template match="@*|node()">
+    <xsl:apply-templates select="@*|node()"/>
+  </xsl:template>
 
-    <!--WIP - sorting out section milestones-->
+  <!-- Creates the root HTML structure. -->
+  <xsl:template match="/">
+    <html>
+      <head>
+        <!-- Put the title in place as a courtesy... -->
+        <title>
+          <xsl:apply-templates
+            select="//w:p[w:pPr/w:pStyle/
+                          @w:val='TitlepageBookTitletit'][1]"
+            mode="head-title"/>
+        </title>
+      </head>
+      <body data-type="book">
+        <!-- Figure out our top-level divisions by Word style. -->
+        <xsl:for-each-group select="//w:body//w:p"
+          group-starting-with="w:p[w:pPr/w:pStyle/@w:val =
+                                   $top-level-breaks
+                                   and
+                                   not(preceding::w:p[1]
+                                       [w:pPr/w:pStyle/
+                                        @w:val =
+                                        current()/w:pPr/
+                                        w:pStyle/@w:val])]">
+          <xsl:variable name="word-style" as="xs:string"
+            select="./w:pPr/w:pStyle/@w:val"/>
+          <!-- Figure out the correct data-type value for each section
+               type.  Not all section types are supported in HTMLBook,
+               so we made up some of our own here. -->
+          <xsl:variable name="html-data-type" as="xs:string">
+            <xsl:choose>
+              <xsl:when test="$word-style = 'AdCardMainHeadacmh'">
+                <xsl:value-of select="'alsoby'"/>
+              </xsl:when>
+              <xsl:when test="$word-style = 'BMHeadbmh'">
+                <xsl:value-of select="'appendix'"/>
+              </xsl:when>
+              <xsl:when
+                test="$word-style = 'ChapNumbercn' or
+                      $word-style = 'ChapTitlect'">
+                <xsl:value-of select="'chapter'"/>
+              </xsl:when>
+              <xsl:when
+                test="$word-style = 'CopyrightTextsinglespacecrtx'">
+                <xsl:value-of select="'copyright-page'"/>
+              </xsl:when>
+              <xsl:when test="$word-style = 'Dedicationded'">
+                <xsl:value-of select="'dedication'"/>
+              </xsl:when>
+              <xsl:when test="$word-style = 'Epigraphnon-verseepi'">
+                <xsl:value-of select="'epigraph'"/>
+              </xsl:when>
+              <xsl:when test="$word-style = 'FMHeadfmh'">
+                <xsl:value-of select="'preface'"/>
+              </xsl:when>
+              <xsl:when test="$word-style = 'HalftitleBooktitlehtit'">
+                <xsl:value-of select="'halftitlepage'"/>
+              </xsl:when>
+              <xsl:when test="$word-style = 'TitlepageBookTitletit'">
+                <xsl:value-of select="'titlepage'"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="'preface'"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <section data-type="{$html-data-type}">
+            <xsl:apply-templates select="current-group()"/>
+          </section>
+        </xsl:for-each-group>
+      </body>
+    </html>
+  </xsl:template>
 
-    <!--<xsl:key name="text-by-last-milestone" match="* | text()"
-      use="generate-id((preceding-sibling::w:pStyle[@w:val='PartStartpts'] | preceding-sibling::w:pStyle[@w:val='PartEndpte'])[last()])" />
-    <xsl:template match="/">
-      <xsl:for-each select="//w:pStyle[@w:val='PartStartpts'">
-        <xsl:copy-of select="key('text-by-last-milestone', generate-id())"/>
-      </xsl:for-each>
-    </xsl:template>
+  <!-- Handle style property names when present. -->
+  <xsl:template match="@w:val">
+    <xsl:attribute name="class">
+      <xsl:value-of select="."/>
+    </xsl:attribute>
+  </xsl:template>
 
-    <xsl:template match="w:pStyle[@w:val='PartStartpts']">
-      <div class="partstart" />
-    </xsl:template>
+  <!-- Drop some print-formatting paragraphs from conversion. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $omit-paras]"/>
 
-    <xsl:template match="w:pStyle[@w:val='PartEndpte']">
-      <div class="partend" />
-    </xsl:template>
+  <!-- Some headings become h1 elements. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $top-level-heads]">
+    <h1>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </h1>
+  </xsl:template>
 
-    <xsl:template match="w:pStyle[@w:val='SectionBreaksbr']">
-      <section class="sectionmilestone" />
-    </xsl:template>-->
+  <!-- Group epigraph components into a single container. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $epigraph-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [w:pPr/w:pStyle[not(@w:val = $epigraph-paras)]]">
+      <blockquote data-type="epigraph">
+        <xsl:apply-templates select="." mode="epigraph"/>
+      </blockquote>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- Handle figure placeholders, and possibly associated
+       captions. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $fig-paras]">
+    <figure>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates
+        select="following::w:p[1]
+                [w:pPr/w:pStyle/@w:val = $fig-cap-paras]"
+        mode="fig-caption"/>
+      <img src="{normalize-space(.)}">
+        <xsl:attribute name="alt">
+          <xsl:choose>
+            <xsl:when test="following::w:p[1]
+                [w:pPr/w:pStyle/@w:val = $fig-cap-paras]">
+              <xsl:apply-templates
+                select="following::w:p[1]
+                        [w:pPr/w:pStyle/@w:val = $fig-cap-paras]"
+                mode="fig-alt-text"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="normalize-space(.)"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </img>
+    </figure>
+  </xsl:template>
+
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $fig-cap-paras]"/>
+
+  <!-- Group list items into list containers. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $list-num-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [not(w:pPr/w:pStyle/@w:val =
+                 current()/w:pPr/w:pStyle/@w:val)]">
+
+      <ol>
+        <xsl:apply-templates select="." mode="list"/>
+      </ol>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $list-unnum-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [not(w:pPr/w:pStyle/@w:val =
+                 current()/w:pPr/w:pStyle/@w:val)]">
+
+      <ul>
+        <xsl:apply-templates select="." mode="list"/>
+      </ul>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- Group quotation components into a single container. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $quotation-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [w:pPr/w:pStyle[not(@w:val = $quotation-paras)]]">
+      <blockquote>
+        <xsl:apply-templates select="." mode="quotation"/>
+      </blockquote>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- All other paragraphs become p elements. -->
+  <xsl:template match="w:p">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+  </xsl:template>
+
+  <!-- Styled inline text needs a span element with an appropriate
+       class. -->
+  <xsl:template match="w:r[w:rPr/w:rStyle/@w:val]">
+    <span>
+      <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
+      <xsl:apply-templates select="w:t"/>
+    </span>
+  </xsl:template>
+
+  <!-- Other inline text is just plain text. -->
+  <xsl:template match="w:r">
+    <xsl:apply-templates select="w:t"/>
+  </xsl:template>
+
+  <!-- As we drop content by default, explicitly handle text-bearing
+       elements. -->
+  <xsl:template match="w:t">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in epigraph mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="epigraph">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val = $epigraph-paras]"
+      mode="epigraph"/>
+  </xsl:template>
+
+  <xsl:template match="w:p" mode="fig-alt-text">
+    <xsl:apply-templates select="w:r//w:t"/>
+  </xsl:template>
+
+  <xsl:template match="w:p" mode="fig-caption">
+    <figcaption>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </figcaption>
+  </xsl:template>
+
+  <!-- Processing the book title in the head/title output.  Should
+       result in text-only output. -->
+  <xsl:template match="w:p" mode="head-title">
+    <xsl:apply-templates mode="head-title"/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in list-item mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="list">
+    <li>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <p>
+        <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+        <xsl:apply-templates select="w:r"/>
+      </p>
+    </li>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val =
+               current()/w:pPr/w:pStyle/@w:val]"
+      mode="list"/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in quotation mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="quotation">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val = $quotation-paras]"
+      mode="quotation"/>
+  </xsl:template>
 
 </xsl:stylesheet>
