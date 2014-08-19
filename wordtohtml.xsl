@@ -39,7 +39,7 @@
   </xsl:variable>
 
   <!-- Caption styles — these paragraphs are expected to immediately
-       follow a style from $fig-paras. -->
+       follow or precede a style from $fig-paras. -->
   <xsl:variable name="fig-cap-paras" as="xs:string*">
     <xsl:sequence
       select="'Captioncap'"/>
@@ -56,6 +56,20 @@
       select="'ListBulletbl',
               'ListUnnumul'"/>
   </xsl:variable>
+  <xsl:variable name="list-sub-paras" as="xs:string*">
+    <xsl:sequence
+      select="$list-sub-num-paras, $list-sub-unnum-paras"/>
+  </xsl:variable>
+  <xsl:variable name="list-sub-num-paras" as="xs:string*">
+    <xsl:sequence
+      select="'ListNumSubentrynsl',
+              'ListAlphaSubentryasl'"/>
+  </xsl:variable>
+  <xsl:variable name="list-sub-unnum-paras" as="xs:string*">
+    <xsl:sequence
+      select="'ListBulletSubentrybsl',
+              'ListUnnumSubentryusl'"/>
+  </xsl:variable>
 
   <!-- Paragraph styles used for print formatting only, to be dropped
        in HTMLBook conversion. -->
@@ -66,19 +80,27 @@
               'SectionBreaksbr'"/>
   </xsl:variable>
 
+  <!-- Top-level divider paragraphs, any of which might signal the
+       start of body content (and therefore trigger the table of
+       contents). -->
+  <xsl:variable name="top-level-body-breaks" as="xs:string*">
+    <xsl:sequence
+      select="'BMHeadbmh',
+              'ChapNumbercn',
+              'ChapTitlect',
+              'FMHeadfmh'"/>
+  </xsl:variable>
+
   <!-- Top-level divider paragraphs — styles which signal the start of
        a new top-level section such as a chapter or copyright
        page. -->
   <xsl:variable name="top-level-breaks" as="xs:string*">
     <xsl:sequence
-      select="'AdCardMainHeadacmh',
-              'BMHeadbmh',
-              'ChapNumbercn',
-              'ChapTitlect',
+      select="$top-level-body-breaks,
+              'AdCardMainHeadacmh',
               'CopyrightTextsinglespacecrtx',
               'Dedicationded',
               'Epigraphnon-verseepi',
-              'FMHeadfmh',
               'HalftitleBooktitlehtit',
               'TitlepageBookTitletit'"/>
   </xsl:variable>
@@ -177,7 +199,20 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <section data-type="{$html-data-type}">
+          <xsl:if
+            test="$word-style = $top-level-body-breaks and
+                  not(preceding::w:p
+                      [w:pPr/w:pStyle/@w:val =
+                       $top-level-body-breaks])">
+            <nav data-type="toc">
+              <h1 class="toc-title">Table of Contents</h1>
+              <ol class="toc">
+                <xsl:apply-templates select="//w:body//w:p"
+                  mode="toc"/>
+              </ol>
+            </nav>
+          </xsl:if>
+          <section data-type="{$html-data-type}" id="{generate-id()}">
             <xsl:apply-templates select="current-group()"/>
           </section>
         </xsl:for-each-group>
@@ -221,20 +256,32 @@
        captions. -->
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $fig-paras]">
+    <xsl:variable name="caption" as="element()?">
+      <xsl:choose>
+        <xsl:when
+          test="following::w:p[1]
+                [w:pPr/w:pStyle/@w:val = $fig-cap-paras]">
+          <xsl:sequence
+            select="following::w:p[1]
+                    [w:pPr/w:pStyle/@w:val = $fig-cap-paras]"/>
+        </xsl:when>
+        <xsl:when
+          test="preceding::w:p[1]
+                [w:pPr/w:pStyle/@w:val = $fig-cap-paras]">
+          <xsl:sequence
+            select="preceding::w:p[1]
+                    [w:pPr/w:pStyle/@w:val = $fig-cap-paras]"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
     <figure>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates
-        select="following::w:p[1]
-                [w:pPr/w:pStyle/@w:val = $fig-cap-paras]"
-        mode="fig-caption"/>
-      <img src="{normalize-space(.)}">
+      <xsl:apply-templates select="$caption" mode="fig-caption"/>
+      <img src="images/{normalize-space(.)}">
         <xsl:attribute name="alt">
           <xsl:choose>
-            <xsl:when test="following::w:p[1]
-                [w:pPr/w:pStyle/@w:val = $fig-cap-paras]">
-              <xsl:apply-templates
-                select="following::w:p[1]
-                        [w:pPr/w:pStyle/@w:val = $fig-cap-paras]"
+            <xsl:when test="$caption">
+              <xsl:apply-templates select="$caption"
                 mode="fig-alt-text"/>
             </xsl:when>
             <xsl:otherwise>
@@ -249,14 +296,16 @@
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $fig-cap-paras]"/>
 
-  <!-- Group list items into list containers. -->
+  <!-- Group list items into list containers.
+       If this goes more than two levels deep, we should generalize
+       using functions and/or named templates. -->
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $list-num-paras]">
     <xsl:if
-      test="preceding::w:p[1]
+      test="preceding::w:p[not(w:pPr/w:pStyle/@w:val =
+                               $list-sub-paras)][1]
             [not(w:pPr/w:pStyle/@w:val =
                  current()/w:pPr/w:pStyle/@w:val)]">
-
       <ol>
         <xsl:apply-templates select="." mode="list"/>
       </ol>
@@ -266,12 +315,36 @@
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $list-unnum-paras]">
     <xsl:if
+      test="preceding::w:p[not(w:pPr/w:pStyle/@w:val =
+                               $list-sub-paras)][1]
+            [not(w:pPr/w:pStyle/@w:val =
+                 current()/w:pPr/w:pStyle/@w:val)]">
+      <ul>
+        <xsl:apply-templates select="." mode="list"/>
+      </ul>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $list-sub-num-paras]">
+    <xsl:if
       test="preceding::w:p[1]
             [not(w:pPr/w:pStyle/@w:val =
                  current()/w:pPr/w:pStyle/@w:val)]">
+      <ol>
+        <xsl:apply-templates select="." mode="sub-list"/>
+      </ol>
+    </xsl:if>
+  </xsl:template>
 
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $list-sub-unnum-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [not(w:pPr/w:pStyle/@w:val =
+                 current()/w:pPr/w:pStyle/@w:val)]">
       <ul>
-        <xsl:apply-templates select="." mode="list"/>
+        <xsl:apply-templates select="." mode="sub-list"/>
       </ul>
     </xsl:if>
   </xsl:template>
@@ -355,6 +428,26 @@
         <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
         <xsl:apply-templates select="w:r"/>
       </p>
+      <!-- Process sub-list paragraphs in default mode. -->
+      <xsl:apply-templates
+        select="following::w:p[1]
+                [w:pPr/w:pStyle/@w:val = $list-sub-paras]"/>
+    </li>
+    <xsl:apply-templates
+      select="following::w:p[not(w:pPr/w:pStyle/@w:val =
+                                 $list-sub-paras)][1]
+              [w:pPr/w:pStyle/@w:val =
+               current()/w:pPr/w:pStyle/@w:val]"
+      mode="list"/>
+  </xsl:template>
+
+  <xsl:template match="w:p" mode="sub-list">
+    <li>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <p>
+        <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+        <xsl:apply-templates select="w:r"/>
+      </p>
     </li>
     <xsl:apply-templates
       select="following::w:p[1]
@@ -374,6 +467,26 @@
       select="following::w:p[1]
               [w:pPr/w:pStyle/@w:val = $quotation-paras]"
       mode="quotation"/>
+  </xsl:template>
+
+  <!-- Table of contents mode.  Headers make list items; everything
+       else is ignored.  No nesting for now, but we will need to
+       handle that (logic should be similar to body list nesting). -->
+  <xsl:template match="w:p" mode="toc"/>
+
+  <!-- Currently, this is easy as every breaking paragraph is also its
+       own head... if that changes, finding the head from the break
+       could get a little tricky, or if chapters have both numbers and
+       titles. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $top-level-body-breaks]"
+    mode="toc">
+    <li>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <a href="#{generate-id()}" class="toc-link">
+        <xsl:apply-templates select="w:r"/>
+      </a>
+    </li>
   </xsl:template>
 
 </xsl:stylesheet>
