@@ -9,7 +9,7 @@ working_dir = working_dir_split[0...-2].join("\\")
 tmp_id = File.read("#{input_file}").match(/978-?(\d{1}-?){10}/i)
 tmp_dir = "S:\\resources\\bookmaker_tmp"
 
-html_file = "#{tmp_dir}\\#{tmp_id}\\outputtmp.html"
+html_file = "#{tmp_dir}\\outputtmp.html"
 pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # pdf css to be added to the file that will be sent to docraptor
