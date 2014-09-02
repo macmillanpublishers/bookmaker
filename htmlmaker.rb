@@ -9,12 +9,6 @@ File.open("#{working_dir}\\IN_USE_PLEASE_WAIT.txt", 'w') do |output|
 	output.write "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
 end
 
-# Rename and move files to tmp folder to eliminate possibility of overwriting
-`move #{working_dir}\\submitted_images\\cover.jpg #{working_dir}\\submitted_images\\#{tmp_id}_cover.jpg`
-`md #{tmp_dir}\\#{tmp_id}`
-`copy #{input_file} #{tmp_dir}\\#{tmp_id}\\#{tmp_id}.xml`
-`chdir #{tmp_dir}\\#{tmp_id}\\`
-
 # convert xml to html
-`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{tmp_id}\\#{tmp_id}.xml -xsl:S:\\resources\\bookmaker_scripts\\wordtohtml.xsl -o:#{tmp_dir}\\#{tmp_id}\\outputtmp.html`
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{input_file} -xsl:S:\\resources\\bookmaker_scripts\\wordtohtml.xsl -o:#{tmp_dir}\\outputtmp.html`
 
