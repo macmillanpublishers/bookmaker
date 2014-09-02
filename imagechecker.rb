@@ -4,19 +4,14 @@ working_dir = working_dir_split[0...-2].join("\\")
 tmp_id = File.read("#{input_file}").match(/978-?(\d{1}-?){10}/i)
 tmp_dir = "S:\\resources\\bookmaker_tmp"
 
-html_file = "#{tmp_dir}\\#{tmp_id}\\outputtmp.html"
+html_file = "#{tmp_dir}\\outputtmp.html"
 pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # The location where the images are dropped by the user
 imagedir = "#{working_dir}\\submitted_images"
 
 # An array listing all the submitted images
-images = Dir["#{imagedir}*"]
-
-# Removes the full path from each image in the array of submitted images, to make matching more precise
-images.each do |s|
-    s.gsub!(/#{imagedir}/,"")
-end
+images = Dir.entries("#{imagedir}*")
 
 # An array of all the image files referenced in the source html file
 source = File.read("#{html_file}").scan(/img src=".*?"/)
