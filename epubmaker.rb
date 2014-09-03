@@ -1,9 +1,11 @@
 input_file = ARGV[0]
+filename_split = input_file.split("/").pop
+filename = filename_split.split(".").shift.gsub(/ /, "")
 working_dir_split = ARGV[0].split("\\")
 working_dir = working_dir_split[0...-2].join("\\")
-tmp_id = File.read("#{input_file}").match(/978-?(\d{1}-?){10}/i)
-tmp_dir = "S:\\resources\\bookmaker_tmp"
-html_file = "#{tmp_dir}\\outputtmp.html"
+tmp_dir = "C:\\bookmaker_tmp"
+
+html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 
 # Finding author name(s)
 authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.*?<\/p>/).join(",")
@@ -16,7 +18,6 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?<\/p>/).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/<\/p>/,"")
 
-# epub_dir = "#{tmp_dir}\\#{pisbn}"
 epub_dir = "."
 
 # Adding author meta element to head
@@ -24,12 +25,13 @@ epub_dir = "."
 filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;")
 
 # Saving revised HTML into tmp file
-File.open("#{tmp_dir}\\#{pisbn}\\epub_tmp.html", 'w') do |output| 
+File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output| 
 	output.write filecontents
 end
 
 # convert to epub
-`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{pisbn}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\HTMLBook-master\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub`
+`chdir #{tmp_dir}\\#{filename}`
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\HTMLBook-master\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub`
 
 # fix cover.html doctype
 covercontents = File.read("#{epub_dir}\\OEBPS\\cover.html")
@@ -51,6 +53,7 @@ File.open("#{epub_dir}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
 `copy #{working_dir}\\resources\\torDOTcom\\img\\torlogo.jpg #{epub_dir}\\OEBPS\\`
 
 # zip epub
+`echo %cd%`
 `C:\\zip\\zip.exe #{eisbn}_EPUB.epub -DX0 #{epub_dir}\\mimetype`
 `C:\\zip\\zip.exe #{eisbn}_EPUB.epub -rDX9 #{epub_dir}\\META-INF #{epub_dir}\\OEBPS`
 
