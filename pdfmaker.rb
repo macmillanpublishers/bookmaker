@@ -4,12 +4,13 @@ require 'doc_raptor'
 DocRaptor.api_key "***REMOVED***"
 
 input_file = ARGV[0]
+filename_split = input_file.split("/").pop
+filename = filename_split.split(".").shift.gsub(/ /, "")
 working_dir_split = ARGV[0].split("\\")
 working_dir = working_dir_split[0...-2].join("\\")
-tmp_id = File.read("#{input_file}").match(/978-?(\d{1}-?){10}/i)
-tmp_dir = "S:\\resources\\bookmaker_tmp"
+tmp_dir = "C:\\bookmaker_tmp"
 
-html_file = "#{tmp_dir}\\outputtmp.html"
+html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # pdf css to be added to the file that will be sent to docraptor
@@ -20,6 +21,7 @@ pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<style>#{css_file}</style>
 
 # sends file to docraptor for conversion
 # currently running in test mode; remove test when css is finalized
+`chdir #{tmp_dir}\\#{filename}`
 File.open("#{pisbn}.pdf", "w+b") do |f|
   f.write DocRaptor.create(:document_content => pdf_html,
                            :name             => "#{pisbn}.pdf",
