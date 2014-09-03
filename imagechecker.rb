@@ -8,10 +8,10 @@ html_file = "#{tmp_dir}\\outputtmp.html"
 pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # The location where the images are dropped by the user
-imagedir = "#{working_dir}\\submitted_images"
+imagedir = "#{working_dir}\\submitted_images\\"
 
 # An array listing all the submitted images
-images = Dir.entries("#{imagedir}*")
+images = Dir.entries("#{imagedir}")
 
 # An array of all the image files referenced in the source html file
 source = File.read("#{html_file}").scan(/img src=".*?"/)
