@@ -28,6 +28,7 @@ source.each do |m|
 	if images.include?("#{match}")
 		`copy #{working_dir}\\submitted_images\\#{match} #{working_dir}\\done\\#{pisbn}\\images\\`
 		`del #{working_dir}\\submitted_images\\#{match}`
+		`S:\\resources\\bookmaker_scripts\\imageupload.bat #{match}`
 	else
 		missing << match
 	end
