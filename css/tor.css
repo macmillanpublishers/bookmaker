@@ -1,0 +1,201 @@
+/*prince -s ../tor.css output.html -o output.pdf*/
+
+@font-face {
+	font-family: "Warnock";
+	src: url('testing/Open_Sans/OpenSans-Regular.ttf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "Warnock";
+	src: url('testing/Open_Sans/OpenSans-Bold.ttf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "Warnock";
+	src: url('testing/Open_Sans/OpenSans-Italic.ttf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "Warnock";
+	src: url('testing/Open_Sans/OpenSans-BoldItalic.ttf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@page {
+	size: 5in 8in;
+	margin: 0.65in 0.75in 0.9in 0.75in;
+	padding: 0.33in 0 0.5in 0;
+}
+
+@page chapter {
+	@top-center {
+		font-family: "Warnock";
+		text-align: center;
+		font-style: italic;
+		font-size: 8.5pt;
+		vertical-align: bottom;
+	}
+	@bottom-center {
+		font-family: "Warnock";
+		content: counter(page);
+		text-align: center;
+		font-size: 8.5pt;
+		vertical-align: top;
+	}
+}
+
+@page chapter:left {
+	@top-center {
+		content: string(title);
+	}
+	
+}
+
+@page chapter:right {
+	@top-center {
+		content: string(author);
+	}
+}
+
+@page chapter:first {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+}
+
+@page chapter:blank {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+body {
+	font-family: "Warnock", serif;
+}
+
+section, p, div, h1, h2, h3, h4, h5, h6 {
+	display: block;
+}
+
+img {
+	max-width: 100%;
+	image-resolution: from-image;
+}
+
+section[data-type="halftitlepage"], 
+section[data-type="titlepage"], 
+section[data-type="preface"], 
+section[data-type="copyright-page"] {
+	page-break-after: always;
+}
+
+section[data-type="halftitlepage"] > h1 {
+	font-size: 24pt;
+	margin-top: 1in;
+	text-align: center;
+}
+
+section[data-type="preface"] > h1 {
+	font-size: 12pt;
+	text-transform: uppercase;
+	text-align: center;
+	margin-top: 0.65in;
+	margin-bottom: 0.33in;
+}
+
+section[data-type="preface"] p {
+	text-align: center;
+}
+
+section[data-type="titlepage"] > h1 {
+	font-size: 30pt;
+	margin-top: 1in;
+	text-transform: uppercase;
+	text-align: center;
+	string-set: title content();
+}
+
+section[data-type="titlepage"] p.TitlepageAuthorNameau {
+	font-size: 17pt;
+	margin-top: 0.9in;
+	text-indent: 0;
+	text-align: center;
+	string-set: author content();
+}
+
+section[data-type="titlepage"] p.TitlepageImprintLineimp {
+	float: bottom;
+	text-align: center;
+	text-indent: 0;
+}
+
+section[data-type="titlepage"] p.TitlepageImprintLineimp:before {
+	content: " ";
+	background-image: url("testing/torlogo.png");
+	background-position: center center;
+	background-size: auto 0.5in;
+	background-repeat: no-repeat;
+	display: block;
+	width: 100%;
+	height: 0.5in;
+	text-align: center;
+}
+
+section[data-type="dedication"] p {
+	text-align: center;
+	font-style: italic;
+}
+
+nav[data-type="toc"] {
+	display: none;
+}
+
+section[data-type="chapter"] {
+	page: chapter;
+	page-break-before: right;
+	prince-page-group: start
+}
+
+/* suppression of chapter heads will be dictated programatically
+section[data-type="chapter"] > h1 {
+	display: none;
+}*/
+
+section[data-type="chapter"] p {
+	font-size: 11pt;
+	text-indent: 0.23in;
+	text-align: justify;
+}
+
+section[data-type="chapter"] p:first-of-type, 
+p[class^="SpaceBreak"] + p {
+	text-indent: 0;
+}
+
+section[data-type="chapter"] p.SpaceBreakOrnamentorn {
+	text-align: center;
+	text-indent: 0;
+	margin-top: 8pt;
+	margin-bottom: 8pt;
+}
+
+p.SpaceBreak-1-Linels1 {
+	height: 16pt;
+	content: " ";
+}
+
+p.PageBreakpb {
+	display: none;
+}
