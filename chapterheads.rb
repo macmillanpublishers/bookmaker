@@ -12,20 +12,20 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 
 # base css files
-pdf_css = File.read("S:\\resources\\torDOTcom\\css\\tor.css")
+pdf_css = File.read("S:\\resources\\torDOTcom\\css\\pdf.css")
 epub_css = File.read("S:\\resources\\torDOTcom\\css\\epub.css")
 
 # if number of chapters is greater than 1, copies the css as-is to the archival dir
 # if number of chapters is one or less, adds a style to suppress chapter titles to the css and then copies to the archival dir
 if chapterheads.count > 1
-	`copy S:\\resources\\torDOTcom\\css\\tor.css #{working_dir}\\done\\#{pisbn}\\layout\\pdf.css`
+	`copy S:\\resources\\torDOTcom\\css\\pdf.css #{working_dir}\\done\\#{pisbn}\\layout\\pdf.css`
 	`copy S:\\resources\\torDOTcom\\css\\epub.css #{working_dir}\\done\\#{pisbn}\\layout\\epub.css`
 else
 	File.open("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css", 'w') do |p|
 		p.write "#{pdf_css}section[data-type='chapter']>h1{display:none;}"
 	end
 	File.open("#{working_dir}\\done\\#{pisbn}\\layout\\epub.css", 'w') do |e|
-		e.write "#{epub_css}section[data-type='chapter']>h1{display:none;}"
+		e.write "#{epub_css}h1.ChapTitlect{display:none;}"
 	end
 end
 
