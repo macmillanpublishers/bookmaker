@@ -4,7 +4,7 @@ section[data-type="halftitlepage"] {
 	display: none;
 }
 
-.HalftitleBooktitlehtit {
+p.HalftitleBookTitlehtit {
 	font-size: 1.6em;
 	text-align: center;
 	margin-top: 2em;
@@ -50,6 +50,12 @@ img.logo {
 
 section[data-type="copyright-page"] {
 	font-size: 0.8em;
+}
+
+section[data-type="dedication"], 
+div.dedication {
+	text-align: center;
+	font-style: italic;
 }
 
 /* suppression of chapter heads will be dictated programatically */
