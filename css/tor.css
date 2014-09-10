@@ -1,4 +1,4 @@
-/*prince -s ../tor.css output.html -o output.pdf*/
+/*PDF CSS. prince -s ../tor.css output.html -o output.pdf*/
 
 @font-face {
 	font-family: "Warnock";
@@ -97,11 +97,13 @@ img {
 section[data-type="halftitlepage"], 
 section[data-type="titlepage"], 
 section[data-type="preface"], 
-section[data-type="copyright-page"] {
+section[data-type="copyright-page"], 
+section[data-type="alsoby"] {
 	page-break-after: always;
 }
 
-section[data-type="halftitlepage"] > h1 {
+section[data-type="halftitlepage"] > h1, 
+p.HalftitleBookTitlehtit {
 	font-size: 24pt;
 	margin-top: 1in;
 	text-align: center;
@@ -153,6 +155,10 @@ section[data-type="titlepage"] p.TitlepageImprintLineimp:before {
 	text-align: center;
 }
 
+section[data-type="copyright-page"] p {
+	font-size: 9pt;
+}
+
 section[data-type="dedication"] p {
 	text-align: center;
 	font-style: italic;
@@ -177,6 +183,7 @@ section[data-type="chapter"] p {
 	font-size: 11pt;
 	text-indent: 0.23in;
 	text-align: justify;
+	margin: 0;
 }
 
 section[data-type="chapter"] p:first-of-type, 
