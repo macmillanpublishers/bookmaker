@@ -12,10 +12,12 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 
 # add switch to pull different css based on working dir
-# if working dir is index of tordotcom
-# pdf_css = and epub_css =
-# esleif working dir is index of egalleys
-# pdf_css = and epub_css =
+# if working_dir_split.include?("torDOTcom")
+# pdf_css = File.read("S:\\resources\\torDOTcom\\css\\pdf.css")
+# epub_css = File.read("S:\\resources\\torDOTcom\\css\\epub.css")
+# esleif working_dir_split.include?("egalleys")
+# pdf_css = File.read("S:\\resources\\egalleys\\css\\pdf.css")
+# epub_css = File.read("S:\\resources\\egalleys\\css\\epub.css")
 
 # base css files
 pdf_css = File.read("S:\\resources\\torDOTcom\\css\\pdf.css")
