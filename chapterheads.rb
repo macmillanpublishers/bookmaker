@@ -19,6 +19,9 @@ chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 # pdf_css = File.read("S:\\resources\\egalleys\\css\\pdf.css")
 # epub_css = File.read("S:\\resources\\egalleys\\css\\epub.css")
 # end
+# alt options: 
+# add css to working dir in a resources folder, just pull relatively
+# use the nth value from the working dir path as the dir name in the css path
 
 # base css files
 pdf_css = File.read("S:\\resources\\torDOTcom\\css\\pdf.css")
