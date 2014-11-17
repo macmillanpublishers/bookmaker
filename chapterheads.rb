@@ -18,6 +18,7 @@ chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 # esleif working_dir_split.include?("egalleys")
 # pdf_css = File.read("S:\\resources\\egalleys\\css\\pdf.css")
 # epub_css = File.read("S:\\resources\\egalleys\\css\\epub.css")
+# end
 
 # base css files
 pdf_css = File.read("S:\\resources\\torDOTcom\\css\\pdf.css")
