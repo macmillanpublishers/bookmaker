@@ -6,4 +6,4 @@ working_dir = working_dir_split[0...-2].join("\\")
 tmp_dir = "C:\\bookmaker_tmp"
 
 # convert xml to html
-`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\#{filename}.xml -xsl:S:\\resources\\bookmaker_scripts\\wordtohtml.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\#{filename}.xml -xsl:S:\\resources\\bookmaker_scripts\\WordXML-to-HTML\\wordtohtml.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
