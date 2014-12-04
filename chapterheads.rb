@@ -12,18 +12,6 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 # an array of all occurances of chapters in the manuscript
 chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 
-# add switch to pull different css based on working dir
-# if working_dir_split.include?("torDOTcom")
-# pdf_css = File.read("S:\\resources\\torDOTcom\\css\\pdf.css")
-# epub_css = File.read("S:\\resources\\torDOTcom\\css\\epub.css")
-# esleif working_dir_split.include?("egalleys")
-# pdf_css = File.read("S:\\resources\\egalleys\\css\\pdf.css")
-# epub_css = File.read("S:\\resources\\egalleys\\css\\epub.css")
-# end
-# alt options: 
-# add css to working dir in a resources folder via symlinks, just pull relatively
-# use the nth value from the working dir path as the dir name in the css path
-
 # base css files
 pdf_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_pdfmaker\\css\\#{project_dir}\\pdf.css"
 epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css"
