@@ -10,6 +10,8 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 
 # Delete all the working files and dirs
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\OEBPS\\*`
+`del /f /s /q /a #{tmp_dir}\\#{filename}\\OEBPS\\images\\*`
+`rd #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
 `rd #{tmp_dir}\\#{filename}\\OEBPS\\`
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\META-INF\\*`
 `rd #{tmp_dir}\\#{filename}\\META-INF\\`
