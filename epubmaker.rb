@@ -18,7 +18,7 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?<\/p>/).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/<\/p>/,"")
 
-epub_dir = "."
+epub_dir = "#{tmp_dir}\\#{filename}"
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
@@ -30,6 +30,7 @@ File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output|
 end
 
 # convert to epub
+`S:`
 `chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\HTMLBook-master\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub`
 
 # fix cover.html doctype
