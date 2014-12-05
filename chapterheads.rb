@@ -7,7 +7,6 @@ project_dir = working_dir_split[0...-3].pop
 # determine current working volume
 `cd > currvol.txt`
 currvol = File.read("currvol.txt")
-puts currvol
 
 # set working dir based on current volume
 if currvol.include?("S:")
