@@ -6,7 +6,6 @@ working_dir = working_dir_split[0...-2].join("\\")
 # determine current working volume
 `cd > currvol.txt`
 currvol = File.read("currvol.txt")
-puts currvol
 
 # set working dir based on current volume
 if currvol.include?("S:")
@@ -71,18 +70,12 @@ if sourceimages.any?
 	end
 end
 
-puts "success1"
-
 #copy tor logo image file to epub folder
 `copy S:\\resources\\torDOTcom\\img\\torlogo.jpg #{tmp_dir}\\#{filename}\\OEBPS\\torlogo.jpg`
-
-puts "success2"
 
 # zip epub
 `chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -DX0 mimetype`
 `chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -rDX9 META-INF OEBPS`
-
-puts "success3"
 
 # move epub into archive folder
 `copy #{tmp_dir}\\#{filename}\\#{eisbn}_EPUB.epub #{working_dir}\\done\\#{pisbn}\\`
