@@ -18,7 +18,8 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?<\/p>/).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/<\/p>/,"")
 
-currvol = `cd`
+`cd > currvol.txt`
+currvol = File.read("currvol.txt")
 puts currvol
 
 if currvol.match("S:")
