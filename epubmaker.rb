@@ -50,16 +50,16 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts 
 `convert #{tmp_dir}\\#{filename}\\OEBPS\\cover.jpg -resize "600x800>" #{tmp_dir}\\#{filename}\\OEBPS\\cover.jpg`
 
 # add image files to epub folder
-sourceimages = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\")
+# sourceimages = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\")
 
-if sourceimages.any?
+# if sourceimages.any?
 	`md #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
 	`copy #{working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
 	images = Dir.entries("#{tmp_dir}\\#{filename}\\OEBPS\\images\\").select { |f| File.file?(f) }
 	images.each do |i|
 		`convert #{tmp_dir}\\#{filename}\\OEBPS\\images\\#{i} -resize "800x1200>" #{tmp_dir}\\#{filename}\\OEBPS\\images\\#{i}`
 	end
-end
+# end
 
 #copy tor logo image file to epub folder
 `copy #{working_dir}\\resources\\torDOTcom\\img\\torlogo.jpg #{tmp_dir}\\#{filename}\\OEBPS\\`
