@@ -6,7 +6,6 @@ working_dir = working_dir_split[0...-2].join("\\")
 # determine current working volume
 `cd > currvol.txt`
 currvol = File.read("currvol.txt")
-puts currvol
 
 # set working dir based on current volume
 if currvol.include?("S:")
@@ -30,3 +29,5 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 `rd #{tmp_dir}\\#{filename}\\`
 `del /f /s /q /a #{input_file}`
 `del /f /s /q /a #{working_dir}\\IN_USE_PLEASE_WAIT.txt`
+`cd #{currvol}`
+`del currvol.txt`
