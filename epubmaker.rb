@@ -62,12 +62,18 @@ if sourceimages.any?
 	end
 end
 
+puts "success1"
+
 #copy tor logo image file to epub folder
 `copy #{working_dir}\\resources\\torDOTcom\\img\\torlogo.jpg #{tmp_dir}\\#{filename}\\OEBPS\\`
+
+puts "success2"
 
 # zip epub
 `chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -DX0 #{epub_dir}\\mimetype`
 `chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -rDX9 #{epub_dir}\\META-INF #{epub_dir}\\OEBPS`
+
+puts "success3"
 
 # move epub into archive folder
 `copy #{tmp_dir}\\#{filename}\\#{eisbn}_EPUB.epub #{working_dir}\\done\\#{pisbn}\\`
