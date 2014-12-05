@@ -50,7 +50,7 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts 
 `convert #{tmp_dir}\\#{filename}\\OEBPS\\cover.jpg -resize "600x800>" #{tmp_dir}\\#{filename}\\OEBPS\\cover.jpg`
 
 # add image files to epub folder
-sourceimages = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\")
+sourceimages = Dir["#{working_dir}\\done\\#{pisbn}\\images\\"]
 puts sourceimages
 
 if sourceimages.any?
