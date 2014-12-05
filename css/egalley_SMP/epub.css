@@ -1,0 +1,88 @@
+/* EPUB CSS */
+
+section[data-type="halftitlepage"] {
+	display: none;
+}
+
+p.HalftitleBookTitlehtit {
+	font-size: 1.6em;
+	text-align: center;
+	margin-top: 2em;
+}
+
+.AdCardMainHeadacmh {
+	text-align: center;
+	text-transform: uppercase;
+	margin-top: 2em;
+}
+
+.AdCardListofTitlesacl {
+	text-align: center;
+}
+
+.TitlepageBookTitletit {
+	text-align: center;
+	font-size: 1.6em;
+	text-transform: uppercase;
+	margin-bottom: 1.3em;
+}
+
+.TitlepageAuthorNameau {
+	font-size: 1.3em;
+	text-align: center;
+	margin-bottom: 1.3em;
+}
+
+.TitlepageImprintLineimp {
+	text-align: center;
+	font-size: 0.8em;
+}
+
+div.logoholder {
+	text-align: center;
+	margin-top: 3em;
+}
+
+img.logo {
+	text-align: center;
+	height: 50px;
+}
+
+section[data-type="copyright-page"] {
+	font-size: 0.8em;
+}
+
+section[data-type="dedication"], 
+div.dedication {
+	text-align: center;
+	font-style: italic;
+}
+
+/* suppression of chapter heads will be dictated programatically */
+section[data-type="chapter"] > h1 {
+	text-align: center;
+}
+
+section[data-type="chapter"] p {
+	line-height: 130%;
+	padding: 0;
+	margin-top: 0;
+	margin-bottom: 0.3em;
+}
+
+p.Text-Standardtx {
+	text-indent: 2em;
+}
+
+section[data-type="chapter"] p.SpaceBreakOrnamentorn {
+	text-align: center;
+}
+
+section[data-type="chapter"] p.SpaceBreak-1-Linels1 {
+	margin-top: 2.5em;
+}
+
+blockquote {
+	margin: 1em;
+	font-size: 0.9em;
+}
