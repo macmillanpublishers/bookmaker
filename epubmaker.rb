@@ -18,7 +18,14 @@ pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?<\/p>/).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/<\/p>/,"")
 
-epub_dir = "#{tmp_dir}\\#{filename}"
+currvol = `cd`
+puts currvol
+
+if currvol.match("S:")
+	epub_dir = "#{tmp_dir}\\#{filename}"
+else
+	epub_dir = "#{tmp_dir}\\#{filename}"
+end
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
@@ -51,7 +58,6 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts 
 
 # add image files to epub folder
 sourceimages = Dir["#{working_dir}\\done\\#{pisbn}\\images\\"]
-puts sourceimages
 
 if sourceimages.any?
 	`md #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
