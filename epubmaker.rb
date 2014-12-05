@@ -79,8 +79,8 @@ puts "success1"
 puts "success2"
 
 # zip epub
-`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{epub_dir}\\#{eisbn}_EPUB.epub -DX0 #{epub_dir}\\mimetype`
-`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{epub_dir}\\#{eisbn}_EPUB.epub -rDX9 #{epub_dir}\\META-INF #{epub_dir}\\OEBPS`
+`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -DX0 mimetype`
+`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -rDX9 META-INF OEBPS`
 
 puts "success3"
 
