@@ -30,7 +30,6 @@ File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output|
 end
 
 # convert to epub
-`S:`
 `chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\HTMLBook-master\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub`
 
 # fix cover.html doctype
