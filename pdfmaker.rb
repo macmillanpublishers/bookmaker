@@ -13,18 +13,8 @@ working_dir = working_dir_split[0...-2].join("\\")
 currpath = File.read("currvol.txt")
 currvol = currpath.split("\\").shift
 
-puts currvol
-
 # set working dir based on current volume
 tmp_dir = "#{currvol}\\bookmaker_tmp"
-
-puts tmp_dir
-
-# if currvol.include?("S:")
-#   tmp_dir = "S:\\bookmaker_tmp"
-# else
-#   tmp_dir = "C:\\bookmaker_tmp"
-# end
 
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
