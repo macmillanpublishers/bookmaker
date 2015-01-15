@@ -20,8 +20,8 @@ authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.
 authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/<\/p>/,"")
 
 # finding both print and ebook isbns
-eisbn = File.read("#{html_file}").scan(/Ebook ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Ebook ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
-pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
+eisbn = File.read("#{html_file}").scan(/ISBN\\s*.+\\s*(e-book)\\s*<\/p>/).to_s.gsub(/-/,"").gsub(/ISBN\\s*/,"").gsub(/\\s*(e-book)\\s*/,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
+eisbn = File.read("#{html_file}").scan(/ISBN\\s*.+\\s*(hardcover)\\s*<\/p>/).to_s.gsub(/-/,"").gsub(/ISBN\\s*/,"").gsub(/\\s*(hardcover)\\s*/,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?<\/p>/).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/<\/p>/,"")
