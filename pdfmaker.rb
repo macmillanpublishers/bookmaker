@@ -17,7 +17,7 @@ currvol = currpath.split("\\").shift
 tmp_dir = "#{currvol}\\bookmaker_tmp"
 
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
-pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
+pisbn = File.read("#{html_file}").scan(/ISBN\\s*.+\\s*(hardcover)\\s*<\/p>/).to_s.gsub(/-/,"").gsub(/ISBN\\s*/,"").gsub(/\\s*(hardcover)\\s*/,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # pdf css to be added to the file that will be sent to docraptor
 css_file = File.read("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css").to_s
