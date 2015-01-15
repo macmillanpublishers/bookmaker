@@ -13,7 +13,7 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-pisbn = eisbn_basestring.scan(/\d+\(hardcover\)/).to_s.gsub(/\(hardcover\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+pisbn = pisbn_basestring.scan(/\d+\(hardcover\)/).to_s.gsub(/\(hardcover\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # The location where the images are dropped by the user
 imagedir = "#{working_dir}\\submitted_images\\"
