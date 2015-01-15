@@ -12,7 +12,7 @@ currvol = currpath.split("\\").shift
 tmp_dir = "#{currvol}\\bookmaker_tmp"
 
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
-pisbn = File.read("#{html_file}").scan(/Print ISBN:.*?<\/p>/).to_s.gsub(/-/,"").gsub(/Print ISBN: /,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
+pisbn = File.read("#{html_file}").scan(/ISBN\\s*.+\\s*(hardcover)\\s*<\/p>/).to_s.gsub(/-/,"").gsub(/ISBN\\s*/,"").gsub(/\\s*(hardcover)\\s*/,"").gsub(/<\/p>/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # Delete all the working files and dirs
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\OEBPS\\*`
