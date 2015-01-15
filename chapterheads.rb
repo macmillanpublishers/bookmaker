@@ -29,6 +29,7 @@ if File.file?('#{pdf_css_file}')
 	else
 		File.open("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css", 'w') do |p|
 			p.write "#{pdf_css}section[data-type='chapter']>h1{display:none;}"
+		end
 	end
 end
 
@@ -39,5 +40,6 @@ if File.file?('#{epub_css_file}')
 	else
 		File.open("#{working_dir}\\done\\#{pisbn}\\layout\\epub.css", 'w') do |e|
 			e.write "#{epub_css}h1.ChapTitlect{display:none;}"
+		end
 	end
 end
