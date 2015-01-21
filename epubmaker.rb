@@ -47,7 +47,7 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html", "w") {|file| file.puts r
 
 # fix author info in opf
 opfcontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf")
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator role='aut'")
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='aut'")
 File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
