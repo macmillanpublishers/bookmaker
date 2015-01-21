@@ -102,7 +102,6 @@
               'AdCardMainHeadacmh',
               'CopyrightTextsinglespacecrtx',
               'Dedicationded',
-              'Epigraphnon-verseepi',
               'HalftitleBooktitlehtit',
               'TitlepageBookTitletit'"/>
   </xsl:variable>
@@ -184,9 +183,6 @@
               </xsl:when>
               <xsl:when test="$word-style = 'Dedicationded'">
                 <xsl:value-of select="'dedication'"/>
-              </xsl:when>
-              <xsl:when test="$word-style = 'Epigraphnon-verseepi'">
-                <xsl:value-of select="'epigraph'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'FMHeadfmh'">
                 <xsl:value-of select="'preface'"/>
