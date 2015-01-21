@@ -26,8 +26,10 @@
   <xsl:variable name="epigraph-paras" as="xs:string*">
     <xsl:sequence
       select="'ChapEpigraphnon-versecepi',
+              'ChapEpigraphversecepiv',
               'ChapEpigraphSourceceps',
               'Epigraphnon-verseepi',
+              'Epigraphverseepiv',
               'EpigraphSourceeps'"/>
   </xsl:variable>
 
@@ -113,7 +115,8 @@
               'ChapNumbercn',
               'ChapTitlect',
               'FMHeadfmh',
-              'TitlepageBookTitletit'"/>
+              'TitlepageBookTitletit',
+              'HalftitleBookTitlehtit'"/>
   </xsl:variable>
 
   <!-- Paragraph styles which should get aggregated in other
