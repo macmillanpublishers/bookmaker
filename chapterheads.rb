@@ -23,7 +23,7 @@ chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 pdf_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_pdfmaker\\css\\#{project_dir}\\pdf.css"
 epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css"
 
-if File.file?('#{pdf_css_file}')
+if File.file?("#{pdf_css_file}")
 	pdf_css = File.read("#{pdf_css_file}")
 	if chapterheads.count > 1
 		`copy #{pdf_css_file} #{working_dir}\\done\\#{pisbn}\\layout\\pdf.css`
@@ -34,7 +34,7 @@ if File.file?('#{pdf_css_file}')
 	end
 end
 
-if File.file?('#{epub_css_file}')
+if File.file?("#{epub_css_file}")
 	epub_css = File.read("#{epub_css_file}")
 	if chapterheads.count > 1
 		`copy #{epub_css_file} #{working_dir}\\done\\#{pisbn}\\layout\\epub.css`
