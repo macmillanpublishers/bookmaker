@@ -180,6 +180,7 @@
       </head>
       <body data-type="book">
         <!-- Figure out our top-level divisions by Word style. -->
+        <!-- Sections will always be separated by a PageBreak paragraph in Word -->
         <xsl:for-each-group select="//w:body//w:p"
           group-starting-with="w:p[w:pPr/w:pStyle/@w:val =
                                    $top-level-breaks
