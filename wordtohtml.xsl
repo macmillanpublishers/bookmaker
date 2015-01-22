@@ -14,8 +14,8 @@
        Made XHTML5 / HTMLBook valid. -->
 
   <!-- OPEN ISSUES:
-       If a chapter has a title and a number, two output chapters will
-       result. -->
+       If a chapter has a title and a number, both will appear as 
+       separate list items in toc -->
 
   <xsl:output indent="no" method="html" omit-xml-declaration="yes"
     version="5"/>
@@ -78,8 +78,21 @@
   <xsl:variable name="omit-paras" as="xs:string*">
     <xsl:sequence
       select="'PageBreakpb',
+              'SectionBreaksbr',
               'PartStartpts',
-              'SectionBreaksbr'"/>
+              'PartEndpte'"/>
+  </xsl:variable>
+
+  <!-- Paragraph styles used to add spacing, to be ignored when 
+  assigning sections and blocks. -->
+  <xsl:variable name="spacing-paras" as="xs:string*">
+    <xsl:sequence
+      select="'SpaceBreak-1-Linels1',
+              'SpaceBreak-2-Linels2',
+              'SpaceBreak-3-Linels3',
+              'SpaceBreak',
+              'SpaceBreakwithOrnamentorn',
+              'SpaceBreakwithALTOrnamentorn2'"/>
   </xsl:variable>
 
   <!-- Top-level divider paragraphs, any of which might signal the
@@ -93,12 +106,29 @@
               'FMHeadfmh'"/>
   </xsl:variable>
 
+  <!-- Paragraphs that are part of the chapter opener block, that 
+  may signify the start of a new chapter if no Chapter Title 
+  or Chapter Number is present. -->
+  <xsl:variable name="chap-opener-paras" as="xs:string*">
+    <xsl:sequence
+      select="'ChapOpeningTextcotx',
+              'ChapOpeningTextSpaceAftercotx',
+              'ChapOpeningTextNo-Indentcotx1',
+              'ChapOpeningTextNo-IndentSpaceAftercotx1',
+              'ChapOrnamentcorn',
+              'ChapOrnamentALTcorn2',
+              'ChapSubtitlecst',
+              'ChapAuthorca',
+              'Dateline-Chapterdl'"/>
+  </xsl:variable>
+
   <!-- Top-level divider paragraphs — styles which signal the start of
        a new top-level section such as a chapter or copyright
        page. -->
   <xsl:variable name="top-level-breaks" as="xs:string*">
     <xsl:sequence
       select="$top-level-body-breaks,
+              $chap-opener-paras,
               'AdCardMainHeadacmh',
               'CopyrightTextsinglespacecrtx',
               'Dedicationded',
@@ -157,8 +187,12 @@
                                    not(preceding::w:p[1]
                                        [w:pPr/w:pStyle/
                                         @w:val =
-                                        current()/w:pPr/
-                                        w:pStyle/@w:val])]">
+                                        $top-level-breaks])
+                                   and
+                                   not(preceding::w:p[1]
+                                       [w:pPr/w:pStyle/
+                                        @w:val =
+                                        $spacing-paras])]">
           <xsl:variable name="word-style" as="xs:string"
             select="./w:pPr/w:pStyle/@w:val"/>
           <!-- Figure out the correct data-type value for each section
@@ -174,7 +208,8 @@
               </xsl:when>
               <xsl:when
                 test="$word-style = 'ChapNumbercn' or
-                      $word-style = 'ChapTitlect'">
+                      $word-style = 'ChapTitlect' or
+                      $word-style = $chap-opener-paras">
                 <xsl:value-of select="'chapter'"/>
               </xsl:when>
               <xsl:when
