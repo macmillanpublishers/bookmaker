@@ -38,7 +38,7 @@ File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output|
 end
 
 # convert to epub
-`chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\HTMLBook-master\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub`
+`chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub`
 
 # fix cover.html doctype
 covercontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html")
@@ -47,7 +47,7 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html", "w") {|file| file.puts r
 
 # fix author info in opf
 opfcontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf")
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='aut'")
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'")
 File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
