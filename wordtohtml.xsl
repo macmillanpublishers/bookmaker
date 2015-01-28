@@ -107,13 +107,6 @@
               'FMHeadfmh'"/>
   </xsl:variable>
 
-  <!-- Titlepage title paragraphs
-  <xsl:variable name="title-paras" as="xs:string*">
-    <xsl:sequence
-      select="'HalftitleBooktitlehtit',
-              'TitlepageBookTitletit'"/>
-  </xsl:variable>-->
-
   <!-- Paragraphs that are part of the chapter opener block, that 
   may signify the start of a new chapter if no Chapter Title 
   or Chapter Number is present. -->
@@ -201,7 +194,11 @@
                                    not(preceding::w:p[1]
                                        [w:pPr/w:pStyle/
                                         @w:val =
-                                        $spacing-paras])]">
+                                        $spacing-paras] and 
+                                        preceding::w:p[2]
+                                       [w:pPr/w:pStyle/
+                                        @w:val =
+                                        $top-level-breaks])]">
           <xsl:variable name="word-style" as="xs:string"
             select="./w:pPr/w:pStyle/@w:val"/>
           <!-- Figure out the correct data-type value for each section
@@ -273,9 +270,6 @@
   <!-- Drop some print-formatting paragraphs from conversion. -->
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $omit-paras]"/>
-
-  <!-- Drop all but first occurrance of titlepage paras 
-  <xsl:template match="w:p[w:pPr/w:pStyle/@w:val = $title-paras][preceding::w:p[w:pPr/w:pStyle/@w:val = $title-paras]]"/> -->
 
   <!-- Some headings become h1 elements. -->
   <xsl:template
