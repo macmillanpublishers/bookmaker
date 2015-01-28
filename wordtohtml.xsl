@@ -130,8 +130,6 @@
     <xsl:sequence
       select="$top-level-body-breaks,
               $chap-opener-paras,
-              'Epigraphnon-verseepi',
-              'Epigraphverseepiv',
               'AdCardMainHeadacmh',
               'CopyrightTextsinglespacecrtx',
               'Dedicationded',
@@ -226,10 +224,6 @@
               </xsl:when>
               <xsl:when test="$word-style = 'Dedicationded'">
                 <xsl:value-of select="'dedication'"/>
-              </xsl:when>
-              <xsl:when test="$word-style = 'Epigraphnon-verseepi' or 
-                              $word-style = 'Epigraphnon-verseepi'">
-                <xsl:value-of select="'epigraph'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'FMHeadfmh'">
                 <xsl:value-of select="'preface'"/>
