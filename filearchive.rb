@@ -22,3 +22,45 @@ pisbn = pisbn_basestring.scan(/\d+\(hardcover\)/).to_s.gsub(/\(hardcover\)/,"").
 `md #{working_dir}\\done\\#{pisbn}\\layout`
 `copy #{input_file} #{working_dir}\\done\\#{pisbn}\\`
 `copy #{html_file} #{working_dir}\\done\\#{pisbn}\\layout\\#{pisbn}.html`
+
+# TESTING
+
+# print isbn should exist AND be 13-digit string of digits
+test_pisbn_chars = pisbn.scan(/\d\d\d\d\d\d\d\d\d\d\d\d\d/)
+test_pisbn_length = pisbn.split(%r{\s*})
+
+if test_pisbn_length.length == 13 and test_pisbn_chars.length != 0
+	test_isbn_status = "pass: print isbn is composed of 13 consecutive digits"
+else
+	test_isbn_status = "FAIL: print isbn is composed of 13 consecutive digits"
+end
+
+# done dir and all subdirs should exist
+if File.exist?("#{working_dir}\\done\\#{pisbn}") and File.exist?("#{working_dir}\\done\\#{pisbn}\\images") and File.exist?("#{working_dir}\\done\\#{pisbn}\\cover") and File.exist?("#{working_dir}\\done\\#{pisbn}\\layout")
+	test_dir_status = "pass: project directory and all sub-directories were successfully created"
+else
+	test_dir_status = "FAIL: project directory and all sub-directories were successfully created"
+end
+
+# input file should exist in done dir 
+if File.file?("#{working_dir}\\done\\#{pisbn}\\#{input_file}")
+	test_input_status = "pass: original file preserved in project directory"
+else
+	test_input_status = "FAIL: original file preserved in project directory"
+end
+
+# html file should exist in done dir 
+if File.file?("#{working_dir}\\done\\#{pisbn}\\layout\\#{pisbn}.html")
+	test_html_status = "pass: converted html file preserved in project directory"
+else
+	test_html_status = "FAIL: converted html file preserved in project directory"
+end
+
+# Printing the test results to the log file
+File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts "FILEARCHIVE PROCESSES"
+	f.puts test_isbn_status
+	f.puts test_dir_status
+	f.puts test_input_status
+	f.puts test_html_status
+end
