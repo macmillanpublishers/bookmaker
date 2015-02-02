@@ -44,3 +44,28 @@ if File.file?("#{epub_css_file}")
 		end
 	end
 end
+
+# TESTING
+
+# css files should exist in project directory
+if File.file?("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css")
+	test_pcss_status = "pass: PDF CSS file was added to the project directory"
+else
+	test_pcss_status = "FAIL: PDF CSS file was added to the project directory"
+end
+
+if File.file?("#{working_dir}\\done\\#{pisbn}\\layout\\epub.css")
+	test_ecss_status = "pass: EPUB CSS file was added to the project directory"
+else
+	test_ecss_status = "FAIL: EPUB CSS file was added to the project directory"
+end
+
+chapterheadsnum = chapterheads.count
+
+# Printing the test results to the log file
+File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts "CHAPTERHEADS PROCESSES"
+	f.puts "----- I found #{chapterheadsnum} chapters in this book."
+	f.puts test_pcss_status
+	f.puts test_ecss_status
+end
