@@ -43,7 +43,7 @@ else
 end
 
 # input file should exist in done dir 
-if File.file?("#{working_dir}\\done\\#{pisbn}\\#{input_file}")
+if File.file?("#{working_dir}\\done\\#{pisbn}\\#{filename}.xml")
 	test_input_status = "pass: original file preserved in project directory"
 else
 	test_input_status = "FAIL: original file preserved in project directory"
