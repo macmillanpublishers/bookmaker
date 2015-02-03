@@ -64,7 +64,7 @@ chapterheadsnum = chapterheads.count
 
 # Printing the test results to the log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
-	f.puts "CHAPTERHEADS PROCESSES"
+	f.puts "----- CHAPTERHEADS PROCESSES"
 	f.puts "----- I found #{chapterheadsnum} chapters in this book."
 	f.puts test_pcss_status
 	f.puts test_ecss_status
