@@ -70,8 +70,9 @@ end
 
 # Write test results
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts "-----"
 	f.puts Time.now
-	f.puts "TMPARCHIVE PROCESSES"
+	f.puts "----- TMPARCHIVE PROCESSES"
 	f.puts test_fname_status
 	f.puts test_dir_status
 	f.puts test_imagedir_status
