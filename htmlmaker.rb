@@ -36,7 +36,7 @@ end
 
 # Printing the test results to the log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
-	f.puts "HTMLMAKER PROCESSES"
+	f.puts "----- HTMLMAKER PROCESSES"
 	f.puts test_html_status
 	f.puts test_content_status
 end
