@@ -148,7 +148,7 @@
     <xsl:sequence
       select="'BMHeadbmh',
               'PartNumberpn',
-              'PartTitlept'
+              'PartTitlept',
               'ChapNumbercn',
               'ChapTitlect',
               'FMHeadfmh',
