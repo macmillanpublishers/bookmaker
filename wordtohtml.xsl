@@ -120,7 +120,10 @@
               'ChapOrnamentALTcorn2',
               'ChapSubtitlecst',
               'ChapAuthorca',
-              'Dateline-Chapterdl'"/>
+              'Dateline-Chapterdl',
+              'ChapEpigraphnon-versecepi',
+              'ChapEpigraphSourceceps',
+              'ChapEpigraphversecepiv'"/>
   </xsl:variable>
 
   <!-- Top-level divider paragraphs — styles which signal the start of
@@ -134,7 +137,9 @@
               'CopyrightTextsinglespacecrtx',
               'Dedicationded',
               'HalftitleBookTitlehtit',
-              'TitlepageBookTitletit'"/>
+              'TitlepageBookTitletit',
+              'PartNumberpn',
+              'PartTitlept'"/>
   </xsl:variable>
 
   <!-- Headings for top-level dividers; when they arise, they are
@@ -142,6 +147,8 @@
   <xsl:variable name="top-level-heads" as="xs:string*">
     <xsl:sequence
       select="'BMHeadbmh',
+              'PartNumberpn',
+              'PartTitlept'
               'ChapNumbercn',
               'ChapTitlect',
               'FMHeadfmh',
@@ -211,6 +218,10 @@
               </xsl:when>
               <xsl:when test="$word-style = 'BMHeadbmh'">
                 <xsl:value-of select="'appendix'"/>
+              </xsl:when>
+              <xsl:when test="$word-style = 'PartNumberpn' or
+                              $word-style = 'PartTitlept'">
+                <xsl:value-of select="'part'"/>
               </xsl:when>
               <xsl:when
                 test="$word-style = 'ChapNumbercn' or
