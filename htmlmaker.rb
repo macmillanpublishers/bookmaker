@@ -24,9 +24,9 @@ else
 end
 
 # html file should contain html tag, body tag, and title should be non-empty
-test_html_html = File.read("#{html_file}").scan(/<html/)
-test_html_body = File.read("#{html_file}").scan(/<body/)
-test_html_content = File.read("#{html_file}").scan(/<title>.+<\/title>/)
+test_html_html = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html").scan(/<html/)
+test_html_body = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html").scan(/<body/)
+test_html_content = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html").scan(/<title>.+<\/title>/)
 
 if test_html_html.length != 0 and test_html_body.length!= 0 and test_html_content != 0
 	test_content_status = "pass: html file has content and a title"
