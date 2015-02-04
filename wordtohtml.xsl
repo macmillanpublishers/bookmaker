@@ -25,7 +25,10 @@
        blockquote. -->
   <xsl:variable name="epigraph-paras" as="xs:string*">
     <xsl:sequence
-      select="'ChapEpigraphnon-versecepi',
+      select="'PartEpigraphnon-versepepi',
+              'PartEpigraphversepepiv',
+              'PartEpigraphSourcepeps',
+              'ChapEpigraphnon-versecepi',
               'ChapEpigraphversecepiv',
               'ChapEpigraphSourceceps',
               'Epigraphnon-verseepi',
@@ -104,6 +107,8 @@
       select="'BMHeadbmh',
               'ChapNumbercn',
               'ChapTitlect',
+              'PartNumberpn',
+              'PartTitlept',
               'FMHeadfmh'"/>
   </xsl:variable>
 
