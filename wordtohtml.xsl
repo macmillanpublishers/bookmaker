@@ -128,7 +128,8 @@
               'Dateline-Chapterdl',
               'ChapEpigraphnon-versecepi',
               'ChapEpigraphSourceceps',
-              'ChapEpigraphversecepiv'"/>
+              'ChapEpigraphversecepiv',
+              'ChapterContentscc'"/>
   </xsl:variable>
 
   <!-- Top-level divider paragraphs — styles which signal the start of
@@ -137,7 +138,6 @@
   <xsl:variable name="top-level-breaks" as="xs:string*">
     <xsl:sequence
       select="$top-level-body-breaks,
-              $chap-opener-paras,
               'AdCardMainHeadacmh',
               'CopyrightTextsinglespacecrtx',
               'Dedicationded',
@@ -167,10 +167,15 @@
        both. -->
   <xsl:variable name="quotation-paras" as="xs:string*">
     <xsl:sequence
-      select="'LetterExtClosinglcl',
+      select="'LetterExtHeadnotehn',
+              'LetterExtClosinglcl',
               'LetterExtGeneralextl',
               'LetterExtSalutationlsa',
-              'LetterExtSignaturelsig'"/>
+              'LetterExtSignaturelsig',
+              'LetterExtDatelineldl',
+              'LetterExtAddressladd',
+              'LetterExtBodyTextNo-Indentltx1',
+              'LetterExtBodyTextltx'"/>
   </xsl:variable>
 
   <!-- Default rule removes all extraneous data, including
@@ -230,8 +235,7 @@
               </xsl:when>
               <xsl:when
                 test="$word-style = 'ChapNumbercn' or
-                      $word-style = 'ChapTitlect' or
-                      $word-style = $chap-opener-paras">
+                      $word-style = 'ChapTitlect'">
                 <xsl:value-of select="'chapter'"/>
               </xsl:when>
               <xsl:when
