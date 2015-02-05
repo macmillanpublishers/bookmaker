@@ -15,16 +15,13 @@ html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 
 # determing print isbn
 hcvisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/)
-puts hcvisbn
-tpbisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(trade paperback\)/)
-puts tpbisbn
 
 if hcvisbn.length != 0
 	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
 	pisbn = pisbn_basestring.scan(/\d+\(hardcover\)/).to_s.gsub(/\(hardcover\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 else
 	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(trade paperback\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.scan(/\d+\(trade paperback\)/).to_s.gsub(/\(trade paperback\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn = pisbn_basestring.scan(/\d+\(tradepaperback\)/).to_s.gsub(/\(tradepaperback\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
 # create the archival directory structure and copy xml and html there
