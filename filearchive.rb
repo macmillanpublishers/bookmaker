@@ -69,7 +69,7 @@ end
 # Printing the test results to the log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- FILEARCHIVE PROCESSES"
-	f,puts "----- Print ISBN: #{pisbn}"
+	f.puts "----- Print ISBN: #{pisbn}"
 	f.puts test_isbn_status
 	f.puts test_dir_status
 	f.puts test_input_status
