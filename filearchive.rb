@@ -14,8 +14,8 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 
 # determing print isbn
-tpbisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(trade paperback\)/)
 hcvisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/)
+puts hcvisbn
 
 if hcvisbn.length != 0
 	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
@@ -69,6 +69,7 @@ end
 # Printing the test results to the log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- FILEARCHIVE PROCESSES"
+	f,puts "----- Print ISBN: #{pisbn}"
 	f.puts test_isbn_status
 	f.puts test_dir_status
 	f.puts test_input_status
