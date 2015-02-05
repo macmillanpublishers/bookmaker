@@ -19,7 +19,6 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 
 # determing print isbn
-tpbisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(trade paperback\)/)
 hcvisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/)
 
 if hcvisbn.length != 0
@@ -27,7 +26,7 @@ if hcvisbn.length != 0
   pisbn = pisbn_basestring.scan(/\d+\(hardcover\)/).to_s.gsub(/\(hardcover\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 else
   pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(trade paperback\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-  pisbn = pisbn_basestring.scan(/\d+\(trade paperback\)/).to_s.gsub(/\(trade paperback\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+  pisbn = pisbn_basestring.scan(/\d+\(tradepaperback\)/).to_s.gsub(/\(tradepaperback\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
 # pdf css to be added to the file that will be sent to docraptor
