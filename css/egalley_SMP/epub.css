@@ -20,11 +20,16 @@ p.HalftitleBookTitlehtit {
 	text-align: center;
 }
 
+section[data-type="titlepage"] {
+	text-align: center;
+}
+
 .TitlepageBookTitletit {
 	text-align: center;
 	font-size: 1.6em;
 	text-transform: uppercase;
 	margin-bottom: 1.3em;
+	margin-top: 50px;
 }
 
 .TitlepageAuthorNameau {
@@ -33,9 +38,13 @@ p.HalftitleBookTitlehtit {
 	margin-bottom: 1.3em;
 }
 
-.TitlepageImprintLineimp {
+.TitlepageImprintLineimp, .TitlepagePublisherNamepub, .TitlepageCitiescit {
 	text-align: center;
 	font-size: 0.8em;
+}
+
+.TitlepagePublisherNamepub {
+	margin-top: 50px;
 }
 
 div.logoholder {
@@ -83,6 +92,15 @@ section[data-type="chapter"] p.SpaceBreak-1-Linels1 {
 }
 
 blockquote {
-	margin: 1em;
+	margin: 2em;
 	font-size: 0.9em;
+	font-style: italic;
+}
+
+blockquote[data-type="epigraph"] {
+
+}
+
+.ChapEpigraphSourceceps {
+	text-align: right;
 }
