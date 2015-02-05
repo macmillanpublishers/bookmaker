@@ -16,6 +16,8 @@ html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 # determing print isbn
 hcvisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/)
 puts hcvisbn
+tpbisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(trade paperback\)/)
+puts tpbisbn
 
 if hcvisbn.length != 0
 	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
