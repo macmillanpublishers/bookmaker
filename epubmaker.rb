@@ -108,5 +108,6 @@ end
 
 # Add new section to log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts " "
 	f.puts test_epub_status
 end
