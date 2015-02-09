@@ -55,3 +55,15 @@ if missing.any?
 		output.write "The following images are missing from the images folder: #{missing}"
 	end
 end
+
+# TESTING
+
+# Count how many images are referenced in the book
+test_img_src = source.count
+
+# Printing the test results to the log file
+File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts "----- IMAGECHECKER PROCESSES"
+	f.puts "----- I found #{test_img_src} image references in this book"
+	f.puts "----- These image files seem to be missing: #{missing}"
+end
