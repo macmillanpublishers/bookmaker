@@ -20,7 +20,7 @@ authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.
 authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
 
 # finding both print and ebook isbns
-eisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(e-book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+eisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(e(-?)book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
 eisbn = eisbn_basestring.scan(/\d+\(ebook\)/).to_s.gsub(/\(ebook\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 
 # determing print isbn
@@ -106,8 +106,21 @@ else
 	test_epub_status = "FAIL: the EPUB was created successfully"
 end
 
+# ebook isbn should exist AND be 13-digit string of digits
+test_eisbn_chars = eisbn.scan(/\d\d\d\d\d\d\d\d\d\d\d\d\d/)
+test_eisbn_length = eisbn.split(%r{\s*})
+
+if test_eisbn_length.length == 13 and test_eisbn_chars.length != 0
+	test_eisbn_status = "pass: ebook isbn is composed of 13 consecutive digits"
+else
+	test_eisbn_status = "FAIL: ebook isbn is composed of 13 consecutive digits"
+end
+
 # Add new section to log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts " "
+	f.puts "-----"
 	f.puts test_epub_status
+	f.puts test_eisbn_status
+	f.puts "----- ebook ISBN: #{eisbn}"
 end
