@@ -46,23 +46,13 @@ File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output|
 	output.write filecontents
 end
 
-# capture stdout to a string for logging
-old_stdout = $stdout
-logstream = StringIO.new
-$stdout = logstream
-
-# convert to epub
-`chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub`
-
-# Access the data written to stdout
-$stdout.string
-
+# Add new section to log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
-	f.puts $stdout.string
+	f.puts "----- EPUBMAKER PROCESSES"
 end
 
-# reset stdout to original stream
-$stdout = old_stdout
+# convert to epub and send stderr to log file
+`chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>S:\\resources\\logs\\#{filename}.txt`
 
 # fix cover.html doctype
 covercontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html")
@@ -106,3 +96,17 @@ end
 
 # delete temp epub html file
 `del #{tmp_dir}\\#{filename}\\epub_tmp.html`
+
+# TESTING
+
+# epub file should exist in done dir 
+if File.file?("#{working_dir}\\done\\#{pisbn}\\#{eisbn}_EPUB.epub")
+	test_epub_status = "pass: the EPUB was created successfully"
+else
+	test_epub_status = "FAIL: the EPUB was created successfully"
+end
+
+# Add new section to log file
+File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts test_epub_status
+end
