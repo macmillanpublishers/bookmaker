@@ -33,7 +33,27 @@
               'ChapEpigraphSourceceps',
               'Epigraphnon-verseepi',
               'Epigraphverseepiv',
-              'EpigraphSourceeps'"/>
+              'EpigraphSourceeps',
+              'EpigraphinTextnon-versetepi',
+              'EpigraphinTextversetepiv',
+              'EpigraphinTextSourceteps'"/>
+  </xsl:variable>
+
+  <!-- Paragraph styles which should get aggregated in a poetry
+       pre. -->
+  <xsl:variable name="poetry-paras" as="xs:string*">
+    <xsl:sequence
+      select="'Extract-VerseorPoetryextv',
+              'PoemTitlevt',
+              'PoemSubtitlevst',
+              'PoemLevel-1Subheadvh1',
+              'PoemLevel-2Subheadvh2',
+              'PoemLevel-3Subheadvh3',
+              'PoemLevel-4Subheadvh4',
+              'VerseTextvtx',
+              'VerseRun-inTextNo-Indentvrtx1',
+              'VerseRun-inTextvrtx',
+              'Extract-VerseorPoetryextv'"/>
   </xsl:variable>
 
   <!-- Figure style names — these paragraphs are expected to have
@@ -312,6 +332,18 @@
     </xsl:if>
   </xsl:template>
 
+  <!-- Group poetry components into a single container. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $poetry-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [w:pPr/w:pStyle[not(@w:val = $poetry-paras)]]">
+      <pre class="poetry">
+        <xsl:apply-templates select="." mode="poetry"/>
+      </pre>
+    </xsl:if>
+  </xsl:template>
+
   <!-- Handle figure placeholders, and possibly associated
        captions. -->
   <xsl:template
@@ -460,6 +492,19 @@
       select="following::w:p[1]
               [w:pPr/w:pStyle/@w:val = $epigraph-paras]"
       mode="epigraph"/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in poetry mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="poetry">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val = $poetry-paras]"
+      mode="poetry"/>
   </xsl:template>
 
   <xsl:template match="w:p" mode="fig-alt-text">
