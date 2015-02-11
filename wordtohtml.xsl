@@ -56,6 +56,51 @@
               'Extract-VerseorPoetryextv'"/>
   </xsl:variable>
 
+<!-- Paragraph styles which should get aggregated in a box
+       aside. -->
+  <xsl:variable name="box-paras" as="xs:string*">
+    <xsl:sequence
+      select="'BoxHeadbh',
+              'BoxSubheadbsh',
+              'BoxEpigraphnon-versebepi',
+              'BoxEpigraphSourcebeps',
+              'BoxEpigraphversebepiv',
+              'BoxEpigraphversebepiv',
+              'BoxEpigraphversebepiv',
+              'BoxEpigraphversebepiv',
+              'BoxEpigraphversebepiv',
+              'BoxEpigraphversebepiv',
+              'BoxEpigraphSourcebeps',
+              'BoxTextNo-Indentbtx1',
+              'BoxHead-Level-1bh1',
+              'BoxTextNo-Indentbtx1',
+              'BoxListNumbnl',
+              'BoxListNumbnl',
+              'BoxListNumbnl',
+              'BoxListNumbnl',
+              'BoxHead-Level-2bh2',
+              'BoxListBulletbbl',
+              'BoxListBulletbbl',
+              'BoxTextbtx',
+              'BoxTextbtx',
+              'BoxHead-Level-2bh2',
+              'BoxTextNo-Indentbtx1',
+              'BoxHead-Level-3bh3',
+              'BoxTextbtx',
+              'BoxHead-Level-4bh4',
+              'BoxTextNo-Indentbtx1',
+              'BoxExtractbext',
+              'BoxTextbtx',
+              'BoxHead-Level-2bh2',
+              'BoxTextNo-Indentbtx1',
+              'BoxHead-Level-2bh2',
+              'BoxTextNo-Indentbtx1',
+              'BoxTextbtx',
+              'BoxTextbtx',
+              'BoxSourceNotebsn',
+              'BoxFootnotebfn'"/>
+  </xsl:variable>
+
   <!-- Figure style names — these paragraphs are expected to have
        content that gives an image filename. -->
   <xsl:variable name="fig-paras" as="xs:string*">
@@ -344,6 +389,30 @@
     </xsl:if>
   </xsl:template>
 
+  <!-- Group box components into a single container. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $box-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [w:pPr/w:pStyle[not(@w:val = $box-paras)]]">
+      <pre data-type="sidebar" class="box">
+        <xsl:apply-templates select="." mode="box"/>
+      </pre>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- Group sidebar components into a single container. -->
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $sidebar-paras]">
+    <xsl:if
+      test="preceding::w:p[1]
+            [w:pPr/w:pStyle[not(@w:val = $sidebar-paras)]]">
+      <pre data-type="sidebar">
+        <xsl:apply-templates select="." mode="sidebar"/>
+      </pre>
+    </xsl:if>
+  </xsl:template>
+
   <!-- Handle figure placeholders, and possibly associated
        captions. -->
   <xsl:template
@@ -505,6 +574,32 @@
       select="following::w:p[1]
               [w:pPr/w:pStyle/@w:val = $poetry-paras]"
       mode="poetry"/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in box mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="box">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val = $box-paras]"
+      mode="box"/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in sidebar mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="sidebar">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val = $sidebar-paras]"
+      mode="sidebar"/>
   </xsl:template>
 
   <xsl:template match="w:p" mode="fig-alt-text">
