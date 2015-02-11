@@ -101,6 +101,51 @@
               'BoxFootnotebfn'"/>
   </xsl:variable>
 
+<!-- Paragraph styles which should get aggregated in a sidebar
+       aside. -->
+  <xsl:variable name="sidebar-paras" as="xs:string*">
+    <xsl:sequence
+      select="'SidebarHeadsbh',
+              'SidebarSubheadsbsh',
+              'SidebarEpigraphnon-versesbepi',
+              'SidebarEpigraphSourcesbeps',
+              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraphSourcesbeps',
+              'SidebarTextNo-Indentsbtx1',
+              'SidebarHead-Level-1sbh1',
+              'SidebarTextNo-Indentsbtx1',
+              'SidebarListNumsbnl',
+              'SidebarListNumsbnl',
+              'SidebarListNumsbnl',
+              'SidebarListNumsbnl',
+              'SidebarHead-Level-2sbh2',
+              'SidebarListBulletsbbl',
+              'SidebarListBulletsbbl',
+              'SidebarTextsbtx',
+              'SidebarTextsbtx',
+              'SidebarHead-Level-2sbh2',
+              'SidebarTextNo-Indentsbtx1',
+              'SidebarHead-Level-3sbh3',
+              'SidebarTextNo-Indentsbtx1',
+              'SidebarHead-Level-4sbh4',
+              'SidebarTextNo-Indentsbtx1',
+              'SidebarExtractsbext',
+              'SidebarTextsbtx',
+              'SidebarHead-Level-2sbh2',
+              'SidebarTextNo-Indentsbtx1',
+              'SidebarHead-Level-2sbh2',
+              'SidebarTextNo-Indentsbtx1',
+              'SidebarTextsbtx',
+              'SidebarTextsbtx',
+              'SidebarSourceNotesbsn',
+              'SidebarFootnotesbfn'"/>
+  </xsl:variable>
+
   <!-- Figure style names — these paragraphs are expected to have
        content that gives an image filename. -->
   <xsl:variable name="fig-paras" as="xs:string*">
