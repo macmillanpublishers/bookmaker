@@ -440,9 +440,9 @@
     <xsl:if
       test="preceding::w:p[1]
             [w:pPr/w:pStyle[not(@w:val = $box-paras)]]">
-      <pre data-type="sidebar" class="box">
+      <aside data-type="sidebar" class="box">
         <xsl:apply-templates select="." mode="box"/>
-      </pre>
+      </aside>
     </xsl:if>
   </xsl:template>
 
@@ -452,9 +452,9 @@
     <xsl:if
       test="preceding::w:p[1]
             [w:pPr/w:pStyle[not(@w:val = $sidebar-paras)]]">
-      <pre data-type="sidebar">
+      <aside data-type="sidebar">
         <xsl:apply-templates select="." mode="sidebar"/>
-      </pre>
+      </aside>
     </xsl:if>
   </xsl:template>
 
