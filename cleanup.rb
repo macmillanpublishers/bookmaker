@@ -25,6 +25,11 @@ else
 	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
+# just in case no isbn is found
+if pisbn.length == 0
+	pisbn = "#{filename}"
+end
+
 # Delete all the working files and dirs
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\OEBPS\\*`
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\OEBPS\\images\\*`
