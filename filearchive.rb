@@ -19,9 +19,11 @@ spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
 # determining print isbn
 if spanisbn.length != 0
 	pisbn_basestring = File.read("#{html_file}").scan(/spanISBNisbn">\s*.+<\/span>\s*\((hardcover|trade paperback)\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	puts pisbn_basestring
 	pisbn = pisbn_basestring.scan(/\d+<\/span>\((hardcover|trade paperback)\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 else
 	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\((hardcover|trade paperback)\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	puts pisbn_basestring
 	pisbn = pisbn_basestring.scan(/\d+\((hardcover|trade paperback)\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
