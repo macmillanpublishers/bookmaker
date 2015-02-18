@@ -25,6 +25,11 @@ else
 	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
+# just in case no isbn is found
+if pisbn.length == 0
+	pisbn = "#{filename}"
+end
+
 # The location where the cover is dropped by the user
 coverdir = "#{tmp_dir}\\#{filename}\\"
 
