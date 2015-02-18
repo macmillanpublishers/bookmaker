@@ -18,13 +18,13 @@ spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
 
 # determining print isbn
 if spanisbn.length != 0
-	pisbn_basestring = File.read("#{html_file}").scan(/spanISBNisbn">\s*.+<\/span>\s*\((hardcover|trade paperback)\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
 	puts pisbn_basestring
-	pisbn = pisbn_basestring.scan(/\d+<\/span>\((hardcover|trade paperback)\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn = pisbn_basestring.match(/\d+<\/span>\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 else
-	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\((hardcover|trade paperback)\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
 	puts pisbn_basestring
-	pisbn = pisbn_basestring.scan(/\d+\((hardcover|trade paperback)\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
 puts pisbn
