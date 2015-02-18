@@ -40,6 +40,15 @@ else
 	eisbn = eisbn_basestring.match(/\d+\(ebook\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
+# just in case no isbn is found
+if pisbn.length == 0
+	pisbn = "#{filename}"
+end
+
+if eisbn.length == 0
+	eisbn = "#{filename}"
+end
+
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?</).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/</,"")
 
