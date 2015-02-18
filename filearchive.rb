@@ -26,7 +26,7 @@ else
 end
 
 # just in case no isbn is found
-if pisbn.length = 0
+if pisbn.length == 0
 	pisbn = "#{filename}"
 end
 
