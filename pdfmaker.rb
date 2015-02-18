@@ -30,6 +30,11 @@ else
   pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
+# just in case no isbn is found
+if pisbn.length == 0
+  pisbn = "#{filename}"
+end
+
 # pdf css to be added to the file that will be sent to docraptor
 css_file = File.read("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css").to_s
 
