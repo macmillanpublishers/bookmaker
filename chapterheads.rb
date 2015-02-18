@@ -26,6 +26,11 @@ else
 	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
+# just in case no isbn is found
+if pisbn.length == 0
+	pisbn = "#{filename}"
+end
+
 # an array of all occurances of chapters in the manuscript
 chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 
