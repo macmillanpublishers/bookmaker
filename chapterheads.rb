@@ -14,15 +14,16 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 
-# determing print isbn
-hcvisbn = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/)
+# testing to see if ISBN style exists
+spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
 
-if hcvisbn.length != 0
-	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(hardcover\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.scan(/\d+\(hardcover\)/).to_s.gsub(/\(hardcover\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+# determining print isbn
+if spanisbn.length != 0
+	pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn = pisbn_basestring.match(/\d+<\/span>\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 else
-	pisbn_basestring = File.read("#{html_file}").scan(/ISBN\s*.+\s*\(trade paperback\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.scan(/\d+\(tradepaperback\)/).to_s.gsub(/\(tradepaperback\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
 # an array of all occurances of chapters in the manuscript
