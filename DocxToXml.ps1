@@ -7,7 +7,7 @@ $word = New-Object -ComObject word.application
 $word.visible = $false
 
 # Converts all Word docs in this directory
-$folderpath = "C:\Users\erica.warren\Documents\Test\*" 
+$folderpath = "S:\bookmaker_tmp\xml_convert\*" 
 $fileType = "*doc*" #converts both .doc and .docx
 
 
