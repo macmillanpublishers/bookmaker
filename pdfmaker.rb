@@ -39,8 +39,7 @@ end
 css_file = File.read("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css").to_s
 
 # inserts the css into the head of the html, fixes images
-# pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<style>#{css_file}</style></head>").gsub(/(<img.*?)(>)/,"\\1/\\2").gsub(/src="images\//,"src=\"http://art.macmillanusa.com/Content%20Workflows/NYAutomation/").to_s
-pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<style>#{css_file}</style></head>").gsub(/(<img.*?)(>)/,"\\1/\\2").gsub(/src="images\//,"src=\"http://nelliemckesson.com/test/").to_s
+pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<style>#{css_file}</style></head>").gsub(/(<img.*?)(>)/,"\\1/\\2").gsub(/src="images\//,"src=\"http://www.macmillan.tools.vhost.zerolag.com/bookmaker/tmp_img/").to_s
 
 # sends file to docraptor for conversion
 # currently running in test mode; remove test when css is finalized
@@ -52,7 +51,7 @@ File.open("#{pisbn}.pdf", "w+b") do |f|
                            :strict			     => "none",
                            :test             => true,
 	                         :prince_options	 => {
-	                           :http_user		   => "bookmaker",
+	                           :http_user		   => "***REMOVED***",
 	                           :http_password	 => "***REMOVED***"
 							             }
                        		)
