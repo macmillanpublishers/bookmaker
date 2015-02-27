@@ -10,6 +10,7 @@ currvol = currpath.split("\\").shift
 
 # set working dir based on current volume
 tmp_dir = "#{currvol}\\bookmaker_tmp"
+filename_split_nospaces = filename_split.gsub(/ /, "")
 
 # For TEST purposes
 test_images_before = Dir.entries("#{working_dir}\\submitted_images\\")
@@ -18,7 +19,7 @@ test_images_before = Dir.entries("#{working_dir}\\submitted_images\\")
 `md #{tmp_dir}\\#{filename}`
 `md #{tmp_dir}\\#{filename}\\images`
 `move #{working_dir}\\submitted_images\\* #{tmp_dir}\\#{filename}\\images\\`
-`copy #{input_file} #{tmp_dir}\\#{filename}\\#{filename}.xml`
+`copy "#{input_file}" #{tmp_dir}\\#{filename}\\#{filename_split_nospaces}`
 
 # Add a notice to the conversion dir warning that the process is in use
 File.open("#{working_dir}\\IN_USE_PLEASE_WAIT.txt", 'w') do |output|
