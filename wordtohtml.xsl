@@ -164,13 +164,20 @@
        aggregation will always(?) be homogeneous. -->
   <xsl:variable name="list-num-paras" as="xs:string*">
     <xsl:sequence
-      select="'ListNumnl'"/>
+      select="'ListNumnl',
+              'BoxListNumbnl',
+              'SidebarListNumsbnl',
+              'Extract-NumListextnl'"/>
   </xsl:variable>
   <xsl:variable name="list-unnum-paras" as="xs:string*">
     <xsl:sequence
       select="'ListBulletbl',
               'ListUnnumul',
-              'Checklistck'"/>
+              'BoxListBulletbbl',
+              'SidebarListBulletsbbl',
+              'Extract-BulletListextbl',
+              'Checklistck',
+              'ChapterContentscc'"/>
   </xsl:variable>
   <xsl:variable name="list-sub-paras" as="xs:string*">
     <xsl:sequence
