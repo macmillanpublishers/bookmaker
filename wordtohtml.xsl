@@ -167,7 +167,8 @@
       select="'ListNumnl',
               'BoxListNumbnl',
               'SidebarListNumsbnl',
-              'Extract-NumListextnl'"/>
+              'Extract-NumListextnl',
+              'AppendixListNumapnl'"/>
   </xsl:variable>
   <xsl:variable name="list-unnum-paras" as="xs:string*">
     <xsl:sequence
@@ -176,6 +177,8 @@
               'BoxListBulletbbl',
               'SidebarListBulletsbbl',
               'Extract-BulletListextbl',
+              'AppendixListUnnumapul',
+              'AppendixListBulletapbl',
               'Checklistck',
               'ChapterContentscc'"/>
   </xsl:variable>
