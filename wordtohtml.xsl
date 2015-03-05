@@ -169,7 +169,8 @@
   <xsl:variable name="list-unnum-paras" as="xs:string*">
     <xsl:sequence
       select="'ListBulletbl',
-              'ListUnnumul'"/>
+              'ListUnnumul',
+              'Checklistck'"/>
   </xsl:variable>
   <xsl:variable name="list-sub-paras" as="xs:string*">
     <xsl:sequence
@@ -183,7 +184,8 @@
   <xsl:variable name="list-sub-unnum-paras" as="xs:string*">
     <xsl:sequence
       select="'ListBulletSubentrybsl',
-              'ListUnnumSubentryusl'"/>
+              'ListUnnumSubentryusl',
+              'ChecklistSubentrycksl'"/>
   </xsl:variable>
 
   <!-- Paragraph styles used for print formatting only, to be dropped
