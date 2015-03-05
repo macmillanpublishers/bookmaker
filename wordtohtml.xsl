@@ -297,7 +297,11 @@
               'LetterExtDatelineldl',
               'LetterExtAddressladd',
               'LetterExtBodyTextNo-Indentltx1',
-              'LetterExtBodyTextltx'"/>
+              'LetterExtBodyTextltx',
+              'BOBAdQuoteHeadbobqh',
+              'BOBAdQuotebobq',
+              'BOBAdQuoteNo-Indentbobq1',
+              'BOBAdQuoteSourcebobqs'"/>
   </xsl:variable>
 
   <!-- Default rule removes all extraneous data, including
