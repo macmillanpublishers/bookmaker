@@ -29,7 +29,7 @@ $path = ($_.FullName).substring(0,($_.FullName).lastindexOf("."))
 echo "Converting $path to xml from $fileType..."
 write-host $path
 $doc = $word.documents.open($_.FullName)
-$wdFormatXML = 11  # XML format is 11
+$wdFormatXML = 19  # XML format is 19
 #originally next line read:  $doc.saveas($path, $wdFormatXML)
 #Had to add [ref]s for certain versions of powershell (2.0), we'll see which way works on server
 #https://richardspowershellblog.wordpress.com/2012/10/15/powershell-3-and-word/
