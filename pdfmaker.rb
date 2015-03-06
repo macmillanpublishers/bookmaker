@@ -1,7 +1,12 @@
 require 'rubygems'
 require 'doc_raptor'
 
-DocRaptor.api_key "***REMOVED***"
+#get secure keys & credentials
+docraptor_key = File.read("S:/resources/bookmaker_scripts/bookmaker_authkeys/api_key.txt")
+ftp_uname = File.read("S:/resources/bookmaker_scripts/bookmaker_authkeys/ftp_username.txt")
+ftp_pass = File.read("S:/resources/bookmaker_scripts/bookmaker_authkeys/ftp_pass.txt")
+
+DocRaptor.api_key "#{docraptor_key}"
 
 input_file = ARGV[0]
 filename_split = input_file.split("\\").pop
@@ -51,8 +56,8 @@ File.open("#{pisbn}.pdf", "w+b") do |f|
                            :strict			     => "none",
                            :test             => true,
 	                         :prince_options	 => {
-	                           :http_user		   => "***REMOVED***",
-	                           :http_password	 => "***REMOVED***"
+	                           :http_user		   => "#{ftp_uname}",
+	                           :http_password	 => "#{ftp_pass}"
 							             }
                        		)
                            
