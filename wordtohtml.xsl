@@ -635,32 +635,6 @@
     <xsl:value-of select="."/>
   </xsl:template>
 
-  <!-- Processing paragraphs in epigraph mode.  Check each following
-       sibling for inclusion. -->
-  <xsl:template match="w:p" mode="epigraph">
-    <p>
-      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates select="w:r"/>
-    </p>
-    <xsl:apply-templates
-      select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $epigraph-paras]"
-      mode="epigraph"/>
-  </xsl:template>
-
-  <!-- Processing paragraphs in poetry mode.  Check each following
-       sibling for inclusion. -->
-  <xsl:template match="w:p" mode="poetry">
-    <p>
-      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates select="w:r"/>
-    </p>
-    <xsl:apply-templates
-      select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $poetry-paras]"
-      mode="poetry"/>
-  </xsl:template>
-
   <!-- Processing paragraphs in box mode.  Check each following
        sibling for inclusion. -->
   <xsl:template match="w:p" mode="box">
@@ -685,6 +659,32 @@
       select="following::w:p[1]
               [w:pPr/w:pStyle/@w:val = $sidebar-paras]"
       mode="sidebar"/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in epigraph mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="epigraph">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val = $epigraph-paras]"
+      mode="epigraph"/>
+  </xsl:template>
+
+  <!-- Processing paragraphs in poetry mode.  Check each following
+       sibling for inclusion. -->
+  <xsl:template match="w:p" mode="poetry">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select="w:r"/>
+    </p>
+    <xsl:apply-templates
+      select="following::w:p[1]
+              [w:pPr/w:pStyle/@w:val = $poetry-paras]"
+      mode="poetry"/>
   </xsl:template>
 
   <xsl:template match="w:p" mode="fig-alt-text">
