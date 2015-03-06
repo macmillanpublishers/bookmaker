@@ -165,18 +165,12 @@
   <xsl:variable name="list-num-paras" as="xs:string*">
     <xsl:sequence
       select="'ListNumnl',
-              'BoxListNumbnl',
-              'SidebarListNumsbnl',
-              'Extract-NumListextnl',
               'AppendixListNumapnl'"/>
   </xsl:variable>
   <xsl:variable name="list-unnum-paras" as="xs:string*">
     <xsl:sequence
       select="'ListBulletbl',
               'ListUnnumul',
-              'BoxListBulletbbl',
-              'SidebarListBulletsbbl',
-              'Extract-BulletListextbl',
               'AppendixListUnnumapul',
               'AppendixListBulletapbl',
               'Checklistck',
@@ -318,10 +312,6 @@
               'LetterExtAddressladd',
               'LetterExtBodyTextNo-Indentltx1',
               'LetterExtBodyTextltx',
-              'BoxExtractbext',
-              'BoxExtract-Versebextv',
-              'SidebarExtractsbext',
-              'SidebarExtract-Versesbextv',
               'BOBAdQuoteHeadbobqh',
               'BOBAdQuotebobq',
               'BOBAdQuoteNo-Indentbobq1',
