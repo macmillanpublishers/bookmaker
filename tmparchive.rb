@@ -63,7 +63,7 @@ else
 end
 
 # input file should exist in tmp dir
-if File.file?("#{tmp_dir}\\#{filename}\\#{filename}.xml")
+if File.file?("#{tmp_dir}\\#{filename}\\#{filename_split_nospaces}")
 	test_input_status = "pass: original file preserved in project directory"
 else
 	test_input_status = "FAIL: original file preserved in project directory"
