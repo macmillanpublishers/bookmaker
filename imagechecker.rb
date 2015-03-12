@@ -32,6 +32,8 @@ end
 
 # The location where the images are dropped by the user
 imagedir = "#{tmp_dir}\\#{filename}\\images\\"
+# The working dir location that images will be moved to (for test 3)
+image_dest = "#{working_dir}\\done\\#{pisbn}\\images\\"
 
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
@@ -41,6 +43,13 @@ source = File.read("#{html_file}").scan(/img src=".*?"/)
 
 # An empty array to store the list of any missing images
 missing = []
+# An empty array to store nospace names of html images existing in submission folder (for test 3)
+matched = []
+
+#strips spaces from img names in html
+text = File.read("#{html_file}")
+new_contents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
+File.open("#{html_file}", "w") {|file| file.puts new_contents }
 
 # Checks to see if each image referenced in the html exists in the submission folder
 # If no, saves the image file name in the missing array
@@ -48,8 +57,8 @@ missing = []
 source.each do |m|
 	match = m.split("/").pop.gsub(/"/,'')
 	if images.include?("#{match}")
-		`copy #{image_dir}\\#{match} #{working_dir}\\done\\#{pisbn}\\images\\`
-		`S:\\resources\\bookmaker_scripts\\imageupload.bat #{match}`
+		`copy #{imagedir}\\#{match} #{working_dir}\\done\\#{pisbn}\\images\\`
+		matched << match
 	else
 		missing << match
 	end
@@ -68,14 +77,22 @@ end
 test_img_src = source.count
 
 if missing.any?
-	test_missing_img = "These image files seem to be missing: #{missing}"
+	test_missing_img = "FAIL: These image files seem to be missing: #{missing}"
 else
-	test_missing_img = "There are no missing image files!"
+	test_missing_img = "PASS: There are no missing image files!"
+end
+
+images_moved = Dir.entries("#{image_dest}") 
+if images_moved.sort == matched.sort
+	test_imgs_match_refs = "PASS: Images' names in Done folder match references in html"
+else
+	test_imgs_match_refs = "FAIL: Images' names in Done folder match references in html"
 end
 
 # Printing the test results to the log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- IMAGECHECKER PROCESSES"
-	f.puts "----- I found #{test_img_src} image references in this book"
-	f.puts "----- #{test_missing_img}"
+	f.puts "I found #{test_img_src} image references in this book"
+	f.puts "#{test_missing_img}"
+	f.puts "#{test_imgs_match_refs}"
 end
