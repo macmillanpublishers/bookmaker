@@ -41,7 +41,7 @@ if pisbn.length == 0
 end
 
 #upload images to macmillan.tools site
-`S:\\resources\\bookmaker_scripts\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images\\`
+`S:\\resources\\bookmaker_scripts\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images #{tmp_dir}\\#{filename}\\images`
 
 # pdf css to be added to the file that will be sent to docraptor
 css_file = File.read("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css").to_s
