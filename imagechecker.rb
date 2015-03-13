@@ -38,6 +38,11 @@ image_dest = "#{working_dir}\\done\\#{pisbn}\\images\\"
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
 
+#strips spaces from img names in html
+text = File.read("#{html_file}")
+new_contents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
+File.open("#{html_file}", "w") {|file| file.puts new_contents }
+
 # An array of all the image files referenced in the source html file
 source = File.read("#{html_file}").scan(/img src=".*?"/)
 
@@ -45,11 +50,6 @@ source = File.read("#{html_file}").scan(/img src=".*?"/)
 missing = []
 # An empty array to store nospace names of html images existing in submission folder (for test 3)
 matched = []
-
-#strips spaces from img names in html
-text = File.read("#{html_file}")
-new_contents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
-File.open("#{html_file}", "w") {|file| file.puts new_contents }
 
 # Checks to see if each image referenced in the html exists in the submission folder
 # If no, saves the image file name in the missing array
