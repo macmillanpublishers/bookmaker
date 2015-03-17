@@ -42,7 +42,7 @@ end
 
 #if any images are in 'done' dir, upload them to macmillan.tools site
 #image_count = Dir("#{working_dir}\\done\\#{pisbn}\\images\\*").count { |file| File.file?(file) }
-images = Dir("#{working_dir}\\done\\#{pisbn}\\images\\*") { |file| File.file?(file) }
+images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
 image_count = images.count
 if image_count > 0
 	`S:\\resources\\bookmaker_scripts\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images #{tmp_dir}\\#{filename}\\images`
@@ -77,9 +77,7 @@ end
 
 # TESTING
 
-# 1 count, report images in file
-
-
+# count, report images in file
 if image_count > 0
 
 	# test if sites are up/logins work?
@@ -91,14 +89,14 @@ if image_count > 0
 	upload_count = upload_report.count
 	
 	if upload_report.sort == images.sort
-		test_image_array_compare = "PASS: Images in Done dir match images uplaoded to ftp!"
+		test_image_array_compare = "PASS: Images in Done dir match images uploaded to ftp"
 	else
-		test_image_array_compare = "PASS: Images in Done dir match images uplaoded to ftp!"
+		test_image_array_compare = "PASS: Images in Done dir match images uploaded to ftp"
 	end
 	
 else
 	upload_count = 0
-	test_image_array_compare = "PASS: There are no missing image files!"
+	test_image_array_compare = "PASS: There are no missing image files"
 end
 
 # verify pdf was produced
@@ -108,7 +106,6 @@ if File.file?("#{working_dir}\\done\\#{pisbn}\\#{pisbn}_POD.pdf")
 else
 	test_pdf_created = "FAIL: PDF file exists in DONE directory"
 end
-
 
 # Printing the test results to the log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
