@@ -30,6 +30,11 @@ if pisbn.length == 0
 	pisbn = "#{filename}"
 end
 
+# clean up the ftp site if files were uploaded
+if File.exists?("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt") && !File.zero?("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt")
+	`S:\\resources\\bookmaker_scripts\\bookmaker_ftpupload\\imagedelete.bat #{working_dir}\\done\\#{pisbn}\\images`
+end
+
 # Delete all the working files and dirs
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\OEBPS\\*`
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\OEBPS\\images\\*`
@@ -42,7 +47,47 @@ end
 `rd #{tmp_dir}\\#{filename}\\images\\`
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\*`
 `rd #{tmp_dir}\\#{filename}\\`
-`del /f /s /q /a #{input_file}`
+`del /f /s /q /a "#{input_file}"`
 `del /f /s /q /a #{working_dir}\\IN_USE_PLEASE_WAIT.txt`
 `cd #{currvol}`
 `del currvol.txt`
+
+
+# TESTING
+
+# verify input file is gone
+if File.exists?("#{input_file}")
+	test_inputfile_removed = "FAIL: Input file has been deleted from Convert directory"
+else
+	test_inputfile_removed = "PASS: Input file has been deleted from Convert directory"
+end
+
+# verify ftp site is clean
+if File.exists?("#{working_dir}\\done\\#{pisbn}\\images\\clear_ftp_log.txt")
+	if File.zero?("#{working_dir}\\done\\#{pisbn}\\images\\clear_ftp_log.txt")
+		test_ftp_files_removed = "PASS: The ftp server directory (bookmakerimg) is clean"
+	else
+		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean"
+	end
+else File.exists?("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt") && !File.zero?("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt")
+	if 
+		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean (files were uploaded but not deleted)"
+	else
+		test_ftp_files_removed = "PASS: The ftp server directory (bookmakerimg) presumed clean (no images uploaded))"
+	end
+end
+
+# verify tmp folder for pisbn is gone
+if File.exists?("#{tmp_dir}\\#{filename}")
+	test_tmpdir_removed = "FAIL: Tmp directory has been removed"
+else
+	test_tmpdir_removed = "PASS: Tmp directory has been removed"
+end
+
+# Printing the test results to the log file
+File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts "----- CLEANUP PROCESSES"
+	f.puts "#{test_inputfile_removed}"
+	f.puts "#{test_ftp_files_removed}"	
+	f.puts "#{test_tmpdir_removed}"	
+end
