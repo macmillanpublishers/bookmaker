@@ -91,7 +91,7 @@ if image_count > 0
 	if upload_report.sort == images.sort
 		test_image_array_compare = "PASS: Images in Done dir match images uploaded to ftp"
 	else
-		test_image_array_compare = "PASS: Images in Done dir match images uploaded to ftp"
+		test_image_array_compare = "FAIL: Images in Done dir match images uploaded to ftp"
 	end
 	
 else
@@ -110,8 +110,8 @@ end
 # Printing the test results to the log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- PDFMAKER PROCESSES"
-	f.puts "I found #{image_count} images to be uploaded"
-	f.puts "I found #{upload_count} files uploaded"
+	f.puts "----- I found #{image_count} images to be uploaded"
+	f.puts "----- I found #{upload_count} files uploaded"
 	f.puts "#{test_image_array_compare}"
 	f.puts "#{test_pdf_created}"	
 end
