@@ -187,9 +187,6 @@
 	@top-center {
 		content: normal;
 	}
-	@bottom-center {
-		content: normal;
-	}
 }
 
 @page chapter:blank {
@@ -243,13 +240,6 @@ p[class*="SpaceAround"] {
 
 p[class*="SpaceAfter"] {
 	margin-bottom: 16pt;
-}
-
-p.SpaceBreakOrnamentorn {
-	text-align: center;
-	text-indent: 0;
-	margin-top: 8pt;
-	margin-bottom: 8pt;
 }
 
 blockquote {
@@ -432,7 +422,7 @@ section[data-type="dedication"] .Dedicationded + p[class*="Epigraph"] {
 }
 
 section[data-type="dedication"] .FMEpigraphversefmepiv, 
-section[data-type="dedication"] .FMEpigraphnonversefmepi {
+section[data-type="dedication"] .FMEpigraphnon-versefmepi {
 	font-family: "ArnoPro-SmText";
 	font-style: normal;
 	font-size: 10pt;
@@ -552,7 +542,9 @@ section[data-type="chapter"] h1.ChapNumbercn + h1.ChapTitlect {
 	margin-top: 9pt;
 }
 
-section[data-type="chapter"] > blockquote[data-type="epigraph"] {
+section[data-type="chapter"] > blockquote[data-type="epigraph"], 
+section[data-type="part"] > blockquote[data-type="epigraph"], 
+section[data-type="preface"] > blockquote[data-type="epigraph"] {
 	font-family: "ArnoPro-SmText";
 	font-size: 10pt;
 	line-height: 14pt;
@@ -561,17 +553,26 @@ section[data-type="chapter"] > blockquote[data-type="epigraph"] {
 	margin-bottom: 48pt;
 }
 
-section[data-type="chapter"] > blockquote[data-type="epigraph"] p {
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p, 
+section[data-type="part"] > blockquote[data-type="epigraph"] p, 
+section[data-type="preface"] > blockquote[data-type="epigraph"] p {
 	text-indent: 0pt;
 	text-align: left;
 }
 
-section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphversecepiv {
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphversecepiv, 
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphnon-versecepi,
+section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphversepepiv, 
+section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphnon-versepepi,
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphversefmepiv, 
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphnon-versefmepi {
 	margin-left: 16pt;
 	text-indent: -16pt;
 }
 
-section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphSourceceps {
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphSourceceps, 
+section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphSourcepeps,
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSourcefmeps {
 	text-align: right;
 	font-weight: 600;
 }
@@ -583,10 +584,6 @@ section[data-type="part"] h1 {
 	line-height: 28pt;
 	text-align: center;
 	margin-top: 8pt;
-}
-
-.PartOrnamentporn {
-	text-align: center;
 }
 
 /* suppression of chapter heads will be dictated programatically
@@ -640,6 +637,22 @@ p[class*="SpaceAround"] + p[class*="Extract"] {
 p.SpaceBreak-1-Linels1 {
 	height: 16pt;
 	content: " ";
+}
+
+p.PartOrnamentporn, 
+p.SpaceBreakOrnamentorn {
+	text-indent: 0;
+	content: " ";
+	font-size: 16pt;
+	text-align: center;
+	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png');
+	background-size: 59pt auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-bottom: 21pt;
+	padding: 3pt 8pt 8pt 8pt;
+	width: 100%;
+	height: 16pt;
 }
 
 p.PageBreakpb {
