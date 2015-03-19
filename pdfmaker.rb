@@ -40,8 +40,13 @@ if pisbn.length == 0
   pisbn = "#{filename}"
 end
 
-#upload images to macmillan.tools site
-`S:\\resources\\bookmaker_scripts\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images #{tmp_dir}\\#{filename}\\images`
+#if any images are in 'done' dir, upload them to macmillan.tools site
+#image_count = Dir("#{working_dir}\\done\\#{pisbn}\\images\\*").count { |file| File.file?(file) }
+images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
+image_count = images.count
+if image_count > 0
+	`S:\\resources\\bookmaker_scripts\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images #{tmp_dir}\\#{filename}\\images`
+end
 
 # pdf css to be added to the file that will be sent to docraptor
 css_file = File.read("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css").to_s
@@ -68,3 +73,45 @@ end
 
 # moves rendered pdf to archival dir
 `move #{pisbn}.pdf #{working_dir}\\done\\#{pisbn}\\#{pisbn}_POD.pdf`
+
+
+# TESTING
+
+# count, report images in file
+if image_count > 0
+
+	# test if sites are up/logins work?
+
+	# verify files were uploaded, and match image array
+	upload_report = []
+	upload_report = IO.readlines("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt") 
+	# alt version: upload_report = File.open("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt").each_line {|line| array.push line}
+	upload_count = upload_report.count
+	
+	if upload_report.sort == images.sort
+		test_image_array_compare = "PASS: Images in Done dir match images uploaded to ftp"
+	else
+		test_image_array_compare = "FAIL: Images in Done dir match images uploaded to ftp"
+	end
+	
+else
+	upload_count = 0
+	test_image_array_compare = "PASS: There are no missing image files"
+end
+
+# verify pdf was produced
+
+if File.file?("#{working_dir}\\done\\#{pisbn}\\#{pisbn}_POD.pdf")
+	test_pdf_created = "PASS: PDF file exists in DONE directory"
+else
+	test_pdf_created = "FAIL: PDF file exists in DONE directory"
+end
+
+# Printing the test results to the log file
+File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+	f.puts "----- PDFMAKER PROCESSES"
+	f.puts "----- I found #{image_count} images to be uploaded"
+	f.puts "----- I found #{upload_count} files uploaded"
+	f.puts "#{test_image_array_compare}"
+	f.puts "#{test_pdf_created}"	
+end
