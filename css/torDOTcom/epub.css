@@ -1,88 +1,452 @@
 /* EPUB CSS */
 
-section[data-type="halftitlepage"] {
-	display: none;
+
+body {
+	font-family: serif;
 }
 
-p.HalftitleBookTitlehtit {
-	font-size: 1.6em;
+section, p, div, h1, h2, h3, h4, h5, h6 {
+	display: block;
+}
+
+img {
+	max-width: 100%;
+	image-resolution: from-image;
+}
+
+p {
+	font-size: 1em;
+	line-height: 1.33em;
+	text-indent: 1.33em;
+	text-align: justify;
+	text-align-last: left;
+	margin: 0;
+}
+
+p:first-of-type, 
+p[class^="SpaceBreak"] + p,
+p[class*="Ornament"] + p {
+	text-indent: 0;
+}
+
+p[class*="SpaceBefore"] {
+	margin-top: 1.33em;
+}
+
+p[class*="SpaceAround"] {
+	margin-top: 1.33em;
+	margin-bottom: 1.33em;
+}
+
+p[class*="SpaceAfter"] {
+	margin-bottom: 1.33em;
+}
+
+p[class*="NoIndent"] {
+	text-indent: 0;
+}
+
+p[class*="No-Indent"] {
+	text-indent: 0;
+}
+
+p.SpaceBreakOrnamentorn {
 	text-align: center;
-	margin-top: 2em;
-}
-
-.AdCardMainHeadacmh {
-	text-align: center;
-	text-transform: uppercase;
-	margin-top: 2em;
-}
-
-.AdCardListofTitlesacl {
-	text-align: center;
-}
-
-.TitlepageBookTitletit {
-	text-align: center;
-	font-size: 1.6em;
-	text-transform: uppercase;
-	margin-bottom: 1.3em;
-}
-
-.TitlepageAuthorNameau {
-	font-size: 1.3em;
-	text-align: center;
-	margin-bottom: 1.3em;
-}
-
-.TitlepageImprintLineimp {
-	text-align: center;
-	font-size: 0.8em;
-}
-
-div.logoholder {
-	text-align: center;
-	margin-top: 3em;
-}
-
-img.logo {
-	text-align: center;
-	height: 50px;
-}
-
-section[data-type="copyright-page"] {
-	font-size: 0.8em;
-}
-
-section[data-type="dedication"], 
-div.dedication {
-	text-align: center;
-	font-style: italic;
-}
-
-/* suppression of chapter heads will be dictated programatically */
-section[data-type="chapter"] > h1 {
-	text-align: center;
-}
-
-section[data-type="chapter"] p {
-	line-height: 130%;
-	padding: 0;
-	margin-top: 0;
-	margin-bottom: 0.3em;
-}
-
-p.Text-Standardtx {
-	text-indent: 2em;
-}
-
-section[data-type="chapter"] p.SpaceBreakOrnamentorn {
-	text-align: center;
-}
-
-section[data-type="chapter"] p.SpaceBreak-1-Linels1 {
-	margin-top: 2.5em;
+	text-indent: 0;
+	margin-top: 0.75em;
+	margin-bottom: 0.75em;
 }
 
 blockquote {
-	margin: 1em;
+	margin-top: 1.33em;
+	margin-bottom: 1.33em;
+}
+
+/* frontmatter */
+
+
+section[data-type="preface"] h1 {
+	font-size: 1em;
+	text-transform: uppercase;
+	text-align: center;
+	margin-top: 10%;
+	margin-bottom: 20%;
+}
+
+section[data-type="preface"] p {
+	text-align: center;
+}
+
+/* Title page */
+section[data-type="titlepage"] p {
+	text-align: center;
+	text-indent: 0;
+}
+
+
+section[data-type="titlepage"] h1 {
+	font-weight: normal;
+	font-style: normal;
+	font-size: 2em;
+	line-height: 2.33em;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+section[data-type="titlepage"] > h1:first-child {
+	margin-top: 2em;
+}
+
+
+.TitlepageBookSubtitlestit + h1, 
+.TitlepageSeriesTitleser + h1 {
+	margin-top: 2.15em;
+}
+
+h1 + .TitlepageBookSubtitlestit, 
+h1 + .TitlepageSeriesTitleser {
+	margin-top: 2em;
+	margin-bottom: 0;
+}
+
+.TitlepageBookSubtitlestit, 
+.TitlepageSeriesTitleser {
+	font-weight: normal;
+	font-size: 1.33em;
+	line-height: 2em;
+	font-style: italic;
+	text-align: center;
+}
+
+..TitlepageBookSubtitlestit:first-child, 
+.TitlepageSeriesTitleser:first-child {
+	margin-top: 0.5em;
+}
+
+.TitlepageTranslatorNametran, 
+.TitlepageContributorNamecon {
+	margin-top: 2.66em;
+	text-align: center;
+}
+
+section[data-type="titlepage"] p.TitlepageAuthorNameau {
+	font-size: 1.33em;
+	padding-top: 5.25em;
+	margin-top: 0;
+	margin-bottom: 2.66em;
+	text-indent: 0;
+	text-align: center;
+}
+
+section[data-type="titlepage"] p.TitlepageImprintLineimp {
+	float: bottom;
+	text-align: center;
+	text-indent: 0;
+}
+
+.TitlepageCitiescit, 
+.TitlepagePublisherNamepub {
+	font-style: normal;
+	font-weight: normal;
+	text-transform: uppercase;
+	font-size: .8em;
+	line-height: 1.33em;
+	float: bottom;
+	text-indent: 0;
+	text-align: center;
+}
+
+
+section[data-type="alsoby"] {
+	text-align: center;
+}
+
+p.AdCardMainHeadacmh {
+	text-transform: uppercase;
+	font-size: 1.15em;
+	margin-top: 1.3em;
+	margin-bottom: 1.3em;
+	text-align: center;
+}
+
+p.AdCardListofTitlesacl {
+	font-style: italic;
+	text-align: center;
+	text-indent: 0;
+}
+
+/* Copyright Page */
+section[data-type="copyright-page"] p:first-child {
+	margin-top: 1.3em;
+}
+
+section[data-type="copyright-page"] p {
+	font-size: 0.8em;
+	text-align: center;
+	text-indent: 0;
+}
+
+.CopyrightTextdoublespacecrtxd {
+	margin-bottom: 1.3em;
+}
+
+/* Dedication Page */
+section[data-type="dedication"] {
+	page-break-before: always;
+	page-break-after: always;
+}
+
+section[data-type="dedication"] p {
+	text-align: center;
+	font-style: italic;
+	text-indent: 0;
+}
+
+section[data-type="dedication"] p:first-child {
+	margin-top: 1.3em;
+}
+
+section[data-type="dedication"] .Dedicationded + p[class*="Epigraph"] {
+	page-break-before: always;
+	margin-top: 1.33em;
+}
+
+/* Do we want anything in case other Epigraph types are used? */
+section[data-type="dedication"] .FMEpigraphverseepiv, 
+section[data-type="dedication"] .FMEpigraphnon-verseepi {
+	font-style: normal;
+	font-size: 0.8em;
+	text-align: left;
+	margin-left: 4.33em;
+	margin-right: 3em;
+	text-indent: -1.33em;
+}
+
+section[data-type="dedication"] .FMEpigraphSourceeps {
+	font-weight: 600;
+	font-size: 0.8em;
+	font-style: normal;
+	text-align: right;
+	margin-left: 3em;
+	margin-right: 3em;
+}
+
+/* Table of Contents **/
+
+nav[data-type="toc"] h1 {
+	font-weight: bold;
+	font-size: 1.33em;
+	line-height: 1.33em;
+	margin-top: 0;
+	text-align: center;
+}
+
+nav[data-type="toc"] ol {
+	margin-left: 0;
+}
+
+nav[data-type="toc"] li {
 	font-size: 0.9em;
+	line-height: 1.33em;
+	margin-bottom: 1.33em;
+	margin-left: 0;
+	list-style-type: none;
+}
+
+nav[data-type="toc"] li.PartNumberpn ~ li, 
+nav[data-type="toc"] li.PartTitlept ~ li {
+	margin-bottom: 0;
+}
+
+nav[data-type="toc"] li.PartNumberpn ~ li.PartNumberpn, 
+nav[data-type="toc"] li.PartTitlept ~ li.PartTitlept, 
+nav[data-type="toc"] li.PartNumberpn ~ li.PartTitlept, 
+nav[data-type="toc"] li.PartTitlept ~ li.PartNumberpn {
+	margin-bottom: 0.75em;
+}
+
+nav[data-type="toc"] li.PartNumberpn + li.PartTitlept {
+	margin-top: -0.75em;
+}
+
+/* Do we want links black / does this matter? */
+nav[data-type="toc"] a {
+	text-decoration: none;
+}
+
+
+nav[data-type="toc"] li.PartNumberpn, 
+nav[data-type="toc"] li.PartTitlept {
+	margin-bottom: 0.75em;
+	margin-top: 1.9em;
+	vertical-align: top;
+}
+
+nav[data-type="toc"] li.PartNumberpn a, 
+nav[data-type="toc"] li.PartTitlept a {
+	vertical-align: top;
+}
+
+
+
+
+/* Chapters */
+section[data-type="chapter"] h1.ChapNumbercn {
+	font-size: 1em;
+	line-height: 1.33em;
+	font-weight: 600;
+	text-align: center;
+	margin-top: 1.33em;
+	margin-bottom: 0.75em;
+}
+
+section[data-type="chapter"] h1.ChapTitlect {
+	text-transform: uppercase;
+	font-size: 1.5em;
+	line-height: 2.33em;
+	font-weight: normal;
+	text-align: center;
+	margin-top: 1.33em;
+	margin-bottom: 5.25em;
+}
+
+section[data-type="chapter"] h1.ChapNumbercn + h1.ChapTitlect {
+	margin-top: 0.75em;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"], 
+section[data-type="part"] > blockquote[data-type="epigraph"], 
+section[data-type="preface"] > blockquote[data-type="epigraph"] {
+	font-family: serif;
+	font-size: 0.8em;
+	line-height: 1.15em;
+	margin-left: 3em;
+	margin-right: 3em;
+	margin-bottom: 4em;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p, 
+section[data-type="part"] > blockquote[data-type="epigraph"] p, 
+section[data-type="preface"] > blockquote[data-type="epigraph"] p {
+	text-indent: 0pt;
+	text-align: left;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphversecepiv, 
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphnon-versecepi,
+section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphversepepiv, 
+section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphnon-versepepi,
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphversefmepiv, 
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphnon-versefmepi {
+	margin-left: 1.33em;
+	text-indent: -1.33em;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphSourceceps, 
+section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphSourcepeps,
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSourcefmeps {
+	text-align: right;
+	font-weight: 600;
+}
+
+section[data-type="part"] h1 {
+	font-weight: normal;
+	font-size: 1.8em;
+	text-transform: uppercase;
+	line-height: 2.33em;
+	text-align: center;
+	margin-top: 0.66em;
+}
+
+
+pre.poetry {
+	font-family: serif;
+	margin: 1.33em 4.33em 1.33em 3em;
+	white-space: pre-wrap;
+}
+
+pre.poetry p, pre.poetry p:first-of-type {
+	text-indent: -1.33em;
+	font-size: 10.5pt;
+}
+
+p[class*="Extract"] {
+	font-size: 0.875em;
+}
+
+blockquote {
+	margin-left: 1.33em;
+	margin-right: 1.33em;
+}
+
+blockquote p:first-child {
+	text-indent: 0;
+}
+
+.ExtractHeadexth, .Extract-Headlineexthl {
+	font-size: 1em;
+	line-height: 1.33em;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+	margin-top: 1.33em;
+	margin-bottom: 2em;
+}
+
+.ExtractHeadexth + p {
+	text-indent: 0;
+}
+
+p[class*="SpaceAfter"] + p[class*="Extract"], 
+p[class*="SpaceAround"] + p[class*="Extract"] {
+	text-indent: 0;
+}
+
+p.SpaceBreak-1-Linels1 {
+	height: 1.33em;
+	content: " ";
+}
+
+p.PartOrnamentporn, 
+p.SpaceBreakOrnamentorn {
+	text-indent: 0;
+	content: " ";
+	font-size: 1.33em;
+	text-align: center;
+	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png');
+	background-size: 4.9em auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-bottom: 1.75em;
+	padding: 0.25em 0.66em 0.66em 0.66em;
+	width: 100%;
+	height: 133%;
+}
+
+p.PageBreakpb {
+	display: none;
+}
+
+/* character styles */
+
+.spansmallcapscharacterssc {
+	font-variant: small-caps;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
