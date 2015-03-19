@@ -398,7 +398,7 @@ section[data-type="copyright-page"] p {
 }
 
 .CopyrightTextdoublespacecrtxd {
-	line-height: 32pt;
+	margin-top: 16pt;
 }
 
 section[data-type="dedication"] {
