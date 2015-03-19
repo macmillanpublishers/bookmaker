@@ -256,6 +256,7 @@
       select="$top-level-body-breaks,
               'AdCardMainHeadacmh',
               'CopyrightTextsinglespacecrtx',
+              'CopyrightTextdoublespacecrtxd',
               'Dedicationded',
               'HalftitleBookTitlehtit',
               'TitlepageBookTitletit',
@@ -379,7 +380,8 @@
                 <xsl:value-of select="'chapter'"/>
               </xsl:when>
               <xsl:when
-                test="$word-style = 'CopyrightTextsinglespacecrtx'">
+                test="$word-style = 'CopyrightTextsinglespacecrtx' or 
+                      $word-style = 'CopyrightTextdoublespacecrtxd'">
                 <xsl:value-of select="'copyright-page'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'Dedicationded'">
