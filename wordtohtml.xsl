@@ -31,7 +31,7 @@
               'ChapEpigraphnon-versecepi',
               'ChapEpigraphversecepiv',
               'ChapEpigraphSourceceps',
-              'FMEpigraphnon-versefmepi'
+              'FMEpigraphnon-versefmepi',
               'FMEpigraphversefmepiv',
               'FMEpigraphSourcefmeps',
               'Epigraphnon-verseepi',
