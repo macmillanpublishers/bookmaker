@@ -3,6 +3,7 @@ filename_split = input_file.split("\\").pop
 filename = filename_split.split(".").shift.gsub(/ /, "")
 working_dir_split = ARGV[0].split("\\")
 working_dir = working_dir_split[0...-2].join("\\")
+project_dir = working_dir_split[0...-3].pop
 # determine current working volume
 `cd > currvol.txt`
 currpath = File.read("currvol.txt")
@@ -18,6 +19,9 @@ html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 # Finding author name(s)
 authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
 authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
+
+#set logo image based on project directory
+logo_img = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\images\\#{project_dir}\\logo.jpg"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -54,7 +58,8 @@ imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
-filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/(<img.*?)(>)/,"\\1/\\2").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;")
+#Adding imprint logo to title page
+filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/(<img.*?)(>)/,"\\1/\\2").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">")
 
 # Saving revised HTML into tmp file
 File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output| 
@@ -98,8 +103,8 @@ if sourceimages.any?
 	end
 end
 
-#copy tor logo image file to epub folder
-`copy S:\\resources\\torDOTcom\\img\\torlogo.jpg #{tmp_dir}\\#{filename}\\OEBPS\\torlogo.jpg`
+#copy logo image file to epub folder
+`copy #{logo_img} #{tmp_dir}\\#{filename}\\OEBPS\\logo.jpg`
 
 # zip epub
 `chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -DX0 mimetype`
