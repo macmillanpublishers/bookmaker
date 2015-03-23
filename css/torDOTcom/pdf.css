@@ -1,6 +1,8 @@
 /*PDF CSS. prince -s ../tor.css output.html -o output.pdf*/
 
-@font-face {
+
+/* fonts for testing */
+/*@font-face {
 	font-family: "ArnoPro";
 	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -136,6 +138,148 @@
 @font-face {
 	font-family: "TimesNewRomanPSMT";
 	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/TimesNewRomanPSMT.ttf');
+	font-style: normal;
+	font-weight: normal;
+}*/
+
+/* final fonts */
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalic.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Smbd.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-LightDisplay.otf');
+	font-style: normal;
+	font-weight: 100;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmText.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalicSmText.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmbdSmText.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSmText.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Caption.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-ItalicCaption.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-BoldSubhead";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSubhead.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MinionPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MinionPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MyriadPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MyriadPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Medium.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "TimesNewRomanPSMT";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
 }
