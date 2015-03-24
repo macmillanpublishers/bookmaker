@@ -202,7 +202,8 @@
       select="'PageBreakpb',
               'SectionBreaksbr',
               'PartStartpts',
-              'PartEndpte'"/>
+              'PartEndpte',
+              'ChapNumbercn'"/>
   </xsl:variable>
 
   <!-- Paragraph styles used to add spacing, to be ignored when 
@@ -224,7 +225,6 @@
   <xsl:variable name="top-level-body-breaks" as="xs:string*">
     <xsl:sequence
       select="'BMHeadbmh',
-              'ChapNumbercn',
               'ChapTitlect',
               'PartNumberpn',
               'PartTitlept',
@@ -274,7 +274,6 @@
       select="'BMHeadbmh',
               'PartNumberpn',
               'PartTitlept',
-              'ChapNumbercn',
               'ChapTitlect',
               'FMHeadfmh',
               'TitlepageBookTitletit',
@@ -378,8 +377,7 @@
                 <xsl:value-of select="'part'"/>
               </xsl:when>
               <xsl:when
-                test="$word-style = 'ChapNumbercn' or
-                      $word-style = 'ChapTitlect'">
+                test="$word-style = 'ChapTitlect'">
                 <xsl:value-of select="'chapter'"/>
               </xsl:when>
               <xsl:when
