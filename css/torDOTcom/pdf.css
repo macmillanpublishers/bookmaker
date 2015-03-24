@@ -2,7 +2,7 @@
 
 
 /* fonts for testing */
-/*@font-face {
+@font-face {
 	font-family: "ArnoPro";
 	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -140,11 +140,11 @@
 	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}*/
+}
 
 /* final fonts */
 
-@font-face {
+/*@font-face {
 	font-family: "ArnoPro";
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -282,16 +282,16 @@
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}
+}*/
 
 @page {
 	size: 5in 8in;
 	margin: 0.72in 0.75in 0.66in 0.75in;
 	padding: 34pt 0 0.36in 0;
-	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
+	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
 	background-position: top left;
 	background-size: 100% 100%;
-	background-repeat: no-repeat;
+	background-repeat: no-repeat;*/
 	marks: crop;
 	bleed: .188in;
 }
@@ -373,6 +373,7 @@ p {
 	margin: 0;
 	widows: 2;
 	orphans: 2;
+	hyphens: auto;
 	hyphenate-lines: 3;
 }
 
