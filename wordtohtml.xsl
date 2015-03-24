@@ -443,7 +443,7 @@
       <xsl:if
       test="preceding::w:p
             [w:pPr/w:pStyle/@w:val = 'ChapNumbercn']
-            and $word-style = 'ChapTitlect'">
+            and ./w:pPr/w:pStyle/@w:val = 'ChapTitlect'">
       <xsl:attribute name="data-autolabel">
         <xsl:value-of select="'yes'"/>
       </xsl:attribute>
