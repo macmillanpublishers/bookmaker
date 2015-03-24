@@ -440,6 +440,13 @@
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $top-level-heads]">
     <h1>
+      <xsl:if
+      test="preceding-sibling::w:p
+            [w:pPr/w:pStyle/@w:val = 'ChapNumbercn']">
+      <xsl:attribute name="class">
+        <xsl:value-of select="'numbered'"/>
+      </xsl:attribute>
+    </xsl:if>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
       <xsl:apply-templates select="w:r"/>
     </h1>
