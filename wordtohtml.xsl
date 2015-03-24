@@ -441,9 +441,10 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $top-level-heads]">
     <h1>
       <xsl:if
-      test="preceding-sibling::w:p
-            [w:pPr/w:pStyle/@w:val = 'ChapNumbercn']">
-      <xsl:attribute name="data-labels">
+      test="preceding::w:p
+            [w:pPr/w:pStyle/@w:val = 'ChapNumbercn']
+            and $word-style = 'ChapTitlect'">
+      <xsl:attribute name="data-autolabel">
         <xsl:value-of select="'yes'"/>
       </xsl:attribute>
     </xsl:if>
