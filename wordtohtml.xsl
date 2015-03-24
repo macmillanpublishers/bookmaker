@@ -443,8 +443,8 @@
       <xsl:if
       test="preceding-sibling::w:p
             [w:pPr/w:pStyle/@w:val = 'ChapNumbercn']">
-      <xsl:attribute name="class">
-        <xsl:value-of select="'numbered'"/>
+      <xsl:attribute name="data-labels">
+        <xsl:value-of select="'yes'"/>
       </xsl:attribute>
     </xsl:if>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
