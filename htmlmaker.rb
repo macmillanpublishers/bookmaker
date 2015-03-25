@@ -14,6 +14,11 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 # convert xml to html
 `java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\#{filename}.xml -xsl:S:\\resources\\bookmaker_scripts\\WordXML-to-HTML\\wordtohtml.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
+# replace nbsp entities with 160
+nbspcontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
+replace = nbspcontents.gsub(/&nbsp/,"&#160")
+File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts replace}
+
 # TESTING
 
 # html file should exist
