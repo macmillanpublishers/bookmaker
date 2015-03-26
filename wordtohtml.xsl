@@ -627,9 +627,9 @@
   </xsl:template>
 
   <!-- Preserving plain text inside any smarttags -->
-  <xsl:template match="w:smartTag//w:r">
+  <!--<xsl:template match="w:smartTag//w:r">
     <xsl:apply-templates select="w:t"/>
-  </xsl:template>
+  </xsl:template>-->
 
   <!-- Other inline text is just plain text. -->
   <xsl:template match="w:r">
