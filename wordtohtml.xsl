@@ -612,7 +612,8 @@
   <xsl:template match="w:p">
     <p>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates select=".//w:r"/>
+      <xsl:apply-templates select="w:r"/>
+      <xsl:apply-templates select="w:smartTag//w:r/">
     </p>
   </xsl:template>
 
@@ -631,9 +632,9 @@
   </xsl:template>
 
   <!-- Preserving plain text inside any smarttags -->
-  <xsl:template match="w:smartTag">
+  <!--<xsl:template match="w:smartTag">
     <xsl:value-of select="."/>
-  </xsl:template>
+  </xsl:template>-->
 
   <!-- As we drop content by default, explicitly handle text-bearing
        elements. -->
