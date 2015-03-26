@@ -628,6 +628,11 @@
 
   <!-- Preserving plain text inside any smarttags -->
   <xsl:template match="w:smartTag">
+    <xsl:apply-templates select="w:smartTag"/>
+  </xsl:template>
+
+  <!-- Preserving plain text inside any smarttags -->
+  <xsl:template match="w:smartTag">
     <xsl:apply-templates select="w:r"/>
   </xsl:template>
 
