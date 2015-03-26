@@ -630,15 +630,15 @@
     <xsl:apply-templates select="w:t"/>
   </xsl:template>
 
-  <!-- Preserving plain text inside any smarttags -->
-  <xsl:template match="w:smartTag">
-    <xsl:apply-templates select="w:r/w:t"/>
-  </xsl:template>
-
   <!-- As we drop content by default, explicitly handle text-bearing
        elements. -->
   <xsl:template match="w:t">
     <xsl:value-of select="."/>
+  </xsl:template>
+
+  <!-- Preserving plain text inside any smarttags -->
+  <xsl:template match="w:smartTag">
+    <xsl:apply-templates select="w:r"/>
   </xsl:template>
 
   <!-- Processing paragraphs in box mode.  Check each following
