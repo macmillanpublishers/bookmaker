@@ -626,7 +626,7 @@
   </xsl:template>
 
   <!-- Other inline text is just plain text. -->
-  <xsl:template match="w:r">
+  <xsl:template match="//w:r">
     <xsl:apply-templates select="w:t"/>
   </xsl:template>
 
