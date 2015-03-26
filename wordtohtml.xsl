@@ -612,7 +612,7 @@
   <xsl:template match="w:p">
     <p>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates select="w:r"/>
+      <xsl:apply-templates select="//w:r"/>
     </p>
   </xsl:template>
 
