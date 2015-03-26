@@ -613,7 +613,7 @@
     <p>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
       <xsl:apply-templates select="w:r"/>
-      <xsl:apply-templates select="w:smartTag"/>
+      <xsl:apply-templates select="w:smartTag/w:smartTag"/>
     </p>
   </xsl:template>
 
@@ -628,7 +628,7 @@
 
   <!-- Preserving plain text inside any smarttags -->
   <xsl:template match="w:smartTag">
-    <xsl:apply-templates select=".//w:r"/>
+    <xsl:apply-templates select="w:r"/>
   </xsl:template>
 
   <!-- Other inline text is just plain text. -->
