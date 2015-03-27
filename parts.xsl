@@ -12,7 +12,7 @@
   </xsl:copy>
 </xsl:template>
 
-<xsl:template match="h:section[@data-type='part']">
+<xsl:template match="section[@data-type='part']">
 	<div>
 		<xsl:apply-templates select="@*|node()" />
 	</div>
