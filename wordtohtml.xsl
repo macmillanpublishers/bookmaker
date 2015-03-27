@@ -448,7 +448,6 @@
     </xsl:if>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
       <xsl:apply-templates select=".//w:r"/>
-      <!--<xsl:apply-templates select=".//w:smartTag//w:r"/>-->
     </h1>
   </xsl:template>
 
@@ -614,7 +613,6 @@
     <p>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
       <xsl:apply-templates select=".//w:r"/>
-      <!--<xsl:apply-templates select=".//w:smartTag//w:r"/>-->
     </p>
   </xsl:template>
 
@@ -626,11 +624,6 @@
       <xsl:apply-templates select="w:t"/>
     </span>
   </xsl:template>
-
-  <!-- Preserving plain text inside any smarttags -->
-  <!--<xsl:template match="w:smartTag//w:r">
-    <xsl:apply-templates select="w:t"/>
-  </xsl:template>-->
 
   <!-- Other inline text is just plain text. -->
   <xsl:template match="w:r">
