@@ -1,9 +1,5 @@
 <xsl:stylesheet version="1.0" 
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:exsl="http://exslt.org/common"
-		xmlns:h="http://www.w3.org/1999/xhtml"
-		xmlns:htmlbook="https://github.com/oreillymedia/HTMLBook"
-		xmlns:func="http://exslt.org/functions"
 		xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:output method="xml"
