@@ -18,7 +18,7 @@
 
 <xsl:template match="h:section[@data-type='part']">
 	<div>
-		<xsl:value-of select="."/>
+		<xsl:apply-templates select="@*|node()" />
 	</div>
 </xsl:template>
 
