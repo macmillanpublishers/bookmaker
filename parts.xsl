@@ -1,5 +1,6 @@
 <xsl:stylesheet version="1.0" 
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:h="http://www.w3.org/1999/xhtml"
 		xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:output method="xml"
@@ -12,7 +13,7 @@
   </xsl:copy>
 </xsl:template>
 
-<xsl:template match="section[@data-type='part']">
+<xsl:template match="h:section[@data-type='part']">
 	<div>
 		<xsl:apply-templates select="@*|node()" />
 	</div>
