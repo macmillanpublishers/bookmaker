@@ -14,13 +14,16 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 # convert xml to html
 `java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\#{filename}.xml -xsl:S:\\resources\\bookmaker_scripts\\WordXML-to-HTML\\wordtohtml.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
-# replace nbsp entities with 160
+# replace nbsp entities with 160 and fix img closing tags
 nbspcontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
-replace = nbspcontents.gsub(/&nbsp/,"&#160")
+replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
 File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts replace}
 
 # strip static toc from html
 `java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_htmlmaker\\strip-toc.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
+
+# convert parts to divs
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_htmlmaker\\parts.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
 # TESTING
 
