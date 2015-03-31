@@ -79,9 +79,11 @@ covercontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html")
 replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
 File.open("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html", "w") {|file| file.puts replace}
 
-# fix author info in opf
+# fix author info in opf, add toc to text flow
 opfcontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf")
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'")
+tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
+puts tocid
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>")
 File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
