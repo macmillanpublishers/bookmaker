@@ -82,8 +82,8 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html", "w") {|file| file.puts r
 # fix author info in opf, add toc to text flow
 opfcontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf")
 tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
-puts tocid
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>")
+copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
 File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
