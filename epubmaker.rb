@@ -71,6 +71,9 @@ File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- EPUBMAKER PROCESSES"
 end
 
+# strip halftitlepage from html
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\strip-halftitle.xsl -o:#{tmp_dir}\\#{filename}\\epub_tmp.html`
+
 # convert to epub and send stderr to log file
 `chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>S:\\resources\\logs\\#{filename}.txt`
 
