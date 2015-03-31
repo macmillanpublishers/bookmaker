@@ -71,6 +71,9 @@ File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- EPUBMAKER PROCESSES"
 end
 
+# strip halftitlepage from html
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\strip-halftitle.xsl -o:#{tmp_dir}\\#{filename}\\epub_tmp.html`
+
 # convert to epub and send stderr to log file
 `chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>S:\\resources\\logs\\#{filename}.txt`
 
@@ -82,8 +85,8 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html", "w") {|file| file.puts r
 # fix author info in opf, add toc to text flow
 opfcontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf")
 tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
-puts tocid
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>")
+copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
 File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
