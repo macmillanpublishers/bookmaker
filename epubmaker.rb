@@ -111,13 +111,19 @@ end
 #copy logo image file to epub folder
 `copy #{logo_img} #{tmp_dir}\\#{filename}\\OEBPS\\logo.jpg`
 
+if project_dir.include? "egalley"
+	csfilename = "#{eisbn}_EPUBfirstpass"
+else
+	csfilename = "#{eisbn}_EPUB"
+end
+
 # zip epub
-`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -DX0 mimetype`
-`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{eisbn}_EPUB.epub -rDX9 META-INF OEBPS`
+`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
+`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
 
 # move epub into archive folder
-`copy #{tmp_dir}\\#{filename}\\#{eisbn}_EPUB.epub #{working_dir}\\done\\#{pisbn}\\`
-`del #{tmp_dir}\\#{filename}\\#{eisbn}_EPUB.epub`
+`copy #{tmp_dir}\\#{filename}\\#{csfilename}.epub #{working_dir}\\done\\#{pisbn}\\`
+`del #{tmp_dir}\\#{filename}\\#{csfilename}.epub`
 
 # delete temp epub html file
 `del #{tmp_dir}\\#{filename}\\epub_tmp.html`
@@ -125,7 +131,7 @@ end
 # TESTING
 
 # epub file should exist in done dir 
-if File.file?("#{working_dir}\\done\\#{pisbn}\\#{eisbn}_EPUB.epub")
+if File.file?("#{working_dir}\\done\\#{pisbn}\\#{csfilename}.epub")
 	test_epub_status = "pass: the EPUB was created successfully"
 else
 	test_epub_status = "FAIL: the EPUB was created successfully"
