@@ -34,7 +34,7 @@ end
 coverdir = "#{tmp_dir}\\#{filename}\\"
 
 # the revised cover filename
-cover = "cover.jpg"
+cover = "#{pisbn}_FC.jpg"
 
 # An array listing all files in the submission dir
 files = Dir.entries("#{coverdir}")
@@ -46,6 +46,6 @@ if files.include?("#{cover}")
 	`copy #{tmp_dir}\\#{filename}\\#{cover} #{working_dir}\\done\\#{pisbn}\\cover\\cover.jpg`
 else
 	File.open("#{working_dir}\\done\\#{pisbn}\\COVER_ERROR.txt", 'w') do |output|
-		output.write "There is no cover image for this title. Covers must be dropped in the submitted_images folder, and must be named cover.jpg."
+		output.write "There is no cover image for this title. Download the cover image from Biblio and place it in the submitted_images folder, then re-submit the manuscript for conversion; cover images must be named ISBN_FC.jpg."
 	end
 end
