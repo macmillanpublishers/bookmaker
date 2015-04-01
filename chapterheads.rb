@@ -35,8 +35,18 @@ end
 chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 
 # css files
-pdf_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_pdfmaker\\css\\#{project_dir}\\pdf.css"
-epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css"
+if File.file?("S:\\resources\\bookmaker_scripts\\bookmaker_pdfmaker\\css\\#{project_dir}\\pdf.css")
+	pdf_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_pdfmaker\\css\\#{project_dir}\\pdf.css"
+elsif project_dir.include? "egalley"
+	final_dir = project_dir.split("_").pop
+	pdf_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_pdfmaker\\css\\#{final_dir}\\pdf.css"
+end
+
+if File.file?("S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css")
+	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css"
+elsif project_dir.include? "egalley"
+	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\egalley\\epub.css"
+end
 
 if File.file?("#{pdf_css_file}")
 	pdf_css = File.read("#{pdf_css_file}")
