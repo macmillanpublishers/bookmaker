@@ -288,10 +288,10 @@
 	size: 5in 8in;
 	margin: 0.72in 0.75in 0.66in 0.75in;
 	padding: 34pt 0 0.36in 0;
-	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
+	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
 	background-position: top left;
 	background-size: 100% 100%;
-	background-repeat: no-repeat;*/
+	background-repeat: no-repeat;
 	marks: crop;
 	bleed: .188in;
 }
@@ -880,11 +880,6 @@ figcaption {
 	font-family: "AromaNo2LTPro";
 	font-size: 8.5pt;
 	line-height: 16pt;
-	float: bottom;
-}
-
-img + figcaption {
-	float: none;
 }
 
 img {
