@@ -70,11 +70,9 @@ if File.exists?("#{working_dir}\\done\\#{pisbn}\\images\\clear_ftp_log.txt")
 		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean"
 	end
 else File.exists?("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt") && !File.zero?("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt")
-	if 
-		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean (files were uploaded but not deleted)"
-	else
-		test_ftp_files_removed = "PASS: The ftp server directory (bookmakerimg) presumed clean (no images uploaded))"
-	end
+	test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean (files were uploaded but not deleted)"
+else
+	test_ftp_files_removed = "PASS: The ftp server directory (bookmakerimg) presumed clean (no images uploaded))"
 end
 
 # verify tmp folder for pisbn is gone
