@@ -31,11 +31,13 @@ if pisbn.length == 0
 end
 
 # create the archival directory structure and copy xml and html there
+filetype = filename_split.split(".").pop
+
 `md #{working_dir}\\done\\#{pisbn}`
 `md #{working_dir}\\done\\#{pisbn}\\images`
 `md #{working_dir}\\done\\#{pisbn}\\cover`
 `md #{working_dir}\\done\\#{pisbn}\\layout`
-`copy #{input_file} #{working_dir}\\done\\#{pisbn}\\`
+`copy "#{input_file}" #{working_dir}\\done\\#{pisbn}\\#{pisbn}_MNU.#{filetype}`
 `copy #{html_file} #{working_dir}\\done\\#{pisbn}\\layout\\#{pisbn}.html`
 
 # TESTING
@@ -58,7 +60,7 @@ else
 end
 
 # input file should exist in done dir 
-if File.file?("#{working_dir}\\done\\#{pisbn}\\#{filename}.xml")
+if File.file?("#{working_dir}\\done\\#{pisbn}\\#{pisbn}_MNU.#{filetype}")
 	test_input_status = "pass: original file preserved in project directory"
 else
 	test_input_status = "FAIL: original file preserved in project directory"
