@@ -66,6 +66,25 @@ File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output|
 	output.write filecontents
 end
 
+# Update several copyright elements for epub
+text = File.read("#{tmp_dir}\\#{filename}\\epub_tmp.html")
+copyright_txt = text.match(/(<section data-type=\"copyright-page\" id=\".*?\">)((.|\n)*?)(<\/section>)/)[2]
+# Note: third gsub here presumes at least 2 digits in Printer's key: eg, <p xxxx>10 9</p>
+new_copyright = copyright_txt.gsub(/(ISBN )(.*?)( \(e-book\))/, "e\\1\\2").gsub(/ Printed in the United States of America./, "").gsub(/<p.*?>(\d+ )+\d<\/p>/, "").gsub(/ Copyright( |\D|&.*?;)+/, " Copyright &copy; ")
+# Note: this gsub block presumes that these urls do not already have <a href> tags.
+new_copyright = new_copyright.gsub(/([^\s>]+.(com|org|net)[^\s<]*)/) do |m|
+	url_prefix = "http:\/\/"
+	if m.match(/@/)
+		url_prefix = "mailto:"
+	elsif m.match(/http/)
+		url_prefix = ""	
+	end
+	"<a href=\"#{url_prefix}#{m}\">#{m}<\/a>"
+end
+new_contents = text.gsub(/(^(.|\n)*?<section data-type="copyright-page" id=".*?">)((.|\n)*?)(<\/section>(.|\n)*$)/, "\\1#{new_copyright}\\5")
+File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", "w") {|file| file.puts new_contents }
+
+
 # Add new section to log file
 File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- EPUBMAKER PROCESSES"
