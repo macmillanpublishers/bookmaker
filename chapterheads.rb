@@ -45,7 +45,7 @@ end
 if File.file?("S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css")
 	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css"
 elsif project_dir.include? "egalley"
-	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\egalley\\epub.css"
+	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\egalley_SMP\\epub.css"
 end
 
 if File.file?("#{pdf_css_file}")
