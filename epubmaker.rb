@@ -60,6 +60,21 @@ imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?
 # Replacing toc with empty nav, as required by htmlbook xsl
 #Adding imprint logo to title page
 filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">")
+# Update several copyright elements for epub
+copyright_txt = filecontents.match(/(<section data-type=\"copyright-page\" id=\".*?\">)((.|\n)*?)(<\/section>)/)[2]
+# Note: last gsub here presumes Printer's key is the only copyright item that might be a <p>with just a number, eg <p class="xxx">13</p>
+new_copyright = copyright_txt.to_s.gsub(/(ISBN )([0-9\-]{13,20})( \(e-book\))/, "e\\1\\2").gsub(/ Printed in the United States of America./, "").gsub(/ Copyright( |\D|&.*?;)+/, " Copyright &#169; ").gsub(/<p class="\w*?">(\d+|(\d+\s){1,9}\d)<\/p>/, "")
+# Note: this gsub block presumes that these urls do not already have <a href> tags.
+new_copyright = new_copyright.gsub(/([^\s>]+.(com|org|net)[^\s<]*)/) do |m|
+	url_prefix = "http:\/\/"
+	if m.match(/@/)
+		url_prefix = "mailto:"
+	elsif m.match(/http/)
+		url_prefix = ""
+	end
+	"<a href=\"#{url_prefix}#{m}\">#{m}<\/a>"
+end
+filecontents = filecontents.gsub(/(^(.|\n)*?<section data-type="copyright-page" id=".*?">)((.|\n)*?)(<\/section>(.|\n)*$)/, "\\1#{new_copyright}\\5")
 
 # Saving revised HTML into tmp file
 File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output| 
@@ -126,7 +141,7 @@ end
 `del #{tmp_dir}\\#{filename}\\#{csfilename}.epub`
 
 # delete temp epub html file
-`del #{tmp_dir}\\#{filename}\\epub_tmp.html`
+#`del #{tmp_dir}\\#{filename}\\epub_tmp.html`
 
 # TESTING
 
