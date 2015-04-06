@@ -419,6 +419,7 @@
             <xsl:apply-templates select="current-group()"/>
           </section>
         </xsl:for-each-group>
+        <xsl:apply-templates select=".//w:footnote"/>
       </body>
     </html>
   </xsl:template>
