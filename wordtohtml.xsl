@@ -430,6 +430,13 @@
     </xsl:attribute>
   </xsl:template>
 
+  <!-- Handle id property names when present. -->
+  <xsl:template match="@w:id">
+    <xsl:attribute name="id">
+      <xsl:value-of select="."/>
+    </xsl:attribute>
+  </xsl:template>
+
   <!-- Drop some print-formatting paragraphs from conversion. -->
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $omit-paras]"/>
