@@ -631,7 +631,7 @@
   </xsl:template>
 
   <!-- Preserve footnote references as spans to be filled in via ruby -->
-  <xsl:template match="//w:footnoteReference">
+  <xsl:template match=".//w:footnoteReference">
     <span>
       <xsl:attribute name="class">
         <xsl:value-of select="'footnoteref'"/>
@@ -642,7 +642,7 @@
   </xsl:template>
 
   <!-- Preserve footnote text as paras to be moved in via ruby -->
-  <xsl:template match="//w:footnote">
+  <xsl:template match=".//w:footnote">
     <p>
       <xsl:attribute name="class">
         <xsl:value-of select="'footnotetext'"/>
