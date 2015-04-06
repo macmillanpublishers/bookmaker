@@ -621,6 +621,7 @@
   <xsl:template match="w:r[w:rPr/w:rStyle/@w:val]">
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
+      <xsl:apply-templates select="w:footnoteReference/@w:id"/>
       <xsl:apply-templates select="w:t"/>
     </span>
   </xsl:template>
@@ -636,7 +637,9 @@
       <xsl:attribute name="class">
         <xsl:value-of select="'footnoteref'"/>
       </xsl:attribute>
-      <xsl:apply-templates select="@w:id"/>
+      <xsl:attribute name="id">
+        <xsl:value-of select="@w:id"/>
+      </xsl:attribute>
       <xsl:apply-templates select="."/>
     </span>
   </xsl:template>
@@ -647,7 +650,9 @@
       <xsl:attribute name="class">
         <xsl:value-of select="'footnotetext'"/>
       </xsl:attribute>
-      <xsl:apply-templates select="@w:id"/>
+      <xsl:attribute name="id">
+        <xsl:value-of select="@w:id"/>
+      </xsl:attribute>
       <xsl:apply-templates select="w:t"/>
     </p>
   </xsl:template>
