@@ -419,7 +419,10 @@
             <xsl:apply-templates select="current-group()"/>
           </section>
         </xsl:for-each-group>
-        <xsl:apply-templates select=".//w:footnote"/>
+        <section data-type="footnotes">
+          <h1 class="BMHeadbmh">Footnotes</h1>
+          <xsl:apply-templates select=".//w:footnote"/>
+        </section>
       </body>
     </html>
   </xsl:template>
@@ -618,13 +621,13 @@
 
   <!-- Preserve footnote text as paras to be moved via ruby -->
   <xsl:template match=".//w:footnote">
-    <p>
+    <div>
       <xsl:attribute name="class">
         <xsl:value-of select="'footnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
       <xsl:apply-templates select="w:p"/>
-    </p>
+    </div>
   </xsl:template>
 
   <!-- All other paragraphs become p elements. -->
