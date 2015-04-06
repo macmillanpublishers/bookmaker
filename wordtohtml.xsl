@@ -630,6 +630,28 @@
     <xsl:apply-templates select="w:t"/>
   </xsl:template>
 
+  <!-- Preserve footnote references as spans to be filled in via ruby -->
+  <xsl:template match="//w:footnoteReference">
+    <span>
+      <xsl:attribute name="class">
+        <xsl:value-of select="'footnoteref'"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@w:id"/>
+      <xsl:apply-templates select="."/>
+    </span>
+  </xsl:template>
+
+  <!-- Preserve footnote text as paras to be moved in via ruby -->
+  <xsl:template match="//w:footnote">
+    <p>
+      <xsl:attribute name="class">
+        <xsl:value-of select="'footnotetext'"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@w:id"/>
+      <xsl:apply-templates select="w:t"/>
+    </p>
+  </xsl:template>
+
   <!-- As we drop content by default, explicitly handle text-bearing
        elements. -->
   <xsl:template match="w:t">
