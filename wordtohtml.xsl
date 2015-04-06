@@ -615,22 +615,22 @@
     </xsl:if>
   </xsl:template>
 
-  <!-- All other paragraphs become p elements. -->
-  <xsl:template match="w:p">
-    <p>
-      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates select=".//w:r"/>
-    </p>
-  </xsl:template>
-
-  <!-- Preserve footnote text as paras to be moved in via ruby -->
+  <!-- Preserve footnote text as paras to be moved via ruby -->
   <xsl:template match=".//w:footnote">
     <p>
       <xsl:attribute name="class">
         <xsl:value-of select="'footnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
-      <xsl:apply-templates select="w:r"/>
+      <xsl:apply-templates select="w:p"/>
+    </p>
+  </xsl:template>
+
+  <!-- All other paragraphs become p elements. -->
+  <xsl:template match="w:p">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <xsl:apply-templates select=".//w:r"/>
     </p>
   </xsl:template>
 
