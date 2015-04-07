@@ -35,6 +35,9 @@ nbspcontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
 replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
 File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts replace}
 
+# strip extraneous footnote section from html
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_htmlmaker\\footnotes.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
+
 # strip static toc from html
 `java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_htmlmaker\\strip-toc.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
