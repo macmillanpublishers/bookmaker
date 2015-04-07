@@ -44,6 +44,9 @@ File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts repl
 # convert parts to divs
 `java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_htmlmaker\\parts.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
+# add correct markup for inlines (em, strong, sup, sub)
+`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_htmlmaker\\inlines.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
+
 # TESTING
 
 # html file should exist
