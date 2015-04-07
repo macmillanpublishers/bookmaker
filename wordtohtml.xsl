@@ -419,6 +419,14 @@
             <xsl:apply-templates select="current-group()"/>
           </section>
         </xsl:for-each-group>
+        <section data-type="footnotes">
+          <h1 class="BMHeadbmh">Footnotes</h1>
+          <xsl:apply-templates select=".//w:footnote"/>
+        </section>
+        <section data-type="endnotes">
+          <h1 class="BMHeadbmh">Endnotes</h1>
+          <xsl:apply-templates select=".//w:endnote"/>
+        </section>
       </body>
     </html>
   </xsl:template>
@@ -426,6 +434,13 @@
   <!-- Handle style property names when present. -->
   <xsl:template match="@w:val">
     <xsl:attribute name="class">
+      <xsl:value-of select="."/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!-- Handle id property names when present. -->
+  <xsl:template match="@w:id">
+    <xsl:attribute name="id">
       <xsl:value-of select="."/>
     </xsl:attribute>
   </xsl:template>
@@ -608,6 +623,28 @@
     </xsl:if>
   </xsl:template>
 
+  <!-- Preserve footnote text as paras to be moved via ruby -->
+  <xsl:template match=".//w:footnote">
+    <p>
+      <xsl:attribute name="class">
+        <xsl:value-of select="'footnotetext'"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@w:id"/>
+      <xsl:apply-templates select="w:p/w:r/w:t"/>
+    </p>
+  </xsl:template>
+
+  <!-- Preserve endnote text -->
+  <xsl:template match=".//w:endnote">
+    <p>
+      <xsl:attribute name="class">
+        <xsl:value-of select="'endnotetext'"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@w:id"/>
+      <xsl:apply-templates select="w:p/w:r/w:t"/>
+    </p>
+  </xsl:template>
+
   <!-- All other paragraphs become p elements. -->
   <xsl:template match="w:p">
     <p>
@@ -617,10 +654,12 @@
   </xsl:template>
 
   <!-- Styled inline text needs a span element with an appropriate
-       class. -->
+       class. Also preserves footnote references. -->
   <xsl:template match="w:r[w:rPr/w:rStyle/@w:val]">
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
+      <xsl:apply-templates select="w:footnoteReference/@w:id"/>
+      <xsl:apply-templates select="w:endnoteReference/@w:id"/>
       <xsl:apply-templates select="w:t"/>
     </span>
   </xsl:template>
