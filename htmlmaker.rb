@@ -14,6 +14,22 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 # convert xml to html
 `java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\#{filename}.xml -xsl:S:\\resources\\bookmaker_scripts\\WordXML-to-HTML\\wordtohtml.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
+# place footnote text inline per htmlbook
+footnotes = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html").scan(/(<p class="footnotetext" id=")(\d+)(">)(\s)(.*?)(<\/p>)/)
+
+footnotes.each do |f|
+	noteref = f[1]
+	notetext = f[4]
+	filecontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
+	replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
+	File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts replace}
+end
+
+# add endnote ref id as static content
+filecontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
+replace = filecontents.gsub(/(<span class="EndnoteReference" id=")(\d+)(">)(<\/span>)/,"\\1endnote-\\2\\3\\2\\4")
+File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts replace}
+
 # replace nbsp entities with 160 and fix img closing tags
 nbspcontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
 replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
