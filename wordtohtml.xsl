@@ -423,6 +423,10 @@
           <h1 class="BMHeadbmh">Footnotes</h1>
           <xsl:apply-templates select=".//w:footnote"/>
         </section>
+        <section data-type="endnotes">
+          <h1 class="BMHeadbmh">Endnotes</h1>
+          <xsl:apply-templates select=".//w:endnote"/>
+        </section>
       </body>
     </html>
   </xsl:template>
@@ -621,13 +625,24 @@
 
   <!-- Preserve footnote text as paras to be moved via ruby -->
   <xsl:template match=".//w:footnote">
-    <div>
+    <p>
       <xsl:attribute name="class">
         <xsl:value-of select="'footnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
-      <xsl:apply-templates select="w:p"/>
-    </div>
+      <xsl:apply-templates select="w:p/w:r/w:t"/>
+    </p>
+  </xsl:template>
+
+  <!-- Preserve endnote text -->
+  <xsl:template match=".//w:endnote">
+    <p>
+      <xsl:attribute name="class">
+        <xsl:value-of select="'endnotetext'"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@w:id"/>
+      <xsl:apply-templates select="w:p/w:r/w:t"/>
+    </p>
   </xsl:template>
 
   <!-- All other paragraphs become p elements. -->
@@ -644,6 +659,7 @@
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
       <xsl:apply-templates select="w:footnoteReference/@w:id"/>
+      <xsl:apply-templates select="w:endnoteReference/@w:id"/>
       <xsl:apply-templates select="w:t"/>
     </span>
   </xsl:template>
