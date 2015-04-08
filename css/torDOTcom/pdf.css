@@ -288,12 +288,20 @@
 	size: 5in 8in;
 	margin: 0.72in 0.75in 0.66in 0.75in;
 	padding: 34pt 0 0.36in 0;
-	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
+	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
 	background-position: top left;
 	background-size: 100% 100%;
-	background-repeat: no-repeat;
+	background-repeat: no-repeat;*/
 	marks: crop;
 	bleed: .188in;
+	@footnotes {
+		background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png");
+		background-position: top left;
+		background-size: 0.82in auto;
+		background-repeat: no-repeat;
+		padding-top: 0.127in;
+		margin-top: 0.38in;
+    }
 }
 
 @page chapter {
@@ -753,9 +761,8 @@ p.ChapNumberNonprintingcnp + p {
 }
 
 section[data-type="chapter"] h1.ChapTitlect {
-	text-transform: uppercase;
-	font-size: 18pt;
-	line-height: 32pt;
+	font-size: 16pt;
+	line-height: 24pt;
 	font-weight: normal;
 	text-align: center;
 	margin-top: 16pt;
@@ -949,6 +956,15 @@ p.SpaceBreakwithALTOrnamentorn2 {
 
 p.PageBreakpb {
 	display: none;
+}
+
+/* footnotes */
+
+span[data-type="footnote"] {
+	float: footnote;
+	font-family: "ArnoPro-SmText";
+	font-size: 9pt;
+	line-height: 12pt;
 }
 
 /* character styles */
