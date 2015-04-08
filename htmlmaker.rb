@@ -27,7 +27,7 @@ end
 
 # add endnote ref id as static content
 filecontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
-replace = filecontents.gsub(/(<span class="EndnoteReference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4")
+replace = filecontents.gsub(/(<span class="EndnoteReference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
 File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts replace}
 
 # replace nbsp entities with 160 and fix img closing tags
