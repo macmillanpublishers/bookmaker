@@ -296,7 +296,7 @@
 	bleed: .188in;
 	@footnotes {
 		background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png");
-		background-position: top left;
+		background-position: 0 -0.35in;
 		background-size: 0.82in auto;
 		background-repeat: no-repeat;
 		padding-top: 0.127in;
@@ -548,14 +548,15 @@ section[data-type="titlepage"] p.TitlepageImprintLineimp {
 
 section[data-type="titlepage"] p.TitlepageImprintLineimp:before {
 	content: " ";
-	background-image: url("http://www.tor.com/templates/tor/images/header/mast_logo.png");
-	background-position: center center;
-	background-size: auto 0.5in;
+	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/images/torDOTcom/logo.jpg");
+	background-position: center bottom;
+	background-size: 0.58in auto;
 	background-repeat: no-repeat;
 	display: block;
 	width: 100%;
 	height: 0.5in;
 	text-align: center;
+	margin-bottom: 0.2in;
 }
 
 .TitlepageCitiescit, .TitlepagePublisherNamepub, .TitlepageImprintLineimp {
@@ -579,6 +580,7 @@ section[data-type="copyright-page"] p {
 	font-family: "ArnoPro-SmText";
 	font-size: 10pt;
 	text-align: center;
+	text-indent: 0;
 }
 
 .CopyrightTextdoublespacecrtxd {
@@ -965,6 +967,13 @@ span[data-type="footnote"] {
 	font-family: "ArnoPro-SmText";
 	font-size: 9pt;
 	line-height: 12pt;
+	footnote-style-position: inside;
+	text-indent: 0;
+	margin-left: 0;
+}
+
+::footnote-marker {
+    content: counter(footnote)"\2003";
 }
 
 /* character styles */
