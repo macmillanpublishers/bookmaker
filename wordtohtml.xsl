@@ -664,22 +664,6 @@
     </span>
   </xsl:template>
 
-  <!-- Preserves footnote references. -->
-  <xsl:template match="w:r[w:footnoteReference/@w:id]">
-    <span>
-      <xsl:apply-templates select="w:footnoteReference/@w:id"/>
-      <xsl:apply-templates select="w:t"/>
-    </span>
-  </xsl:template>
-
-  <!-- Preserves endnote references. -->
-  <xsl:template match="w:r[w:endnoteReference/@w:id]">
-    <span>
-      <xsl:apply-templates select="w:endnoteReference/@w:id"/>
-      <xsl:apply-templates select="w:t"/>
-    </span>
-  </xsl:template>
-
   <!-- Other inline text is just plain text. -->
   <xsl:template match="w:r">
     <xsl:apply-templates select="w:t"/>
