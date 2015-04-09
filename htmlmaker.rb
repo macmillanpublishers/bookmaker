@@ -15,6 +15,10 @@ tmp_dir = "#{currvol}\\bookmaker_tmp"
 `java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\#{filename}.xml -xsl:S:\\resources\\bookmaker_scripts\\WordXML-to-HTML\\wordtohtml.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
 # place footnote text inline per htmlbook
+filecontents = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html")
+replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
+File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts replace}
+
 footnotes = File.read("#{tmp_dir}\\#{filename}\\outputtmp.html").scan(/(<p class="footnotetext" id=")(\d+)(">)(\s)(.*?)(<\/p>)/)
 
 footnotes.each do |f|
