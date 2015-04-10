@@ -656,19 +656,38 @@
   </xsl:template>
 
   <!-- Styled inline text needs a span element with an appropriate
-       class. Also preserves footnote references. -->
+       class -->
   <xsl:template match="w:r[w:rPr/w:rStyle/@w:val]">
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
-      <xsl:apply-templates select="w:footnoteReference/@w:id"/>
-      <xsl:apply-templates select="w:endnoteReference/@w:id"/>
       <xsl:apply-templates select="w:t"/>
+      <xsl:apply-templates select="w:footnoteReference"/>
+      <xsl:apply-templates select="w:endnoteReference"/>
     </span>
   </xsl:template>
 
-  <!-- Other inline text is just plain text. -->
   <xsl:template match="w:r">
     <xsl:apply-templates select="w:t"/>
+  </xsl:template>
+
+  <!-- Footnote references -->
+  <xsl:template match="w:footnoteReference">
+    <span>
+      <xsl:attribute name="class">
+        <xsl:value-of select="'FootnoteReference'"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@w:id"/>
+    </span>
+  </xsl:template>
+
+  <!-- Endnote references -->
+  <xsl:template match="w:endnoteReference">
+    <span>
+      <xsl:attribute name="class">
+        <xsl:value-of select="'EndnoteReference'"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@w:id"/>
+    </span>
   </xsl:template>
 
   <!-- As we drop content by default, explicitly handle text-bearing
