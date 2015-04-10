@@ -288,10 +288,10 @@
 	size: 5in 8in;
 	margin: 0.72in 0.75in 0.66in 0.75in;
 	padding: 34pt 0 0.36in 0;
-	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
+	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
 	background-position: top left;
 	background-size: 100% 100%;
-	background-repeat: no-repeat;*/
+	background-repeat: no-repeat;
 	marks: crop;
 	bleed: .188in;
 	@footnotes {
@@ -740,6 +740,15 @@ section[data-type="preface"] p.FMSubheadfmsh {
 	margin-bottom: 30pt;
 }
 
+div[data-type="part"] > h1 {
+	font-size: 20pt;
+	font-weight: normal;
+	line-height: 28pt;
+	text-transform: uppercase;
+	margin-top: 9pt;
+	text-align: center;
+}
+
 section[data-type="chapter"] {
 	page: chapter;
 	page-break-before: right;
@@ -752,7 +761,7 @@ p.ChapNumberNonprintingcnp {
 	line-height: 16pt;
 	font-weight: 600;
 	text-align: center;
-	margin-top: 16pt;
+	margin-top: 20pt;
 	margin-bottom: 7pt;
 	text-indent: 0;
 }
@@ -767,8 +776,8 @@ section[data-type="chapter"] h1.ChapTitlect {
 	line-height: 24pt;
 	font-weight: normal;
 	text-align: center;
-	margin-top: 16pt;
-	margin-bottom: 57pt;
+	margin-top: 20pt;
+	margin-bottom: 61pt;
 }
 
 section[data-type="chapter"] h1.ChapNumbercn + h1.ChapTitlect {
@@ -776,7 +785,11 @@ section[data-type="chapter"] h1.ChapNumbercn + h1.ChapTitlect {
 }
 
 section[data-type="chapter"] h1.ChapTitlect:first-child {
-	margin-top: 7pt;
+	margin-top: 11pt;
+}
+
+h1.ChapTitleNonprintingctp {
+	display: none;
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"], 
@@ -937,11 +950,8 @@ p.SpaceBreak-3-Linels3 {
 }
 
 p.PartOrnamentporn, 
-p.SpaceBreakOrnamentorn, 
 p.ChapOrnamentcorn, 
-p.ChapOrnamentALTcorn2, 
-p.SpaceBreakwithOrnamentorn, 
-p.SpaceBreakwithALTOrnamentorn2 {
+p.ChapOrnamentALTcorn2 {
 	text-indent: 0;
 	content: " ";
 	font-size: 16pt;
@@ -952,6 +962,23 @@ p.SpaceBreakwithALTOrnamentorn2 {
 	background-repeat: no-repeat;
 	margin-bottom: 21pt;
 	padding: 3pt 8pt 8pt 8pt;
+	width: 100%;
+	height: 16pt;
+}
+
+p.SpaceBreakOrnamentorn,
+p.SpaceBreakwithOrnamentorn, 
+p.SpaceBreakwithALTOrnamentorn2 {
+	text-indent: 0;
+	content: " ";
+	font-size: 16pt;
+	text-align: center;
+	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/orn.jpg');
+	background-size: 0.3in auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-bottom: 0pt;
+	padding: 24pt 0pt 8pt 0pt;
 	width: 100%;
 	height: 16pt;
 }
