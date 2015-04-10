@@ -425,7 +425,7 @@
           <h1 class="BMHeadbmh">Footnotes</h1>
           <xsl:apply-templates select=".//w:footnote"/>
         </section>
-        <section data-type="endnotes">
+        <section data-type="appendix" class="endnotes">
           <h1 class="BMHeadbmh">Endnotes</h1>
           <xsl:apply-templates select=".//w:endnote"/>
         </section>
