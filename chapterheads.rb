@@ -82,7 +82,7 @@ pdf_css_file = "#{bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{project_dir}\\pdf.c
 
 if File.file?("#{bookmaker_dir}\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css")
 	epub_css_file = "#{bookmaker_dir}\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css"
-# elsif project_dir.include? "egalley"
+# elsif project_dir.include? "egalley" or project_dir.include? "first_pass"
 # 	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\egalley_SMP\\epub.css"
 else
  	epub_css_file = "#{bookmaker_dir}\\bookmaker_epubmaker\\css\\generic\\epub.css"
