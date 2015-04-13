@@ -1,26 +1,49 @@
 require 'rubygems'
 require 'doc_raptor'
 
-#get secure keys & credentials
-docraptor_key = File.read("S:/resources/bookmaker_scripts/bookmaker_authkeys/api_key.txt")
-ftp_uname = File.read("S:/resources/bookmaker_scripts/bookmaker_authkeys/ftp_username.txt")
-ftp_pass = File.read("S:/resources/bookmaker_scripts/bookmaker_authkeys/ftp_pass.txt")
-
-DocRaptor.api_key "#{docraptor_key}"
-
+# --------------------STANDARD HEADER START--------------------
+# The bookmkaer scripts require a certain folder structure 
+# in order to source in the correct CSS files, logos, 
+# and other imprint-specific items. You can read about the 
+# required folder structure here:
 input_file = ARGV[0]
 filename_split = input_file.split("\\").pop
 filename = filename_split.split(".").shift.gsub(/ /, "")
 working_dir_split = ARGV[0].split("\\")
 working_dir = working_dir_split[0...-2].join("\\")
-# determine current working volume
+project_dir = working_dir_split[0...-3].pop
+stage_dir = working_dir_split[0...-2].pop
+# In Macmillan's environment, these scripts could be 
+# running either on the C: volume or on the S: volume 
+# of the configured server. This block determines which 
+# of those is the current working volume.
 `cd > currvol.txt`
 currpath = File.read("currvol.txt")
 currvol = currpath.split("\\").shift
 
-# set working dir based on current volume
-tmp_dir = "#{currvol}\\bookmaker_tmp"
+# --------------------USER CONFIGURED PATHS START--------------------
+# These are static paths to folders on your system.
+# These paths will need to be updated to reflect your current 
+# directory structure.
 
+# set temp working dir based on current volume
+tmp_dir = "#{currvol}\\bookmaker_tmp"
+# set directory for logging output
+log_dir = "S:\\resources\\logs"
+# set directory where bookmkaer scripts live
+bookmaker_dir = "S:\\resources\\bookmaker_scripts"
+# set directory where other resources are installed
+# (for example, saxon, zip)
+resource_dir = "C:"
+# --------------------USER CONFIGURED PATHS END--------------------
+# --------------------STANDARD HEADER END--------------------
+
+# --------------------HTML FILE DATA START--------------------
+# This block creates a variable to point to the 
+# converted HTML file, and pulls the isbn data
+# out of the HTML file.
+
+# the working html file
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
@@ -28,24 +51,48 @@ spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
 
 # determining print isbn
 if spanisbn.length != 0
-  pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-  pisbn = pisbn_basestring.match(/\d+<\/span>\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn = pisbn_basestring.match(/\d+<\/span>\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 else
-  pisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-  pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+end
+
+# determining ebook isbn
+if spanisbn.length != 0
+	eisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(e-*book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	eisbn = eisbn_basestring.match(/\d+<\/span>\(ebook\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
+else
+	eisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(e-*book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
+	eisbn = eisbn_basestring.match(/\d+\(ebook\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
 end
 
 # just in case no isbn is found
 if pisbn.length == 0
-  pisbn = "#{filename}"
+	pisbn = "#{filename}"
 end
+
+if eisbn.length == 0
+	eisbn = "#{filename}"
+end
+# --------------------HTML FILE DATA END--------------------
+
+# Authentication data is required to use docraptor and 
+# to post images and other assets to the ftp for inclusion 
+# via docraptor. This auth data should be housed in 
+# separate files, as laid out in the following block.
+docraptor_key = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\api_key.txt")
+ftp_uname = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\ftp_username.txt")
+ftp_pass = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\ftp_pass.txt")
+
+DocRaptor.api_key "#{docraptor_key}"
 
 #if any images are in 'done' dir, upload them to macmillan.tools site
 #image_count = Dir("#{working_dir}\\done\\#{pisbn}\\images\\*").count { |file| File.file?(file) }
 images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
 image_count = images.count
 if image_count > 0
-	`S:\\resources\\bookmaker_scripts\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images #{tmp_dir}\\#{filename}\\images`
+	`#{bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images #{tmp_dir}\\#{filename}\\images`
 end
 
 # pdf css to be added to the file that will be sent to docraptor
@@ -89,26 +136,26 @@ if image_count > 0
 	upload_count = upload_report.count
 	
 	if upload_report.sort == images.sort
-		test_image_array_compare = "PASS: Images in Done dir match images uploaded to ftp"
+		test_image_array_compare = "pass: Images in Done dir match images uploaded to ftp"
 	else
 		test_image_array_compare = "FAIL: Images in Done dir match images uploaded to ftp"
 	end
 	
 else
 	upload_count = 0
-	test_image_array_compare = "PASS: There are no missing image files"
+	test_image_array_compare = "pass: There are no missing image files"
 end
 
 # verify pdf was produced
 
 if File.file?("#{working_dir}\\done\\#{pisbn}\\#{pisbn}_POD.pdf")
-	test_pdf_created = "PASS: PDF file exists in DONE directory"
+	test_pdf_created = "pass: PDF file exists in DONE directory"
 else
 	test_pdf_created = "FAIL: PDF file exists in DONE directory"
 end
 
 # Printing the test results to the log file
-File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- PDFMAKER PROCESSES"
 	f.puts "----- I found #{image_count} images to be uploaded"
 	f.puts "----- I found #{upload_count} files uploaded"
