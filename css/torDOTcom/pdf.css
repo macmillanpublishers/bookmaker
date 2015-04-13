@@ -353,6 +353,65 @@
 	}
 }
 
+@page front {
+	@top-center {
+		content: normal;
+		font-family: "ArnoPro-Caption";
+		text-align: center;
+		font-style: italic;
+		font-size: 8.5pt;
+		vertical-align: bottom;
+		padding: 0;
+		margin: 0;
+	}
+	@bottom-center {
+		content: normal;
+		font-family: "ArnoPro-Caption";
+		font-variant: prince-opentype(onum);
+		content: counter(page);
+		text-align: center;
+		font-size: 9pt;
+		vertical-align: top;
+	}
+}
+
+@page front:left {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page front:right {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page front:first {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page front:blank {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
 @page fullbleed {
 	margin: 0;
 	padding: 0;
@@ -366,6 +425,7 @@
 
 body {
 	font-family: "ArnoPro", serif;
+	counter-reset: endnotes chapternumber;
 }
 
 section, p, div, h1, h2, h3, h4, h5, h6 {
@@ -418,6 +478,20 @@ section[data-type="copyright-page"],
 section[data-type="alsoby"] {
 	page-break-after: always;
 }
+
+section[data-type="halftitlepage"], 
+section[data-type="titlepage"], 
+section[data-type="copyright-page"], 
+section[data-type="alsoby"],
+section[data-type="dedication"],
+nav[data-type="toc"],
+.FrontSalesTitlefst,
+.FrontSalesQuoteNoIndentfsq1,
+.FrontSalesQuotefsq,
+.FrontSalesQuoteSourcefsqs {
+	page: front;
+}
+
 
 .FrontSalesTitlefst {
 	font-size: 16pt;
@@ -668,6 +742,16 @@ nav[data-type="toc"] li.FMHeadfmh {
 	display: none;
 }
 
+nav[data-type="toc"] li.BMHeadbmh {
+	margin-left: 25pt;
+	font-weight: normal;
+	text-align: left;
+}
+
+nav[data-type="toc"] li.BMHeadbmh:first-of-type {
+	margin-top: 16pt;
+}
+
 nav[data-type="toc"] li.PartNumberpn ~ li, 
 nav[data-type="toc"] li.PartTitlept ~ li {
 	margin-bottom: 0;
@@ -696,6 +780,10 @@ nav[data-type="toc"] li a:before {
 	text-align: left;
 }
 
+nav[data-type="toc"] li.BMHeadbmh a:before {
+	content: normal;
+}
+
 nav[data-type="toc"] li.PartNumberpn, 
 nav[data-type="toc"] li.PartTitlept {
 	margin-bottom: 9pt;
@@ -721,7 +809,9 @@ section[data-type="preface"] {
 	prince-page-group: start;
 }
 
-section[data-type="preface"] h1 {
+section[data-type="preface"] h1, 
+section[data-type="appendix"] h1,
+h1.BMHeadbmh {
 	font-size: 16pt;
 	line-height: 16pt;
 	font-weight: bold;
@@ -776,20 +866,29 @@ section[data-type="chapter"] h1.ChapTitlect {
 	line-height: 24pt;
 	font-weight: normal;
 	text-align: center;
-	margin-top: 20pt;
-	margin-bottom: 61pt;
-}
-
-section[data-type="chapter"] h1.ChapNumbercn + h1.ChapTitlect {
-	margin-top: 0;
-}
-
-section[data-type="chapter"] h1.ChapTitlect:first-child {
 	margin-top: 11pt;
+	margin-bottom: 61pt;
+	counter-increment: chapternumber;
 }
 
-h1.ChapTitleNonprintingctp {
+h1.ChapTitlect[data-autolabel="yes"]:before {
+	content: "Chapter " counter(chapternumber);
+	display: block;
+	font-size: 12pt;
+	line-height: 16pt;
+	font-weight: 600;
+	text-align: center;
+	margin-top: 16pt;
+	margin-bottom: 11pt;
+	text-indent: 0;
+}
+
+[class*="Nonprinting"] {
 	display: none;
+}
+
+section[data-type="appendix"] {
+	page-break-before: always;
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"], 
@@ -894,8 +993,20 @@ blockquote p:first-child {
 	text-indent: 0;
 }
 
+p.IllustrationSourceis {
+	font-family: "MinionPro";
+	font-size: 7pt;
+	text-align: center;
+	margin-top: -16pt;
+	margin-bottom: 16pt;
+	page-break-before: avoid;
+	text-indent: 0;
+}
+
 figure {
 	page-break-inside: avoid;
+	margin-top: 16pt;
+	margin-bottom: 16pt;
 }
 
 figcaption {
@@ -918,6 +1029,10 @@ img[src*="fullpage"] {
 	page: fullbleed;
 	margin-top: -0.188in;
 	margin-left: -0.188in;
+}
+
+section[data-type="appendix"] h1 + figure {
+	margin-top: -32pt;
 }
 
 p[class*="SpaceAfter"] + p[class*="Extract"], 
@@ -961,7 +1076,7 @@ p.ChapOrnamentALTcorn2 {
 	background-position: center;
 	background-repeat: no-repeat;
 	margin-bottom: 21pt;
-	padding: 3pt 8pt 8pt 8pt;
+	padding: 3pt 0pt 8pt 0pt;
 	width: 100%;
 	height: 16pt;
 }
@@ -989,18 +1104,31 @@ p.PageBreakpb {
 
 /* footnotes */
 
-span[data-type="footnote"] {
-	float: footnote;
+span[data-type="footnote"], 
+p.endnotetext {
 	font-family: "ArnoPro-SmText";
 	font-size: 9pt;
 	line-height: 12pt;
-	footnote-style-position: inside;
 	text-indent: 0;
 	margin-left: 0;
 }
 
+span[data-type="footnote"] {
+	float: footnote;
+	footnote-style-position: inside;
+}
+
 ::footnote-marker {
     content: counter(footnote)"\2003";
+}
+
+p.endnotetext {
+	line-height: 16pt;
+	counter-increment: endnotes;
+}
+
+p.endnotetext:before {
+	content: counter(endnotes)"\2003";
 }
 
 /* character styles */
