@@ -1,27 +1,47 @@
+# --------------------STANDARD HEADER START--------------------
+# The bookmkaer scripts require a certain folder structure 
+# in order to source in the correct CSS files, logos, 
+# and other imprint-specific items. You can read about the 
+# required folder structure here:
 input_file = ARGV[0]
 filename_split = input_file.split("\\").pop
 filename = filename_split.split(".").shift.gsub(/ /, "")
 working_dir_split = ARGV[0].split("\\")
 working_dir = working_dir_split[0...-2].join("\\")
 project_dir = working_dir_split[0...-3].pop
-# determine current working volume
+stage_dir = working_dir_split[0...-2].pop
+# In Macmillan's environment, these scripts could be 
+# running either on the C: volume or on the S: volume 
+# of the configured server. This block determines which 
+# of those is the current working volume.
 `cd > currvol.txt`
 currpath = File.read("currvol.txt")
 currvol = currpath.split("\\").shift
 
-# set working dir based on current volume
+# --------------------USER CONFIGURED PATHS START--------------------
+# These are static paths to folders on your system.
+# These paths will need to be updated to reflect your current 
+# directory structure.
+
+# set temp working dir based on current volume
 tmp_dir = "#{currvol}\\bookmaker_tmp"
+# set directory for logging output
+log_dir = "S:\\resources\\logs"
+# set directory where bookmkaer scripts live
+bookmaker_dir = "S:\\resources\\bookmaker_scripts"
+# set directory where other resources are installed
+# (for example, saxon, zip)
+resource_dir = "C:"
+# --------------------USER CONFIGURED PATHS END--------------------
+# --------------------STANDARD HEADER END--------------------
 
-epub_dir = "#{tmp_dir}\\#{filename}"
+# --------------------HTML FILE DATA START--------------------
+# This block creates a variable to point to the 
+# converted HTML file, and pulls the isbn data
+# out of the HTML file.
 
+# the working html file
 html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
-
-# Finding author name(s)
-authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
-authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
-
-#set logo image based on project directory
-logo_img = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\images\\#{project_dir}\\logo.jpg"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -52,13 +72,23 @@ end
 if eisbn.length == 0
 	eisbn = "#{filename}"
 end
+# --------------------HTML FILE DATA END--------------------
+
+epub_dir = "#{tmp_dir}\\#{filename}"
+
+# Finding author name(s)
+authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
+authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
+
+#set logo image based on project directory
+logo_img = "#{bookmaker_dir}\\bookmaker_epubmaker\\images\\#{project_dir}\\logo.jpg"
 
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?</).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/</,"")
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
-#Adding imprint logo to title page
+# Adding imprint logo to title page
 filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">")
 # Update several copyright elements for epub
 copyright_txt = filecontents.match(/(<section data-type=\"copyright-page\" id=\".*?\">)((.|\n)*?)(<\/section>)/)[2]
@@ -82,15 +112,15 @@ File.open("#{tmp_dir}\\#{filename}\\epub_tmp.html", 'w') do |output|
 end
 
 # Add new section to log file
-File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- EPUBMAKER PROCESSES"
 end
 
 # strip halftitlepage from html
-`java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\strip-halftitle.xsl -o:#{tmp_dir}\\#{filename}\\epub_tmp.html`
+`java -jar #{resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:#{bookmaker_dir}\\bookmaker_epubmaker\\strip-halftitle.xsl -o:#{tmp_dir}\\#{filename}\\epub_tmp.html`
 
 # convert to epub and send stderr to log file
-`chdir #{tmp_dir}\\#{filename} & java -jar C:\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:S:\\resources\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>S:\\resources\\logs\\#{filename}.txt`
+`chdir #{tmp_dir}\\#{filename} & java -jar #{resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\epub_tmp.html -xsl:#{bookmaker_dir}\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>#{log_dir}\\#{filename}.txt`
 
 # fix cover.html doctype
 covercontents = File.read("#{tmp_dir}\\#{filename}\\OEBPS\\cover.html")
@@ -126,15 +156,15 @@ end
 #copy logo image file to epub folder
 `copy #{logo_img} #{tmp_dir}\\#{filename}\\OEBPS\\logo.jpg`
 
-if project_dir.include? "egalley"
+if stage_dir.include? "egalley" or stage_dir.include? "first_pass"
 	csfilename = "#{eisbn}_EPUBfirstpass"
 else
 	csfilename = "#{eisbn}_EPUB"
 end
 
 # zip epub
-`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
-`chdir #{tmp_dir}\\#{filename} & C:\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
+`chdir #{tmp_dir}\\#{filename} & #{resource_dir}\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
+`chdir #{tmp_dir}\\#{filename} & #{resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
 
 # move epub into archive folder
 `copy #{tmp_dir}\\#{filename}\\#{csfilename}.epub #{working_dir}\\done\\#{pisbn}\\`
@@ -163,7 +193,7 @@ else
 end
 
 # Add new section to log file
-File.open("S:\\resources\\logs\\#{filename}.txt", 'a+') do |f|
+File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
 	f.puts " "
 	f.puts "-----"
 	f.puts test_epub_status
