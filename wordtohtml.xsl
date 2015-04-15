@@ -273,11 +273,16 @@
   <xsl:variable name="top-level-heads" as="xs:string*">
     <xsl:sequence
       select="'BMHeadbmh',
+              'BMHeadALTabmh',
+              'AppendixHeadaph',
               'PartNumberpn',
               'PartTitlept',
               'ChapTitlect',
               'ChapTitleNonprintingctp',
               'FMHeadfmh',
+              'FMHeadALTafmh',
+              'FrontSalesTitlefst',
+              'AdCardMainHeadacmh',
               'TitlepageBookTitletit',
               'HalftitleBookTitlehtit'"/>
   </xsl:variable>
@@ -369,7 +374,7 @@
           <xsl:variable name="html-data-type" as="xs:string">
             <xsl:choose>
               <xsl:when test="$word-style = 'AdCardMainHeadacmh'">
-                <xsl:value-of select="'alsoby'"/>
+                <xsl:value-of select="'preface'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'BMHeadbmh'">
                 <xsl:value-of select="'appendix'"/>
