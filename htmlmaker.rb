@@ -72,6 +72,9 @@ File.open("#{tmp_dir}\\#{filename}\\outputtmp.html", "w") {|file| file.puts repl
 # convert parts to divs
 `java -jar #{resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:#{bookmaker_dir}\\bookmaker_htmlmaker\\parts.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
+# add headings to all sections
+`java -jar #{resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:#{bookmaker_dir}\\bookmaker_htmlmaker\\headings.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
+
 # add correct markup for inlines (em, strong, sup, sub)
 `java -jar #{resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\outputtmp.html -xsl:#{bookmaker_dir}\\bookmaker_htmlmaker\\inlines.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
 
