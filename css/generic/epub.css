@@ -111,12 +111,12 @@ NO INDENT
 --------------------------
 */
 
-h1+p, .Head-Level-1h1+p,
-h2+p, .Head-Level-2h2+p,
-h3+p, .Head-Level-3h3+p,
-h4+p, .Head-Level-4h4+p,
-h5+p, .Head-Level-5h5+p,
-h6+p, .Head-Level-6h6+p,
+h1+p, [class|="Head-Level-1"]+p,
+h2+p, [class|="Head-Level-2"]+p,
+h3+p, [class|="Head-Level-3"]+p,
+h4+p, [class|="Head-Level-4"]+p,
+h5+p, [class|="Head-Level-5"]+p,
+h6+p, [class|="Head-Level-6"]+p,
 [class="NoIndent"],
 [class*="No-Indent"] {
   text-indent: 0;
@@ -160,55 +160,55 @@ INLINE ELEMENTS
 */
 
 em,
-.spanitaliccharactersital,
-.spansmcapitalscital {
+[class|="spanitaliccharacters"],
+[class|="spansmcapital"] {
   font-style: italic;
   }
 strong,
-.spanboldfacecharactersbf,
-.spanbolditalbem,
-.spansmcapboldscbold {
+[class|="spanboldfacecharacters"],
+[class|="spanboldital"],
+[class|="spansmcapbold"] {
   font-weight: bold;
   }
-.spansmallcapscharacterssc,
-.spansmcapboldscbold {
+[class|="spansmallcapscharacters"],
+[class|="spansmcapbold"] {
   font-variant: small-caps; /* font-size: .75em; text-transform: uppercase; */
   letter-spacing: .08em;
   }
-.spanunderscorecharactersus {
+[class|="spanunderscorecharacters"] {
   text-decoration: underline;
   }
 sup,
-.spansuperscriptcharacterssup {
+[class|="spansuperscriptcharacters"] {
   vertical-align: super;
   font-size: smaller;
   }
 sub,
-.spansubscriptcharacterssub {
+[class|="spansubscriptcharacters"] {
   vertical-align: sub;
   font-size: smaller;
   }
-.spankeyphrasekp {
+[class|="spankeyphrase"] {
   }
-.spansymbolssym {
+[class|="spansymbols"] {
   }
-.spanaccentcharactersacc {
+[class|="spanaccentcharacters"] {
   }
-.spanpreservecharacterspre {
+[class|="spanpreservecharacters"] {
   white-space: pre-wrap;
   }
 a,
-.spanhyperlinkurl {
+[class|="spanhyperlink"] {
   color: #c00;
   text-decoration: underline;
   }
-.spancross-referencexref {
+[class|="spancross-reference"] {
   }
-.spanmaterialtocometk {
+[class|="spanmaterialtocome"] {
   }
-.spancarryquerycq {
+[class|="spancarryquery"] {
   }
-.DesignNotedn {
+[class|="DesignNote"] {
   }
 
 /*
@@ -227,38 +227,38 @@ h5+h6,
 [class*="Head-Level-"]+[class*="Head-Level-"],
 [class*="FMLevel-"]+[class*="FMLevel-"],
 [class*="PoemLevel-"]+[class*="PoemLevel-"],
-.RecipeHeadrh+.RecipeSubheadrsh,
+[class|="RecipeHead"]+[class|="RecipeSubhead"],
 [class*="RecipeLevel-"]+[class*="RecipeLevel-"],
-.Sub-RecipeHeadsrh+.Sub-RecipeSubheadsrsh,
+[class|="Sub-RecipeHead"]+[class|="Sub-RecipeSubhead"],
 [class*="Sub-RecipeLevel-"]+[class*="Sub-RecipeLevel-"],
-.BoxHeadbh:first-child,
-.BoxHead-Level-1bh1:first-child,
-.BoxHead-Level-2bh2:first-child,
-.BoxHead-Level-3bh3:first-child,
-.BoxHead-Level-4bh4:first-child,
-.BoxHead-Level-5bh5:first-child,
-.SidebarHeadsbh:first-child,
-.SidebarHead-Level-1sbh1:first-child,
-.SidebarHead-Level-2sbh2:first-child,
-.SidebarHead-Level-3sbh3:first-child,
-.SidebarHead-Level-4sbh4:first-child,
-.SidebarHead-Level-5sbh5:first-child,
-.BoxHeadbh+.BoxSubheadbsh,
-.BoxHeadbh+[class*="BoxHead-Level-"],
+[class|="BoxHead"]:first-child,
+[class|="BoxHead-Level-1"]:first-child,
+[class|="BoxHead-Level-2"]:first-child,
+[class|="BoxHead-Level-3"]:first-child,
+[class|="BoxHead-Level-4"]:first-child,
+[class|="BoxHead-Level-5"]:first-child,
+[class|="SidebarHead"]:first-child,
+[class|="SidebarHead-Level-1"]:first-child,
+[class|="SidebarHead-Level-2"]:first-child,
+[class|="SidebarHead-Level-3"]:first-child,
+[class|="SidebarHead-Level-4"]:first-child,
+[class|="SidebarHead-Level-5"]:first-child,
+[class|="BoxHead"]+[class|="BoxSubhead"],
+[class|="BoxHead"]+[class*="BoxHead-Level-"],
 [class*="BoxHead-Level-"]+[class*="BoxHead-Level-"],
-.SidebarHeadsbh+.SidebarSubheadsbsh,
-.SidebarHeadsbh+[class*="SidebarHead-Level-"],
+[class|="SidebarHead"]+[class|="SidebarSubhead"],
+[class|="SidebarHead"]+[class*="SidebarHead-Level-"],
 [class*="SidebarHead-Level-"]+[class*="SidebarHead-Level-"],
-.TableNumbertn+.TableHeadth,
-.ChartNumbercrn+.ChartHeadcrh,
-.ChartHeadcrh:first-child,
-.ChartHeadcrh+.ChartSubheadcrsh,
-.ChartHeadcrh+[class*="ChartLevel-"],
+[class|="TableNumber"]+[class|="TableHead"],
+[class|="ChartNumber"]+[class|="ChartHead"],
+[class|="ChartHead"]:first-child,
+[class|="ChartHead"]+[class|="ChartSubhead"],
+[class|="ChartHead"]+[class*="ChartLevel-"],
 [class*="ChartLevel-"]+[class*="ChartLevel-"],
-.TableHeadth+.TableSubheadtsh,
-.FigureNumberfgn+.FigureHeadfgh,
-.FigureHeadfgh+.FigureSubheadfgsh,
-.FigureHeadfgh+[class*="FigureLevel-"],
+[class|="TableHead"]+[class|="TableSubhead"],
+[class|="FigureNumber"]+[class|="FigureHead"],
+[class|="FigureHead"]+[class|="FigureSubhead"],
+[class|="FigureHead"]+[class*="FigureLevel-"],
 [class*="FigureLevel-"]+[class*="FigureLevel-"],
 [class*="AppendixLevel-"]+[class*="AppendixLevel-"],
 [class*="NoteLevel-"]+[class*="NoteLevel-"],
@@ -275,52 +275,52 @@ H1
 
 h1,
 [class*="Level-1Subhead"]
-.FrontSalesTitlefst,
-.AdCardMainHeadacmh,
-.HalftitleBookTitlehtit,
-.TitlepageBookTitletit,
-.TOCFrontmatterHeadcfmh,
-.TOCPartTitlecpt,
-.TOCChapterTitlecct,
-.TOCLevel-1ChapterHeadch1,
-.FMHeadfmh,
-.FMTitlefmt,
-.FMHeadALTafmh,
-.PartNumberpn,
-.PartTitlept,
-.ChapNumbercn,
-.ChapTitlect,
-.VolumeNumbervoln,
-.VolumeTitlevolt,
-.CollectionBookNumberbkn,
-.CollectionBookTitlebkt,
-.Head-Level-1h1,
-.BoxHead-Level-1bh1,
-.SidebarHead-Level-1sbh1,
-.TableNumbertn,
-.ChartNumbercrn,
-.FigureNumberfgn,
-.BMHeadbmh,
-.BMTitlebmt,
-.BMHeadALTabmh,
-.AppendixHeadaph,
-.BOBAdTitlebobt {
+[class|="FrontSalesTitle"],
+[class|="AdCardMainHead"],
+[class|="HalftitleBookTitle"],
+[class|="TitlepageBookTitle"],
+[class|="TOCFrontmatterHead"],
+[class|="TOCPartTitle"],
+[class|="TOCChapterTitle"],
+[class|="TOCLevel-1ChapterHead"],
+[class|="FMHead"],
+[class|="FMTitle"],
+[class|="FMHeadALT"],
+[class|="PartNumber"],
+[class|="PartTitle"],
+[class|="ChapNumber"],
+[class|="ChapTitle"],
+[class|="VolumeNumber"],
+[class|="VolumeTitle"],
+[class|="CollectionBookNumber"],
+[class|="CollectionBookTitle"],
+[class|="Head-Level-1"],
+[class|="BoxHead-Level-1"],
+[class|="SidebarHead-Level-1"],
+[class|="TableNumber"],
+[class|="ChartNumber"],
+[class|="FigureNumber"],
+[class|="BMHead"],
+[class|="BMTitle"],
+[class|="BMHeadALT"],
+[class|="AppendixHead"],
+[class|="BOBAdTitle"] {
   text-indent: 0;
   font-size: 1.5em;
   line-height: 1.25em;
   margin: .66666666666667em 0;
   }
-.TOCFrontmatterHeadcfmh,
-.TOCBackmatterHeadcbmh,
-.TOCPartNumbercpn,
-.TOCChapterNumberccn,
-.PartNumberpn,
-.ChapNumbercn,
-.VolumeNumbervoln,
-.CollectionBookNumberbkn,
-.TableNumbertn,
-.ChartNumbercrn,
-.FigureNumberfgn {
+[class|="TOCFrontmatterHead"],
+[class|="TOCBackmatterHead"],
+[class|="TOCPartNumber"],
+[class|="TOCChapterNumber"],
+[class|="PartNumber"],
+[class|="ChapNumber"],
+[class|="VolumeNumber"],
+[class|="CollectionBookNumber"],
+[class|="TableNumber"],
+[class|="ChartNumber"],
+[class|="FigureNumber"] {
   font-size: 1em;
   text-align: center;
   text-transform: uppercase;
@@ -328,43 +328,43 @@ h1,
   padding: .5em;
   margin-top: 0;
   }
-.TOCPartNumbercpn,
-.TOCFrontmatterHeadcfmh,
-.TOCBackmatterHeadcbmh,
-.PartNumberpn,
-.VolumeNumbervoln,
-.CollectionBookNumberbkn {
+[class|="TOCPartNumber"],
+[class|="TOCFrontmatterHead"],
+[class|="TOCBackmatterHead"],
+[class|="PartNumber"],
+[class|="VolumeNumber"],
+[class|="CollectionBookNumber"] {
   background: #999;
   }
-.TOCChapterNumberccn,
-.ChapNumbercn,
-.TableNumbertn,
-.ChartNumbercrn,
-.FigureNumberfgn {
+[class|="TOCChapterNumber"],
+[class|="ChapNumber"],
+[class|="TableNumber"],
+[class|="ChartNumber"],
+[class|="FigureNumber"] {
   background: #eee;
 /*  margin-top: 3em; */
   }
-.TableNumbertn,
-.ChartNumbercrn,
-.FigureNumberfgn {
+[class|="TableNumber"],
+[class|="ChartNumber"],
+[class|="FigureNumber"] {
   color: #999;
   margin-top: 1em;
   margin-bottom: 0;
   }
-.FrontSalesTitlefst,
-.AdCardMainHeadacmh,
-.HalftitleBookTitlehtit,
-.TitlepageBookTitletit,
-.PartTitlept,
-.ChapTitlect,
-.VolumeTitlevolt,
-.CollectionBookTitlebkt {
+[class|="FrontSalesTitle"],
+[class|="AdCardMainHead"],
+[class|="HalftitleBookTitle"],
+[class|="TitlepageBookTitle"],
+[class|="PartTitle"],
+[class|="ChapTitle"],
+[class|="VolumeTitle"],
+[class|="CollectionBookTitle"] {
   text-align: center;
   }
-.PartTitlept:after,
-.ChapTitlect:after,
-.VolumeTitlevolt:after,
-.CollectionBookTitlebkt:after {
+[class|="PartTitle"]:after,
+[class|="ChapTitle"]:after,
+[class|="VolumeTitle"]:after,
+[class|="CollectionBookTitle"]:after {
   display: block;
   width: 50%;
   margin: .66666666666667em auto;
@@ -380,36 +380,36 @@ H2
 
 h2,
 [class*="Level-2Subhead"],
-.FrontSalesSubtitlefsst,
-.AdCardSubheadacsh,
-.TitlepageBookSubtitlestit,
-.FMSubheadfmsh,
-.TOCChapterSubtitleccst,
-.PartSubtitlepst,
-.ChapSubtitlecst,
-.Head-Level-2h2,
-.BoxHead-Level-2bh2,
-.SidebarHead-Level-2sbh2,
-.BMSubheadbmsh,
-.AppendixSubheadapsh,
-.IndexInternalSubheadih1,
-.BOBAdSubtitlebobst {
+[class|="FrontSalesSubtitle"],
+[class|="AdCardSubhead"],
+[class|="TitlepageBookSubtitle"],
+[class|="FMSubhead"],
+[class|="TOCChapterSubtitle"],
+[class|="PartSubtitle"],
+[class|="ChapSubtitle"],
+[class|="Head-Level-2"],
+[class|="BoxHead-Level-2"],
+[class|="SidebarHead-Level-2"],
+[class|="BMSubhead"],
+[class|="AppendixSubhead"],
+[class|="IndexInternalSubhead"],
+[class|="BOBAdSubtitle"] {
   text-indent: 0;
   text-transform: uppercase;
   letter-spacing: .075em;
   font-weight: bold;
   margin: 1em 0 0 0;
   }
-.FrontSalesSubtitlefsst,
-.AdCardSubheadacsh,
-.TitlepageBookSubtitlestit,
-.PartSubtitlepst,
-.ChapSubtitlecst {
+[class|="FrontSalesSubtitle"],
+[class|="AdCardSubhead"],
+[class|="TitlepageBookSubtitle"],
+[class|="PartSubtitle"],
+[class|="ChapSubtitle"] {
   text-align: center;
   margin-bottom: 1em;
   }
-.PartSubtitlepst:after,
-.ChapSubtitlecst:after {
+[class|="PartSubtitle"]:after,
+[class|="ChapSubtitle"]:after {
   display: block;
   width: 25%;
   margin: 1em auto;
@@ -425,19 +425,19 @@ H3
 
 h3,
 [class*="Level-3Subhead"],
-.FrontSalesQuoteHeadfsqh,
-.PartContentsMainHeadpcmh,
-.Head-Level-3h3,
-.IngredientsHeadrih,
-.Sub-RecipeIngredientsHeadsrih,
-.Menumenu,
-.RecipeVarHeadrvh,
-.RecipeNoteHeadrnh,
-.Extract-NoteHeadextnh,
-.BoxHead-Level-3bh3,
-.SidebarHead-Level-3sbh3,
-.GlossaryTermglt,
-.BOBAdQuoteHeadbobqh {
+[class|="FrontSalesQuoteHead"],
+[class|="PartContentsMainHead"],
+[class|="Head-Level-3"],
+[class|="IngredientsHead"],
+[class|="Sub-RecipeIngredientsHead"],
+[class|="Menu"],
+[class|="RecipeVarHead"],
+[class|="RecipeNoteHead"],
+[class|="Extract-NoteHead"],
+[class|="BoxHead-Level-3"],
+[class|="SidebarHead-Level-3"],
+[class|="GlossaryTerm"],
+[class|="BOBAdQuoteHead"] {
   text-indent: 0;
   font-weight: bold;
   margin: 1em 0 0 0;
@@ -451,10 +451,10 @@ H4
 
 h4,
 [class*="Level-4Subhead"],
-.PartContentsHeadpch,
-.Head-Level-4h4,
-.BoxHead-Level-4bh4,
-.SidebarHead-Level-4sbh4 {
+[class|="PartContentsHead"],
+[class|="Head-Level-4"],
+[class|="BoxHead-Level-4"],
+[class|="SidebarHead-Level-4"] {
   text-indent: 0;
   text-transform: uppercase;
   letter-spacing: .075em;
@@ -469,31 +469,31 @@ H5
 
 h5,
 [class*="Level-5Subhead"],
-.Head-Level-5h5,
-.ExtractHeadexth,
-.PoemTitlevt,
-.RecipeHeadrh,
-.Sub-RecipeHeadsrh,
-.BoxHeadbh,
-.BoxHead-Level-5bh5,
-.SidebarHeadsbh,
-.SidebarHead-Level-5sbh5,
-.ChartHeadcrh,
-.FigureHeadfgh,
-.TableHeadth {
+[class|="Head-Level-5"],
+[class|="ExtractHead"],
+[class|="PoemTitle"],
+[class|="RecipeHead"],
+[class|="Sub-RecipeHead"],
+[class|="BoxHead"],
+[class|="BoxHead-Level-5"],
+[class|="SidebarHead"],
+[class|="SidebarHead-Level-5"],
+[class|="ChartHead"],
+[class|="FigureHead"],
+[class|="TableHead"] {
   text-indent: 0;
   font-style: italic;
   margin: 1em 0 0 0;
   }
-.ExtractHeadexth,
-.PoemTitlevt,
-.RecipeHeadrh,
-.Sub-RecipeHeadsrh,
-.BoxHeadbh,
-.SidebarHeadsbh,
-.ChartHeadcrh,
-.TableHeadth,
-.FigureHeadfgh {
+[class|="ExtractHead"],
+[class|="PoemTitle"],
+[class|="RecipeHead"],
+[class|="Sub-RecipeHead"],
+[class|="BoxHead"],
+[class|="SidebarHead"],
+[class|="ChartHead"],
+[class|="TableHead"],
+[class|="FigureHead"] {
   font-size: 1em;
   background: #ccc;
   }
@@ -505,29 +505,29 @@ H6
 */
 
 h6,
-.Head-Level-6h6,
-.PoemSubtitlevst,
-.PoemNumericSubheadsvhn,
-.RecipeSubheadrsh,
-.Sub-RecipeSubheadsrsh,
-.BoxSubheadbsh,
-.SidebarSubheadsbsh,
-.TableSubheadtsh,
-.ChartSubheadcrsh,
-.FigureSubheadfgsh {
+[class|="Head-Level-6"],
+[class|="PoemSubtitle"],
+[class|="PoemNumericSubhead"],
+[class|="RecipeSubhead"],
+[class|="Sub-RecipeSubhead"],
+[class|="BoxSubhead"],
+[class|="SidebarSubhead"],
+[class|="TableSubhead"],
+[class|="ChartSubhead"],
+[class|="FigureSubhead"] {
   text-indent: 0;
   font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin: 1em 0 0 0;
   }
-.PoemSubtitlevst,
-.RecipeSubheadrsh,
-.Sub-RecipeSubheadsrsh,
-.BoxSubheadbsh,
-.SidebarSubheadsbsh,
-.TableSubheadtsh,
-.ChartSubheadcrsh,
-.FigureSubheadfgsh {
+[class|="PoemSubtitle"],
+[class|="RecipeSubhead"],
+[class|="Sub-RecipeSubhead"],
+[class|="BoxSubhead"],
+[class|="SidebarSubhead"],
+[class|="TableSubhead"],
+[class|="ChartSubhead"],
+[class|="FigureSubhead"] {
   border-bottom: 2px solid #ccc;
   margin-bottom: 1em;
   }
@@ -538,11 +538,11 @@ FRONT SALES
 --------------------------------------------------
 */
 
-.FrontSalesTextfstx,
-.FrontSalesTextNoIndentfstx1 {
+[class|="FrontSalesText"],
+[class|="FrontSalesTextNoIndent"] {
   }
-.FrontSalesQuotefsq,
-.FrontSalesQuoteNoIndentfsq1 {
+[class|="FrontSalesQuote"],
+[class|="FrontSalesQuoteNoIndent"] {
   font-style: italic;
   }
 
@@ -552,7 +552,7 @@ AD CARD
 --------------------------------------------------
 */
 
-.AdCardListofTitlesacl {
+[class|="AdCardListofTitle"] {
   text-indent: 0;
   text-align: center;
   }
@@ -563,14 +563,14 @@ TITLE PAGE
 --------------------------------------------------
 */
 
-.TitlepageAuthorNameau,
-.TitlepageContributorNamecon,
-.TitlepageTranslatorNametran,
-.TitlepageSeriesTitleser,
-.TitlepageReadingLinerl,
-.TitlepageImprintLineimp,
-.TitlepagePublisherNamepub,
-.TitlepageCitiescit {
+[class|="TitlepageAuthorName"],
+[class|="TitlepageContributorName"],
+[class|="TitlepageTranslatorName"],
+[class|="TitlepageSeriesTitle"],
+[class|="TitlepageReadingLine"],
+[class|="TitlepageImprintLine"],
+[class|="TitlepagePublisherName"],
+[class|="TitlepageCities"] {
   text-indent: 0;
   text-align: center;
   margin: 1em 0;
@@ -582,12 +582,12 @@ COPYRIGHT PAGE
 --------------------------------------------------
 */
 
-.CopyrightTextsinglespacecrtx,
-.CopyrightTextdoublespacecrtxd {
+[class|="CopyrightTextsinglespace"],
+[class|="CopyrightTextdoublespace"] {
   font-size: .75em;
   text-indent: 0;
   }
-.CopyrightTextdoublespacecrtxd {
+[class|="CopyrightTextdoublespace"] {
   margin: 1em 0;
   }
 
@@ -597,21 +597,21 @@ DEDICATION PAGE
 --------------------------------------------------
 */
 
-.Dedicationded,
-.DedicationAuthordedau {
+[class|="Dedication"],
+[class|="DedicationAuthor"] {
   text-indent: 0;
   text-align: center;
   margin-left: 1.5em;
   margin-right: 1.5em;
   }
-.Dedicationded {
+[class|="Dedicationd"] {
   font-style: italic;
   }
-.DedicationAuthordedau {
+[class|="DedicationAuthor"] {
   margin-top: 1em;
   }
 section[data-type="dedication"] blockquote[data-type="epigraph"],
-.Dedicationded + p[class*="Epigraph"] {
+[class|="Dedication"] + p[class*="Epigraph"] {
   page-break-before: always;
   margin-top: 2em;
   }
@@ -625,34 +625,34 @@ EPIGRAPH PAGE (AND OTHER EPIGRAPHS)
 blockquote[data-type="epigraph"] {
   margin: 2em 1.5em;
   }
-.Epigraphnon-verseepi,
-.Epigraphverseepiv,
-.FMEpigraphnon-versefmepi,
-.FMEpigraphversefmepiv,
-.PartEpigraphnon-versepepi,
-.PartEpigraphversepepiv,
-.ChapEpigraphnon-versecepi,
-.ChapEpigraphversecepiv,
-.EpigraphinTextnon-versetepi,
-.EpigraphinTextversetepiv,
-.PoemEpigraphnon-versevepi,
-.PoemEpigraphversevepiv,
-.BoxEpigraphnon-versebepi,
-.BoxEpigraphversebepiv,
-.SidebarEpigraphnon-versesbepi,
-.SidebarEpigraphversesbepiv {
+[class|="Epigraphnon-verse"],
+[class|="Epigraphverse"],
+[class|="FMEpigraphnon-verse"],
+[class|="FMEpigraphverse"],
+[class|="PartEpigraphnon-verse"],
+[class|="PartEpigraphverse"],
+[class|="ChapEpigraphnon-verse"],
+[class|="ChapEpigraphverse"],
+[class|="EpigraphinTextnon-verse"],
+[class|="EpigraphinTextverse"],
+[class|="PoemEpigraphnon-verse"],
+[class|="PoemEpigraphverse"],
+[class|="BoxEpigraphnon-verse"],
+[class|="BoxEpigraphverse"],
+[class|="SidebarEpigraphnon-verse"],
+[class|="SidebarEpigraphverse"] {
   font-style: italic;
   }
-.EpigraphSourceeps,
-.FMEpigraphSourcefmeps,
-.PartEpigraphSourcepeps,
-.ChapEpigraphSourceceps,
-.EpigraphinTextSourceteps,
-.PoemEpigraphSourceveps,
-.BoxEpigraphSourcebeps,
-.SidebarEpigraphSourcesbeps,
-.FrontSalesQuoteSourcefsqs,
-.BOBAdQuoteSourcebobqs {
+[class|="EpigraphSource"],
+[class|="FMEpigraphSource"],
+[class|="PartEpigraphSource"],
+[class|="ChapEpigraphSource"],
+[class|="EpigraphinTextSource"],
+[class|="PoemEpigraphSource"],
+[class|="BoxEpigraphSource"],
+[class|="SidebarEpigraphSource"],
+[class|="FrontSalesQuoteSource"],
+[class|="BOBAdQuoteSource"] {
   text-indent: 0;
   font-style: normal;
   font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
@@ -666,38 +666,38 @@ CONTENTS PAGE
 --------------------------------------------------
 */
 
-.TOCAuthorcau,
-.TOCPartNumbercpn,
-.TOCPartTitlecpt,
-.TOCChapterNumberccn,
-.TOCChapterTitlecct,
-.TOCChapterSubtitleccst,
-.TOCLevel-1ChapterHeadch1,
-.TOCBackmatterHeadcbmh,
-.TOCPageNumbercnum {
+[class|="TOCAuthor"],
+[class|="TOCPartNumber"],
+[class|="TOCPartTitle"],
+[class|="TOCChapterNumber"],
+[class|="TOCChapterTitle"],
+[class|="TOCChapterSubtitle"],
+[class|="TOCLevel-1ChapterHead"],
+[class|="TOCBackmatterHead"],
+[class|="TOCPageNumber"] {
   list-style: none;
   text-indent: 0;
   text-align: center;
   }
-.TOCAuthorcau {
+[class|="TOCAuthor"] {
   font-style: italic;
   margin: 1em 0;
   }
-.TOCPartNumbercpn,
-.TOCChapterNumberccn {
+[class|="TOCPartNumber"],
+[class|="TOCChapterNumber"] {
   margin-left: 15%;
   margin-right: 15%;
   }
-.TOCFrontmatterHeadcfmh,
-.TOCPartTitlecpt,
-.TOCChapterTitlecct,
-.TOCLevel-1ChapterHeadch1,
-.TOCBackmatterHeadcbmh,
-.TOCPartNumbercpn,
-.TOCChapterNumberccn,
-.TOCChapterSubtitleccst,
-.TOCAuthorcau,
-.TOCPageNumbercnum {
+[class|="TOCFrontmatterHead"],
+[class|="TOCPartTitle"],
+[class|="TOCChapterTitle"],
+[class|="TOCLevel-1ChapterHead"],
+[class|="TOCBackmatterHead"],
+[class|="TOCPartNumber"],
+[class|="TOCChapterNumber"],
+[class|="TOCChapterSubtitle"],
+[class|="TOCAuthor"],
+[class|="TOCPageNumber"] {
   display: none;
   }
 
@@ -707,29 +707,29 @@ OTHER FRONTMATTER
 --------------------------------------------------
 */
 
-.FMTitlefmt,
-.FMAuthorNamefmau,
-.FMAuthorSignatureausig,
-.FMDramatisPersonaefmdp {
+[class|="FMTitle"],
+[class|="FMAuthorName"],
+[class|="FMAuthorSignature"],
+[class|="FMDramatisPersonae"] {
   text-indent: 0;
   margin: 1em 0;
   }
-.FMHeadfmh,
-.FMTitlefmt,
-.FMSubheadfmsh,
-.FMAuthorNamefmau,
-.FMHeadALTafmh {
+[class|="FMHead"],
+[class|="FMTitle"],
+[class|="FMSubhead"],
+[class|="FMAuthorName"],
+[class|="FMHeadALT"] {
   text-align: center;
   }
-.FMHeadALTafmh,
-.FMTextALTafmtx,
-.FMTextNo-IndentALTafmtx1 {
+[class|="FMHeadALT"],
+[class|="FMTextALT"],
+[class|="FMTextNo-IndentALT"] {
   font-family: Helvetica,Arial,sans-serif;
   }
-.FMAuthorSignatureausig {
+[class|="FMAuthorSignature"] {
   font-style: italic;
   }
-.FMDramatisPersonaefmdp {
+[class|="FMDramatisPersonae"] {
   text-transform: uppercase;
   letter-spacing: .075em;
   }
@@ -740,23 +740,23 @@ PART OPENERS
 --------------------------------------------------
 */
 
-.PartOrnamentporn,
-.PartOrnamentALTporn2,
-.PartContentsMainHeadpcmh,
-.PartContentsHeadpch {
+[class|="PartOrnament"],
+[class|="PartOrnamentALT"],
+[class|="PartContentsMainHead"],
+[class|="PartContentsHead"] {
   text-indent: 0;
   text-align: center;
   margin: 1em 0;
   }
-.PartOrnamentporn:before,
-.PartOrnamentALTporn2:before {
+[class|="PartOrnament"]:before,
+[class|="PartOrnamentALT"]:before {
   display: block;
   font-size: 1.125em;
   }
-.PartOrnamentporn:before {
+[class|="PartOrnament"]:before {
   content: "\2766"; /* U+2766 "floral heart" */
   }
-.PartOrnamentALTporn2:before {
+[class|="PartOrnamentALT"]:before {
   content: "\2756"; /* U+2756 "black diamond minus white" */
   }
 
@@ -766,23 +766,23 @@ CHAPTER OPENERS
 --------------------------------------------------
 */
 
-.ChapAuthorca,
-.Dateline-Chapterdl,
-.ChapOrnamentcorn,
-.ChapOrnamentALTcorn2 {
+[class|="ChapAuthor"],
+[class|="Dateline-Chapter"],
+[class|="ChapOrnament"],
+[class|="ChapOrnamentALT"] {
   text-align: center;
   text-indent: 0;
   margin: 1em 0;
   }
-.ChapOrnamentcorn,:before,
-.ChapOrnamentALTcorn2:before {
+[class|="ChapOrnament"],:before,
+[class|="ChapOrnamentALT"]:before {
   display: block;
   font-size: 1.125em;
   }
-.ChapOrnamentcorn:before {
+[class|="ChapOrnament"]:before {
   content: "\2766"; /* U+2766 "floral heart" */
   }
-.ChapOrnamentALTcorn2:before {
+[class|="ChapOrnamentALT"]:before {
   content: "\2756"; /* U+2756 "black diamond minus white" */
   }
 
@@ -793,12 +793,12 @@ TEXT
 --------------------------------------------------
 */
 
-.Text-ComputerTypecom,
-.Text-ComputerTypeNo-Indentcom1 {
+[class|="Text-ComputerType"],
+[class|="Text-ComputerTypeNo-Indent"] {
   font-family: "Courier New",monospace,Georgia,"Times New Roman",sans-serif;
   }
-.Text-StandardALTatx,
-.Text-StdNo-IndentALTatx1 {
+[class|="Text-StandardALT"],
+[class|="Text-StdNo-IndentALT"] {
   font-family: Helvetica,Arial,sans-serif;
   }
 
@@ -808,9 +808,9 @@ DISPLAY TEXT
 --------------------------------------------------
 */
 
-.InitialCapic {
+[class|="InitialCap"] {
   }
-.DisplayPhrasedis {
+[class|="DisplayPhrase"] {
   clear: both;
   color: #999;
   font-size: 1.125em;
@@ -821,8 +821,8 @@ DISPLAY TEXT
   background: #eee;
   margin: 1em 0;
   }
-.Storydatelinesdl,
-.Storylocationlinesloc {
+[class|="Storydateline"],
+[class|="Storylocationline"] {
   text-indent: 0;
   font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
@@ -835,55 +835,55 @@ SPACE BREAKS
 --------------------------------------------------
 */
 
-.SpaceBreak,
-.SectionBreaksbr,
-.SpaceBreakwithOrnamentorn,
-.SpaceBreakwithALTOrnamentorn2,
-.PartStartpts,
-.PartEndpte,
-.PageBreakpb,
-.SpaceBreak-1-Linels1,
-.SpaceBreak-2-Linels2,
-.SpaceBreak-3-Linels3 {
+[class|="SpaceBreak"],
+[class|="SectionBreak"],
+[class|="SpaceBreakwithOrnament"],
+[class|="SpaceBreakwithALTOrnament"],
+[class|="PartStart"],
+[class|="PartEnd"],
+[class|="PageBreak"],
+[class|="SpaceBreak-1-Line"],
+[class|="SpaceBreak-2-Line"],
+[class|="SpaceBreak-3-Line"] {
   text-indent: 0;
   text-align: center;
   }
-.SpaceBreak,
-.SectionBreaksbr,
-.SpaceBreakwithOrnamentorn,
-.SpaceBreakwithALTOrnamentorn2,
-.SpaceBreak-1-Linels1 {
+[class|="SpaceBreak"],
+[class|="SectionBreak"],
+[class|="SpaceBreakwithOrnament"],
+[class|="SpaceBreakwithALTOrnament"],
+[class|="SpaceBreak-1-Line"] {
   margin: 1em 0;
   }
-.SpaceBreak-2-Linels2 {
+[class|="SpaceBreak-2-Line"] {
   margin: 1em 0 2em 0;
   }
-.SpaceBreak-3-Linels3 {
+[class|="SpaceBreak-3-Line"] {
   margin: 1em 0 3em 0;
   }
-.Dateline-Texttdl {
+[class|="Dateline-Text"] {
   text-indent: 0;
   font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin: 1em 0;
   }
 
-.SpaceBreak,
-.SectionBreaksbr,
-.SpaceBreak-1-Linels1,
-.SpaceBreak-2-Linels2,
-.SpaceBreak-3-Linels3 {
+[class|="SpaceBreak"],
+[class|="SectionBreak"],
+[class|="SpaceBreak-1-Line"],
+[class|="SpaceBreak-2-Line"],
+[class|="SpaceBreak-3-Line"] {
   content: " ";
   }
-.SpaceBreakwithOrnamentorn,
-.SpaceBreakwithALTOrnamentorn2, {
+[class|="SpaceBreakwithOrnament"],
+[class|="SpaceBreakwithALTOrnament"], {
   display: block;
   font-size: 1.125em;
   }
-.SpaceBreakwithOrnamentorn, {
+[class|="SpaceBreakwithOrnament"], {
   content: "\2766"; /* U+2766 "floral heart" */
   }
-.SpaceBreakwithALTOrnamentorn2 {
+[class|="SpaceBreakwithALTOrnament"] {
   content: "\2756"; /* U+2756 "black diamond minus white" */
   }
 
@@ -893,18 +893,18 @@ EXTRACTS
 --------------------------------------------------
 */
 
-.Extractext,
+[class|="Extract"],
 [class*="Extract"] {
   font-style: italic;
   text-indent: 0;
   }
-.Extract-Headlineexthl,
-.Extract-EmailHeadingemh {
+[class|="Extract-Headline"],
+[class|="Extract-EmailHeading"] {
   text-indent: 0;
   text-transform: uppercase;
   letter-spacing: .075em;
   }
-.Extract-Telegramtel {
+[class|="Extract-Telegram"] {
   font-family: "Courier New",monospace,Georgia,"Times New Roman",sans-serif;
   text-transform: uppercase;
   }
@@ -915,28 +915,28 @@ LETTERS
 --------------------------------------------------
 */
 
-.LetterExtHeadnotehn {
+[class|="LetterExtHeadnote"] {
   text-transform: uppercase;
   letter-spacing: .075em;
   }
-.LetterExtHeadnotehn+p,
-.LetterExtAddressladd,
-.LetterExtSalutationlsa,
-.LetterExtClosinglcl,
-.LetterExtSignaturelsig,
-.LetterExtPostscriptlps {
+[class|="LetterExtHeadnote"]+p,
+[class|="LetterExtAddress"],
+[class|="LetterExtSalutation"],
+[class|="LetterExtClosing"],
+[class|="LetterExtSignature"],
+[class|="LetterExtPostscript"] {
   text-indent: 0;
   }
-.LetterExtDatelineldl {
+[class|="LetterExtDateline"] {
   margin: 1em 0;
   }
-p+.LetterExtSalutationlsa,
-.LetterExtClosinglcl,
-.LetterExtSignaturelsig,
-.LetterExtPostscriptlps {
+p+[class|="LetterExtSalutation"],
+[class|="LetterExtClosing"],
+[class|="LetterExtSignature"],
+[class|="LetterExtPostscript"] {
   margin-top: 1em;
   }
-.LetterExtClosinglcl+.LetterExtSignaturelsig {
+[class|="LetterExtClosing"]+[class|="LetterExtSignature"] {
   margin-top: 0;
   }
 
@@ -950,32 +950,32 @@ SCREENPLAY
   font-style: normal;
   text-indent: 0;
   }
-.ScreenplayDramatisPersonaedp,
-.ScreenplayHeadsph,
-.ScreenplaySubheadspsh,
-.ScreenplaySpeakers {
+[class|="ScreenplayDramatisPersonae"],
+[class|="ScreenplayHead"],
+[class|="ScreenplaySubhead"],
+[class|="ScreenplaySpeaker"] {
   text-transform: uppercase;
   }
-.ScreenplayHeadsph,
-.ScreenplaySubheadspsh {
+[class|="ScreenplayHead"],
+[class|="ScreenplaySubhead"] {
   margin-top: 1em;
   margin-bottom: 1em;
   }
-.ScreenplaySpeakers {
+[class|="ScreenplaySpeaker"] {
   text-align: center;
   margin-top: 1em;
   }
-.ScreenplaySpeakers,
-.ScreenplayTextsptx,
-.ScreenplayTextNo-Indentsptx1 {
+[class|="ScreenplaySpeaker"],
+[class|="ScreenplayText"],
+[class|="ScreenplayTextNo-Indent"] {
   margin-left: 3em;
   margin-right: 3em;
   }
-.ScreenplayStageDirectionssd {
+[class|="ScreenplayStageDirection"] {
   font-style: italic;
   margin: 1em 0;
   }
-.ScreenplayTextsptx {
+[class|="ScreenplayText"] {
   text-indent: 1.5em;
   }
 
@@ -985,38 +985,38 @@ POETRY
 --------------------------------------------------
 */
 
-.PoemTitlevt+.PoemSubtitlevst {
+[class|="PoemTitle"]+[class|="PoemSubtitle"] {
   margin-top: 0;
   }
-.PoemDedicationvded {
+[class|="PoemDedication"] {
   font-style: italic;
   font-variant: normal;
   text-transform: none;
   letter-spacing: 0;
   }
-.VerseTextvtx,
-.Epigraphverseepiv,
-.FMEpigraphversefmepiv,
-.PartEpigraphversepepiv,
-.ChapEpigraphversecepiv,
-.Extract-VerseorPoetryextv,
-.Extract-SongLyricextsl,
-.EpigraphinTextversetepiv,
-.PoemEpigraphversevepiv,
-.BoxEpigraphversebepiv,
-.BoxExtract-Versebextv,
-.SidebarEpigraphversesbepiv,
-.SidebarExtract-Versesbextv,
-.Example-Versevexa {
+[class|="VerseText"],
+[class|="Epigraphverse"],
+[class|="FMEpigraphverse"],
+[class|="PartEpigraphverse"],
+[class|="ChapEpigraphverse"],
+[class|="Extract-VerseorPoetry"],
+[class|="Extract-SongLyric"],
+[class|="EpigraphinTextverse"],
+[class|="PoemEpigraphverse"],
+[class|="BoxEpigraphverse"],
+[class|="BoxExtract-Verse"],
+[class|="SidebarEpigraphverse"],
+[class|="SidebarExtract-Verse"],
+[class|="Example-Verse"] {
   margin-left: 1.5em;
   text-indent: -1.5em;
   }
-.VerseRun-inTextvrtx {
+[class|="VerseRun-inText"] {
   text-indent: 0;
   margin-left: 1.5em;
   }
-.PoemDatelinevdl,
-.PoemDedicationvded {
+[class|="PoemDateline"],
+[class|="PoemDedication"] {
   text-indent: 0;
   margin: 1em 0;
   }
@@ -1033,7 +1033,7 @@ basic CSS that would apply to it:
 
 <p class="BulletListItem">foo</p>
 
-.BulletListItem {
+[class|="BulletListItem"] {
   display: list-item;
   list-style: disc outside;
   }
@@ -1065,7 +1065,7 @@ list-style-type of "none".
 
 */
 
-.ListHeadlh {
+[class|="ListHead"] {
   font-weight: bold;
   text-indent: 0;
   margin: 1em 0;
@@ -1076,35 +1076,35 @@ ol {
   }
 li,
 /*
-.ListNumnl,
-.ListNumSubentrynsl,
+[class|="ListNum"],
+[class|="ListNumSubentry"],
 */
-.ListAlphaal,
+[class|="ListAlpha"],
 /*
-.ListAlphaSubentryasl,
-.ListBulletbl,
-.ListBulletSubentrybsl,
-.ListUnnumul,
-.ListUnnumSubentryusl,
+[class|="ListAlphaSubentry"],
+[class|="ListBullet"],
+[class|="ListBulletSubentry"],
+[class|="ListUnnum"],
+[class|="ListUnnumSubentry"],
 */
-.NumberedParagraphsnp,
-.BulletedParagraphsbp,
+[class|="NumberedParagraph"],
+[class|="BulletedParagraph"],
 /*
-.Extract-NumListextnl,
-.Extract-BulletListextbl,
+[class|="Extract-NumList"],
+[class|="Extract-BulletList"],
 */
-.IngredientsListri,
-.Sub-RecipeIngredientsListsri
+[class|="IngredientsList"],
+[class|="Sub-RecipeIngredientsList"]
 /*
-.BoxListNumbnl,
-.BoxListBulletbbl,
-.BoxListUnnumbul,
-.SidebarListNumsbnl,
-.SidebarListBulletsbbl,
-.SidebarListUnnumsbul
-.AppendixListNumapnl,
-.AppendixListUnnumapul,
-.AppendixListBulletapbl
+[class|="BoxListNumb"],
+[class|="BoxListBullet"],
+[class|="BoxListUnnum"],
+[class|="SidebarListNum"],
+[class|="SidebarListBullet"],
+[class|="SidebarListUnnum"],
+[class|="AppendixListNum"],
+[class|="AppendixListUnnum"],
+[class|="AppendixListBullet"]
 */ {
   display: list-item;
   list-style-position: outside;
@@ -1117,75 +1117,75 @@ li ol {
   }
 ul li,
 /*
-.ListBulletbl,
-.ListUnnumul,
+[class|="ListBullet"],
+[class|="ListUnnum"],
 */
-.BulletedParagraphsbp,
+[class|="BulletedParagraph"],
 /*
-.Extract-BulletListextbl,
+[class|="Extract-BulletList"],
 */
-.IngredientsListri,
-.Sub-RecipeIngredientsListsri
+[class|="IngredientsList"],
+[class|="Sub-RecipeIngredientsList"]
 /*
-.BoxListBulletbbl,
-.BoxListUnnumbul,
-.SidebarListBulletsbbl,
-.SidebarListUnnumsbul
-.AppendixListUnnumapul,
-.AppendixListBulletapbl
+[class|="BoxListBullet"],
+[class|="BoxListUnnum"],
+[class|="SidebarListBullet"],
+[class|="SidebarListUnnum"],
+[class|="AppendixListUnnum"],
+[class|="AppendixListBullet"]
 */ {
   list-style-type: disc;
   }
 li ul li,
-.ListBulletSubentrybsl,
-.ListUnnumSubentryusl {
+[class|="ListBulletSubentry"],
+[class|="ListUnnumSubentry"] {
   list-style-type: square;
   }
 ol li,
 /*
-.ListNumnl,
-.ListNumSubentrynsl,
+[class|="ListNum"],
+[class|="ListNumSubentry"],
 */
-.ListAlphaal,
+[class|="ListAlpha"],
 /*
-.ListAlphaSubentryasl,
+[class|="ListAlphaSubentry"],
 */
-.NumberedParagraphsnp
+[class|="NumberedParagraph"]
 /*
-.Extract-NumListextnl,
-.BoxListNumbnl,
-.SidebarListNumsbnl,
-.AppendixListNumapnl
+[class|="Extract-NumList"],
+[class|="BoxListNum"],
+[class|="SidebarListNum"],
+[class|="AppendixListNum"]
 */ {
 /*list-style-type: decimal;*/
   list-style-type: none;
   }
 li ol li
 /*
-.ListNumSubentrynsl,
-.ListAlphaSubentryasl,
+[class|="ListNumSubentry"],
+[class|="ListAlphaSubentry"],
 */ {
   border-bottom: none;
   }
 /*
-.ListNumSubentrynsl {
+[class|="ListNumSubentry"] {
   list-style-type: lower-roman;
   }
-.ListAlphaal {
+[class|="ListAlpha"] {
   list-style-type: upper-alpha;
   }
-li.ListAlphaSubentryasl {
+li[class|="ListAlphaSubentry"] {
   list-style-type: lower-alpha;
   }
 */
-li.Checklistck,
-li.ChecklistSubentrycksl {
+li[class|="Checklist"],
+li[class|="ChecklistSubentry"] {
   list-style-type: none;
   text-indent: 0;
   margin-left: 1.5em;
   }
-li.Checklistck:before,
-li.ChecklistSubentrycksl:before {
+li[class|="Checklist"]:before,
+li[class|="ChecklistSubentry"]:before {
   display: block;
   width: 1.5em;
   float: left;
@@ -1193,17 +1193,17 @@ li.ChecklistSubentrycksl:before {
   text-align: center;
   content: "\2713"; /* U+2713 "check mark" */
   }
-.ColumnHeadch {
+[class|="ColumnHead"] {
   font-weight: bold;
   text-indent: 0;
   }
 
 /*
-.RecipeProceduresrp,
-.RecipeProceduresNoIndentrp1,
-.Sub-RecipeProceduressrp,
-.Sub-RecipeProceduresNoIndentrp1,
-.Definition-Numberedndef
+[class|="RecipeProcedure"],
+[class|="RecipeProceduresNoIndent"],
+[class|="Sub-RecipeProcedures"],
+[class|="Sub-RecipeProceduresNoIndent"],
+[class|="Definition-Numbered"]
 */
 
 /*
@@ -1212,11 +1212,11 @@ ILLUSTRATIONS
 --------------------------------------------------
 */
 
-.Illustrationholderill {
+[class|="Illustrationholder"] {
   background: #eee;
   margin-top: 1em;
   }
-.Captioncap {
+[class|="Caption"] {
   color: #666;
   text-indent: 0;
   text-align: center;
@@ -1224,17 +1224,17 @@ ILLUSTRATIONS
   font-style: italic;
   padding: 1em 0;
   }
-.IllustrationSourceis {
+[class|="IllustrationSource"] {
   text-align: right;
   font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin: 0;
   }
-.Illustrationholderill+p,
-.IllustrationSourceis+p {
+[class|="Illustrationholder"]+p,
+[class|="IllustrationSource"]+p {
   margin-top: 1em;
   }
-.Illustrationholderill+.IllustrationSourceis {
+[class|="Illustrationholder"]+[class|="IllustrationSource"] {
   margin-top: 0;
   }
 
@@ -1244,53 +1244,53 @@ RECIPES
 --------------------------------------------------
 */
 
-.Menumenu,
-.ChapterContentscc {
+[class|="Menu"],
+[class|="ChapterContent"] {
   }
-.RecipeHeadnoterhn,
-.Sub-RecipeHeadnotesrhn {
+[class|="RecipeHeadnote"],
+[class|="Sub-RecipeHeadnote"] {
   font-style: italic;
   text-indent: 0;
   }
-.RecipeTimert,
-.RecipeYieldry,
-.Sub-RecipeYieldsry,
-.RecipeNutritionInforni,
-.RecipeGarnishrg {
+[class|="RecipeTime"],
+[class|="RecipeYield"],
+[class|="Sub-RecipeYield"],
+[class|="RecipeNutritionInfo"],
+[class|="RecipeGarnish"] {
   margin-top: 1em;
   margin-bottom: 1em;
   text-indent: 0;
   }
-.RecipeVarHeadrvh,
-.RecipeVarTextrvtx,
-.RecipeVarTextNo-Indentrvtx1,
-.RecipeNoteHeadrnh,
-.RecipeNoteTextrntx,
-.RecipeNoteTextNo-Indentrntx1 {
+[class|="RecipeVarHead"],
+[class|="RecipeVarText"],
+[class|="RecipeVarTextNo-Indent"],
+[class|="RecipeNoteHead"],
+[class|="RecipeNoteText"],
+[class|="RecipeNoteTextNo-Indent"] {
   font-style: italic;
   }
-.Sub-RecipeHeadsrh,
-.Sub-RecipeSubheadsrsh,
-.Sub-RecipeLevel-2Subheadsrsh2,
-.Sub-RecipeLevel-3Subheadsrsh3,
-.Sub-RecipeLevel-4Subheadsrsh4,
-.Sub-RecipeLevel-5Subheadsrsh5,
-.Sub-RecipeHeadnotesrhn,
-.Sub-RecipeIngredientsHeadsrih,
-.Sub-RecipeIngredientsListsri,
-.Sub-RecipeProceduressrp,
-.Sub-RecipeProceduresNoIndentrp1,
-.Sub-RecipeYieldsry {
+[class|="Sub-RecipeHead"],
+[class|="Sub-RecipeSubhead"],
+[class|="Sub-RecipeLevel-2Subhead"],
+[class|="Sub-RecipeLevel-3Subhead"],
+[class|="Sub-RecipeLevel-4Subhead"],
+[class|="Sub-RecipeLevel-5Subhead"],
+[class|="Sub-RecipeHeadnote"],
+[class|="Sub-RecipeIngredientsHead"],
+[class|="Sub-RecipeIngredientsList"],
+[class|="Sub-RecipeProcedures"],
+[class|="Sub-RecipeProceduresNoIndent"],
+[class|="Sub-RecipeYields"] {
   margin-left: 1.5em;
   margin-right: 1.5em;
   }
-.Sub-RecipeLevel-1Subheadsrsh1 {
+[class|="Sub-RecipeLevel-1Subhead"] {
   margin-left: 1em;
   margin-right: 1em;
   }
-.Sub-RecipeIngredientsListsri,
-.Sub-RecipeProceduressrp,
-.Sub-RecipeProceduresNoIndentrp1 {
+[class|="Sub-RecipeIngredientsList"],
+[class|="Sub-RecipeProcedures"],
+[class|="Sub-RecipeProceduresNoIndent"] {
   margin-left: 3em;
   }
 
@@ -1300,46 +1300,46 @@ BOXES AND SIDEBARS
 --------------------------------------------------
 */
 
-.TOCPartNumbercpn,
-.TOCChapterNumberccn,
-.RecipeHeadrh,
-.Sub-RecipeHeadsrh,
-.RecipeSubheadrsh,
-.Sub-RecipeSubheadsrsh,
-.BoxHeadbh,
-.BoxSubheadbsh,
-.SidebarHeadsbh,
-.ExtractHeadexth,
-.PoemTitlevt,
-.SidebarSubheadsbsh,
-.PoemSubtitlevst,
-.TableHeadth,
-.TableSubheadtsh,
-.ChartHeadcrh,
-.ChartSubheadcrsh,
-.FigureHeadfgh,
-.FigureSubheadfgsh {
+[class|="TOCPartNumber"],
+[class|="TOCChapterNumber"],
+[class|="RecipeHead"],
+[class|="Sub-RecipeHead"],
+[class|="RecipeSubhead"],
+[class|="Sub-RecipeSubhead"],
+[class|="BoxHead"],
+[class|="BoxSubhead"],
+[class|="SidebarHead"],
+[class|="ExtractHead"],
+[class|="PoemTitle"],
+[class|="SidebarSubhead"],
+[class|="PoemSubtitle"],
+[class|="TableHead"],
+[class|="TableSubhead"],
+[class|="ChartHead"],
+[class|="ChartSubhead"],
+[class|="FigureHead"],
+[class|="FigureSubhead"] {
   text-align: center;
   padding: .5em 0;
   }
-.BoxHeadbh+p,
-.SidebarHeadsbh+p,
-.ExtractHeadexth+p,
-.PoemTitlevt+p {
+[class|="BoxHead"]+p,
+[class|="SidebarHead"]+p,
+[class|="ExtractHead"]+p,
+[class|="PoemTitle"]+p {
   margin-top: 1em;
   }
-.BoxSourceNotebsn,
-.BoxFootnotebfn,
-.SidebarSourceNotesbsn,
-.SidebarFootnotesbfn {
+[class|="BoxSourceNote"],
+[class|="BoxFootnote"],
+[class|="SidebarSourceNote"],
+[class|="SidebarFootnote"] {
   font-size: .75em;
   text-indent: 0;
   margin: 1em 0;
   }
-.BoxExtractbext,
-.BoxExtract-Versebextv,
-.SidebarExtractsbext,
-.SidebarExtract-Versesbextv {
+[class|="BoxExtract"],
+[class|="BoxExtract-Verse"],
+[class|="SidebarExtract"],
+[class|="SidebarExtract-Verse"] {
   }
 
 /*
@@ -1358,30 +1358,30 @@ td {
   padding: .5em;
   border: 1px solid #ccc;
   }
-.TableColumnHeadtch,
-.TableSourceNotetsn,
-.TableFootnotetfn,
-.ChartColumnHeadcrch,
-.ChartLabelcrl,
-.ChartSourceNotecrxn,
-.ChartFootnotecrfn,
-.FigureColumnHeadfgch,
-.FigureLabelfgl,
-.FigureSourceNotefgsn,
-.FigureFootnotefgfn {
+[class|="TableColumnHead"],
+[class|="TableSourceNote"],
+[class|="TableFootnote"],
+[class|="ChartColumnHead"],
+[class|="ChartLabel"],
+[class|="ChartSourceNote"],
+[class|="ChartFootnote"],
+[class|="FigureColumnHead"],
+[class|="FigureLabel"],
+[class|="FigureSourceNote"],
+[class|="FigureFootnote"] {
   text-indent: 0;
   }
-.TableColumnHeadtch,
-.ChartColumnHeadcrch,
-.FigureColumnHeadfgch {
+[class|="TableColumnHead"],
+[class|="ChartColumnHead"],
+[class|="FigureColumnHead"] {
   font-weight: bold;
   }
-.TableSourceNotetsn,
-.TableFootnotetfn,
-.ChartSourceNotecrxn,
-.ChartFootnotecrfn,
-.FigureSourceNotefgsn,
-.FigureFootnotefgfn {
+[class|="TableSourceNote"],
+[class|="TableFootnote"],
+[class|="ChartSourceNote"],
+[class|="ChartFootnote"],
+[class|="FigureSourceNote"],
+[class|="FigureFootnote"] {
   font-size: .75em;
   margin: 1em 0;
   }
@@ -1392,15 +1392,15 @@ GENERAL BACKMATTER HEADS
 --------------------------------------------------
 */
 
-.BMHeadbmh,
-.BMTitlebmt,
-.BMSubheadbmsh,
-.BMHeadALTabmh {
+[class|="BMHead"],
+[class|="BMTitle"],
+[class|="BMSubhead"],
+[class|="BMHeadALT"] {
   text-align: center;
   }
-.BMHeadALTabmh,
-.BMTextALTabmtx,
-.BMTextALTNo-Indentabmtx1 {
+[class|="BMHeadALT"],
+[class|="BMTextALT"],
+[class|="BMTextALTNo-Indent"] {
   font-family: Helvetica,Arial,sans-serif;
   }
 
@@ -1410,12 +1410,12 @@ APPENDICES
 --------------------------------------------------
 */
 
-.AppendixHeadaph,
-.AppendixSubheadapsh {
+[class|="AppendixHead"],
+[class|="AppendixSubhead"] {
   text-align: center;
   }
-.AppendixSourceNoteapsn,
-.AppendixFootnoteapfn {
+[class|="AppendixSourceNote"],
+[class|="AppendixFootnote"] {
   font-size: .75em;
   text-indent: 0;
   margin: 1em 0;
@@ -1427,23 +1427,23 @@ GLOSSARY and DICTIONARY-STYLE ENTRIES
 --------------------------------------------------
 */
 
-.Exampleexa,
-.Example-Versevexa,
-.Exampleegeg,
-.Exampleindialogformexad {
+[class|="Example"],
+[class|="Example-Verse"],
+[class|="Exampleeg"],
+[class|="Exampleindialogform"] {
   font-style: italic;
   }
-.GlossaryTextgltx,
-.Entryen,
-.Definitiondef,
-.DefinitionSourcedefs,
-.Exampleexa,
-.Referencesee,
-.Exampleegeg,
-.Exampleindialogformexad {
+[class|="GlossaryText"],
+[class|="Entry"],
+[class|="Definition"],
+[class|="DefinitionSource"],
+[class|="Example"],
+[class|="References"],
+[class|="Exampleeg"],
+[class|="Exampleindialogform"] {
   text-indent: 0;
   }
-.DefinitionSourcedefs {
+[class|="DefinitionSource"] {
   margin: 1em 0;
   }
 
@@ -1453,7 +1453,7 @@ ADDRESSES
 --------------------------------------------------
 */
 
-.Addressadd {
+[class|="Address"] {
   text-indent: 0;
   }
 
@@ -1463,7 +1463,9 @@ NOTES SECTION
 --------------------------------------------------
 */
 
-.FootnoteTextfn {
+[class|="FootnoteText"], 
+p[data-type="footnote"], 
+[class|="endnotetext"] {
   font-size: .75em;
   text-indent: 0;
   margin: 1em 0;
@@ -1475,7 +1477,7 @@ BIBLIOGRAPHY
 --------------------------------------------------
 */
 
-.BibliographyTextbibtx {
+[class|="BibliographyText"] {
   text-indent: 0;
   margin: 1em 0;
   }
@@ -1486,15 +1488,15 @@ INDEX
 --------------------------------------------------
 */
 
-.IndexEntryine,
-.IndexSubentryinse,
-.IndexSub-subentryinsse {
+[class|="IndexEntry"],
+[class|="IndexSubentry"],
+[class|="IndexSub-subentry"] {
   text-indent: 0;
   }
-.IndexSubentryinse {
+[class|="IndexSubentry"] {
   margin-left: 1.5em;
   }
-.IndexSub-subentryinsse {
+[class|="IndexSub-subentry"] {
   margin-left: 3em;
   }
 
