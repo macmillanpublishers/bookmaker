@@ -99,7 +99,7 @@ images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !Fi
 image_count = images.count
 if image_count > 0
 	`mkdir #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
-	`cp #{working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
+	`cp #{tmp_dir}\\#{filename}\\images\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
 	pdfimages = Dir.entries("#{tmp_dir}\\#{filename}\\images\\pdftmp\\").select { |f| File.file?(f) }
 	pdfimages.each do |i|
 		if i.include?("fullpage")
