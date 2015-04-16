@@ -1,4 +1,22 @@
 /*
+
+Since, at the time of this writing, Macmillan's
+Word > ePub conversion tool can't yet convert all
+styles to semantically appropriate elements, the
+CSS here targets almost every existing style by
+name. Styles with shared attributes are grouped
+together as much as possible (e.g. styles that are
+meant to resolve to specific heading levels,
+"space before" and "space after" styles, etc), and
+are otherwise grouped by the categories defined in
+the Word template.
+
+Please note that the Lists section probably has
+the greatest potential for confusion, and it may
+need to be updated as the conversion tool is
+updated. See the comments at the top of that
+section for more information.
+
 --------------------------------------------------
 RESET
 --------------------------------------------------
@@ -62,7 +80,6 @@ body {
   text-align: left;
   color: #000;
   background-color: #fff;
-  padding: 1.5em;
   }
 p+p {
   text-indent: 1.5em;
@@ -100,49 +117,8 @@ h3+p, .Head-Level-3h3+p,
 h4+p, .Head-Level-4h4+p,
 h5+p, .Head-Level-5h5+p,
 h6+p, .Head-Level-6h6+p,
-.FrontSalesTextNoIndentfstx1,
-.FrontSalesQuoteNoIndentfsq1,
-.FMTextNo-Indentfmtx1,
-.FMTextNo-IndentSpaceBeforefmtx1,
-.FMTextNo-IndentSpaceAroundfmtx1,
-.FMTextNo-IndentSpaceAfterfmtx1,
-.FMTextNo-IndentALTafmtx1,
-.PartOpeningTextNo-Indentpotx1,
-.ChapOpeningTextNo-Indentcotx1,
-.ChapOpeningTextNo-IndentSpaceAftercotx1,
-.Text-StdNo-Indenttx1,
-.Text-StdNo-IndentSpaceBeforetx1,
-.Text-StdNo-IndentSpaceAroundtx1,
-.Text-StdNo-IndentSpaceAftertx1,
-.Text-StdNo-IndentALTatx1,
-.Text-ComputerTypeNo-Indentcom1,
-.Text-NarrativeNo-Indentnar1,
-.Extract-NoIndentext1,
-.LetterExtBodyTextNo-Indentltx1,
-.ScreenplayTextNo-Indentsptx1,
-.VerseRun-inTextNo-Indentvrtx1,
-.ColumnTextNo-Indentcoltx1,
-.Sub-RecipeProceduresNoIndentsrp1,
-.RecipeVarTextNo-Indentrvtx1,
-.RecipeNoteTextNo-Indentrntx1,
-.BoxTextNo-Indentbtx1,
-.SidebarTextNo-Indentsbtx1,
-.TableBodyTextNo-Indenttbtx1,
-.ChartBodyTextNo-Indentcrbtx1,
-.FigureBodyTextNo-Indentfgbtx1,
-.BMTextNo-Indentbmtx1,
-.BMTextNo-IndentSpaceBeforebmtx1,
-.BMTextNo-IndentSpaceAroundbmtx1,
-.BMTextNo-IndentSpaceAfterbmtx1,
-.BMTextALTNo-Indentabmtx1,
-.TeaserOpeningTextNo-Indenttotx1,
-.AppendixTextNo-Indentaptx1,
-.IllustrationCreditsTextNo-Indentilctx1,
-.PermissionAcksTextNo-Indentpmtx1,
-.AboutAuthorTextNo-Indentatatx1,
-.ColophonTextNo-Indentcoltx1,
-.BOBAdTextNo-Indentbobtx1,
-.BOBAdQuoteNo-Indentbobq1 {
+[class="NoIndent"],
+[class*="No-Indent"] {
   text-indent: 0;
   }
 
@@ -152,13 +128,7 @@ SPACE BEFORE
 --------------------------
 */
 
-p[class*="SpaceBefore"],
-.FMTextSpaceBeforefmtx,
-.FMTextNo-IndentSpaceBeforefmtx1,
-.Text-StandardSpaceBeforetx,
-.Text-StdNo-IndentSpaceBeforetx1,
-.BMTextSpaceBeforebmtx,
-.BMTextNo-IndentSpaceBeforebmtx1 {
+[class*="SpaceBefore"] {
   margin-top: 1em;
   }
 
@@ -168,13 +138,7 @@ SPACE AROUND
 --------------------------
 */
 
-p[class*="SpaceAround"],
-.FMTextSpaceAroundfmtx,
-.FMTextNo-IndentSpaceAroundfmtx1,
-.Text-StandardSpaceAroundtx,
-.Text-StdNo-IndentSpaceAroundtx1,
-.BMTextSpaceAroundbmtx,
-.BMTextNo-IndentSpaceAroundbmtx1 {
+[class*="SpaceAround"] {
   margin-top: 1em;
   margin-bottom: 1em;
   }
@@ -185,15 +149,7 @@ SPACE AFTER
 --------------------------
 */
 
-p[class*="SpaceAfter"],
-.FMTextSpaceAfterfmtx,
-.FMTextNo-IndentSpaceAfterfmtx1,
-.ChapOpeningTextSpaceAftercotx,
-.ChapOpeningTextNo-IndentSpaceAftercotx1,
-.Text-StandardSpaceAftertx,
-.Text-StdNo-IndentSpaceAftertx1,
-.BMTextSpaceAfterbmtx,
-.BMTextNo-IndentSpaceAfterbmtx1 {
+[class*="SpaceAfter"] {
   margin-bottom: 1em;
   }
 
@@ -216,8 +172,7 @@ strong,
   }
 .spansmallcapscharacterssc,
 .spansmcapboldscbold {
-  font-variant: small-caps;
-  text-transform: lowercase;
+  font-variant: small-caps; /* font-size: .75em; text-transform: uppercase; */
   letter-spacing: .08em;
   }
 .spanunderscorecharactersus {
@@ -263,77 +218,19 @@ HEADINGS
 COMBINATIONS
 --------------------------
 */
-/*
-h1:first-child, h2:first-child, h3:first-child,
-h4:first-child, h5:first-child, h6:first-child,
-.Head-Level-1h1:first-child,
-.Head-Level-2h2:first-child,
-.Head-Level-3h3:first-child,
-.Head-Level-4h4:first-child,
-.Head-Level-5h5:first-child,
-.Head-Level-6h6:first-child,
-*/
+
 h1+h2, h1+h3, h1+h4, h1+h5, h1+h6,
 h2+h3, h2+h4, h2+h5, h2+h6,
 h3+h4, h3+h5, h3+h6,
 h4+h5, h4+h6,
 h5+h6,
-.Head-Level-1h1+.Head-Level-2h2,
-.Head-Level-1h1+.Head-Level-3h3,
-.Head-Level-1h1+.Head-Level-4h4,
-.Head-Level-1h1+.Head-Level-5h5,
-.Head-Level-1h1+.Head-Level-6h6,
-.Head-Level-2h2+.Head-Level-3h3,
-.Head-Level-2h2+.Head-Level-4h4,
-.Head-Level-2h2+.Head-Level-5h5,
-.Head-Level-2h2+.Head-Level-6h6,
-.Head-Level-3h3+.Head-Level-4h4,
-.Head-Level-3h3+.Head-Level-5h5,
-.Head-Level-3h3+.Head-Level-6h6,
-.Head-Level-4h4+.Head-Level-5h5,
-.Head-Level-5h5+.Head-Level-6h6,
-.FMLevel-1Subheadfmh1+.FMLevel-2Subheadfmh2,
-.FMLevel-1Subheadfmh1+.FMLevel-3Subheadfmh3,
-.FMLevel-1Subheadfmh1+.FMLevel-4Subheadfmh4,
-.FMLevel-1Subheadfmh1+.FMLevel-5Subheadfmh5,
-.FMLevel-2Subheadfmh2+.FMLevel-3Subheadfmh3,
-.FMLevel-2Subheadfmh2+.FMLevel-4Subheadfmh4,
-.FMLevel-2Subheadfmh2+.FMLevel-5Subheadfmh5,
-.FMLevel-3Subheadfmh3+.FMLevel-4Subheadfmh4,
-.FMLevel-3Subheadfmh3+.FMLevel-5Subheadfmh5,
-.FMLevel-4Subheadfmh4+.FMLevel-5Subheadfmh5,
-.PoemLevel-1Subheadvh1+.PoemLevel-2Subheadvh2,
-.PoemLevel-1Subheadvh1+.PoemLevel-3Subheadvh3,
-.PoemLevel-1Subheadvh1+.PoemLevel-4Subheadvh4,
-.PoemLevel-1Subheadvh1+.PoemLevel-5Subheadvh5,
-.PoemLevel-2Subheadvh2+.PoemLevel-3Subheadvh3,
-.PoemLevel-2Subheadvh2+.PoemLevel-4Subheadvh4,
-.PoemLevel-2Subheadvh2+.PoemLevel-5Subheadvh5,
-.PoemLevel-3Subheadvh3+.PoemLevel-4Subheadvh4,
-.PoemLevel-3Subheadvh3+.PoemLevel-5Subheadvh5,
-.PoemLevel-4Subheadvh4+.PoemLevel-5Subheadvh5,
+[class*="Head-Level-"]+[class*="Head-Level-"],
+[class*="FMLevel-"]+[class*="FMLevel-"],
+[class*="PoemLevel-"]+[class*="PoemLevel-"],
 .RecipeHeadrh+.RecipeSubheadrsh,
-.RecipeLevel-1Subheadrh1+.RecipeLevel-2Subheadrh2,
-.RecipeLevel-1Subheadrh1+.RecipeLevel-3Subheadrh3,
-.RecipeLevel-1Subheadrh1+.RecipeLevel-4Subheadrh4,
-.RecipeLevel-1Subheadrh1+.RecipeLevel-5Subheadrh5,
-.RecipeLevel-2Subheadrh2+.RecipeLevel-3Subheadrh3,
-.RecipeLevel-2Subheadrh2+.RecipeLevel-4Subheadrh4,
-.RecipeLevel-2Subheadrh2+.RecipeLevel-5Subheadrh5,
-.RecipeLevel-3Subheadrh3+.RecipeLevel-4Subheadrh4,
-.RecipeLevel-3Subheadrh3+.RecipeLevel-5Subheadrh5,
-.RecipeLevel-4Subheadrh4+.RecipeLevel-5Subheadrh5,
+[class*="RecipeLevel-"]+[class*="RecipeLevel-"],
 .Sub-RecipeHeadsrh+.Sub-RecipeSubheadsrsh,
-.Sub-RecipeLevel-1Subheadsrsh1+.Sub-RecipeLevel-2Subheadsrsh2,
-.Sub-RecipeLevel-1Subheadsrsh1+.Sub-RecipeLevel-3Subheadsrsh3,
-.Sub-RecipeLevel-1Subheadsrsh1+.Sub-RecipeLevel-4Subheadsrsh4,
-.Sub-RecipeLevel-1Subheadsrsh1+.Sub-RecipeLevel-5Subheadsrsh5,
-.Sub-RecipeLevel-2Subheadsrsh2+.Sub-RecipeLevel-3Subheadsrsh3,
-.Sub-RecipeLevel-2Subheadsrsh2+.Sub-RecipeLevel-4Subheadsrsh4,
-.Sub-RecipeLevel-2Subheadsrsh2+.Sub-RecipeLevel-5Subheadsrsh5,
-.Sub-RecipeLevel-3Subheadsrsh3+.Sub-RecipeLevel-4Subheadsrsh4,
-.Sub-RecipeLevel-3Subheadsrsh3+.Sub-RecipeLevel-5Subheadsrsh5,
-.Sub-RecipeLevel-4Subheadsrsh4+.Sub-RecipeLevel-5Subheadsrsh5,
+[class*="Sub-RecipeLevel-"]+[class*="Sub-RecipeLevel-"],
 .BoxHeadbh:first-child,
 .BoxHead-Level-1bh1:first-child,
 .BoxHead-Level-2bh2:first-child,
@@ -347,132 +244,26 @@ h5+h6,
 .SidebarHead-Level-4sbh4:first-child,
 .SidebarHead-Level-5sbh5:first-child,
 .BoxHeadbh+.BoxSubheadbsh,
-.BoxHeadbh+.BoxHead-Level-1bh1,
-.BoxHeadbh+.BoxHead-Level-2bh2,
-.BoxHeadbh+.BoxHead-Level-3bh3,
-.BoxHeadbh+.BoxHead-Level-4bh4,
-.BoxHeadbh+.BoxHead-Level-5bh5,
-.BoxHeadbh+.BoxHead-Level-6bh6,
-.BoxHead-Level-1bh1+.BoxHead-Level-2bh2,
-.BoxHead-Level-1bh1+.BoxHead-Level-3bh3,
-.BoxHead-Level-1bh1+.BoxHead-Level-4bh4,
-.BoxHead-Level-1bh1+.BoxHead-Level-5bh5,
-.BoxHead-Level-1bh1+.BoxHead-Level-6bh6,
-.BoxHead-Level-2bh2+.BoxHead-Level-3bh3,
-.BoxHead-Level-2bh2+.BoxHead-Level-4bh4,
-.BoxHead-Level-2bh2+.BoxHead-Level-5bh5,
-.BoxHead-Level-2bh2+.BoxHead-Level-6bh6,
-.BoxHead-Level-3bh3+.BoxHead-Level-4bh4,
-.BoxHead-Level-3bh3+.BoxHead-Level-5bh5,
-.BoxHead-Level-3bh3+.BoxHead-Level-6bh6,
-.BoxHead-Level-4bh4+.BoxHead-Level-5bh5,
-.BoxHead-Level-4bh4+.BoxHead-Level-6bh6,
-.BoxHead-Level-5bh5+.BoxHead-Level-6bh6,
+.BoxHeadbh+[class*="BoxHead-Level-"],
+[class*="BoxHead-Level-"]+[class*="BoxHead-Level-"],
 .SidebarHeadsbh+.SidebarSubheadsbsh,
-.SidebarHeadsbh+.SidebarHead-Level-1sbh1,
-.SidebarHeadsbh+.SidebarHead-Level-2sbh2,
-.SidebarHeadsbh+.SidebarHead-Level-3sbh3,
-.SidebarHeadsbh+.SidebarHead-Level-4sbh4,
-.SidebarHeadsbh+.SidebarHead-Level-5sbh5,
-.SidebarHeadsbh+.SidebarHead-Level-6sbh6,
-.SidebarHead-Level-1sbh1+.SidebarHead-Level-2sbh2,
-.SidebarHead-Level-1sbh1+.SidebarHead-Level-3sbh3,
-.SidebarHead-Level-1sbh1+.SidebarHead-Level-4sbh4,
-.SidebarHead-Level-1sbh1+.SidebarHead-Level-5sbh5,
-.SidebarHead-Level-1sbh1+.SidebarHead-Level-6sbh6,
-.SidebarHead-Level-2sbh2+.SidebarHead-Level-3sbh3,
-.SidebarHead-Level-2sbh2+.SidebarHead-Level-4sbh4,
-.SidebarHead-Level-2sbh2+.SidebarHead-Level-5sbh5,
-.SidebarHead-Level-2sbh2+.SidebarHead-Level-6sbh6,
-.SidebarHead-Level-3sbh3+.SidebarHead-Level-4sbh4,
-.SidebarHead-Level-3sbh3+.SidebarHead-Level-5sbh5,
-.SidebarHead-Level-3sbh3+.SidebarHead-Level-6sbh6,
-.SidebarHead-Level-4sbh4+.SidebarHead-Level-5sbh5,
-.SidebarHead-Level-4sbh4+.SidebarHead-Level-6sbh6,
-.SidebarHead-Level-5sbh5+.SidebarHead-Level-6sbh6,
+.SidebarHeadsbh+[class*="SidebarHead-Level-"],
+[class*="SidebarHead-Level-"]+[class*="SidebarHead-Level-"],
 .TableNumbertn+.TableHeadth,
 .ChartNumbercrn+.ChartHeadcrh,
 .ChartHeadcrh:first-child,
 .ChartHeadcrh+.ChartSubheadcrsh,
-.ChartHeadcrh+.ChartLevel-1Subheadcrh1,
-.ChartHeadcrh+.ChartLevel-2Subheadcrh2,
-.ChartHeadcrh+.ChartLevel-3Subheadcrh3,
-.ChartHeadcrh+.ChartLevel-4Subheadcrh4,
-.ChartHeadcrh+.ChartLevel-5Subheadcrh5,
-.ChartHeadcrh+.ChartLevel-6Subheadcrh6,
-.ChartLevel-1Subheadcrh1+.ChartLevel-2Subheadcrh2,
-.ChartLevel-1Subheadcrh1+.ChartLevel-3Subheadcrh3,
-.ChartLevel-1Subheadcrh1+.ChartLevel-4Subheadcrh4,
-.ChartLevel-1Subheadcrh1+.ChartLevel-5Subheadcrh5,
-.ChartLevel-1Subheadcrh1+.ChartLevel-6Subheadcrh6,
-.ChartLevel-2Subheadcrh2+.ChartLevel-3Subheadcrh3,
-.ChartLevel-2Subheadcrh2+.ChartLevel-4Subheadcrh4,
-.ChartLevel-2Subheadcrh2+.ChartLevel-5Subheadcrh5,
-.ChartLevel-2Subheadcrh2+.ChartLevel-6Subheadcrh6,
-.ChartLevel-3Subheadcrh3+.ChartLevel-4Subheadcrh4,
-.ChartLevel-3Subheadcrh3+.ChartLevel-5Subheadcrh5,
-.ChartLevel-3Subheadcrh3+.ChartLevel-6Subheadcrh6,
-.ChartLevel-4Subheadcrh4+.ChartLevel-5Subheadcrh5,
-.ChartLevel-4Subheadcrh4+.ChartLevel-6Subheadcrh6,
-.ChartLevel-5Subheadcrh5+.ChartLevel-6Subheadcrh6,
+.ChartHeadcrh+[class*="ChartLevel-"],
+[class*="ChartLevel-"]+[class*="ChartLevel-"],
 .TableHeadth+.TableSubheadtsh,
 .FigureNumberfgn+.FigureHeadfgh,
 .FigureHeadfgh+.FigureSubheadfgsh,
-.FigureHeadfgh+.FigureLevel-1Subheadfgh1,
-.FigureHeadfgh+.FigureLevel-2Subheadfgh2,
-.FigureHeadfgh+.FigureLevel-3Subheadfgh3,
-.FigureHeadfgh+.FigureLevel-4Subheadfgh4,
-.FigureHeadfgh+.FigureLevel-5Subheadfgh5,
-.FigureLevel-1Subheadfgh1+.FigureLevel-2Subheadfgh2,
-.FigureLevel-1Subheadfgh1+.FigureLevel-3Subheadfgh3,
-.FigureLevel-1Subheadfgh1+.FigureLevel-4Subheadfgh4,
-.FigureLevel-1Subheadfgh1+.FigureLevel-5Subheadfgh5,
-.FigureLevel-2Subheadfgh2+.FigureLevel-3Subheadfgh3,
-.FigureLevel-2Subheadfgh2+.FigureLevel-4Subheadfgh4,
-.FigureLevel-2Subheadfgh2+.FigureLevel-5Subheadfgh5,
-.FigureLevel-3Subheadfgh3+.FigureLevel-4Subheadfgh4,
-.FigureLevel-3Subheadfgh3+.FigureLevel-5Subheadfgh5,
-.FigureLevel-4Subheadfgh4+.FigureLevel-5Subheadfgh5,
-.AppendixLevel-1Subheadaph1+.AppendixLevel-2Subheadaph2,
-.AppendixLevel-1Subheadaph1+.AppendixLevel-3Subheadaph3,
-.AppendixLevel-1Subheadaph1+.AppendixLevel-4Subheadaph4,
-.AppendixLevel-1Subheadaph1+.AppendixLevel-5Subheadaph5,
-.AppendixLevel-2Subheadaph2+.AppendixLevel-3Subheadaph3,
-.AppendixLevel-2Subheadaph2+.AppendixLevel-4Subheadaph4,
-.AppendixLevel-2Subheadaph2+.AppendixLevel-5Subheadaph5,
-.AppendixLevel-3Subheadaph3+.AppendixLevel-4Subheadaph4,
-.AppendixLevel-3Subheadaph3+.AppendixLevel-5Subheadaph5,
-.AppendixLevel-4Subheadaph4+.AppendixLevel-5Subheadaph5,
-.NoteLevel-1Subheadn1+.NoteLevel-2Subheadn2,
-.NoteLevel-1Subheadn1+.NoteLevel-3Subheadn3,
-.NoteLevel-1Subheadn1+.NoteLevel-4Subheadn4,
-.NoteLevel-1Subheadn1+.NoteLevel-5Subheadn5,
-.NoteLevel-2Subheadn2+.NoteLevel-3Subheadn3,
-.NoteLevel-2Subheadn2+.NoteLevel-4Subheadn4,
-.NoteLevel-2Subheadn2+.NoteLevel-5Subheadn5,
-.NoteLevel-3Subheadn3+.NoteLevel-4Subheadn4,
-.NoteLevel-3Subheadn3+.NoteLevel-5Subheadn5,
-.NoteLevel-4Subheadn4+.NoteLevel-5Subheadn5,
-.BiblioLevel-1Subheadb1+.BiblioLevel-2Subheadb2,
-.BiblioLevel-1Subheadb1+.BiblioLevel-3Subheadb3,
-.BiblioLevel-1Subheadb1+.BiblioLevel-4Subheadb4,
-.BiblioLevel-1Subheadb1+.BiblioLevel-5Subheadb5,
-.BiblioLevel-2Subheadb2+.BiblioLevel-3Subheadb3,
-.BiblioLevel-2Subheadb2+.BiblioLevel-4Subheadb4,
-.BiblioLevel-2Subheadb2+.BiblioLevel-5Subheadb5,
-.BiblioLevel-3Subheadb3+.BiblioLevel-4Subheadb4,
-.BiblioLevel-3Subheadb3+.BiblioLevel-5Subheadb5,
-.BiblioLevel-4Subheadb4+.BiblioLevel-5Subheadb5,
-.BOBAdLevel-1Subheadbobh1+.BOBAdLevel-2Subheadbobh2,
-.BOBAdLevel-1Subheadbobh1+.BOBAdLevel-3Subheadbobh3,
-.BOBAdLevel-1Subheadbobh1+.BOBAdLevel-4Subheadbobh4,
-.BOBAdLevel-1Subheadbobh1+.BOBAdLevel-5Subheadbobh5,
-.BOBAdLevel-2Subheadbobh2+.BOBAdLevel-3Subheadbobh3,
-.BOBAdLevel-2Subheadbobh2+.BOBAdLevel-4Subheadbobh4,
-.BOBAdLevel-2Subheadbobh2+.BOBAdLevel-5Subheadbobh5,
-.BOBAdLevel-3Subheadbobh3+.BOBAdLevel-4Subheadbobh4,
-.BOBAdLevel-3Subheadbobh3+.BOBAdLevel-5Subheadbobh5,
-.BOBAdLevel-4Subheadbobh4+.BOBAdLevel-5Subheadbobh5 {
+.FigureHeadfgh+[class*="FigureLevel-"],
+[class*="FigureLevel-"]+[class*="FigureLevel-"],
+[class*="AppendixLevel-"]+[class*="AppendixLevel-"],
+[class*="NoteLevel-"]+[class*="NoteLevel-"],
+[class*="BiblioLevel-"]+[class*="BiblioLevel-"],
+[class*="BOBAdLevel-"]+[class*="BOBAdLevel-"] {
   margin-top: 0;
   }
 
@@ -483,6 +274,7 @@ H1
 */
 
 h1,
+[class*="Level-1Subhead"]
 .FrontSalesTitlefst,
 .AdCardMainHeadacmh,
 .HalftitleBookTitlehtit,
@@ -493,7 +285,6 @@ h1,
 .TOCLevel-1ChapterHeadch1,
 .FMHeadfmh,
 .FMTitlefmt,
-.FMLevel-1Subheadfmh1,
 .FMHeadALTafmh,
 .PartNumberpn,
 .PartTitlept,
@@ -504,25 +295,16 @@ h1,
 .CollectionBookNumberbkn,
 .CollectionBookTitlebkt,
 .Head-Level-1h1,
-.PoemLevel-1Subheadvh1,
-.RecipeLevel-1Subheadrh1,
-.Sub-RecipeLevel-1Subheadsrsh1,
 .BoxHead-Level-1bh1,
 .SidebarHead-Level-1sbh1,
 .TableNumbertn,
 .ChartNumbercrn,
 .FigureNumberfgn,
-.ChartLevel-1Subheadcrh1,
-.FigureLevel-1Subheadfgh1,
 .BMHeadbmh,
 .BMTitlebmt,
 .BMHeadALTabmh,
 .AppendixHeadaph,
-.AppendixLevel-1Subheadaph1,
-.NoteLevel-1Subheadn1,
-.BiblioLevel-1Subheadb1,
-.BOBAdTitlebobt,
-.BOBAdLevel-1Subheadbobh1 {
+.BOBAdTitlebobt {
   text-indent: 0;
   font-size: 1.5em;
   line-height: 1.25em;
@@ -597,30 +379,21 @@ H2
 */
 
 h2,
+[class*="Level-2Subhead"],
 .FrontSalesSubtitlefsst,
 .AdCardSubheadacsh,
 .TitlepageBookSubtitlestit,
 .FMSubheadfmsh,
-.FMLevel-2Subheadfmh2,
 .TOCChapterSubtitleccst,
 .PartSubtitlepst,
 .ChapSubtitlecst,
 .Head-Level-2h2,
-.PoemLevel-2Subheadvh2,
-.RecipeLevel-2Subheadrh2,
-.Sub-RecipeLevel-2Subheadsrsh2,
 .BoxHead-Level-2bh2,
 .SidebarHead-Level-2sbh2,
-.ChartLevel-2Subheadcrh2,
-.FigureLevel-2Subheadfgh2,
 .BMSubheadbmsh,
 .AppendixSubheadapsh,
-.AppendixLevel-2Subheadaph2,
-.NoteLevel-2Subheadn2,
-.BiblioLevel-2Subheadb2,
 .IndexInternalSubheadih1,
-.BOBAdSubtitlebobst,
-.BOBAdLevel-2Subheadbobh2 {
+.BOBAdSubtitlebobst {
   text-indent: 0;
   text-transform: uppercase;
   letter-spacing: .075em;
@@ -651,14 +424,11 @@ H3
 */
 
 h3,
+[class*="Level-3Subhead"],
 .FrontSalesQuoteHeadfsqh,
 .PartContentsMainHeadpcmh,
-.FMLevel-3Subheadfmh3,
 .Head-Level-3h3,
-.PoemLevel-3Subheadvh3,
-.RecipeLevel-3Subheadrh3,
 .IngredientsHeadrih,
-.Sub-RecipeLevel-3Subheadsrsh3,
 .Sub-RecipeIngredientsHeadsrih,
 .Menumenu,
 .RecipeVarHeadrvh,
@@ -666,13 +436,7 @@ h3,
 .Extract-NoteHeadextnh,
 .BoxHead-Level-3bh3,
 .SidebarHead-Level-3sbh3,
-.ChartLevel-3Subheadcrh3,
-.FigureLevel-3Subheadfgh3,
-.AppendixLevel-3Subheadaph3,
 .GlossaryTermglt,
-.NoteLevel-3Subheadn3,
-.BiblioLevel-3Subheadb3,
-.BOBAdLevel-3Subheadbobh3,
 .BOBAdQuoteHeadbobqh {
   text-indent: 0;
   font-weight: bold;
@@ -686,20 +450,11 @@ H4
 */
 
 h4,
+[class*="Level-4Subhead"],
 .PartContentsHeadpch,
-.FMLevel-4Subheadfmh4,
 .Head-Level-4h4,
-.PoemLevel-4Subheadvh4,
-.RecipeLevel-4Subheadrh4,
-.Sub-RecipeLevel-4Subheadsrsh4,
 .BoxHead-Level-4bh4,
-.SidebarHead-Level-4sbh4,
-.ChartLevel-4Subheadcrh4,
-.FigureLevel-4Subheadfgh4,
-.AppendixLevel-4Subheadaph4,
-.NoteLevel-4Subheadn4,
-.BiblioLevel-4Subheadb4,
-.BOBAdLevel-4Subheadbobh4 {
+.SidebarHead-Level-4sbh4 {
   text-indent: 0;
   text-transform: uppercase;
   letter-spacing: .075em;
@@ -713,13 +468,10 @@ H5
 */
 
 h5,
-.FMLevel-5Subheadfmh5,
+[class*="Level-5Subhead"],
 .Head-Level-5h5,
 .ExtractHeadexth,
 .PoemTitlevt,
-.PoemLevel-5Subheadvh5,
-.RecipeLevel-5Subheadrh5,
-.Sub-RecipeLevel-5Subheadsrsh5,
 .RecipeHeadrh,
 .Sub-RecipeHeadsrh,
 .BoxHeadbh,
@@ -727,14 +479,8 @@ h5,
 .SidebarHeadsbh,
 .SidebarHead-Level-5sbh5,
 .ChartHeadcrh,
-.ChartLevel-5Subheadcrh5,
 .FigureHeadfgh,
-.FigureLevel-5Subheadfgh5,
-.TableHeadth,
-.AppendixLevel-5Subheadaph5,
-.NoteLevel-5Subheadn5,
-.BiblioLevel-5Subheadb5,
-.BOBAdLevel-5Subheadbobh5 {
+.TableHeadth {
   text-indent: 0;
   font-style: italic;
   margin: 1em 0 0 0;
@@ -770,8 +516,7 @@ h6,
 .ChartSubheadcrsh,
 .FigureSubheadfgsh {
   text-indent: 0;
-  font-variant: small-caps;
-  text-transform: lowercase;
+  font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin: 1em 0 0 0;
   }
@@ -839,6 +584,7 @@ COPYRIGHT PAGE
 
 .CopyrightTextsinglespacecrtx,
 .CopyrightTextdoublespacecrtxd {
+  font-size: .75em;
   text-indent: 0;
   }
 .CopyrightTextdoublespacecrtxd {
@@ -863,6 +609,11 @@ DEDICATION PAGE
   }
 .DedicationAuthordedau {
   margin-top: 1em;
+  }
+section[data-type="dedication"] blockquote[data-type="epigraph"],
+.Dedicationded + p[class*="Epigraph"] {
+  page-break-before: always;
+  margin-top: 2em;
   }
 
 /*
@@ -904,25 +655,10 @@ blockquote[data-type="epigraph"] {
 .BOBAdQuoteSourcebobqs {
   text-indent: 0;
   font-style: normal;
-  font-variant: small-caps;
-  text-transform: lowercase;
+  font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin-bottom: 1em;
   }
-/*
-.EpigraphSourceeps:before,
-.FMEpigraphSourcefmeps:before,
-.PartEpigraphSourcepeps:before,
-.ChapEpigraphSourceceps:before,
-.EpigraphinTextSourceteps:before,
-.PoemEpigraphSourceveps:before,
-.BoxEpigraphSourcebeps:before,
-.SidebarEpigraphSourcesbeps:before,
-.FrontSalesQuoteSourcefsqs:before,
-.BOBAdQuoteSourcebobqs:before {
-  content: " — ";
-  }
-*/
 
 /*
 --------------------------------------------------
@@ -952,6 +688,18 @@ CONTENTS PAGE
   margin-left: 15%;
   margin-right: 15%;
   }
+.TOCFrontmatterHeadcfmh,
+.TOCPartTitlecpt,
+.TOCChapterTitlecct,
+.TOCLevel-1ChapterHeadch1,
+.TOCBackmatterHeadcbmh,
+.TOCPartNumbercpn,
+.TOCChapterNumberccn,
+.TOCChapterSubtitleccst,
+.TOCAuthorcau,
+.TOCPageNumbercnum {
+  display: none;
+  }
 
 /*
 --------------------------------------------------
@@ -974,9 +722,11 @@ OTHER FRONTMATTER
   text-align: center;
   }
 .FMHeadALTafmh,
-.FMAuthorSignatureausig,
 .FMTextALTafmtx,
 .FMTextNo-IndentALTafmtx1 {
+  font-family: Helvetica,Arial,sans-serif;
+  }
+.FMAuthorSignatureausig {
   font-style: italic;
   }
 .FMDramatisPersonaefmdp {
@@ -998,6 +748,17 @@ PART OPENERS
   text-align: center;
   margin: 1em 0;
   }
+.PartOrnamentporn:before,
+.PartOrnamentALTporn2:before {
+  display: block;
+  font-size: 1.125em;
+  }
+.PartOrnamentporn:before {
+  content: "\2766"; /* U+2766 "floral heart" */
+  }
+.PartOrnamentALTporn2:before {
+  content: "\2756"; /* U+2756 "black diamond minus white" */
+  }
 
 /*
 --------------------------------------------------
@@ -1013,6 +774,18 @@ CHAPTER OPENERS
   text-indent: 0;
   margin: 1em 0;
   }
+.ChapOrnamentcorn,:before,
+.ChapOrnamentALTcorn2:before {
+  display: block;
+  font-size: 1.125em;
+  }
+.ChapOrnamentcorn:before {
+  content: "\2766"; /* U+2766 "floral heart" */
+  }
+.ChapOrnamentALTcorn2:before {
+  content: "\2756"; /* U+2756 "black diamond minus white" */
+  }
+
 
 /*
 --------------------------------------------------
@@ -1022,11 +795,11 @@ TEXT
 
 .Text-ComputerTypecom,
 .Text-ComputerTypeNo-Indentcom1 {
-  font-family: "Courier New",monospaced,Georgia,"Times New Roman",sans-serif;
+  font-family: "Courier New",monospace,Georgia,"Times New Roman",sans-serif;
   }
 .Text-StandardALTatx,
 .Text-StdNo-IndentALTatx1 {
-  font-style: italic;
+  font-family: Helvetica,Arial,sans-serif;
   }
 
 /*
@@ -1051,8 +824,7 @@ DISPLAY TEXT
 .Storydatelinesdl,
 .Storylocationlinesloc {
   text-indent: 0;
-  font-variant: small-caps;
-  text-transform: lowercase;
+  font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin: 1em 0;
   }
@@ -1091,10 +863,28 @@ SPACE BREAKS
   }
 .Dateline-Texttdl {
   text-indent: 0;
-  font-variant: small-caps;
-  text-transform: lowercase;
+  font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin: 1em 0;
+  }
+
+.SpaceBreak,
+.SectionBreaksbr,
+.SpaceBreak-1-Linels1,
+.SpaceBreak-2-Linels2,
+.SpaceBreak-3-Linels3 {
+  content: " ";
+  }
+.SpaceBreakwithOrnamentorn,
+.SpaceBreakwithALTOrnamentorn2, {
+  display: block;
+  font-size: 1.125em;
+  }
+.SpaceBreakwithOrnamentorn, {
+  content: "\2766"; /* U+2766 "floral heart" */
+  }
+.SpaceBreakwithALTOrnamentorn2 {
+  content: "\2756"; /* U+2756 "black diamond minus white" */
   }
 
 /*
@@ -1103,36 +893,8 @@ EXTRACTS
 --------------------------------------------------
 */
 
-aside.extract {
-  padding: 1.5em;
-  border: 2px solid #ccc;
-  margin: 1em 0;
-  }
-aside.extract,
 .Extractext,
-.Extract-Newspapernews,
-.Extract-Diaryextd,
-.Extract-Transcripttrans,
-.Extract-NoIndentext1,
-.Extract-BulletListextbl,
-.Extract-NumListextnl,
-.Extract-NoteHeadextnh,
-.ExtractHeadexth,
-.Extract-VerseorPoetryextv,
-.Extract-Noteextn,
-.Extract-Headlineexthl,
-.Extract-Emailextem,
-.Extract-EmailHeadingemh,
-.Extract-Websiteextws,
-.Extract-SongLyricextsl,
-.Extract-BusinessCardextbc,
-.Extract-Telegramtel,
-.Extract-Inscriptionins,
-.Extract-ScheduleofEventssch,
-.BoxExtractbext,
-.BoxExtract-Versebextv,
-.SidebarExtractsbext,
-.SidebarExtract-Versesbextv {
+[class*="Extract"] {
   font-style: italic;
   text-indent: 0;
   }
@@ -1143,7 +905,7 @@ aside.extract,
   letter-spacing: .075em;
   }
 .Extract-Telegramtel {
-  font-family: "Courier New",monospaced,Georgia,"Times New Roman",sans-serif;
+  font-family: "Courier New",monospace,Georgia,"Times New Roman",sans-serif;
   text-transform: uppercase;
   }
 
@@ -1183,16 +945,8 @@ p+.LetterExtSalutationlsa,
 SCREENPLAY
 --------------------------------------------------
 */
-
-.ScreenplayDramatisPersonaedp,
-.ScreenplayHeadsph,
-.ScreenplaySubheadspsh,
-.ScreenplaySpeakers,
-.ScreenplayExtractsp,
-.ScreenplayTextsptx,
-.ScreenplayTextNo-Indentsptx1,
-.ScreenplayStageDirectionssd {
-  font-family: "Courier New",monospaced,Georgia,"Times New Roman",sans-serif;
+[class*="Screenplay"] {
+  font-family: "Courier New",monospace,Georgia,"Times New Roman",sans-serif;
   font-style: normal;
   text-indent: 0;
   }
@@ -1268,9 +1022,47 @@ POETRY
   }
 
 /*
---------------------------
+--------------------------------------------------
 LISTS
---------------------------
+--------------------------------------------------
+All list styles are included here. Since some
+classes convert as p elements rather than li, they
+need to be explicitly told to behave like list
+items. Here is an example of the markup and the
+basic CSS that would apply to it:
+
+<p class="BulletListItem">foo</p>
+
+.BulletListItem {
+  display: list-item;
+  list-style: disc outside;
+  }
+
+Other styles are already converting semantically,
+but they still include a p element, like so:
+
+<ul>
+  <li class="BulletListItem">
+    <p class="BulletListItem">foo</p>
+  </li>
+</ul>
+
+So, in this case, all the rules of
+".BulletListItem" will be applied to both the li
+and the p, which means there will be multiple
+bullets for each list item. This is why styles
+that are converting this way are commented out –
+so that the list style will be applied to the li
+but not the p. As the conversion tool is updated
+to accommodate more of the list styles below,
+their class names will each need to be commented
+out (or deleted) to avoid the problem of redundant
+list markers.
+
+Note also that ordered lists include the numbers
+in the text, which is why they have a
+list-style-type of "none".
+
 */
 
 .ListHeadlh {
@@ -1434,8 +1226,7 @@ ILLUSTRATIONS
   }
 .IllustrationSourceis {
   text-align: right;
-  font-variant: small-caps;
-  text-transform: lowercase;
+  font-variant: small-caps; /* ALTERNATE: font-size: .75em; text-transform: uppercase; */
   letter-spacing: .1em;
   margin: 0;
   }
@@ -1534,7 +1325,7 @@ BOXES AND SIDEBARS
 .BoxHeadbh+p,
 .SidebarHeadsbh+p,
 .ExtractHeadexth+p,
-.PoemTitlevt+p, {
+.PoemTitlevt+p {
   margin-top: 1em;
   }
 .BoxSourceNotebsn,
@@ -1610,7 +1401,7 @@ GENERAL BACKMATTER HEADS
 .BMHeadALTabmh,
 .BMTextALTabmtx,
 .BMTextALTNo-Indentabmtx1 {
-  font-style: italic;
+  font-family: Helvetica,Arial,sans-serif;
   }
 
 /*
@@ -1709,30 +1500,10 @@ INDEX
 
 /*
 --------------------------------------------------
-ILLUSTRATIONS PERMISSIONS and PERMISSIONS ACKNOWLEDGMENTS
+Nonprinting elements
 --------------------------------------------------
 */
 
-/*
---------------------------------------------------
-ABOUT THE AUTHOR
---------------------------------------------------
-*/
-
-/*
---------------------------------------------------
-COLOPHON
---------------------------------------------------
-*/
-
-/*
---------------------------------------------------
-BACK-OF-BOOK ADS
---------------------------------------------------
-*/
-
-/*
---------------------------------------------------
-CHARACTER STYLES and MISC.
---------------------------------------------------
-*/
+[class*="Nonprinting"] {
+  display: none;
+}
