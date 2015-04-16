@@ -32,6 +32,11 @@
               				  h:p[@class='AdCardListofTitlesacl']">
                 <xsl:value-of select="'Ad Card'"/>
               </xsl:when>
+              <xsl:when test="h:p[@class='AboutAuthorTextNo-Indentatatx1'] or
+                        h:p[@class='AboutAuthorTextHeadatah'] or 
+                        h:p[@class='AboutAuthorTextatatx']">
+                <xsl:value-of select="'About the Author'"/>
+              </xsl:when>
               <xsl:when test="h:p[@class='FrontSalesTitlefst'] or
               				  h:p[@class='FrontSalesSubtitlefsst'] or 
               				  h:p[@class='FrontSalesQuoteHeadfsqh'] or 
@@ -42,11 +47,11 @@
                 <xsl:value-of select="'Praise'"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="'Section'"/>
+                <xsl:value-of select="'Frontmatter'"/>
               </xsl:otherwise>
             </xsl:choose>
     </xsl:variable>
-	<xsl:if test="*[1][self::h:p]">
+	<xsl:if test="*[1][self::h:p] or *[1][self::h:figure]">
       	<h1>
       	  <xsl:attribute name="class">
             <xsl:value-of select="'Nonprinting'"/>
