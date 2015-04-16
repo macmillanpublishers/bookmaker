@@ -100,8 +100,8 @@ image_count = images.count
 if image_count > 0
 	`mkdir #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
 	`cp #{working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
-	images = Dir.entries("#{tmp_dir}\\#{filename}\\images\\pdftmp\\").select { |f| File.file?(f) }
-	images.each do |i|
+	pdfimages = Dir.entries("#{tmp_dir}\\#{filename}\\images\\pdftmp\\").select { |f| File.file?(f) }
+	pdfimages.each do |i|
 		if i.include?("fullpage")
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		else
