@@ -995,27 +995,30 @@ p.IllustrationSourceis {
 	font-family: "MinionPro";
 	font-size: 7pt;
 	text-align: center;
-	margin-top: -16pt;
-	margin-bottom: 16pt;
+	margin-top: -21pt;
+	margin-bottom: 27pt;
 	page-break-before: avoid;
 	text-indent: 0;
 }
 
 figure {
 	page-break-inside: avoid;
-	margin-top: 16pt;
-	margin-bottom: 16pt;
+	margin-top: 32pt;
+	margin-bottom: 21pt;
+	text-align: center;
 }
 
 figcaption {
 	font-family: "AromaNo2LTPro";
 	font-size: 8.5pt;
 	line-height: 16pt;
+	text-align: left;
 }
 
 img {
 	max-width: 100%;
-	prince-image-resolution: auto, normal;
+	prince-image-resolution: auto, 300dpi;
+	text-align: center;
 }
 
 img[src*="fullpage"] {
