@@ -501,14 +501,12 @@ nav[data-type="toc"],
 }
 
 .FrontSalesQuoteNoIndentfsq1  {
-	text-indent: -4pt;
-	margin-left: 4pt;
+	text-indent: 0;
 	text-align: left;
 }
 
 .FrontSalesQuotefsq {
-	text-indent: 16pt;
-	margin-left: 4pt;
+	text-indent: 0;
 	text-align: left;
 }
 
@@ -1017,7 +1015,7 @@ figcaption {
 
 img {
 	max-width: 100%;
-	image-resolution: from-image;
+	prince-image-resolution: auto, normal;
 }
 
 img[src*="fullpage"] {
