@@ -47,7 +47,7 @@
                 <xsl:value-of select="'Praise'"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="'Section'"/>
+                <xsl:value-of select="'Frontmatter'"/>
               </xsl:otherwise>
             </xsl:choose>
     </xsl:variable>
