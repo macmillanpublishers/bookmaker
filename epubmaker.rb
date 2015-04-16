@@ -96,7 +96,7 @@ imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
 # Adding imprint logo to title page
-filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">")
+filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">").gsub(/src="images\//,"src=\"")
 # Update several copyright elements for epub
 copyright_txt = filecontents.match(/(<section data-type=\"copyright-page\" id=\".*?\">)((.|\n)*?)(<\/section>)/)[2]
 # Note: last gsub here presumes Printer's key is the only copyright item that might be a <p>with just a number, eg <p class="xxx">13</p>
@@ -149,15 +149,17 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts 
 `convert #{tmp_dir}\\#{filename}\\OEBPS\\cover.jpg -resize "600x800>" #{tmp_dir}\\#{filename}\\OEBPS\\cover.jpg`
 
 # add image files to epub folder
-sourceimages = Dir["#{working_dir}\\done\\#{pisbn}\\images\\"]
+sourceimages = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\")
 
 if sourceimages.any?
-	`md #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
-	`copy #{working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
-	images = Dir.entries("#{tmp_dir}\\#{filename}\\OEBPS\\images\\").select { |f| File.file?(f) }
+	`mkdir #{tmp_dir}\\#{filename}\\epubimg\\`
+	`copy #{working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{filename}\\epubimg\\`
+	`del #{tmp_dir}\\#{filename}\\epubimg\\clear_ftp_log.txt`
+	images = Dir.entries("#{tmp_dir}\\#{filename}\\epubimg\\").select { |f| File.file?(f) }
 	images.each do |i|
-		`convert #{tmp_dir}\\#{filename}\\OEBPS\\images\\#{i} -resize "800x1200>" #{tmp_dir}\\#{filename}\\OEBPS\\images\\#{i}`
+		`convert #{tmp_dir}\\#{filename}\\epubimg\\#{i} -resize "800x1200>" #{tmp_dir}\\#{filename}\\epubimg\\#{i}`
 	end
+	`copy #{tmp_dir}\\#{filename}\\epubimg\\* #{tmp_dir}\\#{filename}\\OEBPS\\`
 end
 
 #copy logo image file to epub folder
