@@ -152,12 +152,13 @@ File.open("#{tmp_dir}\\#{filename}\\OEBPS\\content.opf", "w") {|file| file.puts 
 sourceimages = Dir["#{working_dir}\\done\\#{pisbn}\\images\\"]
 
 if sourceimages.any?
-	`md #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
-	`copy #{working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{filename}\\OEBPS\\images\\`
-	images = Dir.entries("#{tmp_dir}\\#{filename}\\OEBPS\\images\\").select { |f| File.file?(f) }
+	`mkdir #{tmp_dir}\\#{filename}\\epubimg\\`
+	`copy #{working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{filename}\\epubimg\\`
+	images = Dir.entries("#{tmp_dir}\\#{filename}\\epubimg\\").select { |f| File.file?(f) }
 	images.each do |i|
-		`convert #{tmp_dir}\\#{filename}\\OEBPS\\images\\#{i} -resize "800x1200>" #{tmp_dir}\\#{filename}\\OEBPS\\images\\#{i}`
+		`convert #{tmp_dir}\\#{filename}\\epubimg\\#{i} -resize "800x1200>" #{tmp_dir}\\#{filename}\\epubimg\\#{i}`
 	end
+	`copy #{tmp_dir}\\#{filename}\\epubimg\\* #{tmp_dir}\\#{filename}\\OEBPS\\`
 end
 
 #copy logo image file to epub folder
