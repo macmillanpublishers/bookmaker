@@ -133,8 +133,10 @@ else
 	test_missing_img = "pass: There are no missing image files!"
 end
 
-images_moved = Dir.entries("#{image_dest}") 
-if images_moved.sort == matched.sort
+images_moved = Dir.entries("#{image_dest}").select {|f| !File.directory? f}
+images_moved -= %w{clear_ftp_log.txt}
+match_check = matched.uniq.sort
+if images_moved.sort == match_check
 	test_imgs_match_refs = "pass: Images' names in Done folder match references in html"
 else
 	test_imgs_match_refs = "FAIL: Images' names in Done folder match references in html"
