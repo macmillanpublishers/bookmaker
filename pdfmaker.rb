@@ -94,12 +94,26 @@ ftp_pass = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\ftp_pass.txt")
 
 DocRaptor.api_key "#{docraptor_key}"
 
-#if any images are in 'done' dir, upload them to macmillan.tools site
-#image_count = Dir("#{working_dir}\\done\\#{pisbn}\\images\\*").count { |file| File.file?(file) }
+#if any images are in 'done' dir, grayscale and upload them to macmillan.tools site
 images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
 image_count = images.count
 if image_count > 0
-	`#{bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{working_dir}\\done\\#{pisbn}\\images #{tmp_dir}\\#{filename}\\images`
+	`mkdir #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
+	`copy #{tmp_dir}\\#{filename}\\images\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
+	pdfimages = Dir.entries("#{tmp_dir}\\#{filename}\\images\\pdftmp\\").select { |f| File.file?(f) }
+	pdfimages.each do |i|
+		if i.include?("fullpage")
+			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+		else
+			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize 360x576> #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -print "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} > #{tmp_dir}\\#{filename}\\images\\pdftmp\\imgdata.txt`
+			myheight = File.read("#{tmp_dir}\\#{filename}\\images\\pdftmp\\imgdata.txt").to_i
+			mymultiple = myheight / 21.33
+			newheight = mymultiple.floor * 21.33
+			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize x#{newheight} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+		end
+	end
+	`#{bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{tmp_dir}\\#{filename}\\images\\pdftmp #{tmp_dir}\\#{filename}\\images`
 end
 
 # pdf css to be added to the file that will be sent to docraptor
@@ -137,10 +151,11 @@ if image_count > 0
 	# test if sites are up/logins work?
 
 	# verify files were uploaded, and match image array
-	upload_report = []
-	upload_report = IO.readlines("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt") 
-	# alt version: upload_report = File.open("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt").each_line {|line| array.push line}
-	upload_count = upload_report.count
+    upload_report = []
+    File.read("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt").each_line {|line|
+          line_b = line.gsub(/\n$/, "")
+          upload_report.push line_b}
+ 	upload_count = upload_report.count
 	
 	if upload_report.sort == images.sort
 		test_image_array_compare = "pass: Images in Done dir match images uploaded to ftp"
