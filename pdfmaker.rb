@@ -151,10 +151,11 @@ if image_count > 0
 	# test if sites are up/logins work?
 
 	# verify files were uploaded, and match image array
-	upload_report = []
-	upload_report = IO.readlines("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt") 
-	# alt version: upload_report = File.open("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt").each_line {|line| array.push line}
-	upload_count = upload_report.count
+    upload_report = []
+    File.read("#{tmp_dir}\\#{filename}\\images\\uploaded_image_log.txt").each_line {|line|
+          line_b = line.gsub(/\n$/, "")
+          upload_report.push line_b}
+ 	upload_count = upload_report.count
 	
 	if upload_report.sort == images.sort
 		test_image_array_compare = "pass: Images in Done dir match images uploaded to ftp"
