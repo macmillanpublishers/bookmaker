@@ -95,7 +95,11 @@ end
 `rd #{tmp_dir}\\#{filename}\\META-INF\\`
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\mimetype`
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\images\\*`
+`del /f /s /q /a #{tmp_dir}\\#{filename}\\images\\pdftmp\\*`
+`del /f /s /q /a #{tmp_dir}\\#{filename}\\epubimg\\*`
+`rd #{tmp_dir}\\#{filename}\\images\\pdftmp`
 `rd #{tmp_dir}\\#{filename}\\images\\`
+`rd #{tmp_dir}\\#{filename}\\epubimg\\`
 `del /f /s /q /a #{tmp_dir}\\#{filename}\\*`
 `rd #{tmp_dir}\\#{filename}\\`
 `del /f /s /q /a "#{input_file}"`
