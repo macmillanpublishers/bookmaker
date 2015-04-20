@@ -100,17 +100,19 @@ image_count = images.count
 if image_count > 0
 	`mkdir #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
 	`copy #{tmp_dir}\\#{filename}\\images\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
-	pdfimages = Dir.entries("#{tmp_dir}\\#{filename}\\images\\pdftmp\\").select { |f| File.file?(f) }
+	pdfimages = Dir.entries("#{tmp_dir}\\#{filename}\\images\\pdftmp\\").select { |f| !File.directory? f }
 	pdfimages.each do |i|
 		if i.include?("fullpage")
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+		elsif i.include?("_FC") or i.include?(".txt")
+			`del #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		else
-			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize 360x576> #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
-			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -print "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} > #{tmp_dir}\\#{filename}\\images\\pdftmp\\imgdata.txt`
-			myheight = File.read("#{tmp_dir}\\#{filename}\\images\\pdftmp\\imgdata.txt").to_i
+			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "360x576>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			myheight = myheight.to_i
 			mymultiple = myheight / 21.33
 			newheight = mymultiple.floor * 21.33
-			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize x#{newheight} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		end
 	end
 	`#{bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{tmp_dir}\\#{filename}\\images\\pdftmp #{tmp_dir}\\#{filename}\\images`
