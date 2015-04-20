@@ -1200,7 +1200,8 @@ sub { top: 0.1em; }
 .spanaccentcharactersacc {}
 
 .bookmakerkeeptogetherkt {
-	font-stretch: -0.1pt;
+	/*font-stretch: -0.1pt;*/
+	white-space: pre;
 }
 
 .bookmakerforcepagebreakbr {
