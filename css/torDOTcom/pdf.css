@@ -171,7 +171,7 @@
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	@footnotes {
-		background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png");
+		background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.jpg");
 		background-position: 0 -0.35in;
 		background-size: 0.82in auto;
 		background-repeat: no-repeat;
@@ -477,7 +477,7 @@ h1 + .TitlepageSeriesTitleser {
 section[data-type="titlepage"] p.TitlepageAuthorNameau {
 	font-size: 16pt;
 	padding-top: 64pt;
-	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png');
+	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.jpg');
 	background-size: 59pt auto;
 	background-position: top;
 	background-repeat: no-repeat;
@@ -955,7 +955,7 @@ p.ChapOrnamentALTcorn2 {
 	content: " ";
 	font-size: 16pt;
 	text-align: center;
-	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png');
+	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.jpg');
 	background-size: 59pt auto;
 	background-position: center;
 	background-repeat: no-repeat;
