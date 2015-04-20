@@ -1,288 +1,166 @@
 /*PDF CSS. prince -s ../tor.css output.html -o output.pdf*/
 
-
-/* fonts for testing */
-@font-face {
-	font-family: "ArnoPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Regular.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "ArnoPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Bold.otf');
-	font-style: normal;
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: "ArnoPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Italic.otf');
-	font-style: italic;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "ArnoPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldItalic.otf');
-	font-style: italic;
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: "ArnoPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Smbd.otf');
-	font-style: normal;
-	font-weight: 600;
-}
-
-@font-face {
-	font-family: "ArnoPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-LightDisplay.otf');
-	font-style: normal;
-	font-weight: 100;
-}
-
-@font-face {
-	font-family: "ArnoPro-SmText";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-SmText.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "ArnoPro-SmText";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldItalicSmText.otf');
-	font-style: italic;
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: "ArnoPro-SmText";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-SmbdSmText.otf');
-	font-style: normal;
-	font-weight: 600;
-}
-
-@font-face {
-	font-family: "ArnoPro-SmText";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldSmText.otf');
-	font-style: normal;
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: "ArnoPro-Caption";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Caption.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "ArnoPro-Caption";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-ItalicCaption.otf');
-	font-style: italic;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "ArnoPro-BoldSubhead";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldSubhead.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "AromaNo2LTPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/AromaNo2LTPro-Italic.otf');
-	font-style: italic;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "AromaNo2LTPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/AromaNo2LTPro-Regular.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "MinionPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/MinionPro-Regular.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "MyriadPro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/MyriadPro-Regular.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "SourceCodePro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/SourceCodePro-Medium.otf');
-	font-style: normal;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: "SourceCodePro";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/SourceCodePro-Bold.otf');
-	font-style: normal;
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: "TimesNewRomanPSMT";
-	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/TimesNewRomanPSMT.ttf');
-	font-style: normal;
-	font-weight: normal;
-}
-
 /* final fonts */
 
-/*@font-face {
+@font-face {
 	font-family: "ArnoPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Regular.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "ArnoPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Bold.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Bold.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Bold.otf');
 	font-style: normal;
 	font-weight: bold;
 }
 
 @font-face {
 	font-family: "ArnoPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Italic.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Italic.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Italic.otf');
 	font-style: italic;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "ArnoPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalic.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalic.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldItalic.otf');
 	font-style: italic;
 	font-weight: bold;
 }
 
 @font-face {
 	font-family: "ArnoPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Smbd.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Smbd.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Smbd.otf');
 	font-style: normal;
 	font-weight: 600;
 }
 
 @font-face {
 	font-family: "ArnoPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-LightDisplay.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-LightDisplay.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-LightDisplay.otf');
 	font-style: normal;
 	font-weight: 100;
 }
 
 @font-face {
 	font-family: "ArnoPro-SmText";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmText.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmText.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-SmText.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "ArnoPro-SmText";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalicSmText.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalicSmText.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldItalicSmText.otf');
 	font-style: italic;
 	font-weight: bold;
 }
 
 @font-face {
 	font-family: "ArnoPro-SmText";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmbdSmText.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmbdSmText.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-SmbdSmText.otf');
 	font-style: normal;
 	font-weight: 600;
 }
 
 @font-face {
 	font-family: "ArnoPro-SmText";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSmText.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSmText.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldSmText.otf');
 	font-style: normal;
 	font-weight: bold;
 }
 
 @font-face {
 	font-family: "ArnoPro-Caption";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Caption.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Caption.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Caption.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "ArnoPro-Caption";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-ItalicCaption.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-ItalicCaption.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-ItalicCaption.otf');
 	font-style: italic;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "ArnoPro-BoldSubhead";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSubhead.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSubhead.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldSubhead.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "AromaNo2LTPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Italic.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Italic.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/AromaNo2LTPro-Italic.otf');
 	font-style: italic;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "AromaNo2LTPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Regular.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Regular.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/AromaNo2LTPro-Regular.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "MinionPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MinionPro-Regular.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MinionPro-Regular.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/MinionPro-Regular.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "MyriadPro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MyriadPro-Regular.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MyriadPro-Regular.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/MyriadPro-Regular.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "SourceCodePro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Medium.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Medium.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/SourceCodePro-Medium.otf');
 	font-style: normal;
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: "SourceCodePro";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Bold.otf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Bold.otf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/SourceCodePro-Bold.otf');
 	font-style: normal;
 	font-weight: bold;
 }
 
 @font-face {
 	font-family: "TimesNewRomanPSMT";
-	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf'), 
+	     url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}*/
+}
 
 @page {
 	size: 5in 8in;
@@ -1200,7 +1078,8 @@ sub { top: 0.1em; }
 .spanaccentcharactersacc {}
 
 .bookmakerkeeptogetherkt {
-	font-stretch: -0.1pt;
+	/*font-stretch: -0.1pt;*/
+	white-space: pre;
 }
 
 .bookmakerforcepagebreakbr {
