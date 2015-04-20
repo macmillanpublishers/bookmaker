@@ -2,7 +2,7 @@
 
 
 /* fonts for testing */
-@font-face {
+/*@font-face {
 	font-family: "ArnoPro";
 	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -140,11 +140,11 @@
 	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}
+}*/
 
 /* final fonts */
 
-/*@font-face {
+@font-face {
 	font-family: "ArnoPro";
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -282,7 +282,7 @@
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}*/
+}
 
 @page {
 	size: 5in 8in;
