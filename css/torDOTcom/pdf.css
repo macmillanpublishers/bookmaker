@@ -171,7 +171,7 @@
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	@footnotes {
-		background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.jpg");
+		background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg");
 		background-position: 0 -0.35in;
 		background-size: 0.82in auto;
 		background-repeat: no-repeat;
@@ -477,7 +477,7 @@ h1 + .TitlepageSeriesTitleser {
 section[data-type="titlepage"] p.TitlepageAuthorNameau {
 	font-size: 16pt;
 	padding-top: 64pt;
-	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.jpg');
+	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg');
 	background-size: 59pt auto;
 	background-position: top;
 	background-repeat: no-repeat;
@@ -496,7 +496,7 @@ section[data-type="titlepage"] p.TitlepageImprintLineimp {
 
 section[data-type="titlepage"] p.TitlepageImprintLineimp:before {
 	content: " ";
-	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/images/torDOTcom/logo.jpg");
+	background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/logo.jpg");
 	background-position: center bottom;
 	background-size: 0.58in auto;
 	background-repeat: no-repeat;
@@ -955,7 +955,7 @@ p.ChapOrnamentALTcorn2 {
 	content: " ";
 	font-size: 16pt;
 	text-align: center;
-	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.jpg');
+	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg');
 	background-size: 59pt auto;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -972,7 +972,7 @@ p.SpaceBreakwithALTOrnamentorn2 {
 	content: " ";
 	font-size: 16pt;
 	text-align: center;
-	background-image: url('/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/orn.jpg');
+	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/orn.jpg');
 	background-size: 0.3in auto;
 	background-position: center;
 	background-repeat: no-repeat;

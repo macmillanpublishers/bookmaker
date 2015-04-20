@@ -115,6 +115,9 @@ if image_count > 0
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		end
 	end
+	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\torDOTcom\\orn.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\orn.jpg`
+	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\torDOTcom\\titlepage-rule.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\titlepage-rule.jpg`
+	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\images\\torDOTcom\\logo.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\logo.jpg`
 	`#{bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{tmp_dir}\\#{filename}\\images\\pdftmp #{tmp_dir}\\#{filename}\\images`
 end
 
