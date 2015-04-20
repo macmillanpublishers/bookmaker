@@ -288,10 +288,10 @@
 	size: 5in 8in;
 	margin: 0.72in 0.75in 0.66in 0.75in;
 	padding: 34pt 0 0.36in 0;
-	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
+	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
 	background-position: top left;
 	background-size: 100% 100%;
-	background-repeat: no-repeat;*/
+	background-repeat: no-repeat;
 	@footnotes {
 		background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/titlepage-rule.png");
 		background-position: 0 -0.35in;
@@ -1004,6 +1004,13 @@ figure {
 	margin-top: 32pt;
 	margin-bottom: 21pt;
 	text-align: center;
+}
+
+h1 + figure {
+	min-height: 16pt;
+	margin-top: -32pt;
+	margin-bottom: 45pt;
+	vertical-align: center;
 }
 
 figcaption {
