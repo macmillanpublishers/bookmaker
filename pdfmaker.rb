@@ -113,7 +113,7 @@ if image_count > 0
 			myheight = myheight.to_f
 			myres = myres.to_f
 			mymultiple = ((myheight / myres) * 72.0) / 16.0
-			if mymultiple =< 1
+			if mymultiple <= 1
 				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			else 
 				newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
