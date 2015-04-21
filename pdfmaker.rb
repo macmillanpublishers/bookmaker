@@ -111,9 +111,9 @@ if image_count > 0
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "360x576>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
-			myheight = myheight.to_i
+			myheight = myheight.to_f
 			puts myheight
-			myres = myres.to_i
+			myres = myres.to_f
 			puts myres
 			mymultiple = ((myheight / myres) * 72.0) / 16.0
 			puts mymultiple
