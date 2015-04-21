@@ -351,7 +351,7 @@ section[data-type="halftitlepage"],
 section[data-type="titlepage"], 
 section[data-type="preface"], 
 section[data-type="copyright-page"], 
-section[data-type="alsoby"] {
+section.adcard {
 	page-break-after: always;
 }
 
@@ -403,7 +403,7 @@ p.HalftitleBookTitlehtit {
 	text-align: center;
 }
 
-section[data-type="alsoby"] {
+section.adcard {
 	text-align: center;
 }
 
@@ -681,6 +681,10 @@ section[data-type="preface"] {
 	page: chapter;
 	page-break-before: right;
 	prince-page-group: start;
+}
+
+section.adcard {
+	page: front;
 }
 
 section[data-type="preface"] h1, 
@@ -1003,7 +1007,7 @@ span[data-type="footnote"] {
 }
 
 ::footnote-marker {
-    content: counter(footnote)"\u2003";
+    content: counter(footnote)"	";
 }
 
 p.endnotetext {
@@ -1012,7 +1016,7 @@ p.endnotetext {
 }
 
 p.endnotetext:before {
-	content: counter(endnotes)"\u2003";
+	content: counter(endnotes)"	";
 }
 
 /* character styles */
