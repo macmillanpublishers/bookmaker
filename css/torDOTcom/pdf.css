@@ -173,7 +173,7 @@
 	@footnotes {
 		background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg");
 		background-position: 0 -0.35in;
-		background-size: 20.9pt auto;
+		background-size: 60pt auto;
 		background-repeat: no-repeat;
 		padding-top: 0.127in;
 		margin-top: 0.38in;
@@ -476,12 +476,12 @@ h1 + .TitlepageSeriesTitleser {
 
 section[data-type="titlepage"] p.TitlepageAuthorNameau {
 	font-size: 16pt;
-	padding-top: 64pt;
+	padding-top: 40pt;
 	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg');
-	background-size: 20.9pt auto;
+	background-size: 60pt auto;
 	background-position: top;
 	background-repeat: no-repeat;
-	margin-top: 0;
+	margin-top: 24pt;
 	margin-bottom: 32pt;
 	text-indent: 0;
 	text-align: center;
@@ -960,7 +960,7 @@ p.ChapOrnamentALTcorn2 {
 	font-size: 16pt;
 	text-align: center;
 	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg');
-	background-size: 20.9pt auto;
+	background-size: 60pt auto;
 	background-position: center;
 	background-repeat: no-repeat;
 	margin-bottom: 21pt;
@@ -1007,7 +1007,7 @@ span[data-type="footnote"] {
 }
 
 ::footnote-marker {
-    content: counter(footnote)"	";
+    content: counter(footnote)"	 ";
 }
 
 p.endnotetext {
@@ -1016,7 +1016,7 @@ p.endnotetext {
 }
 
 p.endnotetext:before {
-	content: counter(endnotes)"	";
+	content: counter(endnotes)"	 ";
 }
 
 /* character styles */
