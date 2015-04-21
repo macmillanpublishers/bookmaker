@@ -369,8 +369,7 @@
           <xsl:variable name="word-style" as="xs:string"
             select="./w:pPr/w:pStyle/@w:val"/>
           <!-- Figure out the correct data-type value for each section
-               type.  Not all section types are supported in HTMLBook,
-               so we made up some of our own here. -->
+               type. -->
           <xsl:variable name="html-data-type" as="xs:string">
             <xsl:choose>
               <xsl:when test="$word-style = 'AdCardMainHeadacmh'">
@@ -409,6 +408,17 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
+          <!-- Some sections need a class as well. -->
+          <xsl:variable name="html-class-type" as="xs:string">
+            <xsl:choose>
+              <xsl:when test="$word-style = 'AdCardMainHeadacmh'">
+                <xsl:value-of select="'adcard'"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="''"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <xsl:if
             test="$word-style = $top-level-body-breaks and
                   not(preceding::w:p
@@ -422,7 +432,7 @@
               </ol>
             </nav>
           </xsl:if>
-          <section data-type="{$html-data-type}" id="{generate-id()}">
+          <section data-type="{$html-data-type}" class="{$html-class-type}" id="{generate-id()}">
             <xsl:apply-templates select="current-group()"/>
           </section>
         </xsl:for-each-group>
