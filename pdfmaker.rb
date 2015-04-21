@@ -111,9 +111,13 @@ if image_count > 0
 			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myheight = myheight.to_i
+			puts myheight
 			myres = myres.to_i
+			puts myres
 			mymultiple = ((myheight / myres) * 72) / 16
+			puts mymultiple
 			newheight = ((mymultiple.floor * 16) / 72) * myres
+			puts newheight
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		end
 	end
