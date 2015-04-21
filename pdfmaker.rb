@@ -107,6 +107,7 @@ if image_count > 0
 		elsif i.include?("_FC") or i.include?(".txt")
 			`del #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		else
+			puts i
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "360x576>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
