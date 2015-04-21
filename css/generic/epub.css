@@ -1215,7 +1215,13 @@ ILLUSTRATIONS
 [class^="Illustrationholder"] {
   background: #eee;
   margin-top: 1em;
+  text-align: center;
   }
+
+h1 + [class^="Illustrationholder"] {
+  background-color: transparent;
+  }
+
 [class^="Caption"] {
   color: #666;
   text-indent: 0;
