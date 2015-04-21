@@ -109,10 +109,16 @@ if image_count > 0
 		else
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "360x576>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
-			myheight = myheight.to_i
-			mymultiple = myheight / 21.33
-			newheight = mymultiple.floor * 21.33
-			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			myheight = myheight.to_f
+			myres = myres.to_f
+			mymultiple = ((myheight / myres) * 72.0) / 16.0
+			if mymultiple <= 1
+				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			else 
+				newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
+				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			end
 		end
 	end
 	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\torDOTcom\\orn.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\orn.jpg`
