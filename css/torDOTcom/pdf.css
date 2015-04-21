@@ -358,7 +358,7 @@ section[data-type="alsoby"] {
 section[data-type="halftitlepage"], 
 section[data-type="titlepage"], 
 section[data-type="copyright-page"], 
-section[data-type="alsoby"],
+section.adcard,
 section[data-type="dedication"],
 nav[data-type="toc"],
 .FrontSalesTitlefst,
@@ -1003,7 +1003,7 @@ span[data-type="footnote"] {
 }
 
 ::footnote-marker {
-    content: counter(footnote)"\2003";
+    content: counter(footnote)"\u2003";
 }
 
 p.endnotetext {
@@ -1012,7 +1012,7 @@ p.endnotetext {
 }
 
 p.endnotetext:before {
-	content: counter(endnotes)"\2003";
+	content: counter(endnotes)"\u2003";
 }
 
 /* character styles */
