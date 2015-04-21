@@ -115,9 +115,9 @@ if image_count > 0
 			puts myheight
 			myres = myres.to_i
 			puts myres
-			mymultiple = ((myheight / myres) * 72) / 16
+			mymultiple = ((myheight / myres) * 72.0) / 16.0
 			puts mymultiple
-			newheight = ((mymultiple.floor * 16) / 72) * myres
+			newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
 			puts newheight
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		end
