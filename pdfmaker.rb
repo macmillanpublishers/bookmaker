@@ -94,6 +94,10 @@ ftp_pass = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\ftp_pass.txt")
 
 DocRaptor.api_key "#{docraptor_key}"
 
+# change to DocRaptor 'test' mode when running from staging server
+testing_value = "false"
+if File.file?("C:/staging.txt") then testing_value = "true" end
+
 #if any images are in 'done' dir, grayscale and upload them to macmillan.tools site
 images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
 image_count = images.count
@@ -141,7 +145,7 @@ File.open("#{pisbn}.pdf", "w+b") do |f|
                            :name             => "#{pisbn}.pdf",
                            :document_type    => "pdf",
                            :strict			     => "none",
-                           :test             => false,
+                           :test             => "#{testing_value}",
 	                         :prince_options	 => {
 	                           :http_user		   => "#{ftp_uname}",
 	                           :http_password	 => "#{ftp_pass}"
