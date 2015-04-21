@@ -166,13 +166,14 @@
 	size: 5in 8in;
 	margin: 0.72in 0.75in 0.66in 0.75in;
 	padding: 34pt 0 0.36in 0;
-	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
+	background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/tor.png"); /* for testing */
+	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");*/
 	background-position: top left;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	@footnotes {
 		background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg");
-		background-position: 0 -0.35in;
+		background-position: 0 0in;
 		background-size: 60pt auto;
 		background-repeat: no-repeat;
 		padding-top: 0.127in;
@@ -963,7 +964,8 @@ p.ChapOrnamentALTcorn2 {
 	background-size: 60pt auto;
 	background-position: center;
 	background-repeat: no-repeat;
-	margin-bottom: 21pt;
+	margin-top: 14pt;
+	margin-bottom: 7pt;
 	padding: 3pt 0pt 8pt 0pt;
 	width: 100%;
 	height: 16pt;
