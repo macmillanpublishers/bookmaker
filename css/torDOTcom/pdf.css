@@ -309,6 +309,10 @@ section, p, div, h1, h2, h3, h4, h5, h6 {
 	display: block;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	page-break-after: avoid;
+}
+
 p {
 	font-size: 12pt;
 	line-height: 16pt;
@@ -722,6 +726,7 @@ section[data-type="chapter"] {
 	page: chapter;
 	page-break-before: right;
 	prince-page-group: start;
+	counter-reset: footnote;
 }
 
 section[data-type="chapter"] h1.ChapNumbercn, 
@@ -768,6 +773,7 @@ h1.ChapTitlect[data-autolabel="yes"]:before {
 
 section[data-type="appendix"] {
 	page-break-before: always;
+	counter-reset: footnote;
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"], 
@@ -856,6 +862,10 @@ blockquote {
 
 blockquote p:first-child {
 	text-indent: 0;
+}
+
+.ExtractHeadexth {
+	page-break-after: avoid;
 }
 
 .ExtractHeadexth, .Extract-Headlineexthl {
