@@ -107,19 +107,18 @@ if image_count > 0
 		elsif i.include?("_FC") or i.include?(".txt")
 			`del #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		else
-			puts i
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "360x576>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myheight = myheight.to_f
-			puts myheight
 			myres = myres.to_f
-			puts myres
 			mymultiple = ((myheight / myres) * 72.0) / 16.0
-			puts mymultiple
-			newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
-			puts newheight
-			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			if mymultiple =< 1
+				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			else 
+				newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
+				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			end
 		end
 	end
 	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\torDOTcom\\orn.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\orn.jpg`
