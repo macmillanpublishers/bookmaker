@@ -157,7 +157,7 @@ if sourceimages.any?
 	`del #{tmp_dir}\\#{filename}\\epubimg\\clear_ftp_log.txt`
 	images = Dir.entries("#{tmp_dir}\\#{filename}\\epubimg\\").select { |f| File.file?(f) }
 	images.each do |i|
-		`convert #{tmp_dir}\\#{filename}\\epubimg\\#{i} -resize "800x1200>" #{tmp_dir}\\#{filename}\\epubimg\\#{i}`
+		`convert #{tmp_dir}\\#{filename}\\epubimg\\#{i} -resize "600x800>" #{tmp_dir}\\#{filename}\\epubimg\\#{i}`
 	end
 	`copy #{tmp_dir}\\#{filename}\\epubimg\\* #{tmp_dir}\\#{filename}\\OEBPS\\`
 end
