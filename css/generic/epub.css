@@ -576,6 +576,15 @@ TITLE PAGE
   margin: 1em 0;
   }
 
+section[data-type="titlepage"] {
+  text-align: center;
+}
+
+section[data-type="titlepage"] img {
+  text-align: center;
+  width: auto;
+}
+
 /*
 --------------------------------------------------
 COPYRIGHT PAGE
