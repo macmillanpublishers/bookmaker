@@ -125,17 +125,17 @@ if image_count > 0
 			end
 		end
 	end
-	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\torDOTcom\\orn.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\orn.jpg`
-	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\torDOTcom\\titlepage-rule.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\titlepage-rule.jpg`
-	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\images\\torDOTcom\\logo.jpg #{tmp_dir}\\#{filename}\\images\\pdftmp\\logo.jpg`
+	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{project_dir}\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
+	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\images\\#{project_dir}\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
 	`#{bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{tmp_dir}\\#{filename}\\images\\pdftmp #{tmp_dir}\\#{filename}\\images`
 end
 
 # pdf css to be added to the file that will be sent to docraptor
-css_file = File.read("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css").to_s.gsub(/\\/,"\\\\")
+# css_file = File.read("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css").to_s.gsub(/\\/,"\\\\")
 
 # inserts the css into the head of the html, fixes images
-pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<style>#{css_file}</style></head>").gsub(/src="images\//,"src=\"http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
+# pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<style>#{css_file}</style></head>").gsub(/src="images\//,"src=\"http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
+pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/pdf.css\" /></head>").gsub(/src="images\//,"src=\"http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
 
 # sends file to docraptor for conversion
 # currently running in test mode; remove test when css is finalized
