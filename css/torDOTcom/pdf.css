@@ -172,6 +172,8 @@
 	background-size: 100% 100%;
 	background-repeat: no-repeat;*/
 	@footnotes {
+		font-family: "ArnoPro-SmText", serif;
+		font-size: 9pt;
 		background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg");
 		background-position: 0 0in;
 		background-size: 60pt auto;
@@ -183,7 +185,7 @@
 
 @page chapter {
 	@top-center {
-		font-family: "ArnoPro-Caption";
+		font-family: "ArnoPro-Caption", serif;
 		text-align: center;
 		font-style: italic;
 		font-size: 8.5pt;
@@ -192,7 +194,7 @@
 		margin: 0;
 	}
 	@bottom-center {
-		font-family: "ArnoPro-Caption";
+		font-family: "ArnoPro-Caption", serif;
 		font-variant: prince-opentype(onum);
 		content: counter(page);
 		text-align: center;
@@ -233,7 +235,7 @@
 @page front {
 	@top-center {
 		content: normal;
-		font-family: "ArnoPro-Caption";
+		font-family: "ArnoPro-Caption", serif;
 		text-align: center;
 		font-style: italic;
 		font-size: 8.5pt;
@@ -243,7 +245,7 @@
 	}
 	@bottom-center {
 		content: normal;
-		font-family: "ArnoPro-Caption";
+		font-family: "ArnoPro-Caption", serif;
 		font-variant: prince-opentype(onum);
 		content: counter(page);
 		text-align: center;
@@ -321,7 +323,7 @@ p {
 	text-align-last: left;
 	margin: 0;
 	widows: 2;
-	orphans: 2;
+	orphans: 1;
 	hyphens: auto;
 	hyphenate-lines: 3;
 }
@@ -357,6 +359,7 @@ section[data-type="titlepage"],
 section[data-type="preface"], 
 section[data-type="copyright-page"], 
 section.adcard {
+	page-break-before: right;
 	page-break-after: always;
 }
 
@@ -392,7 +395,7 @@ nav[data-type="toc"],
 }
 
 .FrontSalesQuoteSourcefsqs {
-	font-family: "ArnoPro-SmText";
+	font-family: "ArnoPro-SmText", serif;
 	font-weight: bold;
 	font-size: 10.5pt;
 	text-align: right;
@@ -434,7 +437,7 @@ p.AdCardListofTitlesacl {
 }
 
 section[data-type="titlepage"] > h1 {
-	font-family: "ArnoPro-BoldSubhead";
+	font-family: "ArnoPro-BoldSubhead", serif;
 	font-weight: normal;
 	font-style: normal;
 	font-size: 25pt;
@@ -513,7 +516,7 @@ section[data-type="titlepage"] p.TitlepageImprintLineimp:before {
 }
 
 .TitlepageCitiescit, .TitlepagePublisherNamepub, .TitlepageImprintLineimp {
-	font-family: "ArnoPro-SmText";
+	font-family: "ArnoPro-SmText", serif;
 	font-variant: small-caps;
 	font-style: normal;
 	font-weight: normal;
@@ -530,7 +533,7 @@ section[data-type="copyright-page"] p:first-child {
 }
 
 section[data-type="copyright-page"] p {
-	font-family: "ArnoPro-SmText";
+	font-family: "ArnoPro-SmText", serif;
 	font-size: 10pt;
 	text-align: center;
 	text-indent: 0;
@@ -568,7 +571,7 @@ section[data-type="dedication"] blockquote[data-type="epigraph"] {
 
 section[data-type="dedication"] p[class*="Epigraphverse"], 
 section[data-type="dedication"] p[class*="Epigraphnon-verse"] {
-	font-family: "ArnoPro-SmText";
+	font-family: "ArnoPro-SmText", serif;
 	font-style: normal;
 	font-size: 10pt;
 	text-align: left;
@@ -583,7 +586,7 @@ section[data-type="dedication"] p[class*="Epigraphnon-verse"] {
 }
 
 section[data-type="dedication"] p[class*="EpigraphSource"] {
-	font-family: "ArnoPro-SmText";
+	font-family: "ArnoPro-SmText", serif;
 	font-weight: 600;
 	font-size: 10pt;
 	font-style: normal;
@@ -593,7 +596,7 @@ section[data-type="dedication"] p[class*="EpigraphSource"] {
 }
 
 nav[data-type="toc"] {
-	page-break-before: always;
+	page-break-before: right;
 	page-break-after: always;
 }
 
@@ -645,6 +648,10 @@ nav[data-type="toc"] li.PartTitlept ~ li.PartNumberpn {
 
 nav[data-type="toc"] li.PartNumberpn + li.PartTitlept {
 	margin-top: -9pt;
+}
+
+nav[data-type="toc"] li.ChapTitlect:last-of-type {
+	margin-bottom: 16pt;
 }
 
 nav[data-type="toc"] a {
@@ -818,6 +825,10 @@ section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSour
 	font-weight: 600;
 }
 
+[class*="ChapOpeningText"] .spansmallcapscharacterssc:first-child {
+	font-weight: 600;
+}
+
 section[data-type="part"] h1 {
 	font-weight: normal;
 	font-size: 22pt;
@@ -829,18 +840,18 @@ section[data-type="part"] h1 {
 
 p.Text-StandardALTatx, 
 p.Text-StdNo-IndentALTatx1 {
-	font-family: "AromaNo2LTPro";
+	font-family: "AromaNo2LTPro", sans-serif;
 	font-size: 9.75pt;
 }
 
 p.Text-ComputerTypecom, 
 p.Text-ComputerTypeNo-Indentcom1 {
-	font-family: "SourceCodePro";
+	font-family: "SourceCodePro", monospace;
 	font-size: 8.5pt;
 }
 
 pre.poetry {
-	font-family: "ArnoPro";
+	font-family: "ArnoPro", serif;
 	margin: 16pt 52pt 16pt 36pt;
 	white-space: pre-wrap;
 }
@@ -851,7 +862,7 @@ pre.poetry p, pre.poetry p:first-of-type {
 }
 
 p[class*="Extract"] {
-	font-family: "ArnoPro-SmText";
+	font-family: "ArnoPro-SmText", serif;
 	font-size: 10.5pt;
 }
 
@@ -883,7 +894,7 @@ blockquote p:first-child {
 }
 
 p.IllustrationSourceis {
-	font-family: "MinionPro";
+	font-family: "MinionPro", serif;
 	font-size: 7pt;
 	text-align: center;
 	margin-top: -27pt;
@@ -897,6 +908,7 @@ figure {
 	margin-top: 32pt;
 	margin-bottom: 27pt;
 	text-align: center;
+	float: top unless-fit;
 }
 
 h1 + figure {
@@ -907,7 +919,7 @@ h1 + figure {
 }
 
 figcaption {
-	font-family: "AromaNo2LTPro";
+	font-family: "AromaNo2LTPro", sans-serif;
 	font-size: 8.5pt;
 	line-height: 16pt;
 	text-align: left;
@@ -1007,7 +1019,7 @@ p.PageBreakpb {
 
 span[data-type="footnote"], 
 p.endnotetext {
-	font-family: "ArnoPro-SmText";
+	font-family: "ArnoPro-SmText", serif;
 	font-size: 9pt;
 	line-height: 12pt;
 	text-indent: 0;
@@ -1020,7 +1032,9 @@ span[data-type="footnote"] {
 }
 
 ::footnote-marker {
-    content: counter(footnote)"	 ";
+    content: counter(footnote)"\2003";
+    font-family: "ArnoPro";
+    font-weight: 600;
 }
 
 p.endnotetext {
@@ -1029,7 +1043,9 @@ p.endnotetext {
 }
 
 p.endnotetext:before {
-	content: counter(endnotes)"	 ";
+	content: counter(endnotes)"\2003";
+	font-family: "ArnoPro";
+    font-weight: 600;
 }
 
 /* character styles */
