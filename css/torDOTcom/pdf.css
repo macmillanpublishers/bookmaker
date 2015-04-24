@@ -282,6 +282,39 @@
 	}
 }
 
+@page fullbleed:first {
+	margin: 0;
+	padding: 0;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:left {
+	margin: 0;
+	padding: 0;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:right {
+	margin: 0;
+	padding: 0;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
 body {
 	font-family: "ArnoPro", serif;
 	counter-reset: endnotes chapternumber;
