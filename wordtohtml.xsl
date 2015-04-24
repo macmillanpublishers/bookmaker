@@ -555,7 +555,6 @@
     </xsl:variable>
     <figure>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates select="$caption" mode="fig-caption"/>
       <img src="images/{normalize-space(.)}">
         <xsl:attribute name="alt">
           <xsl:choose>
@@ -569,6 +568,7 @@
           </xsl:choose>
         </xsl:attribute>
       </img>
+      <xsl:apply-templates select="$caption" mode="fig-caption"/>
     </figure>
   </xsl:template>
 
