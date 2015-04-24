@@ -553,7 +553,7 @@
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <figure>
+    <figure id="{generate-id()}">
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
       <img src="images/{normalize-space(.)}">
         <xsl:attribute name="alt">
