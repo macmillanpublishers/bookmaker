@@ -807,6 +807,7 @@ section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSour
 
 [class*="ChapOpeningText"] .spansmallcapscharacterssc:first-child {
 	font-weight: 600;
+	letter-spacing: 0.1pt;
 }
 
 section[data-type="part"] h1 {
