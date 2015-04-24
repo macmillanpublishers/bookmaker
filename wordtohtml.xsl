@@ -167,7 +167,7 @@
        follow or precede a style from $fig-paras. -->
   <xsl:variable name="fig-source-paras" as="xs:string*">
     <xsl:sequence
-      select="'Illustrationsourceis'"/>
+      select="'IllustrationSourceis'"/>
   </xsl:variable>
 
   <!-- List paragraph styles — divided by ordered and un-, but
@@ -807,7 +807,7 @@
   <xsl:template match="w:p" mode="fig-source">
     <p>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <a href="#{generate-id()}" class="fig-link">
+      <a class="fig-link">
         <xsl:apply-templates select="w:r"/>
       </a>
     </p>
