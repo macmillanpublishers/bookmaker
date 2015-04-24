@@ -91,6 +91,7 @@ end
 docraptor_key = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\api_key.txt")
 ftp_uname = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\ftp_username.txt")
 ftp_pass = File.read("#{bookmaker_dir}\\bookmaker_authkeys\\ftp_pass.txt")
+ftp_dir = "http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg"
 
 DocRaptor.api_key "#{docraptor_key}"
 
@@ -127,11 +128,20 @@ if image_count > 0
 	end
 	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{project_dir}\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
 	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\images\\#{project_dir}\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
+	`copy #{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\* #{tmp_dir}\\#{filename}\\images\\pdftmp\\`
 	`#{bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{tmp_dir}\\#{filename}\\images\\pdftmp #{tmp_dir}\\#{filename}\\images`
 end
 
-# inserts the css into the head of the html, fixes images
-pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"<link rel=\"stylesheet\" type=\"text/css\" href=\"http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/pdf.css\" /></head>").gsub(/src="images\//,"src=\"http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
+# Are there any custom javascripts?
+javascripts = Dir.entries("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\").select { |f| !File.directory? f }
+if javascripts.include?(".js")
+	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
+else
+	jsfile = ""
+end
+
+# inserts links to the css and js into the head of the html, fixes images
+pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"#{jsfile}<link rel=\"stylesheet\" type=\"text/css\" href=\"#{ftp_dir}/pdf.css\" /></head>").gsub(/src="images\//,"src=\"#{ftp_dir}/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
 
 # sends file to docraptor for conversion
 # currently running in test mode; remove test when css is finalized
