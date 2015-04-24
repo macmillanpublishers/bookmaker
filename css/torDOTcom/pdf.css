@@ -339,8 +339,14 @@ section[data-type="titlepage"],
 section[data-type="preface"], 
 section[data-type="copyright-page"], 
 section.adcard {
-	page-break-before: right;
 	page-break-after: always;
+}
+
+section[data-type="halftitlepage"], 
+section[data-type="titlepage"], 
+section[data-type="preface"], 
+section.adcard {
+	page-break-before: right;
 }
 
 section[data-type="halftitlepage"], 
@@ -610,7 +616,7 @@ nav[data-type="toc"] li.BMHeadbmh {
 	text-align: left;
 }
 
-nav[data-type="toc"] li.BMHeadbmh:first-of-type {
+nav[data-type="toc"] li.ChapTitlect + li.BMHeadbmh {
 	margin-top: 16pt;
 }
 
@@ -628,10 +634,6 @@ nav[data-type="toc"] li.PartTitlept ~ li.PartNumberpn {
 
 nav[data-type="toc"] li.PartNumberpn + li.PartTitlept {
 	margin-top: -9pt;
-}
-
-nav[data-type="toc"] li.ChapTitlect:last-of-type {
-	margin-bottom: 16pt;
 }
 
 nav[data-type="toc"] a {
@@ -698,15 +700,6 @@ section[data-type="preface"] p.FMSubheadfmsh {
 	margin-top: -45pt;
 	text-align: center;
 	margin-bottom: 30pt;
-}
-
-div[data-type="part"] > h1 {
-	font-size: 20pt;
-	font-weight: normal;
-	line-height: 28pt;
-	text-transform: uppercase;
-	margin-top: 9pt;
-	text-align: center;
 }
 
 section[data-type="chapter"] {
@@ -808,6 +801,10 @@ section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSour
 [class*="ChapOpeningText"] .spansmallcapscharacterssc:first-child {
 	font-weight: 600;
 	letter-spacing: 0.1pt;
+}
+
+section[data-type="part"] {
+	page-break-before: right;
 }
 
 section[data-type="part"] h1 {
