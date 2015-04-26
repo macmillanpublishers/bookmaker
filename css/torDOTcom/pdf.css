@@ -376,7 +376,7 @@ nav[data-type="toc"],
 }
 
 .FrontSalesQuotefsq {
-	text-indent: 0;
+	text-indent: -12pt;
 	text-align: left;
 }
 
