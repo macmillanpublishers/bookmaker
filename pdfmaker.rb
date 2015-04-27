@@ -200,11 +200,20 @@ else
 	test_pdf_created = "FAIL: PDF file exists in DONE directory"
 end
 
+# is there custom javascript?
+
+if javascripts.include?(".js")
+	test_custom_js = "#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js"
+else
+	test_custom_js = "none"
+end
+
 # Printing the test results to the log file
 File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- PDFMAKER PROCESSES"
 	f.puts "----- I found #{image_count} images to be uploaded"
 	f.puts "----- I found #{upload_count} files uploaded"
+	f.puts "----- I found the following custom javascript: #{test_custom_js}"
 	f.puts "#{test_image_array_compare}"
 	f.puts "#{test_pdf_created}"	
 end
