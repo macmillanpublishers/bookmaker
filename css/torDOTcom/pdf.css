@@ -1,6 +1,148 @@
 /*PDF CSS. prince -s ../tor.css output.html -o output.pdf*/
 
-/* final fonts */
+/* testing fonts */
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldItalic.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Smbd.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-LightDisplay.otf');
+	font-style: normal;
+	font-weight: 100;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-SmText.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldItalicSmText.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-SmbdSmText.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldSmText.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-Caption.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-ItalicCaption.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-BoldSubhead";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/ArnoPro-BoldSubhead.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/AromaNo2LTPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/AromaNo2LTPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MinionPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/MinionPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MyriadPro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/MyriadPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/SourceCodePro-Medium.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/SourceCodePro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "TimesNewRomanPSMT";
+	src: url('/Users/nellie.mckesson/Documents/automation/tor-design-samples/Imprint_PoD_template_r4 Folder/Documentfonts/TimesNewRomanPSMT.ttf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+/* final fonts
 
 @font-face {
 	font-family: "ArnoPro";
@@ -140,7 +282,7 @@
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}
+} */
 
 @page {
 	size: 5in 8in;
@@ -282,6 +424,43 @@
 	}
 }
 
+@page fullbleed:left {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:right {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:first {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:blank {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
 body {
 	font-family: "ArnoPro", serif;
 	counter-reset: endnotes chapternumber;
@@ -376,7 +555,7 @@ nav[data-type="toc"],
 }
 
 .FrontSalesQuotefsq {
-	text-indent: -12pt;
+	text-indent: -5pt;
 	text-align: left;
 }
 
@@ -889,6 +1068,11 @@ figure {
 	float: top unless-fit;
 }
 
+figure.fullpage {
+	page: fullbleed;
+	float: top;
+}
+
 h1 + figure {
 	min-height: 21pt;
 	margin-top: -40pt;
@@ -901,6 +1085,9 @@ figcaption {
 	font-size: 8.5pt;
 	line-height: 16pt;
 	text-align: left;
+}
+
+figure.fullpage figcaption {
 }
 
 img {
