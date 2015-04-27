@@ -21,7 +21,9 @@ for (var j = 0; illoSources.length > j; j++) {
 	var figID = illoSources[j].parentNode.getAttribute('id');
 	var figLink = illoSources[j].childNodes[0];
 	figLink.href = '#' + figID;
-	copyright.appendChild(illoSources[j]);
+  if (illoSources[j].parentNode.parentNode.getAttribute('class') != 'abouttheauthor') {
+	  copyright.appendChild(illoSources[j]);
+  };
 	};
 };
 
