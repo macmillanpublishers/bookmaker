@@ -97,7 +97,7 @@ DocRaptor.api_key "#{docraptor_key}"
 
 # change to DocRaptor 'test' mode when running from staging server
 testing_value = "false"
-if File.file?("C:/staging.txt") then testing_value = "true" end
+if File.file?("#{resource_dir}/staging.txt") then testing_value = "true" end
 
 #if any images are in 'done' dir, grayscale and upload them to macmillan.tools site
 images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
@@ -133,8 +133,7 @@ if image_count > 0
 end
 
 # Are there any custom javascripts?
-javascripts = Dir.entries("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\").select { |f| !File.directory? f }
-if javascripts.include?(".js")
+if File.file?("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
 	pdfjs = File.read("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
 	jsfile = "<script>#{pdfjs}</script>"
 else
@@ -202,7 +201,7 @@ end
 
 # is there custom javascript?
 
-if javascripts.include?(".js")
+if File.file?("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
 	test_custom_js = "#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js"
 else
 	test_custom_js = "none"
