@@ -53,7 +53,8 @@
     </xsl:variable>
     <xsl:if test="h:p[@class='AboutAuthorTextNo-Indentatatx1'] or
                         h:p[@class='AboutAuthorTextHeadatah'] or 
-                        h:p[@class='AboutAuthorTextatatx']">
+                        h:p[@class='AboutAuthorTextatatx'] or 
+                        h:h1/text()='About the Author'">
             <xsl:attribute name="class">
               <xsl:value-of select="'abouttheauthor'"/>
             </xsl:attribute>
