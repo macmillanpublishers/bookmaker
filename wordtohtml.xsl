@@ -163,6 +163,13 @@
       select="'Captioncap'"/>
   </xsl:variable>
 
+  <!-- Illustration source styles — these paragraphs are expected to immediately
+       follow or precede a style from $fig-paras. -->
+  <xsl:variable name="fig-source-paras" as="xs:string*">
+    <xsl:sequence
+      select="'IllustrationSourceis'"/>
+  </xsl:variable>
+
   <!-- List paragraph styles — divided by ordered and un-, but
        aggregation will always(?) be homogeneous. -->
   <xsl:variable name="list-num-paras" as="xs:string*">
@@ -553,9 +560,27 @@
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <figure>
+    <xsl:variable name="illosource" as="element()?">
+      <xsl:choose>
+        <xsl:when
+          test="following::w:p[1]
+                [w:pPr/w:pStyle/@w:val = $fig-cap-paras] and following::w:p[2]
+                [w:pPr/w:pStyle/@w:val = $fig-source-paras]">
+          <xsl:sequence
+            select="following::w:p[2]
+                    [w:pPr/w:pStyle/@w:val = $fig-source-paras]"/>
+        </xsl:when>
+        <xsl:when
+          test="following::w:p[1]
+                [w:pPr/w:pStyle/@w:val = $fig-source-paras]">
+          <xsl:sequence
+            select="following::w:p[1]
+                    [w:pPr/w:pStyle/@w:val = $fig-source-paras]"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+    <figure id="{generate-id()}">
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
-      <xsl:apply-templates select="$caption" mode="fig-caption"/>
       <img src="images/{normalize-space(.)}">
         <xsl:attribute name="alt">
           <xsl:choose>
@@ -569,11 +594,16 @@
           </xsl:choose>
         </xsl:attribute>
       </img>
+      <xsl:apply-templates select="$caption" mode="fig-caption"/>
+      <xsl:apply-templates select="$illosource" mode="fig-source"/>
     </figure>
   </xsl:template>
 
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $fig-cap-paras]"/>
+
+  <xsl:template
+    match="w:p[w:pPr/w:pStyle/@w:val = $fig-source-paras]"/>
 
   <!-- Group list items into list containers.
        If this goes more than two levels deep, we should generalize
@@ -772,6 +802,15 @@
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
       <xsl:apply-templates select="w:r"/>
     </figcaption>
+  </xsl:template>
+
+  <xsl:template match="w:p" mode="fig-source">
+    <p>
+      <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+      <a class="fig-link">
+        <xsl:apply-templates select="w:r"/>
+      </a>
+    </p>
   </xsl:template>
 
   <!-- Processing the book title in the head/title output.  Should
