@@ -97,7 +97,7 @@ DocRaptor.api_key "#{docraptor_key}"
 
 # change to DocRaptor 'test' mode when running from staging server
 testing_value = "false"
-if File.file?("C:/staging.txt") then testing_value = "true" end
+if File.file?("#{resource_dir}/staging.txt") then testing_value = "true" end
 
 #if any images are in 'done' dir, grayscale and upload them to macmillan.tools site
 images = Dir.entries("#{working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
@@ -133,8 +133,8 @@ if image_count > 0
 end
 
 # Are there any custom javascripts?
-javascripts = Dir.entries("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\").select { |f| !File.directory? f }
-if javascripts.include?(".js")
+if File.file?("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
+	pdfjs = File.read("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
 	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
 else
 	jsfile = ""
@@ -155,7 +155,7 @@ File.open("#{pisbn}.pdf", "w+b") do |f|
 	                         :prince_options	 => {
 	                           :http_user		 => "#{ftp_uname}",
 	                           :http_password	 => "#{ftp_pass}",
-	                           :javascript 		 => true
+	                           :javascript 		 => "true"
 							             }
                        		)
                            
@@ -198,11 +198,20 @@ else
 	test_pdf_created = "FAIL: PDF file exists in DONE directory"
 end
 
+# is there custom javascript?
+
+if File.file?("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
+	test_custom_js = "#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js"
+else
+	test_custom_js = "none"
+end
+
 # Printing the test results to the log file
 File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
 	f.puts "----- PDFMAKER PROCESSES"
 	f.puts "----- I found #{image_count} images to be uploaded"
 	f.puts "----- I found #{upload_count} files uploaded"
+	f.puts "----- I found the following custom javascript: #{test_custom_js}"
 	f.puts "#{test_image_array_compare}"
 	f.puts "#{test_pdf_created}"	
 end
