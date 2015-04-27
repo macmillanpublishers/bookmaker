@@ -135,7 +135,8 @@ end
 # Are there any custom javascripts?
 javascripts = Dir.entries("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\").select { |f| !File.directory? f }
 if javascripts.include?(".js")
-	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
+	pdfjs = File.read("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
+	jsfile = "<script>#{pdfjs}</script>"
 else
 	jsfile = ""
 end
