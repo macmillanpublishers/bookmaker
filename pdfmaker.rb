@@ -155,7 +155,7 @@ File.open("#{pisbn}.pdf", "w+b") do |f|
 	                         :prince_options	 => {
 	                           :http_user		 => "#{ftp_uname}",
 	                           :http_password	 => "#{ftp_pass}",
-	                           :javascript 		 => true
+	                           :javascript 		 => "true"
 							             }
                        		)
                            
