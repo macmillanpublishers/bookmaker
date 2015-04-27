@@ -153,11 +153,11 @@ File.open("#{pisbn}.pdf", "w+b") do |f|
                            :document_type    => "pdf",
                            :strict			     => "none",
                            :test             => "#{testing_value}",
-                           :javascript 		 => "true",
+                           #:javascript 		 => "true",
 	                         :prince_options	 => {
 	                           :http_user		 => "#{ftp_uname}",
 	                           :http_password	 => "#{ftp_pass}",
-	                           #:javascript 		 => "true"
+	                           :javascript 		 => "true"
 							             }
                        		)
                            
