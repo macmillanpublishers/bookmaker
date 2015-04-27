@@ -282,20 +282,7 @@
 	}
 }
 
-@page fullbleed:first {
-	margin: 0;
-	padding: 0;
-	@top-center {
-		content: normal;
-	}
-	@bottom-center {
-		content: normal;
-	}
-}
-
 @page fullbleed:left {
-	margin: 0;
-	padding: 0;
 	@top-center {
 		content: normal;
 	}
@@ -305,8 +292,25 @@
 }
 
 @page fullbleed:right {
-	margin: 0;
-	padding: 0;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:first {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:blank {
+	margin-top: 2.16in;
 	@top-center {
 		content: normal;
 	}
@@ -409,7 +413,7 @@ nav[data-type="toc"],
 }
 
 .FrontSalesQuotefsq {
-	text-indent: 0;
+	text-indent: -5pt;
 	text-align: left;
 }
 
@@ -922,6 +926,11 @@ figure {
 	float: top unless-fit;
 }
 
+figure.fullpage {
+	page: fullbleed;
+	float: top;
+}
+
 h1 + figure {
 	min-height: 21pt;
 	margin-top: -40pt;
@@ -934,6 +943,9 @@ figcaption {
 	font-size: 8.5pt;
 	line-height: 16pt;
 	text-align: left;
+}
+
+figure.fullpage figcaption {
 }
 
 img {
