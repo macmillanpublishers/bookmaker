@@ -37,7 +37,6 @@ function fullpageFigures() {
   };
   for (var f = 0; fullpageFigs.length > f; f++) {
     var parentFig = fullpageFigs[f].parentNode;
-    console.log(parentFig);
     parentFig.setAttribute("class", "Illustrationholderill fullpage");
   };
 };
