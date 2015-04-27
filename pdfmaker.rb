@@ -135,7 +135,8 @@ end
 # Are there any custom javascripts?
 if File.file?("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
 	pdfjs = File.read("#{bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{project_dir}\\pdf.js")
-	jsfile = "<script>#{pdfjs}</script>"
+	#jsfile = "<script>#{pdfjs}</script>"
+	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
 else
 	jsfile = ""
 end
