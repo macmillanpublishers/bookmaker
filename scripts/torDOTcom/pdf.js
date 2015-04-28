@@ -27,6 +27,32 @@ for (var j = 0; illoSources.length > j; j++) {
 	};
 };
 
+function addRunningElements() {
+  var allParas = document.getElementsByTagName('p');
+  for (var q = 0; allParas.length > q; q++) {
+    var bookTitle = document.getElementsByClassName("TitlepageBookTitletit")[0];
+    var rightText = bookTitle.textContent;
+    var runHeadRight = document.createElement("div");
+    runHeadRight.setAttribute("class", "runheadright");
+    var textnode = document.createTextNode(rightText);
+    runHeadRight.appendChild(textnode);
+    var bookAuthor = document.getElementsByClassName("TitlepageAuthorNameau")[0];
+    var leftText = bookAuthor.textContent;
+    var runHeadLeft = document.createElement("div");
+    runHeadLeft.setAttribute("class", "runheadleft");
+    var textnode = document.createTextNode(leftText);
+    runHeadLeft.appendChild(textnode);
+    var runFoot = document.createElement("div");
+    var runFootSpan = document.createElement("span");
+    runFoot.setAttribute("class", "runfoot");
+    runFoot.appendChild(runFootSpan);
+    var thisParent = allParas[q];
+    thisParent.parentNode.insertBefore(runHeadLeft, thisParent.nextSibling);
+    thisParent.parentNode.insertBefore(runHeadRight, thisParent.nextSibling);
+    thisParent.parentNode.insertBefore(runFoot, thisParent.nextSibling);
+  };
+}
+
 function fullpageFigures() {
   var allIllos = document.getElementsByTagName('img');
   var fullpageFigs = [];
@@ -39,12 +65,28 @@ function fullpageFigures() {
   };
   for (var f = 0; fullpageFigs.length > f; f++) {
     var parentFig = fullpageFigs[f].parentNode;
+    var runHeadLeft = document.createElement("div");
+    var textnode = document.createTextNode(" ");
+    runHeadLeft.setAttribute("class", "runheadleft");
+    runHeadLeft.appendChild(textnode);
+    var runHeadRight = document.createElement("div");
+    var textnode = document.createTextNode(" ");
+    runHeadRight.setAttribute("class", "runheadright");
+    runHeadRight.appendChild(textnode);
+    var runFoot = document.createElement("div");
+    var textnode = document.createTextNode(" ");
+    runFoot.setAttribute("class", "runfoot");
+    runFoot.appendChild(textnode);
     parentFig.setAttribute("class", "Illustrationholderill fullpage");
+    parentFig.insertBefore(runHeadLeft,parentFig.firstChild);
+    parentFig.insertBefore(runHeadRight,parentFig.firstChild);
+    parentFig.insertBefore(runFoot,parentFig.firstChild);
   };
 };
 
 window.onload = function() {
   moveIllustrationSource();
+  addRunningElements();
   fullpageFigures();
 };
 

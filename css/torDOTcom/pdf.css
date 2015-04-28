@@ -151,6 +151,9 @@
 	background-position: top left;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;*/
+	marks: crop;
+	prince-mark-offset: 0.125in;
+	bleed: 0.125in;
 	@footnotes {
 		font-family: "ArnoPro-SmText", serif;
 		font-size: 9pt;
@@ -176,7 +179,8 @@
 	@bottom-center {
 		font-family: "ArnoPro-Caption", serif;
 		font-variant: prince-opentype(onum);
-		content: counter(page);
+		/*content: counter(page);*/
+		content: flow(runfoot);
 		text-align: center;
 		font-size: 9pt;
 		vertical-align: top;
@@ -185,14 +189,16 @@
 
 @page chapter:left {
 	@top-center {
-		content: string(author);
+		/*content: string(author);*/
+		content: flow(runheadleft);
 	}
 	
 }
 
 @page chapter:right {
 	@top-center {
-		content: string(title);
+		/*content: string(title);*/
+		content: flow(runheadright);
 	}
 }
 
@@ -345,6 +351,47 @@ p {
 	hyphenate-lines: 3;
 }
 
+div.runheadleft { 
+	flow: static(runheadleft); 
+	font-family: "ArnoPro-Caption", serif;
+	text-align: center;
+	font-style: italic;
+	font-size: 8.5pt;
+	padding: 0;
+	margin: 0;
+	text-indent: 0;
+}
+
+div.runheadright { 
+	flow: static(runheadright);
+	font-family: "ArnoPro-Caption", serif;
+	text-align: center;
+	font-style: italic;
+	font-size: 8.5pt;
+	padding: 0;
+	margin: 0;
+	text-indent: 0;
+}
+
+div.runfoot { 
+	flow: static(runfoot); 
+	font-family: "ArnoPro-Caption", serif;
+	font-variant: prince-opentype(onum);
+	text-align: center;
+	font-size: 9pt;
+	text-indent: 0;
+}
+
+div.runfoot span { 
+	display: block;
+	content: counter(page); 
+	font-family: "ArnoPro-Caption", serif;
+	font-variant: prince-opentype(onum);
+	text-align: center;
+	font-size: 9pt;
+	text-indent: 0;
+}
+
 p:first-of-type, 
 p[class^="SpaceBreak"] + p, 
 p[class*="No-Indent"] {
@@ -392,10 +439,7 @@ section[data-type="copyright-page"],
 section.adcard,
 section[data-type="dedication"],
 nav[data-type="toc"],
-.FrontSalesTitlefst,
-.FrontSalesQuoteNoIndentfsq1,
-.FrontSalesQuotefsq,
-.FrontSalesQuoteSourcefsqs {
+section.frontsales {
 	page: front;
 }
 
@@ -927,8 +971,14 @@ figure {
 }
 
 figure.fullpage {
-	page: fullbleed;
-	float: top;
+	float: top unless-fit;
+	border: 1pt solid red;
+	box-sizing: border-box;
+	width: 5.25in;
+	margin-left: -0.875in;
+	/*margin-top: -1.36in;*/
+	overflow: visible;
+	max-height: 5in;
 }
 
 h1 + figure {
@@ -945,7 +995,9 @@ figcaption {
 	text-align: left;
 }
 
+/* suppressing, for now */
 figure.fullpage figcaption {
+	display: none;
 }
 
 img {
@@ -956,13 +1008,9 @@ img {
 
 img[src*="fullpage"] {
 	display: block;
-	max-width: 5.375in;
-	max-height: 8.375in;
-	page-break-before: always;
-	page-break-after: always;
-	page: fullbleed;
-	margin-top: -0.188in;
-	margin-left: -0.188in;
+	width: 5.25in;
+	position: relative;
+	top: -1.78in;
 }
 
 section[data-type="appendix"] h1 + figure {
