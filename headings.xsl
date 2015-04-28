@@ -52,11 +52,22 @@
             </xsl:choose>
     </xsl:variable>
     <xsl:if test="h:p[@class='AboutAuthorTextNo-Indentatatx1'] or
-                        h:p[@class='AboutAuthorTextHeadatah'] or 
-                        h:p[@class='AboutAuthorTextatatx'] or 
-                        h:h1/text()='About the Author'">
+                  h:p[@class='AboutAuthorTextHeadatah'] or 
+                  h:p[@class='AboutAuthorTextatatx'] or 
+                  h:h1/text()='About the Author'">
             <xsl:attribute name="class">
               <xsl:value-of select="'abouttheauthor'"/>
+            </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="h:p[@class='FrontSalesTitlefst'] or
+                  h:p[@class='FrontSalesSubtitlefsst'] or 
+                  h:p[@class='FrontSalesQuoteHeadfsqh'] or 
+                  h:p[@class='FrontSalesTextfstx'] or 
+                  h:p[@class='FrontSalesTextNoIndentfstx1'] or 
+                  h:p[@class='FrontSalesQuotefsq'] or 
+                  h:p[@class='FrontSalesQuoteNoIndentfsq1']">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'frontsales'"/>
             </xsl:attribute>
     </xsl:if>
 	<xsl:if test="*[1][self::h:p] or *[1][self::h:figure]">
