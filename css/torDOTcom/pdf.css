@@ -1,8 +1,148 @@
 /*PDF CSS. prince -s ../tor.css output.html -o output.pdf*/
 
-/* final fonts */
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
 
 @font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldItalic.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Smbd.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-LightDisplay.otf');
+	font-style: normal;
+	font-weight: 100;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-SmText.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldItalicSmText.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-SmbdSmText.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldSmText.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Caption.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-ItalicCaption.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-BoldSubhead";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldSubhead.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/AromaNo2LTPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/AromaNo2LTPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MinionPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/MinionPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MyriadPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/MyriadPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/SourceCodePro-Medium.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/SourceCodePro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "TimesNewRomanPSMT";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/TimesNewRomanPSMT.ttf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+/* final fonts */
+
+/*@font-face {
 	font-family: "ArnoPro";
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -140,19 +280,24 @@
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}
+}*/
+
+/*@prince-pdf {
+	prince-pdf-script: "this.addScript('mySetPageBoxes', 'for (var p=0; p<this.numPages; p++) {this.setPageBoxes(\0022Crop\0022, p, p, this.getPageBox(\0022Bleed\0022, p));};for (var i=0; i<this.numPages; i++) {if (i % 2 != 0) {var rCrop = this.getPageBox(\0022Crop\0022,i);rCrop[2] -= 9; this.setPageBoxes(\0022Crop\0022,i,i,rCrop);}; if (i % 2 == 0) {var rCrop = this.getPageBox(\0022Crop\0022,i); rCrop[0] += 9; this.setPageBoxes(\0022Crop\0022,i,i,rCrop);};};');";/*this.removeScript('mySetPageBoxes');";*/
+/*}*/
 
 @page {
 	size: 5in 8in;
 	margin: 0.72in 0.75in 0.66in 0.75in;
 	padding: 34pt 0 0.36in 0;
 	/*background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/tor.png"); /* for testing */
-	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
+	background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");
 	background-position: top left;
 	background-size: 100% 100%;
-	background-repeat: no-repeat;*/
+	background-repeat: no-repeat;
 	marks: crop;
 	prince-mark-offset: 0.125in;
+	prince-mark-length: 0in;
 	bleed: 0.125in;
 	@footnotes {
 		font-family: "ArnoPro-SmText", serif;
@@ -436,10 +581,8 @@ section.adcard {
 section[data-type="halftitlepage"], 
 section[data-type="titlepage"], 
 section[data-type="copyright-page"], 
-section.adcard,
 section[data-type="dedication"],
-nav[data-type="toc"],
-section.frontsales {
+nav[data-type="toc"] {
 	page: front;
 }
 
@@ -762,6 +905,10 @@ section.adcard {
 	page: front;
 }
 
+section.frontsales {
+	page: front;
+}
+
 section[data-type="preface"] h1, 
 section[data-type="appendix"] h1,
 h1.BMHeadbmh {
@@ -962,9 +1109,24 @@ p.IllustrationSourceis {
 	text-indent: 0;
 }
 
+section[data-type="copyright-page"] p.IllustrationSourceis {
+	margin-top: 0;
+	margin-bottom: 0;
+	float: bottom;
+}
+
+section[data-type="copyright-page"] p.IllustrationSourceis a {
+	text-decoration: none;
+	color: cmyk(0%,0%,0%,100%);
+}
+
+section[data-type="copyright-page"] p.IllustrationSourceis a:before {
+	content: "Page " target-counter(attr(href), page) " ";
+}
+
 figure {
 	page-break-inside: avoid;
-	margin-top: 32pt;
+	margin-top: 14pt;
 	margin-bottom: 27pt;
 	text-align: center;
 	float: top unless-fit;
@@ -972,13 +1134,12 @@ figure {
 
 figure.fullpage {
 	float: top unless-fit;
-	border: 1pt solid red;
 	box-sizing: border-box;
 	width: 5.25in;
+	margin-top: 0;
 	margin-left: -0.875in;
-	/*margin-top: -1.36in;*/
 	overflow: visible;
-	max-height: 5in;
+	height: 5.25in;
 }
 
 h1 + figure {
@@ -1010,7 +1171,7 @@ img[src*="fullpage"] {
 	display: block;
 	width: 5.25in;
 	position: relative;
-	top: -1.78in;
+	top: -1.4in;
 }
 
 section[data-type="appendix"] h1 + figure {
