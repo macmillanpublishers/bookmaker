@@ -1,6 +1,6 @@
 /*PDF CSS. prince -s ../tor.css output.html -o output.pdf*/
 
-@font-face {
+/*@font-face {
 	font-family: "ArnoPro";
 	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -138,11 +138,11 @@
 	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}
+}*/
 
 /* final fonts */
 
-/*@font-face {
+@font-face {
 	font-family: "ArnoPro";
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf');
 	font-style: normal;
@@ -280,7 +280,7 @@
 	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
 	font-style: normal;
 	font-weight: normal;
-}*/
+}
 
 /*@prince-pdf {
 	prince-pdf-script: "this.addScript('mySetPageBoxes', 'for (var p=0; p<this.numPages; p++) {this.setPageBoxes(\0022Crop\0022, p, p, this.getPageBox(\0022Bleed\0022, p));};for (var i=0; i<this.numPages; i++) {if (i % 2 != 0) {var rCrop = this.getPageBox(\0022Crop\0022,i);rCrop[2] -= 9; this.setPageBoxes(\0022Crop\0022,i,i,rCrop);}; if (i % 2 == 0) {var rCrop = this.getPageBox(\0022Crop\0022,i); rCrop[0] += 9; this.setPageBoxes(\0022Crop\0022,i,i,rCrop);};};');";/*this.removeScript('mySetPageBoxes');";*/
