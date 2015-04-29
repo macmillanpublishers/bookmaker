@@ -1127,7 +1127,7 @@ section[data-type="copyright-page"] p.IllustrationSourceis a:before {
 
 figure {
 	page-break-inside: avoid;
-	margin-top: 11pt;
+	margin-top: 27pt;
 	margin-bottom: 32pt;
 	text-align: center;
 	float: top unless-fit;
