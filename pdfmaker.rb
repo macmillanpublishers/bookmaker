@@ -112,11 +112,22 @@ if image_count > 0
 		elsif i.include?("_FC") or i.include?(".txt")
 			`del #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		else
-			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "360x576>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
-			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
-			myheight = myheight.to_f
 			myres = myres.to_f
+			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			myheight = myheight.to_f
+			myheightininches = ((myheight / myres) * 72.0)
+			mywidth = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			mywidth = mywidth.to_f
+			mywidthininches = ((mywidth / myres) * 72.0)
+			if mywidthininches >= 3.5 or myheightininches >= 5.5 then
+				targetheight = 3.5 * myres
+				targetwidth = 3.5 * myres
+				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "#{targetwidth}x#{targetheight}>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			end
+			myheight = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
+			myheight = myheight.to_f
+			myheightininches = ((myheight / myres) * 72.0)
 			mymultiple = ((myheight / myres) * 72.0) / 16.0
 			if mymultiple <= 1
 				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
