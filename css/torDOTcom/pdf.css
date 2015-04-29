@@ -985,7 +985,7 @@ section[data-type="appendix"] {
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"], 
-section[data-type="part"] > blockquote[data-type="epigraph"], 
+div[data-type="part"] > blockquote[data-type="epigraph"], 
 section[data-type="preface"] > blockquote[data-type="epigraph"] {
 	margin-left: 36pt;
 	margin-right: 36pt;
@@ -997,7 +997,7 @@ h1.ChapTitlect + blockquote[data-type="epigraph"] {
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"] p, 
-section[data-type="part"] > blockquote[data-type="epigraph"] p, 
+div[data-type="part"] > blockquote[data-type="epigraph"] p, 
 section[data-type="preface"] > blockquote[data-type="epigraph"] p {
 	font-family: "ArnoPro-SmText";
 	font-size: 10pt;
@@ -1007,20 +1007,20 @@ section[data-type="preface"] > blockquote[data-type="epigraph"] p {
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphversecepiv, 
-section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphversepepiv, 
+div[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphversepepiv, 
 section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphversefmepiv {
 	margin-left: 16pt;
 	text-indent: -16pt;
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphnon-versecepi,
-section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphnon-versepepi,
+div[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphnon-versepepi,
 section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphnon-versefmepi {
 	margin-left: 0;
 }
 
 section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphSourceceps, 
-section[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphSourcepeps,
+div[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphSourcepeps,
 section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSourcefmeps {
 	text-align: right;
 	font-weight: 600;
@@ -1031,11 +1031,11 @@ section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSour
 	letter-spacing: 0.1pt;
 }
 
-section[data-type="part"] {
+div[data-type="part"] {
 	page-break-before: right;
 }
 
-section[data-type="part"] h1 {
+div[data-type="part"] h1 {
 	font-weight: normal;
 	font-size: 22pt;
 	text-transform: uppercase;
@@ -1110,6 +1110,7 @@ p.IllustrationSourceis {
 }
 
 section[data-type="copyright-page"] p.IllustrationSourceis {
+	font-size: 7pt;
 	margin-top: 0;
 	margin-bottom: 0;
 	float: bottom;
@@ -1126,8 +1127,8 @@ section[data-type="copyright-page"] p.IllustrationSourceis a:before {
 
 figure {
 	page-break-inside: avoid;
-	margin-top: 14pt;
-	margin-bottom: 27pt;
+	margin-top: 11pt;
+	margin-bottom: 32pt;
 	text-align: center;
 	float: top unless-fit;
 }
@@ -1139,7 +1140,7 @@ figure.fullpage {
 	margin-top: 0;
 	margin-left: -0.875in;
 	overflow: visible;
-	height: 5.25in;
+	height: 5.3in;
 }
 
 h1 + figure {
