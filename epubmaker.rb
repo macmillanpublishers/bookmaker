@@ -165,7 +165,7 @@ end
 #copy logo image file to epub folder
 `copy #{logo_img} #{tmp_dir}\\#{filename}\\OEBPS\\logo.jpg`
 
-if stage_dir.include? "egalley" or stage_dir.include? "first_pass"
+if stage_dir.include? "egalley" or stage_dir.include? "firstpass"
 	csfilename = "#{eisbn}_EPUBfirstpass"
 else
 	csfilename = "#{eisbn}_EPUB"
