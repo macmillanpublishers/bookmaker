@@ -109,7 +109,7 @@ if image_count > 0
 	pdfimages.each do |i|
 		if i.include?("fullpage")
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
-		elsif i.include?("_FC") or i.include?(".txt") or i.include?(".css")
+		elsif i.include?("_FC") or i.include?(".txt") or i.include?(".css") or i.include?(".js")
 			`del #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		else
 			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
