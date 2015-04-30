@@ -7,9 +7,9 @@ input_file = ARGV[0]
 filename_split = input_file.split("\\").pop
 filename = filename_split.split(".").shift.gsub(/ /, "")
 working_dir_split = ARGV[0].split("\\")
-working_dir = working_dir_split[0...-2].join("\\")
-project_dir = working_dir_split[0...-3].pop
-stage_dir = working_dir_split[0...-2].pop
+working_dir = working_dir_split[0...-1].join("\\")
+project_dir = working_dir_split[0...-2].pop.split("_").shift
+stage_dir = working_dir_split[0...-2].pop.split("_").pop
 # In Macmillan's environment, these scripts could be 
 # running either on the C: volume or on the S: volume 
 # of the configured server. This block determines which 
