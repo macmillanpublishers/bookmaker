@@ -599,7 +599,8 @@ nav[data-type="toc"] {
 	text-align: left;
 }
 
-.FrontSalesQuotefsq {
+.FrontSalesQuotefsq, 
+p.FrontSalesQuotefsq:first-of-type {
 	text-indent: -5pt;
 	text-align: left;
 }
