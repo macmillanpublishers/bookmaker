@@ -109,7 +109,7 @@ if image_count > 0
 	pdfimages.each do |i|
 		if i.include?("fullpage")
 			`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
-		elsif i.include?("_FC") or i.include?(".txt")
+		elsif i.include?("_FC") or i.include?(".txt") or i.include?(".css")
 			`del #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 		else
 			myres = `identify -format "%y" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
@@ -120,8 +120,8 @@ if image_count > 0
 			mywidth = `identify -format "%h" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			mywidth = mywidth.to_f
 			mywidthininches = ((mywidth / myres) * 72.0)
-			if mywidthininches >= 3.5 or myheightininches >= 5.5 then
-				targetheight = 3.5 * myres
+			if mywidthininches > 3.5 or myheightininches > 5.5 then
+				targetheight = 5.5 * myres
 				targetwidth = 3.5 * myres
 				`convert #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i} -resize "#{targetwidth}x#{targetheight}>" #{tmp_dir}\\#{filename}\\images\\pdftmp\\#{i}`
 			end
