@@ -73,15 +73,15 @@ Paths for the above four folders can be configured in header.rb. See the install
 
 The Bookmaker scripts depend on various other utilities, as follows:
 
-* Java: Saxon requires the Java JDK. (See page: Install Saxon)
-* Saxon: An XSLT processor that runs our Word-to-HTML scripts. (See page: Install Saxon)
+* Java: Saxon requires the Java JDK. 
+* Saxon: An XSLT processor that runs our Word-to-HTML scripts. 
 * Microsoft Word: The WordXML-to-HTML converter requires MS Word to convert .doc files to .xml
-* Ruby: The primary scripting language used in the Bookmaker scripts. (See page: Install Ruby and doc_raptor)
+* Ruby: The primary scripting language used in the Bookmaker scripts. 
 * Docraptor: The external service that performs the HTML-to-PDF conversion. It requires a ruby gem, and you'll also need to create an account and get your unique API key.
 * An ftp server (if you'll be creating PDFs and your book contains images, custom fonts, custom CSS, or other resources besides the HTML).
-* SSL Cert: The SSL Cert file needs to be updated to allow the scripts to post and receive from DocRaptor. (See page: Install Ruby and doc_raptor)
-* Zip.exe: Packages the EPUB file; download here and place here: C:\zip\zip.exe
-* Imagemagick: enables command line image edits. Download here and add to path via cmd line: set PATH=C:\Program Files\ImageMagick-6.9.1-Q16n;%PATH%      (<-version suffix may change, use your own path)
+* SSL Cert: The SSL Cert file needs to be updated to allow the scripts to post and receive from DocRaptor. 
+* Zip.exe: Packages the EPUB file; download here and place in your resources folder (see below).
+* Imagemagick: enables command line image edits. Download here and add to path via cmd line: set PATH=C:\Program Files\ImageMagick-6.9.1-Q16n;%PATH% (<-version suffix may change, use your own path)
 
 ## Installation
 
@@ -104,7 +104,7 @@ On your server, create the following folders and subfolders.
 * A folder to archive the final converted files.
 * A folder where the system can store temporary files created during conversion.
 * A main parent folder to contain all of the separate bookmaker script folders.
-* A folder for all the supplemental utilities.
+* A folder for all the supplemental utilities (saxon, zip, etc).
 * A folder for storing log files.
 
 ### Install Git and Set Up Your GitHub Account
