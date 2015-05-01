@@ -6,7 +6,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -47,7 +47,7 @@ end
 # --------------------HTML FILE DATA END--------------------
 
 # The location where the images are dropped by the user
-imagedir = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\"
+imagedir = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\"
 # The working dir location that images will be moved to (for test 3)
 image_dest = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\"
 
