@@ -1,7 +1,7 @@
 require_relative '..\\bookmaker\\header.rb'
 
 # convert xml to html
-`java -jar #{resource_dir}\\saxon\\saxon9pe.jar -s:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{Bkmkr::Project.filename}.xml -xsl:#{Bkmkr::Dir.bookmaker_dir}\\WordXML-to-HTML\\wordtohtml.xsl -o:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html`
+`java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{Bkmkr::Project.filename}.xml -xsl:#{Bkmkr::Dir.bookmaker_dir}\\WordXML-to-HTML\\wordtohtml.xsl -o:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html`
 
 # place footnote text inline per htmlbook
 filecontents = File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html")
