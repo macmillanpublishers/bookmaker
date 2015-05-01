@@ -6,7 +6,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
+html_file = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -38,23 +38,23 @@ end
 
 # just in case no isbn is found
 if pisbn.length == 0
-	pisbn = "#{filename}"
+	pisbn = "#{Bkmkr::Project.filename}"
 end
 
 if eisbn.length == 0
-	eisbn = "#{filename}"
+	eisbn = "#{Bkmkr::Project.filename}"
 end
 # --------------------HTML FILE DATA END--------------------
 
 # create the archival directory structure and copy xml and html there
-filetype = filename_split.split(".").pop
+filetype = Bkmkr::Project.filename_split.split(".").pop
 
-`md #{working_dir}\\done\\#{pisbn}`
-`md #{working_dir}\\done\\#{pisbn}\\images`
-`md #{working_dir}\\done\\#{pisbn}\\cover`
-`md #{working_dir}\\done\\#{pisbn}\\layout`
-`copy "#{input_file}" #{working_dir}\\done\\#{pisbn}\\#{pisbn}_MNU.#{filetype}`
-`copy #{html_file} #{working_dir}\\done\\#{pisbn}\\layout\\#{pisbn}.html`
+`md #{Bkmkr::Project.working_dir}\\done\\#{pisbn}`
+`md #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images`
+`md #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover`
+`md #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout`
+`copy "#{Bkmkr::Project.input_file}" #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\#{pisbn}_MNU.#{filetype}`
+`copy #{html_file} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\#{pisbn}.html`
 
 # TESTING
 
@@ -69,28 +69,28 @@ else
 end
 
 # done dir and all subdirs should exist
-if File.exist?("#{working_dir}\\done\\#{pisbn}") and File.exist?("#{working_dir}\\done\\#{pisbn}\\images") and File.exist?("#{working_dir}\\done\\#{pisbn}\\cover") and File.exist?("#{working_dir}\\done\\#{pisbn}\\layout")
+if File.exist?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}") and File.exist?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images") and File.exist?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover") and File.exist?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout")
 	test_dir_status = "pass: project directory and all sub-directories were successfully created"
 else
 	test_dir_status = "FAIL: project directory and all sub-directories were successfully created"
 end
 
 # input file should exist in done dir 
-if File.file?("#{working_dir}\\done\\#{pisbn}\\#{pisbn}_MNU.#{filetype}")
+if File.file?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\#{pisbn}_MNU.#{filetype}")
 	test_input_status = "pass: original file preserved in project directory"
 else
 	test_input_status = "FAIL: original file preserved in project directory"
 end
 
 # html file should exist in done dir 
-if File.file?("#{working_dir}\\done\\#{pisbn}\\layout\\#{pisbn}.html")
+if File.file?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\#{pisbn}.html")
 	test_html_status = "pass: converted html file preserved in project directory"
 else
 	test_html_status = "FAIL: converted html file preserved in project directory"
 end
 
 # Printing the test results to the log file
-File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
+File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
 	f.puts "----- FILEARCHIVE PROCESSES"
 	f.puts "----- Print ISBN: #{pisbn}"
 	f.puts test_isbn_status
