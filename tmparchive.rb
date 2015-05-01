@@ -1,4 +1,4 @@
-require '../bookmaker/header.rb'
+require_relative '..\\bookmaker\\header.rb'
 
 filename_split_nospaces = filename_split.gsub(/ /, "")
 
