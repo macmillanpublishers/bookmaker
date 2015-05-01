@@ -9,7 +9,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -68,44 +68,44 @@ if File.file?("#{Bkmkr::Dir.resource_dir}/staging.txt") then testing_value = "tr
 images = Dir.entries("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
 image_count = images.count
 if image_count > 0
-	`mkdir #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	`copy #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\* #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	pdfimages = Dir.entries("#{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\").select { |f| !File.directory? f }
+	`mkdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+	`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+	pdfimages = Dir.entries("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\").select { |f| !File.directory? f }
 	pdfimages.each do |i|
 		if i.include?("fullpage")
-			`convert #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+			`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -colorspace gray #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 		elsif i.include?("_FC") or i.include?(".txt")
-			`del #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+			`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 		else
-			myres = `identify -format "%y" #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+			myres = `identify -format "%y" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			myres = myres.to_f
-			myheight = `identify -format "%h" #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+			myheight = `identify -format "%h" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			myheight = myheight.to_f
 			myheightininches = ((myheight / myres) * 72.0)
-			mywidth = `identify -format "%h" #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+			mywidth = `identify -format "%h" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			mywidth = mywidth.to_f
 			mywidthininches = ((mywidth / myres) * 72.0)
 			if mywidthininches >= 3.5 or myheightininches >= 5.5 then
 				targetheight = 3.5 * myres
 				targetwidth = 3.5 * myres
-				`convert #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -resize "#{targetwidth}x#{targetheight}>" #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+				`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -resize "#{targetwidth}x#{targetheight}>" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			end
-			myheight = `identify -format "%h" #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+			myheight = `identify -format "%h" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			myheight = myheight.to_f
 			myheightininches = ((myheight / myres) * 72.0)
 			mymultiple = ((myheight / myres) * 72.0) / 16.0
 			if mymultiple <= 1
-				`convert #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -colorspace gray #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+				`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -colorspace gray #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			else 
 				newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
-				`convert #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
+				`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -resize "x#{newheight}" -colorspace gray #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			end
 		end
 	end
-	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{Bkmkr::Project.project_dir}\\* #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\images\\#{Bkmkr::Project.project_dir}\\* #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{Bkmkr::Project.project_dir}\\* #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	`#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{tmp_dir}\\#{Bkmkr::Project.filename}\\images`
+	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\images\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+	`#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
 end
 
 # Are there any custom javascripts?
@@ -121,7 +121,7 @@ pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"#{jsfile}<link rel=\"style
 
 # sends file to docraptor for conversion
 # currently running in test mode; remove test when css is finalized
-`chdir #{tmp_dir}\\#{Bkmkr::Project.filename}`
+`chdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}`
 File.open("#{pisbn}.pdf", "w+b") do |f|
   f.write DocRaptor.create(:document_content => pdf_html,
                            :name             => "#{pisbn}.pdf",
@@ -150,7 +150,7 @@ if image_count > 0
 
 	# verify files were uploaded, and match image array
     upload_report = []
-    File.read("#{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\uploaded_image_log.txt").each_line {|line|
+    File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\uploaded_image_log.txt").each_line {|line|
           line_b = line.gsub(/\n$/, "")
           upload_report.push line_b}
  	upload_count = upload_report.count
