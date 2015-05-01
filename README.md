@@ -113,7 +113,7 @@ If you haven't yet set up a GitHub account, do that now (you can just set up a b
 
 Now install git on your server, following the standard instructions.
 
-### Clone the Other Repositories
+### Clone the Repositories
 
 The source code for the Bookmaker scripts is hosted in the Macmillan GitHub account, broken down into several repositories. The production-ready versions of each script live in the master branch in each repository. The repositories are as follows:
 
