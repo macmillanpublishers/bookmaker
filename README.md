@@ -16,7 +16,7 @@ The scripts are as follows:
 
 [htmlmaker](https://github.com/macmillanpublishers/bookmaker_htmlmaker): Converts the input .xml file to HTML using wordtohtml.xsl.
 
-*Dependencies: tmparchive, Java JDK, Saxon, wordtohtml.xsl*
+*Dependencies: tmparchive, Java JDK, Saxon, Microsoft Word, wordtohtml.xsl*
 
 [filearchive](https://github.com/macmillanpublishers/bookmaker_filearchive): Creates the directory structure for the converted filesbookmaker_coverchecker: Verifies that a cover image has been submitted. If yes, copies the cover image file into the final archive. If no, creates an error file notifying the user that the cover is missing.
 
@@ -75,7 +75,7 @@ The Bookmaker scripts depend on various other utilities, as follows:
 
 * Java: Saxon requires the Java JDK. 
 * Saxon: An XSLT processor that runs our Word-to-HTML scripts. 
-* Microsoft Word: The WordXML-to-HTML converter requires MS Word to convert .doc files to .xml
+* Microsoft Word: The WordXML-to-HTML converter (PowerShell) requires MS Word to convert .doc files to .xml.
 * Ruby: The primary scripting language used in the Bookmaker scripts. 
 * Docraptor: The external service that performs the HTML-to-PDF conversion. It requires a ruby gem, and you'll also need to create an account and get your unique API key.
 * An ftp server (if you'll be creating PDFs and your book contains images, custom fonts, custom CSS, or other resources besides the HTML).
@@ -91,9 +91,9 @@ Install Bookmaker by following these steps, in order.
 
 Install the utilities listed in the previous section, as needed. For reference, you need to install the following in order to create these outputs:
 
-To create an HTML file: Ruby, Java, Saxon, Microsoft Word
-To create a PDF file: Ruby, Java, Saxon, Microsoft Word, Docraptor gem, ftp server, SSL cert file, Imagemagick
-To create an EPUB file: Ruby, Java, Saxon, Microsoft Word, Zip.exe, Imagemagick
+* To create an HTML file: Ruby, Java, Saxon, Microsoft Word
+* To create a PDF file: Ruby, Java, Saxon, Microsoft Word, Docraptor gem, ftp server, SSL cert file, Imagemagick
+* To create an EPUB file: Ruby, Java, Saxon, Microsoft Word, Zip.exe, Imagemagick
 
 ### Create the Folder Structure
 
