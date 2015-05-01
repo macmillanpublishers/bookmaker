@@ -20,7 +20,7 @@ The scripts are as follows:
 
 [htmlmaker](https://github.com/macmillanpublishers/bookmaker_htmlmaker): Converts the .xml file to HTML using wordtohtml.xsl.
 
-*Dependencies: tmparchive, Java JDK, Saxon, wordtohtml.xsl*
+*Dependencies: tmparchive, DocxToXml, Java JDK, Saxon, wordtohtml.xsl*
 
 [filearchive](https://github.com/macmillanpublishers/bookmaker_filearchive): Creates the directory structure for the converted filesbookmaker_coverchecker: Verifies that a cover image has been submitted. If yes, copies the cover image file into the final archive. If no, creates an error file notifying the user that the cover is missing.
 
