@@ -85,8 +85,8 @@ if image_count > 0
 			mywidth = `identify -format "%h" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			mywidth = mywidth.to_f
 			mywidthininches = ((mywidth / myres) * 72.0)
-			if mywidthininches >= 3.5 or myheightininches >= 5.5 then
-				targetheight = 3.5 * myres
+			if mywidthininches > 3.5 or myheightininches > 5.5 then
+				targetheight = 5.5 * myres
 				targetwidth = 3.5 * myres
 				`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -resize "#{targetwidth}x#{targetheight}>" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 			end
