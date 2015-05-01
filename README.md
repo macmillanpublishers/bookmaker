@@ -102,10 +102,10 @@ On your server, create the following folders and subfolders.
 * A folder to drop the project to be converted. See the naming convention requirements above. The folder should follow this convention: _MainParentFolder\_ProjectStage/ConversionFolder/_
 * A folder to drop book images to be included in the conversion.
 * A folder to archive the final converted files.
-* A folder where the system can store temporary files created during conversion.
-* A main parent folder to contain all of the separate bookmaker script folders.
-* A folder for all the supplemental utilities (saxon, zip, etc).
-* A folder for storing log files.
+* Temp folder: A folder where the system can store temporary files created during conversion.
+* Bookmaker folder: A main parent folder to contain all of the separate bookmaker script folders.
+* Resources folder: A folder for all the supplemental utilities (saxon, zip, etc).
+* Log folder: A folder for storing log files.
 
 ### Install Git and Set Up Your GitHub Account
 
@@ -181,6 +181,28 @@ imagedelete.bat
     echo quit>> ftpcmd.dat
     ftp -i -n -s:ftpcmd.dat YOUR_SERVER_NAME_OR_IP
     del ftpcmd.dat
+
+### Configure Your Settings
+
+Within the primary Bookmaker repository (which is to say, this repository), you can configure your system paths to point to the correct folder locations for the folders you created in the steps above. Open _header.rb_ and edit the following values:
+
+The location of the Temp folder:
+
+    @@tmp_dir = "YOUR_PATH_HERE"
+
+The location of the Log folder:
+
+    @@log_dir = "YOUR_PATH_HERE"
+
+The location of the Bookmaker main parent folder:
+
+    @@bookmaker_dir = "YOUR_PATH_HERE"
+
+The location of the Resource folder:
+
+    @@resource_dir = "YOUR_PATH_HERE"
+
+**Note that these settings are being migrated to a separate config file in the very near future.**
 
 ### Download HTMLBook
 
