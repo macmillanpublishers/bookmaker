@@ -6,7 +6,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
+html_file = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -38,11 +38,11 @@ end
 
 # just in case no isbn is found
 if pisbn.length == 0
-	pisbn = "#{filename}"
+	pisbn = "#{Bkmkr::Project.filename}"
 end
 
 if eisbn.length == 0
-	eisbn = "#{filename}"
+	eisbn = "#{Bkmkr::Project.filename}"
 end
 # --------------------HTML FILE DATA END--------------------
 
@@ -50,22 +50,22 @@ end
 chapterheads = File.read("#{html_file}").scan(/section data-type="chapter"/)
 
 # css files
-pdf_css_file = "#{bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{project_dir}\\pdf.css"
+pdf_css_file = "#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{Bkmkr::Project.project_dir}\\pdf.css"
 
-if File.file?("#{bookmaker_dir}\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css")
-	epub_css_file = "#{bookmaker_dir}\\bookmaker_epubmaker\\css\\#{project_dir}\\epub.css"
-# elsif project_dir.include? "egalley" or project_dir.include? "first_pass"
+if File.file?("#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_epubmaker\\css\\#{Bkmkr::Project.project_dir}\\epub.css")
+	epub_css_file = "#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_epubmaker\\css\\#{Bkmkr::Project.project_dir}\\epub.css"
+# elsif Bkmkr::Project.project_dir.include? "egalley" or Bkmkr::Project.project_dir.include? "first_pass"
 # 	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\egalley_SMP\\epub.css"
 else
- 	epub_css_file = "#{bookmaker_dir}\\bookmaker_epubmaker\\css\\generic\\epub.css"
+ 	epub_css_file = "#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_epubmaker\\css\\generic\\epub.css"
 end
 
 if File.file?("#{pdf_css_file}")
 	pdf_css = File.read("#{pdf_css_file}")
 	if chapterheads.count > 1
-		`copy #{pdf_css_file} #{working_dir}\\done\\#{pisbn}\\layout\\pdf.css`
+		`copy #{pdf_css_file} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\pdf.css`
 	else
-		File.open("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css", 'w') do |p|
+		File.open("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\pdf.css", 'w') do |p|
 			p.write "#{pdf_css}section[data-type='chapter']>h1{display:none;}"
 		end
 	end
@@ -74,9 +74,9 @@ end
 if File.file?("#{epub_css_file}")
 	epub_css = File.read("#{epub_css_file}")
 	if chapterheads.count > 1
-		`copy #{epub_css_file} #{working_dir}\\done\\#{pisbn}\\layout\\epub.css`
+		`copy #{epub_css_file} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\epub.css`
 	else
-		File.open("#{working_dir}\\done\\#{pisbn}\\layout\\epub.css", 'w') do |e|
+		File.open("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\epub.css", 'w') do |e|
 			e.write "#{epub_css}h1.ChapTitlect{display:none;}"
 		end
 	end
@@ -85,13 +85,13 @@ end
 # TESTING
 
 # css files should exist in project directory
-if File.file?("#{working_dir}\\done\\#{pisbn}\\layout\\pdf.css")
+if File.file?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\pdf.css")
 	test_pcss_status = "pass: PDF CSS file was added to the project directory"
 else
 	test_pcss_status = "FAIL: PDF CSS file was added to the project directory"
 end
 
-if File.file?("#{working_dir}\\done\\#{pisbn}\\layout\\epub.css")
+if File.file?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\epub.css")
 	test_ecss_status = "pass: EPUB CSS file was added to the project directory"
 else
 	test_ecss_status = "FAIL: EPUB CSS file was added to the project directory"
@@ -100,7 +100,7 @@ end
 chapterheadsnum = chapterheads.count
 
 # Printing the test results to the log file
-File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
+File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
 	f.puts "----- CHAPTERHEADS PROCESSES"
 	f.puts "----- I found #{chapterheadsnum} chapters in this book."
 	f.puts test_pcss_status
