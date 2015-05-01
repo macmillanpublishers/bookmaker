@@ -1,4 +1,4 @@
-require '../bookmaker/header.rb'
+require_relative '..\\bookmaker\\header.rb'
 
 # convert xml to html
 `java -jar #{resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{filename}\\#{filename}.xml -xsl:#{bookmaker_dir}\\WordXML-to-HTML\\wordtohtml.xsl -o:#{tmp_dir}\\#{filename}\\outputtmp.html`
