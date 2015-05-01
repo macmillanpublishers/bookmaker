@@ -6,7 +6,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{tmp_dir}\\#{filename}\\outputtmp.html"
+html_file = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -38,18 +38,18 @@ end
 
 # just in case no isbn is found
 if pisbn.length == 0
-	pisbn = "#{filename}"
+	pisbn = "#{Bkmkr::Project.filename}"
 end
 
 if eisbn.length == 0
-	eisbn = "#{filename}"
+	eisbn = "#{Bkmkr::Project.filename}"
 end
 # --------------------HTML FILE DATA END--------------------
 
 # The location where the images are dropped by the user
-imagedir = "#{tmp_dir}\\#{filename}\\images\\"
+imagedir = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\"
 # The working dir location that images will be moved to (for test 3)
-image_dest = "#{working_dir}\\done\\#{pisbn}\\images\\"
+image_dest = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\"
 
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
@@ -73,7 +73,7 @@ matched = []
 source.each do |m|
 	match = m.split("/").pop.gsub(/"/,'')
 	if images.include?("#{match}")
-		`copy #{imagedir}\\#{match} #{working_dir}\\done\\#{pisbn}\\images\\`
+		`copy #{imagedir}\\#{match} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\`
 		matched << match
 	else
 		missing << match
@@ -82,7 +82,7 @@ end
 
 # Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
 if missing.any?
-	File.open("#{working_dir}\\done\\#{pisbn}\\IMAGE_ERROR.txt", 'w') do |output|
+	File.open("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\IMAGE_ERROR.txt", 'w') do |output|
 		output.write "The following images are missing from the images folder: #{missing}"
 	end
 end
@@ -108,7 +108,7 @@ else
 end
 
 # Printing the test results to the log file
-File.open("#{log_dir}\\#{filename}.txt", 'a+') do |f|
+File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
 	f.puts "----- IMAGECHECKER PROCESSES"
 	f.puts "I found #{test_img_src} image references in this book"
 	f.puts "#{test_missing_img}"
