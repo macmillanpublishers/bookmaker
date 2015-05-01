@@ -6,7 +6,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -47,7 +47,7 @@ end
 # --------------------HTML FILE DATA END--------------------
 
 # The location where the cover is dropped by the user
-coverdir = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\"
+coverdir = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\"
 
 # the revised cover filename
 cover = "#{pisbn}_FC.jpg"
@@ -59,7 +59,7 @@ files = Dir.entries("#{coverdir}")
 # if yes, copies cover to archival location and deletes from submission dir
 # if no, prints an error to the archival directory 
 if files.include?("#{cover}")
-	`copy #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\#{cover} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover\\cover.jpg`
+	`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\#{cover} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover\\cover.jpg`
 else
 	File.open("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\COVER_ERROR.txt", 'w') do |output|
 		output.write "There is no cover image for this title. Download the cover image from Biblio and place it in the submitted_images folder, then re-submit the manuscript for conversion; cover images must be named ISBN_FC.jpg."
