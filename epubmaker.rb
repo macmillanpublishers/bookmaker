@@ -6,7 +6,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -46,7 +46,7 @@ if eisbn.length == 0
 end
 # --------------------HTML FILE DATA END--------------------
 
-epub_dir = "#{tmp_dir}\\#{Bkmkr::Project.filename}"
+epub_dir = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}"
 
 # Finding author name(s)
 authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
@@ -79,7 +79,7 @@ end
 filecontents = filecontents.gsub(/(^(.|\n)*?<section data-type="copyright-page" id=".*?">)((.|\n)*?)(<\/section>(.|\n)*$)/, "\\1#{new_copyright}\\5")
 
 # Saving revised HTML into tmp file
-File.open("#{tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html", 'w') do |output| 
+File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html", 'w') do |output| 
 	output.write filecontents
 end
 
@@ -89,46 +89,46 @@ File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
 end
 
 # strip halftitlepage from html
-`java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html -xsl:#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_epubmaker\\strip-halftitle.xsl -o:#{tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
+`java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html -xsl:#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_epubmaker\\strip-halftitle.xsl -o:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
 
 # convert to epub and send stderr to log file
-`chdir #{tmp_dir}\\#{Bkmkr::Project.filename} & java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html -xsl:#{Bkmkr::Dir.bookmaker_dir}\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt`
+`chdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename} & java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html -xsl:#{Bkmkr::Dir.bookmaker_dir}\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt`
 
 # fix cover.html doctype
-covercontents = File.read("#{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.html")
+covercontents = File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.html")
 replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
-File.open("#{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.html", "w") {|file| file.puts replace}
+File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.html", "w") {|file| file.puts replace}
 
 # fix author info in opf, add toc to text flow
-opfcontents = File.read("#{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\content.opf")
+opfcontents = File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\content.opf")
 tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
 copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
 replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
-File.open("#{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
+File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
-`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\epub.css #{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
+`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\epub.css #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
 
 # add cover image file to epub folder
-`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover\\cover.jpg #{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
-`convert #{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.jpg -resize "600x800>" #{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.jpg`
+`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover\\cover.jpg #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
+`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.jpg -resize "600x800>" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.jpg`
 
 # add image files to epub folder
 sourceimages = Dir.entries("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\")
 
 if sourceimages.any?
-	`mkdir #{tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\`
-	`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\* #{tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\`
-	`del #{tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\clear_ftp_log.txt`
-	images = Dir.entries("#{tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\").select { |f| File.file?(f) }
+	`mkdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\`
+	`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\`
+	`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\clear_ftp_log.txt`
+	images = Dir.entries("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\").select { |f| File.file?(f) }
 	images.each do |i|
-		`convert #{tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\#{i} -resize "600x800>" #{tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\#{i}`
+		`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\#{i} -resize "600x800>" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\#{i}`
 	end
-	`copy #{tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\* #{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
+	`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
 end
 
 #copy logo image file to epub folder
-`copy #{logo_img} #{tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\logo.jpg`
+`copy #{logo_img} #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\logo.jpg`
 
 if Bkmkr::Project.stage_dir.include? "egalley" or Bkmkr::Project.stage_dir.include? "firstpass"
 	csfilename = "#{eisbn}_EPUBfirstpass"
@@ -137,15 +137,15 @@ else
 end
 
 # zip epub
-`chdir #{tmp_dir}\\#{Bkmkr::Project.filename} & #{Bkmkr::Dir.resource_dir}\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
-`chdir #{tmp_dir}\\#{Bkmkr::Project.filename} & #{Bkmkr::Dir.resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
+`chdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename} & #{Bkmkr::Dir.resource_dir}\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
+`chdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename} & #{Bkmkr::Dir.resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
 
 # move epub into archive folder
-`copy #{tmp_dir}\\#{Bkmkr::Project.filename}\\#{csfilename}.epub #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\`
-`del #{tmp_dir}\\#{Bkmkr::Project.filename}\\#{csfilename}.epub`
+`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{csfilename}.epub #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\`
+`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{csfilename}.epub`
 
 # delete temp epub html file
-#`del #{tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
+#`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
 
 # TESTING
 
