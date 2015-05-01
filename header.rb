@@ -33,7 +33,7 @@ module Bkmkr
 	class Dir
 
 		def self.currpath
-			`pwd`
+			`cd`
 		end
 
 		@@currvol = Dir.currpath.split('\\').shift
