@@ -6,10 +6,10 @@ filename_split_nospaces = Bkmkr::Project.filename_split.gsub(/ /, "")
 test_images_before = Dir.entries("#{Bkmkr::Project.working_dir}\\submitted_images\\")
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
-`md #{tmp_dir}\\#{Bkmkr::Project.filename}`
-`md #{tmp_dir}\\#{Bkmkr::Project.filename}\\images`
-`move #{Bkmkr::Project.working_dir}\\submitted_images\\* #{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\`
-`copy "#{Bkmkr::Project.input_file}" #{tmp_dir}\\#{Bkmkr::Project.filename}\\#{filename_split_nospaces}`
+`md #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}`
+`md #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
+`move #{Bkmkr::Project.working_dir}\\submitted_images\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\`
+`copy "#{Bkmkr::Project.input_file}" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{filename_split_nospaces}`
 
 # Add a notice to the conversion dir warning that the process is in use
 File.open("#{Bkmkr::Project.working_dir}\\IN_USE_PLEASE_WAIT.txt", 'w') do |output|
@@ -28,7 +28,7 @@ else
 end
 
 # tmpdir should exist
-if File.exist?("#{tmp_dir}\\#{Bkmkr::Project.filename}") and File.exist?("#{tmp_dir}\\#{Bkmkr::Project.filename}\\images")
+if File.exist?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}") and File.exist?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images")
 	test_dir_status = "pass: temp directory and all sub-directories were successfully created"
 else
 	test_dir_status = "FAIL: temp directory and all sub-directories were successfully created"
@@ -44,7 +44,7 @@ else
 end
 
 # IF submitted images dir was not clean at beginning, tmpdir images dir should also not be clean at end
-test_tmp_images = Dir.entries("#{tmp_dir}\\#{Bkmkr::Project.filename}\\images\\")
+test_tmp_images = Dir.entries("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\")
 
 if test_images_before.length == test_tmp_images.length
 	test_tmpimgdir_status = "pass: all submitted images have been copied to temp directory"
@@ -53,7 +53,7 @@ else
 end
 
 # input file should exist in tmp dir
-if File.file?("#{tmp_dir}\\#{Bkmkr::Project.filename}\\#{filename_split_nospaces}")
+if File.file?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{filename_split_nospaces}")
 	test_input_status = "pass: original file preserved in project directory"
 else
 	test_input_status = "FAIL: original file preserved in project directory"
