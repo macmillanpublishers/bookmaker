@@ -74,7 +74,7 @@ if image_count > 0
 	pdfimages.each do |i|
 		if i.include?("fullpage")
 			`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i} -colorspace gray #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
-		elsif i.include?("_FC") or i.include?(".txt")
+		elsif i.include?("_FC") or i.include?(".txt") or i.include?(".css") or i.include?(".js")
 			`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
 		else
 			myres = `identify -format "%y" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\#{i}`
