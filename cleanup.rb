@@ -1,4 +1,4 @@
-require '../bookmaker/header.rb'
+require_relative '..\\bookmaker\\header.rb'
 
 # --------------------HTML FILE DATA START--------------------
 # This block creates a variable to point to the 
