@@ -1,6 +1,6 @@
 module Bkmkr
-	class Project
-		@@input_file = ARGV[0]
+	class Project(inputfile)
+		@@input_file = inputfile
 		def self.input_file
 			@@input_file
 		end
