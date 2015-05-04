@@ -64,29 +64,40 @@ module Bkmkr
 			@@resource_dir
 		end
 
+		# Path to the submitted_images directory
 		@@submitted_images = File.join(Project.working_dir, "submitted_images")
 		def self.submitted_images
 			@@submitted_images
 		end
 
+		# Path to the temporary working directory
 		@@project_tmp_dir = File.join(tmp_dir, Project.filename)
 		def self.project_tmp_dir
 			@@project_tmp_dir
 		end
 
+		# Path to the images subdirectory of the temporary working directory
 		@@project_tmp_dir_img = File.join(tmp_dir, Project.filename, "images")
 		def self.project_tmp_dir_img
 			@@project_tmp_dir_img
 		end
 
+		# Full path and filename for the normalized (i.e., spaces removed) input file in the temporary working dir
 		@@project_tmp_file = File.join(tmp_dir, Project.filename, Project.filename_normalized)
 		def self.project_tmp_file
 			@@project_tmp_file
 		end
 
+		# Full path and filename for the "in use" alert that is created
 		@@alert = File.join(Project.working_dir, "IN_USE_PLEASE_WAIT.txt")
 		def self.alert
 			@@alert
+		end
+
+		# Full path to project log file
+		@@log_file = File.join(log_dir, "#{Project.filename}.txt")
+		def self.log_file
+			@@log_file
 		end
 	end
 
