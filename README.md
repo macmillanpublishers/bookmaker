@@ -4,6 +4,8 @@ Welcome to the Bookmaker toolchain! Bookmaker comprises a series of scripts that
 
 Each script in the Bookmaker sequence performs a distinct set of actions that builds on the scripts that came before, and depends on any number of other scripts or tools. These scripts were written specifically for use at Macmillan, and thus many of the filenames, arguments, and paths are direct references to that internal workflow. Additionally, because Macmillan uses Windows servers, all paths and commands are structured for a Windows environment.
 
+Additionally, correct transformation depends on correct application of the Macmillan Word template, a set of styles and rules for Microsoft Word manuscripts that create the initial structure each manuscript needs in order to cleanly transform into valid HTMLBook HTML. You can learn more about styling and the Word template [here](https://macmillan.atlassian.net/wiki/display/PBL/Manuscript+Styling+with+MS+Word).
+
 ## Bookmaker Components
 
 The scripts are as follows:
@@ -20,7 +22,7 @@ The scripts are as follows:
 
 [htmlmaker](https://github.com/macmillanpublishers/bookmaker_htmlmaker): Converts the .xml file to HTML using wordtohtml.xsl.
 
-*Dependencies: tmparchive, DocxToXml, Java JDK, Saxon, wordtohtml.xsl*
+*Dependencies: tmparchive, DocxToXml, Java JDK, Saxon, wordtohtml.xsl, correct application of [the Macmillan Word template](https://github.com/macmillanpublishers/Word-template)*
 
 [filearchive](https://github.com/macmillanpublishers/bookmaker_filearchive): Creates the directory structure for the converted filesbookmaker_coverchecker: Verifies that a cover image has been submitted. If yes, copies the cover image file into the final archive. If no, creates an error file notifying the user that the cover is missing.
 
