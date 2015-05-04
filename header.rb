@@ -1,6 +1,9 @@
 module Bkmkr
-	class Project(inputfile)
-		@@input_file = inputfile
+	class Project
+		def initialize(inputfile)
+			@input_file = inputfile
+		end
+		@@input_file = @input_file
 		def self.input_file
 			@@input_file
 		end
