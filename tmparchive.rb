@@ -1,6 +1,6 @@
 require_relative '../bookmaker/header.rb'
 
-f = Bkmkr::Project.new
+f = Bkmkr::Project.new(ARGV[0])
 p = Bkmkr::Paths.new
 
 # For TEST purposes
