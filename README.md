@@ -18,11 +18,11 @@ The scripts are as follows:
 
 [DocxToXml](https://github.com/macmillanpublishers/WordXML-to-HTML): Converts the source Word file (.doc or .docx) to Word XML (via PowerShell).
 
-*Dependencies: tmparchive, PowerShell, Microsoft Word*
+*Dependencies: tmparchive, PowerShell, Microsoft Word & correct application of [the Macmillan Word template](https://github.com/macmillanpublishers/Word-template)*
 
 [htmlmaker](https://github.com/macmillanpublishers/bookmaker_htmlmaker): Converts the .xml file to HTML using wordtohtml.xsl.
 
-*Dependencies: tmparchive, DocxToXml, Java JDK, Saxon, wordtohtml.xsl, correct application of [the Macmillan Word template](https://github.com/macmillanpublishers/Word-template)*
+*Dependencies: tmparchive, DocxToXml, Java JDK, Saxon, wordtohtml.xsl*
 
 [filearchive](https://github.com/macmillanpublishers/bookmaker_filearchive): Creates the directory structure for the converted filesbookmaker_coverchecker: Verifies that a cover image has been submitted. If yes, copies the cover image file into the final archive. If no, creates an error file notifying the user that the cover is missing.
 
