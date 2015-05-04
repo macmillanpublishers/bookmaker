@@ -36,10 +36,10 @@ module Bkmkr
 
 	class Dir
 		def self.currpath
-			`cd`
+			Dir.pwd
 		end
 
-		@@currvol = Dir.currpath.split(File::SEPARATOR).shift
+		@@currvol = currpath.split(File::SEPARATOR).shift
 		def self.currvol
 			@@currvol
 		end
