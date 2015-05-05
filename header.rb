@@ -4,7 +4,7 @@ module Bkmkr
 		#     @inputfile = inputfile  
   # 		end
   		# @@input_file = @inputfile
-  		@@input_file = "S:/bookmaker/torDOTcom_final/test/TorSampe2.docx"
+  		@@input_file = ARGV[0]
 		def self.input_file
 			@@input_file
 		end
