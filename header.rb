@@ -2,9 +2,10 @@ module Bkmkr
 	class Project
 		# def initialize(inputfile)  
 		#     @inputfile = inputfile  
-  # 		end
+  		# end
   		# @@input_file = @inputfile
-  		@@input_file = ARGV[0]
+  		@input_file = ARGV[0]
+  		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
 			@@input_file
 		end
