@@ -3,7 +3,7 @@ module Bkmkr
 		def initialize(inputfile)  
 		    @inputfile = inputfile  
   		end
-  		@@input_file = @inputfile
+  		@@input_file = @inputfile.to_s
 		def self.input_file
 			@@input_file
 		end
