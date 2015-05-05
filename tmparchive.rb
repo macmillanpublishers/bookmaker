@@ -1,3 +1,5 @@
+require 'fileutils'
+
 require_relative '../bookmaker/header.rb'
 
 # p = Bkmkr::Project.new(ARGV[0])
@@ -32,10 +34,10 @@ test_images_before = Dir.entries("#{Bkmkr::Paths.submitted_images}")
 all_submitted_images = File.join(Bkmkr::Paths.submitted_images, "*")
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
-`md #{Bkmkr::Paths.project_tmp_dir}`
-`md #{Bkmkr::Paths.project_tmp_dir_img}`
-`move #{all_submitted_images} #{Bkmkr::Paths.project_tmp_dir_img}`
-`copy "#{Bkmkr::Project.input_file}" #{Bkmkr::Paths.project_tmp_file}`
+Dir.mkdir(Bkmkr::Paths.project_tmp_dir)
+Dir.mkdir(Bkmkr::Paths.project_tmp_dir_img)
+FileUtils.mv('#{all_submitted_images}', '#{Bkmkr::Paths.project_tmp_dir_img}')
+FileUtils.cp('#{Bkmkr::Project.input_file}','#{Bkmkr::Paths.project_tmp_file}')
 
 # Add a notice to the conversion dir warning that the process is in use
 File.open("#{Bkmkr::Paths.alert}", 'w') do |output|
