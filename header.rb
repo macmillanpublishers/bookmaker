@@ -1,9 +1,10 @@
 module Bkmkr
 	class Project
-		def initialize(inputfile)  
-		    @inputfile = inputfile  
-  		end
-  		@@input_file = @inputfile
+		# def initialize(inputfile)  
+		#     @inputfile = inputfile  
+  # 		end
+  		# @@input_file = @inputfile
+  		@@input_file = "S:/bookmaker/torDOTcom_final/test/TorSampe2.docx"
 		def self.input_file
 			@@input_file
 		end
