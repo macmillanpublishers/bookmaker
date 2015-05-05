@@ -43,6 +43,14 @@ File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html", "
 # add correct markup for inlines (em, strong, sup, sub)
 `java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html -xsl:#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_htmlmaker\\inlines.xsl -o:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html`
 
+# removes endnotes section if no content
+filecontents = File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html")
+endnote_txt = filecontents.scan(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/)
+unless endnote_txt.include?("<p")
+	replace = filecontents.gsub(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/,"")
+	File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html", "w") {|file| file.puts replace}
+end
+
 # TESTING
 
 # html file should exist
