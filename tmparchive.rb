@@ -9,6 +9,9 @@ test_images_before = Dir.entries(Bkmkr::Paths.submitted_images)
 all_submitted_images = File.join(Bkmkr::Paths.submitted_images, "*")
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
+if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
+	FileUtils.rm_r(Bkmkr::Paths.project_tmp_dir)
+end
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir)
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir_img)
 FileUtils.mv(Dir.glob(all_submitted_images), Bkmkr::Paths.project_tmp_dir_img)
