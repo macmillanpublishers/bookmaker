@@ -11,8 +11,8 @@ all_submitted_images = File.join(Bkmkr::Paths.submitted_images, "*")
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir)
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir_img)
-FileUtils.mv(Dir.glob('#{all_submitted_images}'), Bkmkr::Paths.project_tmp_dir_img)
-FileUtils.cp((File.join(Bkmkr::Project.working_dir, Bkmkr::Project.filename)), Bkmkr::Paths.project_tmp_file)
+FileUtils.mv(Dir.glob(all_submitted_images), Bkmkr::Paths.project_tmp_dir_img)
+FileUtils.cp((File.join(Bkmkr::Project.working_dir, Bkmkr::Project.filename_split)), Bkmkr::Paths.project_tmp_file)
 
 # Add a notice to the conversion dir warning that the process is in use
 File.open("#{Bkmkr::Paths.alert}", 'w') do |output|
