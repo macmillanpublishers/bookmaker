@@ -2,31 +2,6 @@ require 'fileutils'
 
 require_relative '../bookmaker/header.rb'
 
-# p = Bkmkr::Project.new(ARGV[0])
-
-# puts p.working_dir
-
-puts Bkmkr::Project.input_file
-puts Bkmkr::Project.filename
-puts Bkmkr::Project.filename_split
-puts Bkmkr::Project.filename_normalized
-puts Bkmkr::Project.working_dir
-puts Bkmkr::Project.working_dir_split
-puts Bkmkr::Project.project_dir
-puts Bkmkr::Project.stage_dir
-puts Bkmkr::Paths.currpath
-puts Bkmkr::Paths.currvol
-puts Bkmkr::Paths.tmp_dir
-puts Bkmkr::Paths.log_dir
-puts Bkmkr::Paths.bookmaker_dir
-puts Bkmkr::Paths.resource_dir
-puts Bkmkr::Paths.submitted_images
-puts Bkmkr::Paths.project_tmp_dir
-puts Bkmkr::Paths.project_tmp_dir_img
-puts Bkmkr::Paths.project_tmp_file
-puts Bkmkr::Paths.alert
-puts Bkmkr::Paths.log_file
-
 # For TEST purposes
 test_images_before = Dir.entries("#{Bkmkr::Paths.submitted_images}")
 
