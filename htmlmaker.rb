@@ -45,8 +45,8 @@ File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html", "
 
 # removes endnotes section if no content
 filecontents = File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html")
-endnote_txt = filecontents.match(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/)
-if !endnote_txt.include? "<p"
+endnote_txt = filecontents.scan(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/)
+unless endnote_txt.include?("<p")
 	replace = filecontents.gsub(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/,"")
 	File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html", "w") {|file| file.puts replace}
 end
