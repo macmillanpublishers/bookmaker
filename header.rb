@@ -24,11 +24,11 @@ module Bkmkr
 		def self.working_dir
 			@@working_dir
 		end
-		@@project_dir = input_file.split(File::SEPARATOR)[0...-2].pop.split("_").shift
+		@@project_dir = input_file.split(File::SEPARATOR)[0...-2].pop#.split("_").shift
 		def self.project_dir
 			@@project_dir
 		end
-		@@stage_dir = input_file.split(File::SEPARATOR)[0...-2].pop.split("_").pop
+		@@stage_dir = input_file.split(File::SEPARATOR)[0...-2].pop#.split("_").pop
 		def self.stage_dir
 			@@stage_dir
 		end
