@@ -1,6 +1,8 @@
 require_relative '../bookmaker/header.rb'
 
-puts Bkmkr::Project.working_dir
+p = Bkmkr::Project.new(ARGV[0])
+
+puts p.working_dir
 
 # For TEST purposes
 test_images_before = Dir.entries("#{Bkmkr::Paths.submitted_images}")
