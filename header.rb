@@ -8,11 +8,11 @@ module Bkmkr
 		def self.input_file
 			@@input_file
 		end
-		@@filename_split = input_file.split(File::SEPARATOR).pop
+		@@filename_split = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
 		def self.filename_split
 			@@filename_split
 		end
-		@@filename = input_file.split(File::SEPARATOR).pop.split(".").shift.gsub(/ /, "")
+		@@filename = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop.split(".").shift.gsub(/ /, "")
 		def self.filename
 			@@filename
 		end
@@ -20,19 +20,19 @@ module Bkmkr
 		def self.filename_normalized
 			@@filename_normalized
 		end
-		@@working_dir_split = input_file.split(File::SEPARATOR)
+		@@working_dir_split = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
 		def self.working_dir_split
 			@@working_dir_split
 		end
-		@@working_dir = input_file.split(File::SEPARATOR)[0...-2].join(File::SEPARATOR)
+		@@working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 		def self.working_dir
 			@@working_dir
 		end
-		@@project_dir = input_file.split(File::SEPARATOR)[0...-2].pop.to_s.split("_").shift
+		@@project_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop.to_s.split("_").shift
 		def self.project_dir
 			@@project_dir
 		end
-		@@stage_dir = input_file.split(File::SEPARATOR)[0...-2].pop.to_s.split("_").pop
+		@@stage_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop.to_s.split("_").pop
 		def self.stage_dir
 			@@stage_dir
 		end
@@ -43,7 +43,7 @@ module Bkmkr
 			Dir.pwd
 		end
 
-		@@currvol = currpath.split(File::SEPARATOR).shift
+		@@currvol = currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 		def self.currvol
 			@@currvol
 		end
