@@ -86,7 +86,13 @@ module Bkmkr
 		def self.project_tmp_dir_img
 			@@project_tmp_dir_img
 		end
-
+		
+		# Full path to outputtmp.html file
+		@@outputtmp_html = File.join(tmp_dir, Project.filename, "outputtmp.html")
+		def self.outputtmp_html
+			@@outputtmp_html
+		end
+		
 		# Full path and filename for the normalized (i.e., spaces removed) input file in the temporary working dir
 		@@project_tmp_file = File.join(tmp_dir, Project.filename, Project.filename_normalized)
 		def self.project_tmp_file
