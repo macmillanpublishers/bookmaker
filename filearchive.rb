@@ -56,10 +56,13 @@ final_dir_layout = File.join(Bkmkr::Project.working_dir, "done", pisbn, "layout"
 final_manuscript = File.join(Bkmkr::Project.working_dir, "done", pisbn, "#{pisbn}_MNU.#{filetype}")
 final_html = File.join(Bkmkr::Project.working_dir, "done", pisbn, "layout", "#{pisbn}.html")
 
-Dir.mkdir(final_dir)
-Dir.mkdir(final_dir_images)
-Dir.mkdir(final_dir_cover)
-Dir.mkdir(final_dir_layout)
+unless Dir.exist?(final_dir)
+	Dir.mkdir(final_dir)
+	Dir.mkdir(final_dir_images)
+	Dir.mkdir(final_dir_cover)
+	Dir.mkdir(final_dir_layout)
+end
+
 FileUtils.cp(Bkmkr::Project.input_file, final_manuscript)
 FileUtils.cp(html_file, final_html)
 
