@@ -1,3 +1,5 @@
+require 'fileutils'
+
 require_relative '../bookmaker/header.rb'
 
 # --------------------HTML FILE DATA START--------------------
