@@ -14,7 +14,7 @@ inlines_xsl = File.join(Bkmkr::Paths.bookmaker_dir, "bookmaker_htmlmaker", "inli
 
 
 # convert xml to html
-`java -jar #{saxonpath} -s:#{source_xml} -xsl:#{word_to_html_xsl} -o:#{Bkmkr::Paths.outputtmp_html}`
+`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
 # place footnote text inline per htmlbook
 filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
@@ -42,19 +42,19 @@ replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 # strip extraneous footnote section from html
-`java -jar #{saxonpath} -s:#{Bkmkr::Paths.outputtmp_html} -xsl:#{footnotes_xsl} -o:#{Bkmkr::Paths.outputtmp_html}`
+`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{footnotes_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
 # strip static toc from html
-`java -jar #{saxonpath} -s:#{Bkmkr::Paths.outputtmp_html} -xsl:#{strip_toc_xsl} -o:#{Bkmkr::Paths.outputtmp_html}`
+`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{strip_toc_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
 # convert parts to divs
-`java -jar #{saxonpath} -s:#{Bkmkr::Paths.outputtmp_html} -xsl:#{parts_xsl} -o:#{Bkmkr::Paths.outputtmp_html}`
+`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{parts_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
 # add headings to all sections
-`java -jar #{saxonpath} -s:#{Bkmkr::Paths.outputtmp_html} -xsl:#{headings_xsl} -o:#{Bkmkr::Paths.outputtmp_html}`
+`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{headings_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
 # add correct markup for inlines (em, strong, sup, sub)
-`java -jar #{saxonpath} -s:#{Bkmkr::Paths.outputtmp_html} -xsl:#{inlines_xsl} -o:#{Bkmkr::Paths.outputtmp_html}`
+`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{inlines_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
 # removes endnotes section if no content
 filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
