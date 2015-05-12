@@ -105,6 +105,12 @@ module Bkmkr
 			@@alert
 		end
 
+		# Full path and filename for the "done" directory in Project working directory
+		@@alert = File.join(Project.working_dir, "done")
+		def self.done_dir
+			@@done_dir
+		end
+
 		# Full path to project log file
 		@@log_file = File.join(log_dir, "#{Project.filename}.txt")
 		def self.log_file
