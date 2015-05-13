@@ -1,4 +1,6 @@
-require_relative '..\\bookmaker\\header.rb'
+require 'FileUtils'
+
+require_relative '../bookmaker/header.rb'
 
 # --------------------HTML FILE DATA START--------------------
 # This block creates a variable to point to the 
@@ -6,7 +8,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = "#{Bkmkr::Paths.outputtmp_html}"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -46,14 +48,23 @@ if eisbn.length == 0
 end
 # --------------------HTML FILE DATA END--------------------
 
-epub_dir = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}"
+# Local path var(s)
+epub_dir = "#{Bkmkr::Paths.project_tmp_dir}"
+saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "saxon9pe.jar")
+epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
+strip_halftitle_xsl = File.join(Bkmkr::Paths.bookmaker_dir, "bookmaker_epubmaker", "strip-halftitle.xsl")
+epub_xsl = File.join(Bkmkr::Paths.bookmaker_dir, "HTMLBook", "htmlbook-xsl", "epub.xsl")
+tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
+convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
+OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
+cover_jpg = File.join(OEBPS_dir, "cover.jpg")
 
 # Finding author name(s)
 authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
 authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
 
 #set logo image based on project directory
-logo_img = "#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_epubmaker\\images\\#{Bkmkr::Project.project_dir}\\logo.jpg"
+logo_img = "#{Bkmkr::Paths.bookmaker_dir}/bookmaker_epubmaker/images/#{Bkmkr::Project.project_dir}/logo.jpg"
 
 # finding imprint name
 imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?</).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/</,"")
@@ -81,56 +92,60 @@ if filecontents.include?('data-type="copyright-page"')
 end
 
 # Saving revised HTML into tmp file
-File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html", 'w') do |output| 
+File.open(epub_tmp_html, 'w') do |output| 
 	output.write filecontents
 end
 
 # Add new section to log file
-File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
+File.open(convert_log_txt, 'a+') do |f|
 	f.puts "----- EPUBMAKER PROCESSES"
 end
 
 # strip halftitlepage from html
-`java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html -xsl:#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_epubmaker\\strip-halftitle.xsl -o:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
+`java -jar "#{saxonpath}" -s:"#{epub_tmp_html}" -xsl:"#{strip_halftitle_xsl}" -o:"#{epub_tmp_html}"`
 
 # convert to epub and send stderr to log file
-`chdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename} & java -jar #{Bkmkr::Dir.resource_dir}\\saxon\\saxon9pe.jar -s:#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html -xsl:#{Bkmkr::Dir.bookmaker_dir}\\HTMLBook\\htmlbook-xsl\\epub.xsl -o:#{epub_dir}\\tmp.epub 2>>#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt`
+# do these commands need to stack, or can I do this prior? (there was a cd and saxon invoke on top of each other)
+FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
+`java -jar "#{saxonpath}" -s:"#{epub_tmp_html}" -xsl:"#{epub_xsl}" -o:"#{tmp_epub}" 2>>"#{convert_log_txt}"`
 
 # fix cover.html doctype
-covercontents = File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.html")
+covercontents = File.read("#{OEBPS_dir}/cover.html")
 replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
-File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.html", "w") {|file| file.puts replace}
+File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 
 # fix author info in opf, add toc to text flow
-opfcontents = File.read("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\content.opf")
+opfcontents = File.read("#{OEBPS_dir}/content.opf")
 tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
 copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
 replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
-File.open("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\content.opf", "w") {|file| file.puts replace}
+File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
-`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\layout\\epub.css #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
+FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{pisbn}/layout/epub.css", OEBPS_dir)
 
 # add cover image file to epub folder
-`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover\\cover.jpg #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
-`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.jpg -resize "600x800>" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\cover.jpg`
+FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{pisbn}/cover/cover.jpg", OEBPS_dir)
+`convert "#{cover_jpeg}" -resize "600x800>" "#{cover_jpeg}"`
 
 # add image files to epub folder
-sourceimages = Dir.entries("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\")
+sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{pisbn}/images")
 
 if sourceimages.any?
-	`mkdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\`
-	`copy #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\`
-	`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\clear_ftp_log.txt`
-	images = Dir.entries("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\").select { |f| File.file?(f) }
+	Dir.mkdir("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
+	#using this model for Fileutils.cp to select all files in a dir (* won't work directly):  FileUtils.cp Dir["#{dir1}/*"].select {|f| test ?f, f}, "#{dir2}"
+	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{pisbn}/images/*"].select {|f| test ?f, f}, "#{Bkmkr::Paths.project_tmp_dir}/epubimg"
+	FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/epubimg/clear_ftp_log.txt")
+	images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir}/epubimg").select { |f| File.file?(f) }
 	images.each do |i|
-		`convert #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\#{i} -resize "600x800>" #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\#{i}`
+		path_to_i = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg", "#{i}")
+		`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
 	end
-	`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
+	FileUtils.cp Dir["#{Bkmkr::Paths.project_tmp_dir}/epubimg/*"].select {|f| test ?f, f}, OEBPS_dir
 end
 
 #copy logo image file to epub folder
-`copy #{logo_img} #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\logo.jpg`
+FileUtils.cp(logo_img, "#{OEBPS_dir}/logo.jpg")
 
 if Bkmkr::Project.stage_dir.include? "egalley" or Bkmkr::Project.stage_dir.include? "firstpass"
 	csfilename = "#{eisbn}_EPUBfirstpass"
@@ -139,20 +154,22 @@ else
 end
 
 # zip epub
-`chdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename} & #{Bkmkr::Dir.resource_dir}\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
-`chdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename} & #{Bkmkr::Dir.resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
+# do these commands need to stack, or can I do this FileUtils prior instead of the cd's??
+FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
+`cd "#{Bkmkr::Paths.project_tmp_dir}" & #{Bkmkr::Paths.resource_dir}\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
+`cd "#{Bkmkr::Paths.project_tmp_dir}" & #{Bkmkr::Paths.resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
 
 # move epub into archive folder
-`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{csfilename}.epub #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\`
-`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\#{csfilename}.epub`
+FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{pisbn}")
+FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub")
 
 # delete temp epub html file
-#`del #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
+#`del #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
 
 # TESTING
 
 # epub file should exist in done dir 
-if File.file?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\#{csfilename}.epub")
+if File.file?("#{Bkmkr::Paths.done_dir}/#{pisbn}/#{csfilename}.epub")
 	test_epub_status = "pass: the EPUB was created successfully"
 else
 	test_epub_status = "FAIL: the EPUB was created successfully"
@@ -169,7 +186,7 @@ else
 end
 
 # Add new section to log file
-File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
+File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts " "
 	f.puts "-----"
 	f.puts test_epub_status
