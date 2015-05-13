@@ -55,7 +55,7 @@ imagedir = Bkmkr::Paths.project_tmp_dir_img
 image_dest = File.join(Bkmkr::Project.working_dir, "done", pisbn, "images")
 
 # full path to the image error file
-image_error = File.Join(Bkmkr::Project.working_dir, "done", pisbn, "IMAGE_ERROR.txt")
+image_error = File.join(Bkmkr::Project.working_dir, "done", pisbn, "IMAGE_ERROR.txt")
 
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
