@@ -82,32 +82,33 @@ if image_count > 0
 	pdfimages.each do |i|
 		if i.include?("fullpage")
 			#convert command for ImageMagick should work the same on any platform
-			`convert "#{pdftmp_dir}/#{i}" -colorspace gray "#{pdftmp_dir}/#{i}"`
+			pdfimage = File.join(pdftmp_dir, "#{i}")
+			`convert "#{pdfimage}" -colorspace gray "#{pdfimage}"`
 		elsif i.include?("_FC") or i.include?(".txt") or i.include?(".css") or i.include?(".js")
-			FileUtils.rm("#{pdftmp_dir}/#{i}")
+			FileUtils.rm("#{pdfimage}")
 		else
-			myres = `identify -format "%y" #{pdftmp_dir}/#{i}`
+			myres = `identify -format "%y" "#{pdfimage}"`
 			myres = myres.to_f
-			myheight = `identify -format "%h" #{pdftmp_dir}/#{i}`
+			myheight = `identify -format "%h" "#{pdfimage}"`
 			myheight = myheight.to_f
 			myheightininches = ((myheight / myres) * 72.0)
-			mywidth = `identify -format "%h" #{pdftmp_dir}/#{i}`
+			mywidth = `identify -format "%h" "#{pdfimage}"`
 			mywidth = mywidth.to_f
 			mywidthininches = ((mywidth / myres) * 72.0)
 			if mywidthininches > 3.5 or myheightininches > 5.5 then
 				targetheight = 5.5 * myres
 				targetwidth = 3.5 * myres
-				`convert "#{pdftmp_dir}/#{i}" -resize "#{targetwidth}x#{targetheight}>" "#{pdftmp_dir}/#{i}"`
+				`convert "#{pdfimage}" -resize "#{targetwidth}x#{targetheight}>" "#{pdfimage}"`
 			end
-			myheight = `identify -format "%h" "#{pdftmp_dir}/#{i}"`
+			myheight = `identify -format "%h" "#{pdfimage}"`
 			myheight = myheight.to_f
 			myheightininches = ((myheight / myres) * 72.0)
 			mymultiple = ((myheight / myres) * 72.0) / 16.0
 			if mymultiple <= 1
-				`convert "#{pdftmp_dir}/#{i}" -colorspace gray "#{pdftmp_dir}/#{i}"`
+				`convert "#{pdfimage}" -colorspace gray "#{pdfimage}"`
 			else 
 				newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
-				`convert "#{pdftmp_dir}/#{i}" -resize "x#{newheight}" -colorspace gray "#{pdftmp_dir}/#{i}"`
+				`convert "#{pdfimage}" -resize "x#{newheight}" -colorspace gray "#{pdfimage}"`
 			end
 		end
 	end
