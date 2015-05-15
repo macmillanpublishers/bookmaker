@@ -30,7 +30,7 @@ module Bkmkr
 		end
 	end
 
-	class Dir
+	class Paths
 
 		def self.currpath
 			`cd`
