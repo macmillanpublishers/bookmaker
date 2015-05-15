@@ -36,7 +36,7 @@ module Bkmkr
 			`cd`
 		end
 
-		@@currvol = Dir.currpath.split('\\').shift
+		@@currvol = currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 		def self.currvol
 			@@currvol
 		end
