@@ -69,13 +69,13 @@ DocRaptor.api_key "#{docraptor_key}"
 testing_value = "false"
 if File.file?("#{Bkmkr::Paths.resource_dir}/staging.txt") then testing_value = "true" end
 
-`mkdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+# create pdf tmp directory
+Dir.mkdir(pdftmp_dir)
 
 #if any images are in 'done' dir, grayscale and upload them to macmillan.tools site
 images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir_img}").select {|f| !File.directory? f}
 image_count = images.count
 if image_count > 0
-	Dir.mkdir(pdftmp_dir)
 	#using this model for Fileutils.cp to select all files in a dir (* won't work):  FileUtils.cp Dir["#{dir1}/*"].select {|f| test ?f, f}, "#{dir2}"
 	FileUtils.cp Dir["#{Bkmkr::Paths.project_tmp_dir_img}/*"].select {|f| test ?f, f}, pdftmp_dir
 	pdfimages = Dir.entries("#{Bkmkr::Paths.project_tmp_dir_img}/pdftmp").select { |f| !File.directory? f }
