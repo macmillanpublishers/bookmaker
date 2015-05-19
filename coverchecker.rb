@@ -80,7 +80,7 @@ end
 if files.include?("#{cover}")
 	test_missing_cover = "pass: I found a cover for this book."
 else
-	test_missing_img = "FAIL: The cover file is missing."
+	test_missing_cover = "FAIL: The cover file is missing."
 end
 
 # Printing the test results to the log file
