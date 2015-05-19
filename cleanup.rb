@@ -85,7 +85,7 @@ else
 end
 
 # verify tmp folder for pisbn is gone
-if File.exists?("#{Bkmkr::Paths.tmp_dir}/#{filename}")
+if File.exists?("#{Bkmkr::Paths.tmp_dir}/#{Bkmkr::Project.filename}")
 	test_tmpdir_removed = "FAIL: Tmp directory has been removed"
 else
 	test_tmpdir_removed = "pass: Tmp directory has been removed"
