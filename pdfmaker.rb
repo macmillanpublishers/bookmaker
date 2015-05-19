@@ -80,9 +80,9 @@ if image_count > 0
 	FileUtils.cp Dir["#{Bkmkr::Paths.project_tmp_dir_img}/*"].select {|f| test ?f, f}, pdftmp_dir
 	pdfimages = Dir.entries("#{Bkmkr::Paths.project_tmp_dir_img}/pdftmp").select { |f| !File.directory? f }
 	pdfimages.each do |i|
+		pdfimage = File.join(pdftmp_dir, "#{i}")
 		if i.include?("fullpage")
 			#convert command for ImageMagick should work the same on any platform
-			pdfimage = File.join(pdftmp_dir, "#{i}")
 			`convert "#{pdfimage}" -colorspace gray "#{pdfimage}"`
 		elsif i.include?("_FC") or i.include?(".txt") or i.include?(".css") or i.include?(".js")
 			FileUtils.rm("#{pdfimage}")
