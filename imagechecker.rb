@@ -68,6 +68,9 @@ File.open("#{html_file}", "w") {|file| file.puts new_contents }
 # An array of all the image files referenced in the source html file
 source = File.read("#{html_file}").scan(/img src=".*?"/)
 
+# remove duplicates image names from source array
+source = source.uniq
+
 # An empty array to store the list of any missing images
 missing = []
 # An empty array to store nospace names of html images existing in submission folder (for test 3)
