@@ -59,7 +59,6 @@ files = Dir.entries("#{coverdir}")
 
 # If a cover_error file exists, delete it
 cover_error = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\COVER_ERROR.txt"
-puts cover_error
 if File.file?(cover_error)
 	FileUtils.rm(cover_error)
 end
