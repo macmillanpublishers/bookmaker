@@ -64,11 +64,12 @@ DocRaptor.api_key "#{docraptor_key}"
 testing_value = "false"
 if File.file?("#{Bkmkr::Dir.resource_dir}/staging.txt") then testing_value = "true" end
 
+`mkdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+
 #if any images are in 'done' dir, grayscale and upload them to macmillan.tools site
 images = Dir.entries("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\").select {|f| !File.directory? f}
 image_count = images.count
 if image_count > 0
-	`mkdir #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
 	`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
 	pdfimages = Dir.entries("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\").select { |f| !File.directory? f }
 	pdfimages.each do |i|
