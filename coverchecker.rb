@@ -1,3 +1,5 @@
+require 'fileutils'
+
 require_relative '..\\bookmaker\\header.rb'
 
 # --------------------HTML FILE DATA START--------------------
@@ -54,6 +56,12 @@ cover = "#{pisbn}_FC.jpg"
 
 # An array listing all files in the submission dir
 files = Dir.entries("#{coverdir}")
+
+# If a cover_error file exists, delete it
+cover_error = File.join(Bkmkr::Project.working_dir, "done", "pisbn", "COVER_ERROR.txt")
+if File.file?(cover_error)
+	FileUtils.rm(cover_error)
+end
 
 # checks to see if cover is in the submission dir
 # if yes, copies cover to archival location and deletes from submission dir
