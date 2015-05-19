@@ -1,3 +1,5 @@
+require 'fileutils'
+
 require_relative '..\\bookmaker\\header.rb'
 
 # --------------------HTML FILE DATA START--------------------
@@ -53,6 +55,12 @@ image_dest = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\"
 
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
+
+# If a cover_error file exists, delete it
+image_error = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\IMAGE_ERROR.txt"
+if File.file?(image_error)
+	FileUtils.rm(image_error)
+end
 
 #strips spaces from img names in html
 text = File.read("#{html_file}")
