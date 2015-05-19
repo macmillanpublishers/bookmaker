@@ -126,7 +126,7 @@ FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{pisbn}/layout/epub.css", OEBPS_dir)
 
 # add cover image file to epub folder
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{pisbn}/cover/cover.jpg", OEBPS_dir)
-`convert "#{cover_jpeg}" -resize "600x800>" "#{cover_jpeg}"`
+`convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
 
 # add image files to epub folder
 sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{pisbn}/images")
@@ -135,7 +135,8 @@ if sourceimages.any?
 	Dir.mkdir("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
 	#using this model for Fileutils.cp to select all files in a dir (* won't work directly):  FileUtils.cp Dir["#{dir1}/*"].select {|f| test ?f, f}, "#{dir2}"
 	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{pisbn}/images/*"].select {|f| test ?f, f}, "#{Bkmkr::Paths.project_tmp_dir}/epubimg"
-	FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/epubimg/clear_ftp_log.txt")
+	#not sure why below line was here, this file shouldn't exist in this dir anyways? commenting
+	#FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/epubimg/clear_ftp_log.txt")
 	images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir}/epubimg").select { |f| File.file?(f) }
 	images.each do |i|
 		path_to_i = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg", "#{i}")
