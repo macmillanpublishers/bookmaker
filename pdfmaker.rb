@@ -112,7 +112,6 @@ if image_count > 0
 			end
 		end
 	end
-
 end
 
 # copy assets to tmp upload dir and upload to ftp
