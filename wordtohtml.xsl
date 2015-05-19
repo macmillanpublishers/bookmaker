@@ -233,7 +233,7 @@
     <xsl:sequence
       select="'BMHeadbmh',
               'ChapTitlect',
-              'ChapTitleNonprintingctp',
+              'ChapTitleNonprintingctnp',
               'PartNumberpn',
               'PartTitlept',
               'FMHeadfmh'"/>
@@ -285,7 +285,7 @@
               'PartNumberpn',
               'PartTitlept',
               'ChapTitlect',
-              'ChapTitleNonprintingctp',
+              'ChapTitleNonprintingctnp',
               'FMHeadfmh',
               'FMHeadALTafmh',
               'FrontSalesTitlefst',
@@ -390,7 +390,7 @@
                 <xsl:value-of select="'part'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'ChapTitlect' or 
-                              $word-style = 'ChapTitleNonprintingctp'">
+                              $word-style = 'ChapTitleNonprintingctnp'">
                 <xsl:value-of select="'chapter'"/>
               </xsl:when>
               <xsl:when
