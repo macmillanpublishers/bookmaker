@@ -103,13 +103,15 @@ if image_count > 0
 			end
 		end
 	end
-	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\images\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
-	`#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
 end
 
-# Are there any custom javascripts?
+# copy assets to tmp upload dir and upload to ftp
+`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\css\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\images\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+`copy #{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{Bkmkr::Project.project_dir}\\* #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\`
+`#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
+
+# Link to custom javascript in the html head
 if File.file?("#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{Bkmkr::Project.project_dir}\\pdf.js")
 	pdfjs = File.read("#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_pdfmaker\\scripts\\#{Bkmkr::Project.project_dir}\\pdf.js")
 	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
