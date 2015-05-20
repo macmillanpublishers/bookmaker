@@ -1,4 +1,6 @@
-require_relative '..\\bookmaker\\header.rb'
+require 'fileutils'
+
+require_relative '../bookmaker/header.rb'
 
 # --------------------HTML FILE DATA START--------------------
 # This block creates a variable to point to the 
@@ -6,7 +8,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = "#{Bkmkr::Paths.outputtmp_html}"
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -44,32 +46,18 @@ end
 if eisbn.length == 0
 	eisbn = "#{Bkmkr::Project.filename}"
 end
+
 # --------------------HTML FILE DATA END--------------------
 
 # clean up the ftp site if files were uploaded
-if File.exists?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\uploaded_image_log.txt")
-	`#{Bkmkr::Dir.bookmaker_dir}\\bookmaker_ftpupload\\imagedelete.bat #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images`
+if File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt")
+	`#{Bkmkr::Paths.bookmaker_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.done_dir}/#{pisbn}/images`
 end
 
 # Delete all the working files and dirs
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\*`
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\images\\*`
-`rd #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\images\\`
-`rd #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\OEBPS\\`
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\META-INF\\*`
-`rd #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\META-INF\\`
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\mimetype`
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\*`
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp\\*`
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\*`
-`rd #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp`
-`rd #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\`
-`rd #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\epubimg\\`
-`del /f /s /q /a #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\*`
-`rd #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\`
-`del /f /s /q /a "#{Bkmkr::Project.input_file}"`
-`del /f /s /q /a #{Bkmkr::Project.working_dir}\\IN_USE_PLEASE_WAIT.txt`
-
+FileUtils.rm_r(Bkmkr::Paths.project_tmp_dir)
+FileUtils.rm(Bkmkr::Project.input_file)
+FileUtils.rm(Bkmkr::Paths.alert)
 
 # TESTING
 
@@ -81,27 +69,27 @@ else
 end
 
 # verify ftp site is clean
-if File.exists?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\clear_ftp_log.txt")
-	if File.zero?("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\clear_ftp_log.txt")
+if File.exists?("#{Bkmkr::Paths.done_dir}/#{pisbn}/images/clear_ftp_log.txt")
+	if File.zero?("#{Bkmkr::Paths.done_dir}/#{pisbn}/images/clear_ftp_log.txt")
 		test_ftp_files_removed = "pass: The ftp server directory (bookmakerimg) is clean"
 	else
 		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean"
 	end
-elsif File.exists?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\uploaded_image_log.txt")
+elsif File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt")
 	test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean (files were uploaded but not deleted)"
 else
 	test_ftp_files_removed = "pass: The ftp server directory (bookmakerimg) presumed clean (no images uploaded))"
 end
 
 # verify tmp folder for pisbn is gone
-if File.exists?("#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}")
+if File.exists?("#{Bkmkr::Paths.tmp_dir}/#{Bkmkr::Project.filename}")
 	test_tmpdir_removed = "FAIL: Tmp directory has been removed"
 else
 	test_tmpdir_removed = "pass: Tmp directory has been removed"
 end
 
 # Printing the test results to the log file
-File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
+File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- CLEANUP PROCESSES"
 	f.puts "#{test_inputfile_removed}"
 	f.puts "#{test_ftp_files_removed}"	
