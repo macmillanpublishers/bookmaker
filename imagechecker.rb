@@ -83,7 +83,7 @@ source.each do |m|
 	match = m.split("/").pop.gsub(/"/,'')
 	matched_file = File.join(imagedir, match)
 	if images.include?("#{match}")
-		FileUtils.mv(matched_file, image_dest)
+		FileUtils.cp(matched_file, image_dest)
 		matched << match
 	else
 		missing << match
