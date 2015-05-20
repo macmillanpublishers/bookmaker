@@ -21,12 +21,12 @@ if File.file?(image_error)
 end
 
 #strips spaces from img names in html
-text = File.read("#{html_file}")
+text = File.read(Bkmkr::Paths.outputtmp_html)
 new_contents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
-File.open("#{html_file}", "w") {|file| file.puts new_contents }
+File.open(Bkmkr::Paths.outputtmp_html, "w") {|file| file.puts new_contents }
 
 # An array of all the image files referenced in the source html file
-source = File.read("#{html_file}").scan(/img src=".*?"/)
+source = File.read(Bkmkr::Paths.outputtmp_html).scan(/img src=".*?"/)
 
 # remove duplicate image names from source array
 source = source.uniq
