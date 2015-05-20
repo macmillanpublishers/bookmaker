@@ -1,16 +1,17 @@
 require 'fileutils'
 
 require_relative '../bookmaker/header.rb'
+require_relative '../bookmaker/metadata.rb'
 
 # create the archival directory structure and copy xml and html there
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
-final_dir = File.join(Bkmkr::Paths.done_dir, Bkmkr::Metadata.pisbn)
-final_dir_images = File.join(Bkmkr::Paths.done_dir, Bkmkr::Metadata.pisbn, "images")
-final_dir_cover = File.join(Bkmkr::Paths.done_dir, Bkmkr::Metadata.pisbn, "cover")
-final_dir_layout = File.join(Bkmkr::Paths.done_dir, Bkmkr::Metadata.pisbn, "layout")
-final_manuscript = File.join(Bkmkr::Paths.done_dir, Bkmkr::Metadata.pisbn, "#{Bkmkr::Metadata.pisbn}_MNU.#{filetype}")
-final_html = File.join(Bkmkr::Paths.done_dir, Bkmkr::Metadata.pisbn, "layout", "#{Bkmkr::Metadata.pisbn}.html")
+final_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn)
+final_dir_images = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
+final_dir_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover")
+final_dir_layout = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout")
+final_manuscript = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "#{Metadata.pisbn}_MNU.#{filetype}")
+final_html = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "#{Metadata.pisbn}.html")
 
 unless Dir.exist?(final_dir)
 	Dir.mkdir(final_dir)
@@ -25,8 +26,8 @@ FileUtils.cp(html_file, final_html)
 # TESTING
 
 # print isbn should exist AND be 13-digit string of digits
-test_pisbn_chars = Bkmkr::Metadata.pisbn.scan(/\d\d\d\d\d\d\d\d\d\d\d\d\d/)
-test_pisbn_length = Bkmkr::Metadata.pisbn.split(%r{\s*})
+test_pisbn_chars = Metadata.pisbn.scan(/\d\d\d\d\d\d\d\d\d\d\d\d\d/)
+test_pisbn_length = Metadata.pisbn.split(%r{\s*})
 
 if test_pisbn_length.length == 13 and test_pisbn_chars.length != 0
 	test_isbn_status = "pass: print isbn is composed of 13 consecutive digits"
@@ -58,7 +59,7 @@ end
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- FILEARCHIVE PROCESSES"
-	f.puts "----- Print ISBN: #{Bkmkr::Metadata.pisbn}"
+	f.puts "----- Print ISBN: #{Metadata.pisbn}"
 	f.puts test_isbn_status
 	f.puts test_dir_status
 	f.puts test_input_status
