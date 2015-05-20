@@ -51,12 +51,12 @@ end
 # create the archival directory structure and copy xml and html there
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
-final_dir = File.join(Bkmkr::Project.working_dir, "done", pisbn)
-final_dir_images = File.join(Bkmkr::Project.working_dir, "done", pisbn, "images")
-final_dir_cover = File.join(Bkmkr::Project.working_dir, "done", pisbn, "cover")
-final_dir_layout = File.join(Bkmkr::Project.working_dir, "done", pisbn, "layout")
-final_manuscript = File.join(Bkmkr::Project.working_dir, "done", pisbn, "#{pisbn}_MNU.#{filetype}")
-final_html = File.join(Bkmkr::Project.working_dir, "done", pisbn, "layout", "#{pisbn}.html")
+final_dir = File.join(Bkmkr::Paths.done_dir, pisbn)
+final_dir_images = File.join(Bkmkr::Paths.done_dir, pisbn, "images")
+final_dir_cover = File.join(Bkmkr::Paths.done_dir, pisbn, "cover")
+final_dir_layout = File.join(Bkmkr::Paths.done_dir, pisbn, "layout")
+final_manuscript = File.join(Bkmkr::Paths.done_dir, pisbn, "#{pisbn}_MNU.#{filetype}")
+final_html = File.join(Bkmkr::Paths.done_dir, pisbn, "layout", "#{pisbn}.html")
 
 unless Dir.exist?(final_dir)
 	Dir.mkdir(final_dir)
