@@ -8,7 +8,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = Bkmkr::Paths.outputtmp_html
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -48,17 +48,25 @@ if eisbn.length == 0
 end
 # --------------------HTML FILE DATA END--------------------
 
-# The location where the cover is dropped by the user
-coverdir = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\"
+# The directory where the cover was moved in tmparchive
+coverdir = Bkmkr::Paths.project_tmp_dir_img
 
 # the revised cover filename
 cover = "#{pisbn}_FC.jpg"
+
+# the full path to the cover in tmp, including file name
+tmp_cover = File.join(Bkmkr::Paths.project_tmp_dir_img, cover)
+
+# the full path to the cover in the archival location, including file name
+final_cover = File.join(Bkmkr::Paths.done_dir, pisbn, "cover", cover)
+
+# full path of cover error file
+cover_error = File.join(Bkmkr::Paths.done_dir, pisbn, "COVER_ERROR.txt")
 
 # An array listing all files in the submission dir
 files = Dir.entries("#{coverdir}")
 
 # If a cover_error file exists, delete it
-cover_error = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\COVER_ERROR.txt"
 if File.file?(cover_error)
 	FileUtils.rm(cover_error)
 end
@@ -67,9 +75,9 @@ end
 # if yes, copies cover to archival location and deletes from submission dir
 # if no, prints an error to the archival directory 
 if files.include?("#{cover}")
-	`copy #{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\#{cover} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\cover\\cover.jpg`
+	FileUtils.cp(tmp_cover, final_cover)
 else
-	File.open("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\COVER_ERROR.txt", 'w') do |output|
+	File.open(cover_error, 'w') do |output|
 		output.write "There is no cover image for this title. Download the cover image from Biblio and place it in the submitted_images folder, then re-submit the manuscript for conversion; cover images must be named ISBN_FC.jpg."
 	end
 end
