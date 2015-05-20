@@ -1,52 +1,7 @@
 require 'FileUtils'
 
 require_relative '../bookmaker/header.rb'
-
-# --------------------HTML FILE DATA START--------------------
-# This block creates a variable to point to the 
-# converted HTML file, and pulls the isbn data
-# out of the HTML file.
-
-# the working html file
-html_file = "#{Bkmkr::Paths.outputtmp_html}"
-
-# testing to see if ISBN style exists
-spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
-multiple_isbns = File.read("#{html_file}").scan(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback)|(e-*book))\)/)
-
-# determining print isbn
-if spanisbn.length != 0 && multiple_isbns.length != 0
-	pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.match(/\d+<\/span>\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-elsif spanisbn.length != 0 && multiple_isbns.length == 0
-	pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.match(/\d+<\/span>/).to_s.gsub(/<\/span>/,"").gsub(/\["/,"").gsub(/"\]/,"")
-else
-	pisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-end
-
-# determining ebook isbn
-if spanisbn.length != 0 && multiple_isbns.length != 0
-	eisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(e-*book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	eisbn = eisbn_basestring.match(/\d+<\/span>\(ebook\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-elsif spanisbn.length != 0 && multiple_isbns.length == 0
-	eisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	eisbn = pisbn_basestring.match(/\d+<\/span>/).to_s.gsub(/<\/span>/,"").gsub(/\["/,"").gsub(/"\]/,"")
-else
-	eisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(e-*book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	eisbn = eisbn_basestring.match(/\d+\(ebook\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-end
-
-# just in case no isbn is found
-if pisbn.length == 0
-	pisbn = "#{Bkmkr::Project.filename}"
-end
-
-if eisbn.length == 0
-	eisbn = "#{Bkmkr::Project.filename}"
-end
-# --------------------HTML FILE DATA END--------------------
+require_relative '../bookmaker/metadata.rb'
 
 # Local path var(s)
 epub_dir = "#{Bkmkr::Paths.project_tmp_dir}"
@@ -60,19 +15,19 @@ OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
 cover_jpg = File.join(OEBPS_dir, "cover.jpg")
 
 # Finding author name(s)
-authorname1 = File.read("#{html_file}").scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
+authorname1 = File.read(Bkmkr::Paths.outputtmp_html).scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
 authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
 
 #set logo image based on project directory
 logo_img = "#{Bkmkr::Paths.bookmaker_dir}/bookmaker_epubmaker/images/#{Bkmkr::Project.project_dir}/logo.jpg"
 
 # finding imprint name
-imprint = File.read("#{html_file}").scan(/<p class="TitlepageImprintLineimp">.*?</).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/</,"")
+imprint = File.read(Bkmkr::Paths.outputtmp_html).scan(/<p class="TitlepageImprintLineimp">.*?</).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/</,"")
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
 # Adding imprint logo to title page
-filecontents = File.read("#{html_file}").gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">").gsub(/src="images\//,"src=\"")
+filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">").gsub(/src="images\//,"src=\"")
 # Update several copyright elements for epub
 if filecontents.include?('data-type="copyright-page"')
 	copyright_txt = filecontents.match(/(<section data-type=\"copyright-page\" .*?\">)((.|\n)*?)(<\/section>)/)[2]
@@ -118,23 +73,23 @@ File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 opfcontents = File.read("#{OEBPS_dir}/content.opf")
 tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
 copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
 File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
-FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{pisbn}/layout/epub.css", OEBPS_dir)
+FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
 
 # add cover image file to epub folder
-FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{pisbn}/cover/cover.jpg", OEBPS_dir)
+FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/cover/cover.jpg", OEBPS_dir)
 `convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
 
 # add image files to epub folder
-sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{pisbn}/images")
+sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images")
 
 if sourceimages.any?
 	Dir.mkdir("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
 	#using this model for Fileutils.cp to select all files in a dir (* won't work directly):  FileUtils.cp Dir["#{dir1}/*"].select {|f| test ?f, f}, "#{dir2}"
-	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{pisbn}/images/*"].select {|f| test ?f, f}, "#{Bkmkr::Paths.project_tmp_dir}/epubimg"
+	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, "#{Bkmkr::Paths.project_tmp_dir}/epubimg"
 	#not sure why below line was here, this file shouldn't exist in this dir anyways? commenting
 	#FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/epubimg/clear_ftp_log.txt")
 	images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir}/epubimg").select { |f| File.file?(f) }
@@ -149,9 +104,9 @@ end
 FileUtils.cp(logo_img, "#{OEBPS_dir}/logo.jpg")
 
 if Bkmkr::Project.stage_dir.include? "egalley" or Bkmkr::Project.stage_dir.include? "firstpass"
-	csfilename = "#{eisbn}_EPUBfirstpass"
+	csfilename = "#{Metadata.eisbn}_EPUBfirstpass"
 else
-	csfilename = "#{eisbn}_EPUB"
+	csfilename = "#{Metadata.eisbn}_EPUB"
 end
 
 # zip epub
@@ -161,7 +116,7 @@ FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
 `cd "#{Bkmkr::Paths.project_tmp_dir}" & #{Bkmkr::Paths.resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
 
 # move epub into archive folder
-FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{pisbn}")
+FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}")
 FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub")
 
 # delete temp epub html file
@@ -170,15 +125,15 @@ FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub")
 # TESTING
 
 # epub file should exist in done dir 
-if File.file?("#{Bkmkr::Paths.done_dir}/#{pisbn}/#{csfilename}.epub")
+if File.file?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{csfilename}.epub")
 	test_epub_status = "pass: the EPUB was created successfully"
 else
 	test_epub_status = "FAIL: the EPUB was created successfully"
 end
 
 # ebook isbn should exist AND be 13-digit string of digits
-test_eisbn_chars = eisbn.scan(/\d\d\d\d\d\d\d\d\d\d\d\d\d/)
-test_eisbn_length = eisbn.split(%r{\s*})
+test_eisbn_chars = Metadata.eisbn.scan(/\d\d\d\d\d\d\d\d\d\d\d\d\d/)
+test_eisbn_length = Metadata.eisbn.split(%r{\s*})
 
 if test_eisbn_length.length == 13 and test_eisbn_chars.length != 0
 	test_eisbn_status = "pass: ebook isbn is composed of 13 consecutive digits"
@@ -191,6 +146,6 @@ File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts " "
 	f.puts "-----"
 	f.puts test_epub_status
-	f.puts "----- ebook ISBN: #{eisbn}"
+	f.puts "----- ebook ISBN: #{Metadata.eisbn}"
 	f.puts test_eisbn_status
 end
