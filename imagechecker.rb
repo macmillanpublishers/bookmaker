@@ -52,10 +52,10 @@ end
 imagedir = Bkmkr::Paths.project_tmp_dir_img
 
 # The working dir location that images will be moved to (for test 3)
-image_dest = File.join(Bkmkr::Project.working_dir, "done", pisbn, "images")
+image_dest = File.join(Bkmkr::Paths.done_dir, pisbn, "images")
 
 # full path to the image error file
-image_error = File.join(Bkmkr::Project.working_dir, "done", pisbn, "IMAGE_ERROR.txt")
+image_error = File.join(Bkmkr::Paths.done_dir, pisbn, "IMAGE_ERROR.txt")
 
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
@@ -68,7 +68,7 @@ File.open("#{html_file}", "w") {|file| file.puts new_contents }
 # An array of all the image files referenced in the source html file
 source = File.read("#{html_file}").scan(/img src=".*?"/)
 
-# remove duplicates image names from source array
+# remove duplicate image names from source array
 source = source.uniq
 
 # An empty array to store the list of any missing images
