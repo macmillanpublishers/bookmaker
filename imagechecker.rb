@@ -60,6 +60,11 @@ image_error = File.join(Bkmkr::Paths.done_dir, pisbn, "IMAGE_ERROR.txt")
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
 
+# If a cover_error file exists, delete it
+if File.file?(image_error)
+	FileUtils.rm(image_error)
+end
+
 #strips spaces from img names in html
 text = File.read("#{html_file}")
 new_contents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
