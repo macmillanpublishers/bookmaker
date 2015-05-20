@@ -117,8 +117,4 @@ module Bkmkr
 			@@log_file
 		end
 	end
-
-	class Metadata
-
-	end
 end
