@@ -3,52 +3,7 @@ require 'doc_raptor'
 require 'fileutils'
 
 require_relative '../bookmaker/header.rb'
-
-# --------------------HTML FILE DATA START--------------------
-# This block creates a variable to point to the 
-# converted HTML file, and pulls the isbn data
-# out of the HTML file.
-
-# the working html file
-html_file = "#{Bkmkr::Paths.outputtmp_html}"
-
-# testing to see if ISBN style exists
-spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
-multiple_isbns = File.read("#{html_file}").scan(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback)|(e-*book))\)/)
-
-# determining print isbn
-if spanisbn.length != 0 && multiple_isbns.length != 0
-	pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.match(/\d+<\/span>\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-elsif spanisbn.length != 0 && multiple_isbns.length == 0
-	pisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.match(/\d+<\/span>/).to_s.gsub(/<\/span>/,"").gsub(/\["/,"").gsub(/"\]/,"")
-else
-	pisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(((hardcover)|(trade\s*paperback))\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	pisbn = pisbn_basestring.match(/\d+\(.*\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-end
-
-# determining ebook isbn
-if spanisbn.length != 0 && multiple_isbns.length != 0
-	eisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>\s*\(e-*book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	eisbn = eisbn_basestring.match(/\d+<\/span>\(ebook\)/).to_s.gsub(/<\/span>\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-elsif spanisbn.length != 0 && multiple_isbns.length == 0
-	eisbn_basestring = File.read("#{html_file}").match(/spanISBNisbn">\s*.+<\/span>/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	eisbn = pisbn_basestring.match(/\d+<\/span>/).to_s.gsub(/<\/span>/,"").gsub(/\["/,"").gsub(/"\]/,"")
-else
-	eisbn_basestring = File.read("#{html_file}").match(/ISBN\s*.+\s*\(e-*book\)/).to_s.gsub(/-/,"").gsub(/\s+/,"").gsub(/\["/,"").gsub(/"\]/,"")
-	eisbn = eisbn_basestring.match(/\d+\(ebook\)/).to_s.gsub(/\(.*\)/,"").gsub(/\["/,"").gsub(/"\]/,"")
-end
-
-# just in case no isbn is found
-if pisbn.length == 0
-	pisbn = "#{Bkmkr::Project.filename}"
-end
-
-if eisbn.length == 0
-	eisbn = "#{Bkmkr::Project.filename}"
-end
-# --------------------HTML FILE DATA END--------------------
+require_relative '../bookmaker/metadata.rb'
 
 # Local path var(s)
 pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
@@ -129,13 +84,13 @@ else
 end
 
 # inserts links to the css and js into the head of the html, fixes images
-pdf_html = File.read("#{html_file}").gsub(/<\/head>/,"#{jsfile}<link rel=\"stylesheet\" type=\"text/css\" href=\"#{ftp_dir}/pdf.css\" /></head>").gsub(/src="images\//,"src=\"#{ftp_dir}/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
+pdf_html = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"#{jsfile}<link rel=\"stylesheet\" type=\"text/css\" href=\"#{ftp_dir}/pdf.css\" /></head>").gsub(/src="images\//,"src=\"#{ftp_dir}/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
 
 # sends file to docraptor for conversion
 FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
-File.open("#{pisbn}.pdf", "w+b") do |f|
+File.open("#{Metadata.pisbn}.pdf", "w+b") do |f|
   f.write DocRaptor.create(:document_content => pdf_html,
-                           :name             => "#{pisbn}.pdf",
+                           :name             => "#{Metadata.pisbn}.pdf",
                            :document_type    => "pdf",
                            :strict			     => "none",
                            :test             => "#{testing_value}",
@@ -149,7 +104,7 @@ File.open("#{pisbn}.pdf", "w+b") do |f|
 end
 
 # moves rendered pdf to archival dir
-FileUtils.mv("#{pisbn}.pdf","#{Bkmkr::Paths.done_dir}/#{pisbn}/#{pisbn}_POD.pdf")
+FileUtils.mv("#{Metadata.pisbn}.pdf","#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{Metadata.pisbn}_POD.pdf")
 
 
 # TESTING
@@ -179,7 +134,7 @@ end
 
 # verify pdf was produced
 
-if File.file?("#{Bkmkr::Paths.done_dir}/#{pisbn}/#{pisbn}_POD.pdf")
+if File.file?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{Metadata.pisbn}_POD.pdf")
 	test_pdf_created = "pass: PDF file exists in DONE directory"
 else
 	test_pdf_created = "FAIL: PDF file exists in DONE directory"
