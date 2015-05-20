@@ -1,6 +1,6 @@
 require 'fileutils'
 
-require_relative '..\\bookmaker\\header.rb'
+require_relative '../bookmaker/header.rb'
 
 # --------------------HTML FILE DATA START--------------------
 # This block creates a variable to point to the 
@@ -8,7 +8,7 @@ require_relative '..\\bookmaker\\header.rb'
 # out of the HTML file.
 
 # the working html file
-html_file = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\outputtmp.html"
+html_file = Bkmkr::Paths.outputtmp_html
 
 # testing to see if ISBN style exists
 spanisbn = File.read("#{html_file}").scan(/spanISBNisbn/)
@@ -48,16 +48,19 @@ if eisbn.length == 0
 end
 # --------------------HTML FILE DATA END--------------------
 
-# The location where the images are dropped by the user
-imagedir = "#{Bkmkr::Dir.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\"
+# The location where the images are moved to by tmparchive
+imagedir = Bkmkr::Paths.project_tmp_dir_img
+
 # The working dir location that images will be moved to (for test 3)
-image_dest = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\"
+image_dest = File.join(Bkmkr::Paths.done_dir, pisbn, "images")
+
+# full path to the image error file
+image_error = File.join(Bkmkr::Paths.done_dir, pisbn, "IMAGE_ERROR.txt")
 
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
 
 # If a cover_error file exists, delete it
-image_error = "#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\IMAGE_ERROR.txt"
 if File.file?(image_error)
 	FileUtils.rm(image_error)
 end
@@ -70,18 +73,22 @@ File.open("#{html_file}", "w") {|file| file.puts new_contents }
 # An array of all the image files referenced in the source html file
 source = File.read("#{html_file}").scan(/img src=".*?"/)
 
+# remove duplicate image names from source array
+source = source.uniq
+
 # An empty array to store the list of any missing images
 missing = []
 # An empty array to store nospace names of html images existing in submission folder (for test 3)
 matched = []
 
-# Checks to see if each image referenced in the html exists in the submission folder
+# Checks to see if each image referenced in the html exists in the tmp images folder
 # If no, saves the image file name in the missing array
 # If yes, copies the image file to the done/pisbn/images folder, and deletes original
 source.each do |m|
 	match = m.split("/").pop.gsub(/"/,'')
+	matched_file = File.join(imagedir, match)
 	if images.include?("#{match}")
-		`copy #{imagedir}\\#{match} #{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\images\\`
+		FileUtils.cp(matched_file, image_dest)
 		matched << match
 	else
 		missing << match
@@ -90,8 +97,8 @@ end
 
 # Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
 if missing.any?
-	File.open("#{Bkmkr::Project.working_dir}\\done\\#{pisbn}\\IMAGE_ERROR.txt", 'w') do |output|
-		output.write "The following images are missing from the images folder: #{missing}"
+	File.open(image_error, 'w') do |output|
+		output.write "The following images are missing from the submitted_images folder: #{missing}"
 	end
 end
 
@@ -116,7 +123,7 @@ else
 end
 
 # Printing the test results to the log file
-File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
+File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- IMAGECHECKER PROCESSES"
 	f.puts "I found #{test_img_src} image references in this book"
 	f.puts "#{test_missing_img}"
