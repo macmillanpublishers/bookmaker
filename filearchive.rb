@@ -21,7 +21,7 @@ unless Dir.exist?(final_dir)
 end
 
 FileUtils.cp(Bkmkr::Project.input_file, final_manuscript)
-FileUtils.cp(html_file, final_html)
+FileUtils.cp(Bkmkr::Paths.outputtmp_html, final_html)
 
 # TESTING
 
