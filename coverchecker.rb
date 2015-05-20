@@ -58,7 +58,7 @@ cover = "#{pisbn}_FC.jpg"
 tmp_cover = File.join(Bkmkr::Paths.project_tmp_dir_img, cover)
 
 # the full path to the cover in the archival location, including file name
-final_cover = File.join(Bkmkr::Paths.done_dir, pisbn, "cover", cover)
+final_cover = File.join(Bkmkr::Paths.done_dir, pisbn, "cover", "cover.jpg")
 
 # full path of cover error file
 cover_error = File.join(Bkmkr::Paths.done_dir, pisbn, "COVER_ERROR.txt")
