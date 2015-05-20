@@ -47,7 +47,7 @@ else
 end
 
 # Printing the test results to the log file
-File.open("#{Bkmkr::Dir.log_dir}\\#{Bkmkr::Project.filename}.txt", 'a+') do |f|
+File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- COVERCHECKER PROCESSES"
 	f.puts "#{test_missing_cover}"
 end
