@@ -1,9 +1,7 @@
+require_relative '../bookmaker/config.rb'
+
 module Bkmkr
 	class Project
-		# def initialize(inputfile)  
-		#     @inputfile = inputfile  
-  		# end
-  		# @@input_file = @inputfile
   		@input_file = ARGV[0]
   		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
@@ -39,35 +37,22 @@ module Bkmkr
 		end
 	end
 
-	class Paths
-		def self.currpath
-			Dir.pwd
-		end
+  class Paths
+    def self.tmp_dir
+      $tmp_dir
+    end
 
-		@@currvol = currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
-		def self.currvol
-			@@currvol
-		end
+    def self.log_dir
+      $log_dir
+    end
 
-		@@tmp_dir = File.join(currvol, "bookmaker_tmp")
-		def self.tmp_dir
-			@@tmp_dir
-		end
+    def self.bookmaker_dir
+      $bookmaker_dir
+    end
 
-		@@log_dir = File.join("S:", "resources", "logs")
-		def self.log_dir
-			@@log_dir
-		end
-
-		@@bookmaker_dir = File.join("S:", "resources", "bookmaker_scripts")
-		def self.bookmaker_dir
-			@@bookmaker_dir
-		end
-
-		@@resource_dir = "C:"
-		def self.resource_dir
-			@@resource_dir
-		end
+    def self.resource_dir
+      $resource_dir
+    end
 
 		# Path to the submitted_images directory
 		@@submitted_images = File.join(Project.working_dir, "submitted_images")
