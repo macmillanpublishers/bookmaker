@@ -1,5 +1,12 @@
+# ------------------ CUSTOM VARIABLES
+# Add any custom variables you'd like to use in the global variables below.
 $currpath = Dir.pwd
 $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
+
+# ------------------ GLOBAL VARIABLES
+# These variables are required throughout the 
+# Bookmaker toolchain. Update these paths to 
+# reflect your current system setup.
 
 # The location of the temporary working folder.
 # This is where bookmaker will perform most actions
