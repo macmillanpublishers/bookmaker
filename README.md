@@ -73,7 +73,7 @@ Additionally, the following directory structures are required:
 * A folder must exist for storing log files. This can live anywhere.
 * A temporary working directory should be created, where Bookmaker can perform the conversions before archiving the final files. This can live anywhere.
 
-Paths for the above four folders can be configured in header.rb. See the installation instructions below for details.
+Paths for the above four folders can be configured in config.rb. See the installation instructions below for details.
 
 ## Dependencies
 
@@ -105,13 +105,13 @@ Install the utilities listed in the previous section, as needed. For reference, 
 
 On your server, create the following folders and subfolders.
 
-* A folder to drop the project to be converted. See the naming convention requirements above. The folder should follow this convention: _MainParentFolder\_ProjectStage/ConversionFolder/_
-* A folder to drop book images to be included in the conversion.
-* A folder to archive the final converted files.
-* Temp folder: A folder where the system can store temporary files created during conversion.
-* Bookmaker folder: A main parent folder to contain all of the separate bookmaker script folders.
-* Resources folder: A folder for all the supplemental utilities (saxon, zip, etc).
-* Log folder: A folder for storing log files.
+* A folder to drop the project to be converted. See the naming convention requirements above. The folder name should follow this convention: _MainParentFolder\_ProjectStage/ConversionFolder/_
+* A folder to drop book images to be included in the conversion. This folder must be named _submitted\_images_.
+* A folder to archive the final converted files. This folder must be named _done_.
+* Temp folder: A folder where the system can store temporary files created during conversion. This can live anywhere and have the name of your choosing.
+* Bookmaker folder: A main parent folder to contain all of the separate bookmaker script folders. This can live anywhere and have the name of your choosing.
+* Resources folder: A folder for all the supplemental utilities (saxon, zip, etc). This can live anywhere and have the name of your choosing.
+* Log folder: A folder for storing log files. This can live anywhere and have the name of your choosing.
 
 ### Install Git and Set Up Your GitHub Account
 
@@ -190,25 +190,23 @@ imagedelete.bat
 
 ### Configure Your Settings
 
-Within the primary Bookmaker repository (which is to say, this repository), you can configure your system paths to point to the correct folder locations for the folders you created in the steps above. Open _header.rb_ and edit the following values:
+Within the primary Bookmaker repository (which is to say, this repository), you can configure your system paths to point to the correct folder locations for the folders you created in the steps above. Open _config.rb_ and edit the following values:
 
-The location of the Temp folder:
+The full path of the Temp folder:
 
-    @@tmp_dir = "YOUR_PATH_HERE"
+    $tmp_dir = "YOUR_PATH_HERE"
 
-The location of the Log folder:
+The full path of the Log folder:
 
-    @@log_dir = "YOUR_PATH_HERE"
+    $log_dir = "YOUR_PATH_HERE"
 
-The location of the Bookmaker main parent folder:
+The full path of the Bookmaker main parent folder:
 
-    @@bookmaker_dir = "YOUR_PATH_HERE"
+    $bookmaker_dir = "YOUR_PATH_HERE"
 
-The location of the Resource folder:
+The full path of the Resource folder:
 
-    @@resource_dir = "YOUR_PATH_HERE"
-
-**Note that these settings are being migrated to a separate config file in the very near future.**
+    $resource_dir = "YOUR_PATH_HERE"
 
 ### Download HTMLBook
 
