@@ -236,7 +236,8 @@
               'ChapTitleNonprintingctnp',
               'PartNumberpn',
               'PartTitlept',
-              'FMHeadfmh'"/>
+              'FMHeadfmh',
+              'AboutAuthorTextHeadatah'"/>
   </xsl:variable>
 
   <!-- Paragraphs that are part of the chapter opener block, that 
@@ -282,6 +283,7 @@
       select="'BMHeadbmh',
               'BMHeadALTabmh',
               'AppendixHeadaph',
+              'AboutAuthorTextHeadatah',
               'PartNumberpn',
               'PartTitlept',
               'ChapTitlect',
