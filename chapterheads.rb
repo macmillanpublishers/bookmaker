@@ -37,8 +37,8 @@ if File.file?(epub_css_file)
 		end
 	end
 else
-	File.open("#{tmp_layout_dir}/epub.css", 'w') do |p|
-		p.write "/* no epub css supplied */"
+	File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
+		e.write "/* no epub css supplied */"
 	end
 end
 
