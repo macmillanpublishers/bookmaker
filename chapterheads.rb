@@ -21,6 +21,10 @@ if File.file?(pdf_css_file)
 			p.write "#{pdf_css}section[data-type='chapter']>h1{display:none;}"
 		end
 	end
+else
+	File.open("#{tmp_layout_dir}/pdf.css", 'w') do |p|
+		p.write "/* no print css supplied */"
+	end
 end
 
 if File.file?(epub_css_file)
@@ -31,6 +35,10 @@ if File.file?(epub_css_file)
 		File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
 			e.write "#{epub_css}h1.ChapTitlect{display:none;}"
 		end
+	end
+else
+	File.open("#{tmp_layout_dir}/epub.css", 'w') do |p|
+		p.write "/* no epub css supplied */"
 	end
 end
 
