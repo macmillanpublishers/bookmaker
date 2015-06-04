@@ -255,3 +255,19 @@ Lines 158-160: Comment out this block. It adds extra namespace values to the con
 ## Run Bookmaker
 
 You can run bookmaker by firing the scripts one\-by\-one on the command line, or by combining them into a bash or batch file to fire all at once. You can see examples of Macmillan's .bat files [here: https://github.com/macmillanpublishers/bookmaker_deploy/](https://github.com/macmillanpublishers/bookmaker_deploy/).
+
+To convert a project, drop the input text file along with any assets (interior images, etc.) into your conversion folder. Project metadata is read from a _config.json_ file that should be submitted along with your book assets. The json file should be structured as follows, with these exact key names:
+
+    {
+    "title":"Your Book Title",
+    "subtitle":"Your Book Subtitle",
+    "author":"Your Book Author",
+    "productid":"A general product ID",
+    "printid":"A print product ID like an ISBN",
+    "ebookid":"An ebook product ID like an ISBN",
+    "imprint":"The name of the imprint",
+    "publisher":"The name of the publisher",
+    "frontcover":"The filename for the cover image"
+    }
+
+All fields are optional. If you choose not to include any of the above information, and that information is required at any point in Bookmaker (for example, _printid_ and _ebookid_ are used for naming the output files), those fields will instead use the value "Unknown" (so, you'll end up with an EPUB file called _Unknown_EPUB.epub_). If you choose not to include a front cover filename, Bookmaker will look for a file called _cover.jpg_.
