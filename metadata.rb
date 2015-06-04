@@ -2,12 +2,13 @@ require 'json'
 
 require_relative '../bookmaker/header.rb'
 
-configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
-
-@@file = File.read(configfile)
-@@data_hash = JSON.parse(file)
-
 class Metadata
+
+	configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
+
+	@@file = File.read(configfile)
+	@@data_hash = JSON.parse(@@file)
+
 	def self.booktitle
 		if @@data_hash['title']
 			@@data_hash['title']
