@@ -6,11 +6,11 @@ require_relative '../header.rb'
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "saxon9pe.jar")
 source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.xml")
 word_to_html_xsl = File.join(Bkmkr::Paths.scripts_dir, "WordXML-to-HTML", "wordtohtml.xsl")
-footnotes_xsl = File.join(Bkmkr::Paths.core_dir, "bookmaker_htmlmaker", "footnotes.xsl")
-strip_toc_xsl = File.join(Bkmkr::Paths.core_dir, "bookmaker_htmlmaker", "strip-toc.xsl")
-parts_xsl = File.join(Bkmkr::Paths.core_dir, "bookmaker_htmlmaker", "parts.xsl")
-headings_xsl = File.join(Bkmkr::Paths.core_dir, "bookmaker_htmlmaker", "headings.xsl")
-inlines_xsl = File.join(Bkmkr::Paths.core_dir, "bookmaker_htmlmaker", "inlines.xsl")
+footnotes_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.xsl")
+strip_toc_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.xsl")
+parts_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.xsl")
+headings_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.xsl")
+inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
 
 
 # convert xml to html
