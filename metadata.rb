@@ -73,6 +73,30 @@ class Metadata
 		end
 	end
 
+	def self.printcss
+		if @@data_hash['printcss']
+			@@data_hash['printcss']
+		else 
+			"none"
+		end
+	end
+
+	def self.printjs
+		if @@data_hash['printjs']
+			@@data_hash['printjs']
+		else 
+			"none"
+		end
+	end
+
+	def self.epubcss
+		if @@data_hash['ebookcss']
+			@@data_hash['ebookcss']
+		else 
+			"none"
+		end
+	end
+
 	def self.frontcover
 		if @@data_hash['frontcover']
 			@@data_hash['frontcover']
