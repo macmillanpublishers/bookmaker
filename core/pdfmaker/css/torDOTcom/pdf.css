@@ -1188,6 +1188,10 @@ section[data-type="appendix"] h1 + figure {
 	max-height: 2in;
 }
 
+section[data-type="appendix"] h1 + figure img {
+	max-height: 100%;
+}
+
 p[class*="SpaceAfter"] + p[class*="Extract"], 
 p[class*="SpaceAround"] + p[class*="Extract"] {
 	text-indent: 0;
