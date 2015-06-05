@@ -2,7 +2,7 @@
 
 Welcome to the Bookmaker toolchain! Bookmaker comprises a series of scripts that turn a Word document into an HTML document, and then into a PDF and/or EPUB file. 
 
-Each script in the Bookmaker sequence performs a distinct set of actions that builds on the scripts that came before, and depends on any number of other scripts or tools. These scripts were written specifically for use at Macmillan, and thus many of the filenames, arguments, and paths are direct references to that internal workflow. Additionally, because Macmillan uses Windows servers, all paths and commands are structured for a Windows environment.
+Each script in the Bookmaker sequence performs a distinct set of actions that builds on the scripts that came before, and depends on any number of other scripts or tools. These scripts were written specifically for use at Macmillan, and thus many of the filenames, arguments, and paths are direct references to that internal workflow. The scripts all live here, in the _core_ directory.
 
 Additionally, correct transformation depends on correct application of the Macmillan Word template, a set of styles and rules for Microsoft Word manuscripts that create the initial structure each manuscript needs in order to cleanly transform into valid HTMLBook HTML. You can learn more about styling and the Word template [here](https://macmillan.atlassian.net/wiki/display/PBL/Manuscript+Styling+with+MS+Word).
 
@@ -10,9 +10,9 @@ Additionally, correct transformation depends on correct application of the Macmi
 
 The scripts are as follows:
 
-[header](https://github.com/macmillanpublishers/bookmaker): This is the core Bookmaker library, that contains paths and references common to all the Bookmaker scripts. This is also where you will configure your local file paths.
+[header](https://github.com/macmillanpublishers/bookmaker/blob/master/core/header.rb): This is the core Bookmaker library, that contains paths and references common to all the Bookmaker scripts. This is also where you will configure your local file paths.
 
-[tmparchive](https://github.com/macmillanpublishers/bookmaker_tmparchive): Creates the temporary working directory for the file to be converted, and opens an alert to the user telling them the tool is in use.
+[tmparchive](https://github.com/macmillanpublishers/bookmaker/blob/master/core/tmparchive/tmparchive.rb): Creates the temporary working directory for the file to be converted, and opens an alert to the user telling them the tool is in use.
 
 *Dependencies: Pre-determined folder structure*
 
@@ -20,35 +20,35 @@ The scripts are as follows:
 
 *Dependencies: tmparchive, PowerShell, Microsoft Word & correct application of [the Macmillan Word template](https://github.com/macmillanpublishers/Word-template)*
 
-[htmlmaker](https://github.com/macmillanpublishers/bookmaker_htmlmaker): Converts the .xml file to HTML using wordtohtml.xsl.
+[htmlmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/htmlmaker/htmlmaker.rb): Converts the .xml file to HTML using wordtohtml.xsl.
 
 *Dependencies: tmparchive, DocxToXml, Java JDK, Saxon, wordtohtml.xsl*
 
-[filearchive](https://github.com/macmillanpublishers/bookmaker_filearchive): Creates the directory structure for the converted filesbookmaker_coverchecker: Verifies that a cover image has been submitted. If yes, copies the cover image file into the final archive. If no, creates an error file notifying the user that the cover is missing.
+[filearchive](https://github.com/macmillanpublishers/bookmaker/blob/master/core/filearchive/filearchive.rb): Creates the directory structure for the converted filesbookmaker_coverchecker: Verifies that a cover image has been submitted. If yes, copies the cover image file into the final archive. If no, creates an error file notifying the user that the cover is missing.
 
 *Dependencies: tmparchive, htmlmaker*
 
-[imagechecker](https://github.com/macmillanpublishers/bookmaker_imagechecker): Checks to see if any images are referenced in the HTML file, and if those image files exist in the submission folder. If images are present, copies them to the final archive; if missing, creates an error file noting which image files are missing.
+[imagechecker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/imagechecker/imagechecker.rb): Checks to see if any images are referenced in the HTML file, and if those image files exist in the submission folder. If images are present, copies them to the final archive; if missing, creates an error file noting which image files are missing.
 
 *Dependencies: tmparchive, htmlmaker, filearchive*
 
-[coverchecker](https://github.com/macmillanpublishers/bookmaker_coverchecker): Checks to see if a front cover image file exists in the submission folder. If the cover image is present, copies it to the final archive; if missing, creates an error file noting that the cover is missing.
+[coverchecker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/coverchecker/coverchecker.rb): Checks to see if a front cover image file exists in the submission folder. If the cover image is present, copies it to the final archive; if missing, creates an error file noting that the cover is missing.
 
 *Dependencies: tmparchive, htmlmaker, filearchive*
 
-[chapterheads](https://github.com/macmillanpublishers/bookmaker_chapterheads): Copies EPUB and PDF css into the final archive, while also counting how many chapters are in the book and adjusting the CSS to suppress chapter numbers if only one chapter is found.
+[chapterheads](https://github.com/macmillanpublishers/bookmaker/blob/master/core/chapterheads/chapterheads.rb): Copies EPUB and PDF css into the final archive, while also counting how many chapters are in the book and adjusting the CSS to suppress chapter numbers if only one chapter is found.
 
 *Dependencies: tmparchive, htmlmaker, filearchive*
 
-[pdfmaker](https://github.com/macmillanpublishers/bookmaker_pdfmaker): Preps the HTML file and sends to the DocRaptor service for conversion to PDF.
+[pdfmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/pdfmaker/pdfmaker.rb): Preps the HTML file and sends to the DocRaptor service for conversion to PDF.
 
 *Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, SSL cert file, DocRaptor cloud service, doc_raptor ruby gem, ftp*
 
-[epubmaker](https://github.com/macmillanpublishers/bookmaker_epubmaker): Preps the HTML file and converts to EPUB using the HTMLBook scripts.
+[epubmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/epubmaker/epubmaker.rb): Preps the HTML file and converts to EPUB using the HTMLBook scripts.
 
 *Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, Saxon, HTMLBook, zip.exe*
 
-[cleanup](https://github.com/macmillanpublishers/bookmaker_cleanup): Removes all temporary working files and working dirs.
+[cleanup](https://github.com/macmillanpublishers/bookmaker/blob/master/core/cleanup/cleanup.rb): Removes all temporary working files and working dirs.
 
 *Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads*
 
@@ -124,15 +124,6 @@ Now install git on your server, following the standard instructions.
 The source code for the Bookmaker scripts is hosted in the Macmillan GitHub account, broken down into several repositories. The production-ready versions of each script live in the master branch in each repository. The repositories are as follows:
 
 * https://github.com/macmillanpublishers/bookmaker/
-* https://github.com/macmillanpublishers/bookmaker_tmparchive/ 
-* https://github.com/macmillanpublishers/bookmaker_htmlmaker/ 
-* https://github.com/macmillanpublishers/bookmaker_filearchive/ 
-* https://github.com/macmillanpublishers/bookmaker_coverchecker/ 
-* https://github.com/macmillanpublishers/bookmaker_imagechecker/ 
-* https://github.com/macmillanpublishers/bookmaker_chapterheads/ 
-* https://github.com/macmillanpublishers/bookmaker_pdfmaker/
-* https://github.com/macmillanpublishers/bookmaker_epubmaker/ 
-* https://github.com/macmillanpublishers/bookmaker_cleanup/ 
 * https://github.com/macmillanpublishers/WordXML-to-HTML/
 
 If you plan to make changes to the source code, you will want to fork those repositories and then clone them, so that you can maintain your version of the code.
@@ -200,9 +191,9 @@ The full path of the Log folder:
 
     $log_dir = "YOUR_PATH_HERE"
 
-The full path of the Bookmaker main parent folder:
+The full path of the main parent folder where all your scripts (including this repository) live:
 
-    $bookmaker_dir = "YOUR_PATH_HERE"
+    $scripts_dir = "YOUR_PATH_HERE"
 
 The full path of the Resource folder:
 
