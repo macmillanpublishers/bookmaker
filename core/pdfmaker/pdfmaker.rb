@@ -7,7 +7,7 @@ require_relative '../metadata.rb'
 
 # Local path var(s)
 pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
-pdfmaker_dir = File.join(Bkmkr::Paths.core_dir, "bookmaker_pdfmaker")
+pdfmaker_dir = File.join(Bkmkr::Paths.core_dir, "pdfmaker")
 
 # Authentication data is required to use docraptor and 
 # to post images and other assets to the ftp for inclusion 
