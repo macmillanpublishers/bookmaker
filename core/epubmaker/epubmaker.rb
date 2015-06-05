@@ -87,7 +87,7 @@ FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/cover/cover.jpg", OEBPS
 sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images")
 
 if sourceimages.any?
-	unless File.exist("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
+	unless File.exist?("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
 		Dir.mkdir("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
 	end
 	#using this model for Fileutils.cp to select all files in a dir (* won't work directly):  FileUtils.cp Dir["#{dir1}/*"].select {|f| test ?f, f}, "#{dir2}"
