@@ -2,20 +2,20 @@ require 'rubygems'
 require 'doc_raptor'
 require 'fileutils'
 
-require_relative '../bookmaker/header.rb'
-require_relative '../bookmaker/metadata.rb'
+require_relative '../header.rb'
+require_relative '../metadata.rb'
 
 # Local path var(s)
 pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
-pdfmaker_dir = File.join(Bkmkr::Paths.bookmaker_dir, "bookmaker_pdfmaker")
+pdfmaker_dir = File.join(Bkmkr::Paths.core_dir, "bookmaker_pdfmaker")
 
 # Authentication data is required to use docraptor and 
 # to post images and other assets to the ftp for inclusion 
 # via docraptor. This auth data should be housed in 
 # separate files, as laid out in the following block.
-docraptor_key = File.read("#{Bkmkr::Paths.bookmaker_dir}/bookmaker_authkeys/api_key.txt")
-ftp_uname = File.read("#{Bkmkr::Paths.bookmaker_dir}/bookmaker_authkeys/ftp_username.txt")
-ftp_pass = File.read("#{Bkmkr::Paths.bookmaker_dir}/bookmaker_authkeys/ftp_pass.txt")
+docraptor_key = File.read("#{Bkmkr::Paths.scripts_dir}/bookmaker_authkeys/api_key.txt")
+ftp_uname = File.read("#{Bkmkr::Paths.scripts_dir}/bookmaker_authkeys/ftp_username.txt")
+ftp_pass = File.read("#{Bkmkr::Paths.scripts_dir}/bookmaker_authkeys/ftp_pass.txt")
 ftp_dir = "http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg"
 
 DocRaptor.api_key "#{docraptor_key}"
@@ -73,7 +73,7 @@ end
 FileUtils.cp Dir["#{pdfmaker_dir}/css/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir
 FileUtils.cp Dir["#{pdfmaker_dir}/images/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir
 FileUtils.cp Dir["#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir		
-`#{Bkmkr::Paths.bookmaker_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
+`#{Bkmkr::Paths.scripts_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
 
 # Link to custom javascript in the html head
 if File.file?("#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")

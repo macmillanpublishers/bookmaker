@@ -1,14 +1,14 @@
 require 'FileUtils'
 
-require_relative '../bookmaker/header.rb'
-require_relative '../bookmaker/metadata.rb'
+require_relative '../header.rb'
+require_relative '../metadata.rb'
 
 # Local path var(s)
-epub_dir = "#{Bkmkr::Paths.project_tmp_dir}"
+epub_dir = Bkmkr::Paths.project_tmp_dir
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "saxon9pe.jar")
 epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
-strip_halftitle_xsl = File.join(Bkmkr::Paths.bookmaker_dir, "bookmaker_epubmaker", "strip-halftitle.xsl")
-epub_xsl = File.join(Bkmkr::Paths.bookmaker_dir, "HTMLBook", "htmlbook-xsl", "epub.xsl")
+strip_halftitle_xsl = File.join(Bkmkr::Paths.core_dir, "bookmaker_epubmaker", "strip-halftitle.xsl")
+epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub.xsl")
 tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
 OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
@@ -19,7 +19,7 @@ authorname1 = File.read(Bkmkr::Paths.outputtmp_html).scan(/<p class="TitlepageAu
 authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
 
 #set logo image based on project directory
-logo_img = "#{Bkmkr::Paths.bookmaker_dir}/bookmaker_epubmaker/images/#{Bkmkr::Project.project_dir}/logo.jpg"
+logo_img = "#{Bkmkr::Paths.core_dir}/bookmaker_epubmaker/images/#{Bkmkr::Project.project_dir}/logo.jpg"
 
 # finding imprint name
 imprint = File.read(Bkmkr::Paths.outputtmp_html).scan(/<p class="TitlepageImprintLineimp">.*?</).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/</,"")

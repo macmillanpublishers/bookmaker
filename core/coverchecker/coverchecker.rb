@@ -1,7 +1,7 @@
 require 'fileutils'
 
-require_relative '../bookmaker/header.rb'
-require_relative '../bookmaker/metadata.rb'
+require_relative '../header.rb'
+require_relative '../metadata.rb'
 
 # The directory where the cover was moved in tmparchive
 coverdir = Bkmkr::Paths.project_tmp_dir_img

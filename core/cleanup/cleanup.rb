@@ -1,11 +1,11 @@
 require 'fileutils'
 
-require_relative '../bookmaker/header.rb'
-require_relative '../bookmaker/metadata.rb'
+require_relative '../header.rb'
+require_relative '../metadata.rb'
 
 # clean up the ftp site if files were uploaded
 if File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt")
-	`#{Bkmkr::Paths.bookmaker_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images`
+	`#{Bkmkr::Paths.core_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images`
 end
 
 # Delete all the working files and dirs

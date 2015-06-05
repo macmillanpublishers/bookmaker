@@ -1,6 +1,6 @@
 require 'json'
 
-require_relative '../bookmaker/header.rb'
+require_relative 'header.rb'
 
 class Metadata
 

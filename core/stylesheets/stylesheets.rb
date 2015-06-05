@@ -1,7 +1,7 @@
 require 'fileutils'
 
-require_relative '../bookmaker/header.rb'
-require_relative '../bookmaker/metadata.rb'
+require_relative '../header.rb'
+require_relative '../metadata.rb'
 
 # an array of all occurances of chapters in the manuscript
 chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="chapter"/)

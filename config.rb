@@ -18,7 +18,7 @@ $tmp_dir = File.join($currvol, "bookmaker_tmp")
 $log_dir = File.join("S:", "resources", "logs")
 
 # The location where your bookmaker scripts live.
-$bookmaker_dir = File.join("S:", "resources", "bookmaker_scripts")
+$scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
 
 # The location that any other resources are installed, 
 # for example your pdf processor, zip utility, etc.

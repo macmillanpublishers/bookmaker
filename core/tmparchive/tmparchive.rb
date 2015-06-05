@@ -1,6 +1,6 @@
 require 'fileutils'
 
-require_relative '../bookmaker/header.rb'
+require_relative '../header.rb'
 
 # For TEST purposes
 test_images_before = Dir.entries(Bkmkr::Paths.submitted_images)
