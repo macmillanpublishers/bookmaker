@@ -8,6 +8,19 @@ if File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") &&
 	`#{Bkmkr::Paths.scripts_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images`
 end
 
+# verify ftp site is clean
+if File.exists?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/clear_ftp_log.txt")
+	if File.zero?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/clear_ftp_log.txt")
+		test_ftp_files_removed = "pass: The ftp server directory (bookmakerimg) is clean"
+	else
+		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean"
+	end
+elsif File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt")
+	test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean (files were uploaded but not deleted)"
+else
+	test_ftp_files_removed = "pass: The ftp server directory (bookmakerimg) presumed clean (no images uploaded))"
+end
+
 # Delete all the working files and dirs
 FileUtils.rm_r(Bkmkr::Paths.project_tmp_dir)
 FileUtils.rm(Bkmkr::Project.input_file)
@@ -20,19 +33,6 @@ if File.exists?("#{Bkmkr::Project.input_file}")
 	test_inputfile_removed = "FAIL: Input file has been deleted from Convert directory"
 else
 	test_inputfile_removed = "pass: Input file has been deleted from Convert directory"
-end
-
-# verify ftp site is clean
-if File.exists?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/clear_ftp_log.txt")
-	if File.zero?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/clear_ftp_log.txt")
-		test_ftp_files_removed = "pass: The ftp server directory (bookmakerimg) is clean"
-	else
-		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean"
-	end
-elsif File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt")
-	test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean (files were uploaded but not deleted)"
-else
-	test_ftp_files_removed = "pass: The ftp server directory (bookmakerimg) presumed clean (no images uploaded))"
 end
 
 # verify tmp folder for pisbn is gone
