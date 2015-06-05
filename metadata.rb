@@ -90,8 +90,8 @@ class Metadata
 	end
 
 	def self.epubcss
-		if @@data_hash['epubcss']
-			@@data_hash['epubcss']
+		if @@data_hash['ebookcss']
+			@@data_hash['ebookcss']
 		else 
 			"none"
 		end
