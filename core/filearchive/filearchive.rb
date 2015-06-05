@@ -12,6 +12,8 @@ final_dir_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover")
 final_dir_layout = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout")
 final_manuscript = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "#{Metadata.pisbn}_MNU.#{filetype}")
 final_html = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "#{Metadata.pisbn}.html")
+input_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
+final_config = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "config.json")
 
 unless Dir.exist?(final_dir)
 	Dir.mkdir(final_dir)
@@ -22,6 +24,7 @@ end
 
 FileUtils.cp(Bkmkr::Project.input_file, final_manuscript)
 FileUtils.cp(Bkmkr::Paths.outputtmp_html, final_html)
+FileUtils.cp(input_config, final_config)
 
 # TESTING
 
