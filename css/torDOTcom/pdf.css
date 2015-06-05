@@ -1,0 +1,1359 @@
+/*PDF CSS. prince -s ../tor.css output.html -o output.pdf*/
+
+/*@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldItalic.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Smbd.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-LightDisplay.otf');
+	font-style: normal;
+	font-weight: 100;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-SmText.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldItalicSmText.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-SmbdSmText.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldSmText.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-Caption.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-ItalicCaption.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-BoldSubhead";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/ArnoPro-BoldSubhead.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/AromaNo2LTPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/AromaNo2LTPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MinionPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/MinionPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MyriadPro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/MyriadPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/SourceCodePro-Medium.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/SourceCodePro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "TimesNewRomanPSMT";
+	src: url('/Users/nellie.mckesson/Dropbox (Macmillan Publishers)/backup/automation/tor-design-samples/ImprintTempl_r5/Document fonts/TimesNewRomanPSMT.ttf');
+	font-style: normal;
+	font-weight: normal;
+}*/
+
+/* final fonts */
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalic.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Smbd.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-LightDisplay.otf');
+	font-style: normal;
+	font-weight: 100;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmText.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldItalicSmText.otf');
+	font-style: italic;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-SmbdSmText.otf');
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "ArnoPro-SmText";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSmText.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-Caption.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-Caption";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-ItalicCaption.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "ArnoPro-BoldSubhead";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/ArnoPro-BoldSubhead.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Italic.otf');
+	font-style: italic;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "AromaNo2LTPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/AromaNo2LTPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MinionPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MinionPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "MyriadPro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/MyriadPro-Regular.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Medium.otf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: "SourceCodePro";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/SourceCodePro-Bold.otf');
+	font-style: normal;
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "TimesNewRomanPSMT";
+	src: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerfonts/TimesNewRomanPSMT.ttf');
+	font-style: normal;
+	font-weight: normal;
+}
+
+/*@prince-pdf {
+	prince-pdf-script: "this.addScript('mySetPageBoxes', 'for (var p=0; p<this.numPages; p++) {this.setPageBoxes(\0022Crop\0022, p, p, this.getPageBox(\0022Bleed\0022, p));};for (var i=0; i<this.numPages; i++) {if (i % 2 != 0) {var rCrop = this.getPageBox(\0022Crop\0022,i);rCrop[2] -= 9; this.setPageBoxes(\0022Crop\0022,i,i,rCrop);}; if (i % 2 == 0) {var rCrop = this.getPageBox(\0022Crop\0022,i); rCrop[0] += 9; this.setPageBoxes(\0022Crop\0022,i,i,rCrop);};};');";/*this.removeScript('mySetPageBoxes');";*/
+/*}*/
+
+@page {
+	size: 5in 8in;
+	margin: 0.72in 0.75in 0.66in 0.75in;
+	padding: 34pt 0 0.36in 0;
+	/*background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/tor_fullpage.png"); /* for testing */
+	/*background-image: url("/Users/nellie.mckesson/git/bookmaker_pdfmaker/css/torDOTcom/tor.png");*/
+	background-position: top left;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	marks: crop;
+	prince-mark-offset: 0.125in;
+	prince-mark-length: 0in;
+	bleed: 0.125in;
+	@footnotes {
+		font-family: "ArnoPro-SmText", serif;
+		font-size: 9pt;
+		background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg");
+		background-position: 0 0in;
+		background-size: 60pt auto;
+		background-repeat: no-repeat;
+		padding-top: 0.127in;
+		margin-top: 0.38in;
+    }
+}
+
+@page chapter {
+	@top-center {
+		font-family: "ArnoPro-Caption", serif;
+		text-align: center;
+		font-style: italic;
+		font-size: 8.5pt;
+		vertical-align: bottom;
+		padding: 0;
+		margin: 0;
+	}
+	@bottom-center {
+		font-family: "ArnoPro-Caption", serif;
+		font-variant: prince-opentype(onum);
+		/*content: counter(page);*/
+		content: flow(runfoot);
+		text-align: center;
+		font-size: 9pt;
+		vertical-align: top;
+	}
+}
+
+@page chapter:left {
+	@top-center {
+		/*content: string(author);*/
+		content: flow(runheadleft);
+	}
+	
+}
+
+@page chapter:right {
+	@top-center {
+		/*content: string(title);*/
+		content: flow(runheadright);
+	}
+}
+
+@page chapter:first {
+	@top-center {
+		content: normal;
+	}
+}
+
+@page chapter:blank {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page front {
+	@top-center {
+		content: normal;
+		font-family: "ArnoPro-Caption", serif;
+		text-align: center;
+		font-style: italic;
+		font-size: 8.5pt;
+		vertical-align: bottom;
+		padding: 0;
+		margin: 0;
+	}
+	@bottom-center {
+		content: normal;
+		font-family: "ArnoPro-Caption", serif;
+		font-variant: prince-opentype(onum);
+		content: counter(page);
+		text-align: center;
+		font-size: 9pt;
+		vertical-align: top;
+	}
+}
+
+@page front:left {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page front:right {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page front:first {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page front:blank {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed {
+	margin: 0;
+	padding: 0;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:left {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:right {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:first {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page fullbleed:blank {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+body {
+	font-family: "ArnoPro", serif;
+	counter-reset: endnotes chapternumber;
+}
+
+section, p, div, h1, h2, h3, h4, h5, h6 {
+	display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	page-break-after: avoid;
+}
+
+p {
+	font-size: 12pt;
+	line-height: 16pt;
+	text-indent: 16pt;
+	text-align: justify;
+	text-align-last: left;
+	margin: 0;
+	widows: 2;
+	orphans: 1;
+	hyphens: auto;
+	hyphenate-lines: 3;
+}
+
+div.runheadleft { 
+	flow: static(runheadleft); 
+	font-family: "ArnoPro-Caption", serif;
+	text-align: center;
+	font-style: italic;
+	font-size: 8.5pt;
+	padding: 0;
+	margin: 0;
+	text-indent: 0;
+}
+
+div.runheadright { 
+	flow: static(runheadright);
+	font-family: "ArnoPro-Caption", serif;
+	text-align: center;
+	font-style: italic;
+	font-size: 8.5pt;
+	padding: 0;
+	margin: 0;
+	text-indent: 0;
+}
+
+div.runfoot { 
+	flow: static(runfoot); 
+	font-family: "ArnoPro-Caption", serif;
+	font-variant: prince-opentype(onum);
+	text-align: center;
+	font-size: 9pt;
+	text-indent: 0;
+}
+
+div.runfoot span { 
+	display: block;
+	content: counter(page); 
+	font-family: "ArnoPro-Caption", serif;
+	font-variant: prince-opentype(onum);
+	text-align: center;
+	font-size: 9pt;
+	text-indent: 0;
+}
+
+p:first-of-type, 
+p[class^="SpaceBreak"] + p, 
+p[class*="No-Indent"] {
+	text-indent: 0;
+}
+
+p[class*="SpaceBefore"] {
+	margin-top: 16pt;
+}
+
+p[class*="SpaceAround"] {
+	margin-top: 16pt;
+	margin-bottom: 16pt;
+}
+
+p[class*="SpaceAfter"] {
+	margin-bottom: 16pt;
+}
+
+blockquote {
+	margin-top: 16pt;
+	margin-bottom: 16pt;
+}
+
+/* frontmatter */
+
+section[data-type="halftitlepage"], 
+section[data-type="titlepage"], 
+section[data-type="preface"], 
+section[data-type="copyright-page"], 
+section.adcard {
+	page-break-after: always;
+}
+
+section[data-type="halftitlepage"], 
+section[data-type="titlepage"], 
+section[data-type="preface"], 
+section.adcard {
+	page-break-before: right;
+}
+
+section[data-type="halftitlepage"], 
+section[data-type="titlepage"], 
+section[data-type="copyright-page"], 
+section[data-type="dedication"],
+nav[data-type="toc"] {
+	page: front;
+}
+
+
+.FrontSalesTitlefst {
+	font-size: 16pt;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 16pt;
+}
+
+.FrontSalesQuoteNoIndentfsq1  {
+	text-indent: 0;
+	text-align: left;
+}
+
+.FrontSalesQuotefsq, 
+p.FrontSalesQuotefsq:first-of-type {
+	text-indent: -5pt;
+	text-align: left;
+}
+
+.FrontSalesQuoteSourcefsqs {
+	font-family: "ArnoPro-SmText", serif;
+	font-weight: bold;
+	font-size: 10.5pt;
+	text-align: right;
+	margin-bottom: 16pt;
+}
+
+section[data-type="halftitlepage"] > h1, 
+p.HalftitleBookTitlehtit {
+	font-size: 18pt;
+	font-weight: normal;
+	line-height: 16pt;
+	margin-top: 16pt;
+	text-align: center;
+}
+
+section.adcard {
+	text-align: center;
+}
+
+p.AdCardMainHeadacmh {
+	text-transform: lowercase;
+	font-variant: small-caps;
+	font-size: 14pt;
+	margin-top: 16pt;
+	margin-bottom: 16pt;
+	text-align: center;
+	text-indent: 0;
+}
+
+p.AdCardSubheadacsh {
+	text-align: center;
+	text-indent: 0;
+}
+
+p.AdCardListofTitlesacl {
+	font-style: italic;
+	text-align: center;
+	text-indent: 0;
+}
+
+section[data-type="titlepage"] > h1 {
+	font-family: "ArnoPro-BoldSubhead", serif;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 25pt;
+	line-height: 28pt;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 0;
+	string-set: title content();
+}
+
+section[data-type="titlepage"] > h1:first-child {
+	margin-top: 24pt;
+}
+
+.TitlepageBookSubtitlestit + h1, 
+.TitlepageSeriesTitleser + h1 {
+	margin-top: 26pt;
+}
+
+h1 + .TitlepageBookSubtitlestit, 
+h1 + .TitlepageSeriesTitleser {
+	margin-top: 24pt;
+	margin-bottom: 0;
+}
+
+.TitlepageBookSubtitlestit, 
+.TitlepageSeriesTitleser {
+	font-weight: normal;
+	font-size: 16pt;
+	line-height: 24pt;
+	font-style: italic;
+	text-align: center;
+}
+
+.TitlepageBookSubtitlestit:first-child, 
+.TitlepageSeriesTitleser:first-child {
+	margin-top: 6pt;
+}
+
+.TitlepageTranslatorNametran, 
+.TitlepageContributorNamecon {
+	text-align: center;
+}
+
+section[data-type="titlepage"] p.TitlepageAuthorNameau {
+	font-size: 16pt;
+	padding-top: 40pt;
+	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg');
+	background-size: 60pt auto;
+	background-position: top;
+	background-repeat: no-repeat;
+	margin-top: 24pt;
+	margin-bottom: 32pt;
+	text-indent: 0;
+	text-align: center;
+	string-set: author content();
+}
+
+section[data-type="titlepage"] p.TitlepageImprintLineimp {
+	float: bottom;
+	text-align: center;
+	text-indent: 0;
+}
+
+section[data-type="titlepage"] p.TitlepageImprintLineimp:before {
+	content: " ";
+	background-image: url("http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/logo.jpg");
+	background-position: center bottom;
+	background-size: 0.58in auto;
+	background-repeat: no-repeat;
+	display: block;
+	width: 100%;
+	height: 0.5in;
+	text-align: center;
+	margin-bottom: 0.2in;
+}
+
+.TitlepageCitiescit, .TitlepagePublisherNamepub, .TitlepageImprintLineimp {
+	font-family: "ArnoPro-SmText", serif;
+	font-variant: small-caps;
+	font-style: normal;
+	font-weight: normal;
+	text-transform: lowercase;
+	font-size: 10pt;
+	line-height: 16pt;
+	float: bottom;
+	text-align: center;
+	text-indent: 0;
+}
+
+section[data-type="copyright-page"] p:first-child {
+	margin-top: 16pt;
+}
+
+section[data-type="copyright-page"] p {
+	font-family: "ArnoPro-SmText", serif;
+	font-size: 10pt;
+	text-align: center;
+	text-indent: 0;
+}
+
+.CopyrightTextdoublespacecrtxd {
+	margin-bottom: 16pt;
+}
+
+section[data-type="dedication"] {
+	page-break-before: always;
+	page-break-after: always;
+}
+
+section[data-type="dedication"] p {
+	text-align: center;
+	font-style: italic;
+	text-indent: 0;
+}
+
+section[data-type="dedication"] p:first-child {
+	margin-top: 16pt;
+}
+
+section[data-type="dedication"] blockquote[data-type="epigraph"], 
+.Dedicationded + p[class*="Epigraph"] {
+	page-break-before: always;
+	margin-top: 32pt;
+}
+
+section[data-type="dedication"] blockquote[data-type="epigraph"] {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+section[data-type="dedication"] p[class*="Epigraphverse"], 
+section[data-type="dedication"] p[class*="Epigraphnon-verse"] {
+	font-family: "ArnoPro-SmText", serif;
+	font-style: normal;
+	font-size: 10pt;
+	text-align: left;
+	margin-left: 52pt;
+	margin-right: 36pt;
+	text-indent: -16pt;
+}
+
+section[data-type="dedication"] p[class*="Epigraphnon-verse"] {
+	margin-left: 36pt;
+	text-indent: 0;
+}
+
+section[data-type="dedication"] p[class*="EpigraphSource"] {
+	font-family: "ArnoPro-SmText", serif;
+	font-weight: 600;
+	font-size: 10pt;
+	font-style: normal;
+	text-align: right;
+	margin-left: 36pt;
+	margin-right: 36pt;
+}
+
+nav[data-type="toc"] {
+	page-break-before: right;
+	page-break-after: always;
+}
+
+nav[data-type="toc"] h1 {
+	font-weight: bold;
+	font-size: 16pt;
+	line-height: 16pt;
+	margin-top: 0;
+	text-align: center;
+}
+
+nav[data-type="toc"] ol {
+	margin-left: 0;
+}
+
+nav[data-type="toc"] li {
+	font-size: 11pt;
+	line-height: 16pt;
+	margin-bottom: 16pt;
+	margin-left: 0;
+	list-style-type: none;
+}
+
+nav[data-type="toc"] li.FMHeadfmh {
+	display: none;
+}
+
+nav[data-type="toc"] li.BMHeadbmh {
+	margin-left: 25pt;
+	font-weight: normal;
+	text-align: left;
+}
+
+nav[data-type="toc"] li.ChapTitlect + li.BMHeadbmh {
+	margin-top: 16pt;
+}
+
+nav[data-type="toc"] li.PartNumberpn ~ li, 
+nav[data-type="toc"] li.PartTitlept ~ li {
+	margin-bottom: 0;
+}
+
+nav[data-type="toc"] li.PartNumberpn ~ li.PartNumberpn, 
+nav[data-type="toc"] li.PartTitlept ~ li.PartTitlept, 
+nav[data-type="toc"] li.PartNumberpn ~ li.PartTitlept, 
+nav[data-type="toc"] li.PartTitlept ~ li.PartNumberpn {
+	margin-bottom: 9pt;
+}
+
+nav[data-type="toc"] li.PartNumberpn + li.PartTitlept {
+	margin-top: -9pt;
+}
+
+nav[data-type="toc"] a {
+	text-decoration: none;
+	color: cmyk(0%,0%,0%,100%);
+}
+
+nav[data-type="toc"] li a:before {
+	content: target-counter(attr(href), page);
+	display: inline-block;
+	width: 25pt;
+	text-align: left;
+}
+
+nav[data-type="toc"] li.BMHeadbmh a:before {
+	content: normal;
+}
+
+nav[data-type="toc"] li.PartNumberpn, 
+nav[data-type="toc"] li.PartTitlept {
+	margin-bottom: 9pt;
+	margin-top: 23pt;
+	vertical-align: top;
+	font-style: italic;
+}
+
+nav[data-type="toc"] li.PartNumberpn a, 
+nav[data-type="toc"] li.PartTitlept a {
+	vertical-align: top;
+}
+
+nav[data-type="toc"] li.PartNumberpn a:before, 
+nav[data-type="toc"] li.PartTitlept a:before {
+	content: normal;
+	display: inline;
+}
+
+section[data-type="preface"] {
+	page: chapter;
+	page-break-before: right;
+	prince-page-group: start;
+}
+
+section.adcard {
+	page: front;
+}
+
+section.frontsales {
+	page: front;
+}
+
+section[data-type="preface"] h1, 
+section[data-type="appendix"] h1,
+h1.BMHeadbmh {
+	font-size: 16pt;
+	line-height: 16pt;
+	font-weight: bold;
+	margin-top: 0;
+	margin-bottom: 48pt;
+	padding: 0;
+	text-align: center;
+}
+
+section[data-type="preface"] p.FMSubheadfmsh {
+	font-size: 14pt;
+	line-height: 16pt;
+	font-style: italic;
+	margin-top: -45pt;
+	text-align: center;
+	margin-bottom: 30pt;
+}
+
+section[data-type="chapter"] {
+	page: chapter;
+	page-break-before: right;
+	prince-page-group: start;
+	counter-reset: footnote;
+}
+
+section[data-type="chapter"] h1.ChapNumbercn, 
+p.ChapNumberNonprintingcnp {
+	font-size: 12pt;
+	line-height: 16pt;
+	font-weight: 600;
+	text-align: center;
+	margin-top: 20pt;
+	margin-bottom: 7pt;
+	text-indent: 0;
+}
+
+section[data-type="chapter"] h1.ChapNumbercn + p, 
+p.ChapNumberNonprintingcnp + p {
+	margin-top: 16pt;
+}
+
+section[data-type="chapter"] h1.ChapTitlect {
+	font-size: 16pt;
+	line-height: 24pt;
+	font-weight: normal;
+	text-align: center;
+	margin-top: 11pt;
+	margin-bottom: 61pt;
+	counter-increment: chapternumber;
+}
+
+h1.ChapTitlect[data-autolabel="yes"]:before {
+	content: "Chapter " counter(chapternumber);
+	display: block;
+	font-size: 12pt;
+	line-height: 16pt;
+	font-weight: 600;
+	text-align: center;
+	margin-top: 16pt;
+	margin-bottom: 11pt;
+	text-indent: 0;
+}
+
+[class*="Nonprinting"] {
+	display: none;
+}
+
+section[data-type="appendix"] {
+	page-break-before: always;
+	counter-reset: footnote;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"], 
+div[data-type="part"] > blockquote[data-type="epigraph"], 
+section[data-type="preface"] > blockquote[data-type="epigraph"] {
+	margin-left: 36pt;
+	margin-right: 36pt;
+	margin-bottom: 48pt;
+}
+
+h1.ChapTitlect + blockquote[data-type="epigraph"] {
+	margin-top: -32pt;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p, 
+div[data-type="part"] > blockquote[data-type="epigraph"] p, 
+section[data-type="preface"] > blockquote[data-type="epigraph"] p {
+	font-family: "ArnoPro-SmText";
+	font-size: 10pt;
+	line-height: 16pt;
+	text-indent: 0pt;
+	text-align: left;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphversecepiv, 
+div[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphversepepiv, 
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphversefmepiv {
+	margin-left: 16pt;
+	text-indent: -16pt;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphnon-versecepi,
+div[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphnon-versepepi,
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphnon-versefmepi {
+	margin-left: 0;
+}
+
+section[data-type="chapter"] > blockquote[data-type="epigraph"] p.ChapEpigraphSourceceps, 
+div[data-type="part"] > blockquote[data-type="epigraph"] p.PartEpigraphSourcepeps,
+section[data-type="preface"] > blockquote[data-type="epigraph"] p.FMEpigraphSourcefmeps {
+	text-align: right;
+	font-weight: 600;
+}
+
+[class*="ChapOpeningText"] .spansmallcapscharacterssc:first-child {
+	font-weight: 600;
+	letter-spacing: 0.1pt;
+}
+
+div[data-type="part"] {
+	page-break-before: right;
+}
+
+div[data-type="part"] h1 {
+	font-weight: normal;
+	font-size: 22pt;
+	text-transform: uppercase;
+	line-height: 28pt;
+	text-align: center;
+	margin-top: 8pt;
+}
+
+p.Text-StandardALTatx, 
+p.Text-StdNo-IndentALTatx1 {
+	font-family: "AromaNo2LTPro", sans-serif;
+	font-size: 9.75pt;
+}
+
+p.Text-ComputerTypecom, 
+p.Text-ComputerTypeNo-Indentcom1 {
+	font-family: "SourceCodePro", monospace;
+	font-size: 8.5pt;
+}
+
+pre.poetry {
+	font-family: "ArnoPro", serif;
+	margin: 16pt 52pt 16pt 36pt;
+	white-space: pre-wrap;
+}
+
+pre.poetry p, pre.poetry p:first-of-type {
+	text-indent: -16pt;
+	font-size: 10.5pt;
+}
+
+p[class*="Extract"] {
+	font-family: "ArnoPro-SmText", serif;
+	font-size: 10.5pt;
+}
+
+blockquote {
+	margin-left: 16pt;
+	margin-right: 16pt;
+}
+
+blockquote p:first-child {
+	text-indent: 0;
+}
+
+.ExtractHeadexth {
+	page-break-after: avoid;
+}
+
+.ExtractHeadexth, .Extract-Headlineexthl {
+	font-size: 12pt;
+	line-height: 16pt;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+	margin-top: 16pt;
+	margin-bottom: 16pt;
+}
+
+.ExtractHeadexth + p {
+	text-indent: 0;
+}
+
+p.IllustrationSourceis {
+	font-family: "MinionPro", serif;
+	font-size: 7pt;
+	text-align: center;
+	margin-top: 0;
+	margin-bottom: 27pt;
+	page-break-before: avoid;
+	text-indent: 0;
+}
+
+p.IllustrationSourceis a {
+	text-decoration: none;
+	color: cmyk(0%,0%,0%,100%);
+}
+
+section[data-type="copyright-page"] p.IllustrationSourceis {
+	font-size: 7pt;
+	margin-top: 0;
+	margin-bottom: 0;
+	float: bottom;
+}
+
+section[data-type="copyright-page"] p.IllustrationSourceis a {
+	text-decoration: none;
+	color: cmyk(0%,0%,0%,100%);
+}
+
+section[data-type="copyright-page"] p.IllustrationSourceis a:before {
+	content: "Page " target-counter(attr(href), page) " ";
+}
+
+figure {
+	page-break-inside: avoid;
+	margin-top: 27pt;
+	margin-bottom: 32pt;
+	text-align: center;
+	float: top unless-fit;
+}
+
+figure.fullpage {
+	float: top unless-fit;
+	box-sizing: border-box;
+	width: 5.25in;
+	margin-top: 0;
+	margin-left: -0.875in;
+	overflow: visible;
+	height: 5.3in;
+}
+
+h1 + figure {
+	min-height: 21pt;
+	margin-top: -40pt;
+	margin-bottom: 51pt;
+	vertical-align: center;
+}
+
+figcaption {
+	font-family: "AromaNo2LTPro", sans-serif;
+	font-size: 8.5pt;
+	line-height: 16pt;
+	text-align: left;
+}
+
+/* suppressing, for now */
+figure.fullpage figcaption {
+	display: none;
+}
+
+img {
+	max-width: 100%;
+	prince-image-resolution: auto, 300dpi;
+	text-align: center;
+}
+
+img[src*="fullpage"] {
+	display: block;
+	width: 5.25in;
+	position: relative;
+	top: -1.4in;
+}
+
+section[data-type="appendix"] h1 + figure {
+	margin-top: -32pt;
+	margin-bottom: 27pt;
+}
+
+p[class*="SpaceAfter"] + p[class*="Extract"], 
+p[class*="SpaceAround"] + p[class*="Extract"] {
+	text-indent: 0;
+}
+
+p.SpaceBreak, 
+p.SpaceBreak-1-Linels1, 
+p.SpaceBreak-2-Linels2, 
+p.SpaceBreak-3-Linels3 {
+	content: " ";
+	text-indent: 0;
+}
+
+p.SpaceBreak, 
+p.SpaceBreak-1-Linels1 {
+	height: 16pt;
+	content: " ";
+}
+
+p.SpaceBreak-2-Linels2 {
+	height: 32pt;
+	content: " ";
+}
+
+p.SpaceBreak-3-Linels3 {
+	height: 48pt;
+	content: " ";
+}
+
+p.PartOrnamentporn, 
+p.ChapOrnamentcorn, 
+p.ChapOrnamentALTcorn2 {
+	text-indent: 0;
+	content: " ";
+	font-size: 16pt;
+	text-align: center;
+	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/titlepage-rule.jpg');
+	background-size: 60pt auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-top: 14pt;
+	margin-bottom: 7pt;
+	padding: 3pt 0pt 8pt 0pt;
+	width: 100%;
+	height: 16pt;
+}
+
+p.SpaceBreakOrnamentorn,
+p.SpaceBreakwithOrnamentorn, 
+p.SpaceBreakwithALTOrnamentorn2 {
+	text-indent: 0;
+	content: " ";
+	font-size: 16pt;
+	text-align: center;
+	background-image: url('http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg/orn.jpg');
+	background-size: 19pt auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-bottom: 0pt;
+	padding: 24pt 0pt 8pt 0pt;
+	width: 100%;
+	height: 16pt;
+}
+
+p.PageBreakpb {
+	display: none;
+}
+
+/* footnotes */
+
+span[data-type="footnote"], 
+p.endnotetext {
+	font-family: "ArnoPro-SmText", serif;
+	font-size: 9pt;
+	line-height: 12pt;
+	text-indent: 0;
+	margin-left: 0;
+}
+
+span[data-type="footnote"] {
+	float: footnote;
+	footnote-style-position: inside;
+}
+
+::footnote-marker {
+    content: counter(footnote)"\2003";
+    font-family: "ArnoPro";
+    font-weight: 600;
+}
+
+p.endnotetext {
+	line-height: 16pt;
+	counter-increment: endnotes;
+}
+
+p.endnotetext:before {
+	content: counter(endnotes)"\2003";
+	font-family: "ArnoPro";
+    font-weight: 600;
+}
+
+/* character styles */
+
+.spansmallcapscharacterssc {
+	font-variant: small-caps;
+}
+
+.spansmcapitalscital {
+	font-variant: small-caps;
+	font-style: italic;
+}
+
+.spansmcapboldscbold {
+	font-variant: small-caps;
+	font-weight: bold;
+}
+
+.spanboldfacecharactersbf {
+	font-weight: bold;
+}
+
+.spanitaliccharactersital {
+	font-style: italic;
+}
+
+.spanbolditalbem {
+	font-style: italic;
+	font-weight: bold;
+}
+
+.spanunderscorecharactersus {
+	text-decoration: underline;
+}
+
+sup, sub {
+	font-size: 6pt;
+    vertical-align: top;
+    position: relative;
+    top: -0.6em;
+}
+
+sub { top: 0.1em; }
+
+.spansuperscriptcharacterssup {
+	font-size: 6pt;
+	vertical-align: top;
+    position: relative;
+    top: -0.6em;
+}
+
+.spansubscriptcharacterssub {
+	font-size: 6pt;
+	vertical-align: top;
+    position: relative;
+    top: 0.1em;
+}
+
+.spansymbolssym {
+	font-family: ;
+}
+
+.spanaccentcharactersacc {}
+
+.bookmakerkeeptogetherkt {
+	/*font-stretch: -0.1pt;*/
+	white-space: pre;
+}
+
+.bookmakerforcepagebreakbr {
+	page-break-after: always;
+}
