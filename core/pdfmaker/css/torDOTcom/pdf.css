@@ -422,6 +422,66 @@
 	}
 }
 
+@page copyright {
+	margin-bottom: 0.25in;
+	@top-center {
+		content: normal;
+		font-family: "ArnoPro-Caption", serif;
+		text-align: center;
+		font-style: italic;
+		font-size: 8.5pt;
+		vertical-align: bottom;
+		padding: 0;
+		margin: 0;
+	}
+	@bottom-center {
+		content: normal;
+		font-family: "ArnoPro-Caption", serif;
+		font-variant: prince-opentype(onum);
+		content: counter(page);
+		text-align: center;
+		font-size: 9pt;
+		vertical-align: top;
+	}
+}
+
+@page copyright:left {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page copyright:right {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page copyright:first {
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
+@page copyright:blank {
+	margin-top: 2.16in;
+	@top-center {
+		content: normal;
+	}
+	@bottom-center {
+		content: normal;
+	}
+}
+
 @page fullbleed {
 	margin: 0;
 	padding: 0;
@@ -584,6 +644,10 @@ section[data-type="copyright-page"],
 section[data-type="dedication"],
 nav[data-type="toc"] {
 	page: front;
+}
+
+section[data-type="copyright-page"] {
+	page: copyright;
 }
 
 
