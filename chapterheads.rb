@@ -8,16 +8,9 @@ chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="c
 
 # Local path vars, css files 
 tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
-epub_css_dir = File.join(Bkmkr::Paths.bookmaker_dir, "bookmaker_epubmaker", "css")
-pdf_css_file = "#{Bkmkr::Paths.bookmaker_dir}/bookmaker_pdfmaker/css/#{Bkmkr::Project.project_dir}/pdf.css"
 
-if File.file?("#{epub_css_dir}/#{Bkmkr::Project.project_dir}/epub.css")
-	epub_css_file = "#{epub_css_dir}/#{Bkmkr::Project.project_dir}/epub.css"
-# elsif Bkmkr::Project.project_dir.include? "egalley" or Bkmkr::Project.project_dir.include? "first_pass"
-# 	epub_css_file = "S:\\resources\\bookmaker_scripts\\bookmaker_epubmaker\\css\\egalley_SMP\\epub.css"
-else
- 	epub_css_file = "#{epub_css_dir}/generic/epub.css"
-end
+pdf_css_file = Metadata.printcss
+epub_css_file = Metadata.epubcss
 
 if File.file?(pdf_css_file)
 	pdf_css = File.read(pdf_css_file)
@@ -27,6 +20,10 @@ if File.file?(pdf_css_file)
 		File.open("#{tmp_layout_dir}/pdf.css", 'w') do |p|
 			p.write "#{pdf_css}section[data-type='chapter']>h1{display:none;}"
 		end
+	end
+else
+	File.open("#{tmp_layout_dir}/pdf.css", 'w') do |p|
+		p.write "/* no print css supplied */"
 	end
 end
 
@@ -38,6 +35,10 @@ if File.file?(epub_css_file)
 		File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
 			e.write "#{epub_css}h1.ChapTitlect{display:none;}"
 		end
+	end
+else
+	File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
+		e.write "/* no epub css supplied */"
 	end
 end
 
