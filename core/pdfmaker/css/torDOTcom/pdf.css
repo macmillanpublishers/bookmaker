@@ -809,6 +809,7 @@ section[data-type="dedication"] p[class*="EpigraphSource"] {
 nav[data-type="toc"] {
 	page-break-before: right;
 	page-break-after: always;
+	display: none;
 }
 
 nav[data-type="toc"] h1 {
