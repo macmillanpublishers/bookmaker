@@ -1185,6 +1185,7 @@ img[src*="fullpage"] {
 section[data-type="appendix"] h1 + figure {
 	margin-top: -32pt;
 	margin-bottom: 27pt;
+	max-height: 2in;
 }
 
 p[class*="SpaceAfter"] + p[class*="Extract"], 
