@@ -46,8 +46,8 @@ module Bkmkr
 	      $log_dir
 	    end
 
-	    def self.bookmaker_dir
-	      $bookmaker_dir
+	    def self.scripts_dir
+	      $scripts_dir
 	    end
 
 	    def self.resource_dir
@@ -55,7 +55,7 @@ module Bkmkr
 	    end
 
 	    # The location where each bookmaker component lives.
-		@@core_dir = File.join(bookmaker_dir, "bookmaker", "core")
+		@@core_dir = File.join(scripts_dir, "bookmaker", "core")
 		def self.core_dir
 			@@core_dir
 		end
