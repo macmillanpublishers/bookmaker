@@ -1,4 +1,4 @@
-require_relative '../bookmaker/config.rb'
+require_relative '../config.rb'
 
 module Bkmkr
 	class Project
@@ -38,21 +38,27 @@ module Bkmkr
 	end
 
   class Paths
-    def self.tmp_dir
-      $tmp_dir
-    end
+	    def self.tmp_dir
+	      $tmp_dir
+	    end
 
-    def self.log_dir
-      $log_dir
-    end
+	    def self.log_dir
+	      $log_dir
+	    end
 
-    def self.bookmaker_dir
-      $bookmaker_dir
-    end
+	    def self.scripts_dir
+	      $scripts_dir
+	    end
 
-    def self.resource_dir
-      $resource_dir
-    end
+	    def self.resource_dir
+	      $resource_dir
+	    end
+
+	    # The location where each bookmaker component lives.
+		@@core_dir = File.join(scripts_dir, "bookmaker", "core")
+		def self.core_dir
+			@@core_dir
+		end
 
 		# Path to the submitted_images directory
 		@@submitted_images = File.join(Project.working_dir, "submitted_images")
