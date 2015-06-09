@@ -70,7 +70,7 @@ if image_count > 0
 end
 
 # copy assets to tmp upload dir and upload to ftp
-FileUtils.cp Dir["#{pdfmaker_dir}/css/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir
+FileUtils.cp Dir["Bkmkr::Project.working_dir/done/Metadata.pisbn/layout/pdf.css"].select {|f| test ?f, f}, pdftmp_dir
 FileUtils.cp Dir["#{pdfmaker_dir}/images/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir
 FileUtils.cp Dir["#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir		
 `#{Bkmkr::Paths.scripts_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
