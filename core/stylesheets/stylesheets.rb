@@ -13,14 +13,7 @@ pdf_css_file = Metadata.printcss
 epub_css_file = Metadata.epubcss
 
 if File.file?(pdf_css_file)
-	pdf_css = File.read(pdf_css_file)
-	if chapterheads.count > 1
-		FileUtils.cp(pdf_css_file, "#{tmp_layout_dir}/pdf.css")
-	else
-		File.open("#{tmp_layout_dir}/pdf.css", 'w') do |p|
-			p.write "#{pdf_css}section[data-type='chapter']>h1{display:none;}"
-		end
-	end
+	FileUtils.cp(pdf_css_file, "#{tmp_layout_dir}/pdf.css")
 else
 	File.open("#{tmp_layout_dir}/pdf.css", 'w') do |p|
 		p.write "/* no print css supplied */"
@@ -28,14 +21,7 @@ else
 end
 
 if File.file?(epub_css_file)
-	epub_css = File.read(epub_css_file)
-	if chapterheads.count > 1
-		FileUtils.cp(epub_css_file, "#{tmp_layout_dir}/epub.css")
-	else
-		File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
-			e.write "#{epub_css}h1.ChapTitlect{display:none;}"
-		end
-	end
+	FileUtils.cp(epub_css_file, "#{tmp_layout_dir}/epub.css")
 else
 	File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
 		e.write "/* no epub css supplied */"
