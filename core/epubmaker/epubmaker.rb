@@ -17,7 +17,7 @@ epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
-# allowing for users to preprocess epub html if desired
+# Allowing for users to preprocess epub html if desired
 if File.file?(epub_tmp_html)
 	filecontents = File.read(epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 else

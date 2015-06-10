@@ -8,18 +8,12 @@ require_relative '../metadata.rb'
 # Local path var(s)
 pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
 pdfmaker_dir = File.join(Bkmkr::Paths.core_dir, "pdfmaker")
-assets_dir = File.join(Bkmkr::Paths.scripts_dir, "bookmaker_assets", "pdfmaker")
+pdf_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "pdf_tmp.html")
 
 # Authentication data is required to use docraptor and 
-# to post images and other assets to the ftp for inclusion 
-# via docraptor. This auth data should be housed in 
-# separate files, as laid out in the following block.
-docraptor_key = File.read("#{Bkmkr::Paths.scripts_dir}/bookmaker_authkeys/api_key.txt")
-ftp_uname = File.read("#{Bkmkr::Paths.scripts_dir}/bookmaker_authkeys/ftp_username.txt")
-ftp_pass = File.read("#{Bkmkr::Paths.scripts_dir}/bookmaker_authkeys/ftp_pass.txt")
-ftp_dir = "http://www.macmillan.tools.vhost.zerolag.com/bookmaker/bookmakerimg"
-
-DocRaptor.api_key "#{docraptor_key}"
+# to post images and other assets to an ftp for inclusion 
+# via docraptor.
+DocRaptor.api_key "#{Bkmkr::Keys.docraptor_key}"
 
 # change to DocRaptor 'test' mode when running from staging server
 testing_value = "false"
@@ -28,15 +22,28 @@ if File.file?("#{Bkmkr::Paths.resource_dir}/staging.txt") then testing_value = "
 # create pdf tmp directory
 Dir.mkdir(pdftmp_dir)
 
-# Link to custom javascript in the html head
-if File.file?("#{assets_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
-	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
+# Link to print css in the html head
+cssfile = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout", "pdf.css")
+if File.file?(cssfile)
+	embedcss = File.read(cssfile)
 else
-	jsfile = ""
+	embedcss = " "
+end
+
+# Link to custom javascript in the html head
+if File.file?(Metadata.printjs)
+	embedjs = File.read(Metadata.printjs)
+else
+	embedjs = " "
 end
 
 # inserts links to the css and js into the head of the html, fixes images
-pdf_html = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"#{jsfile}<link rel=\"stylesheet\" type=\"text/css\" href=\"#{ftp_dir}/pdf.css\" /></head>").to_s
+# Allowing for users to preprocess pdf html if desired
+if File.file?(pdf_tmp_html)
+	pdf_html = File.read(pdf_tmp_html).gsub(/<\/head>/,"<script>#{embedjs}</script><style>#{embedcss}</style></head>").to_s
+else
+	pdf_html = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<script>#{embedjs}</script><style>#{embedcss}</style></head>").to_s
+end
 
 # sends file to docraptor for conversion
 FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
@@ -47,8 +54,8 @@ File.open("#{Metadata.pisbn}.pdf", "w+b") do |f|
                            :strict			     => "none",
                            :test             => "#{testing_value}",
 	                         :prince_options	 => {
-	                           :http_user		 => "#{ftp_uname}",
-	                           :http_password	 => "#{ftp_pass}",
+	                           :http_user		 => "#{Bkmkr::Keys.http_username}",
+	                           :http_password	 => "#{Bkmkr::Keys.http_password}",
 	                           :javascript 		 => "true"
 							             }
                        		)

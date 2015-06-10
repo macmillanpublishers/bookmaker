@@ -23,3 +23,10 @@ $scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
 # The location that any other resources are installed, 
 # for example your pdf processor, zip utility, etc.
 $resource_dir = "C:"
+
+# Your API key to create PDFs via DocRaptor
+$docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
+
+# username and password for online resources
+$http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_username.txt")
+$http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_pass.txt")
