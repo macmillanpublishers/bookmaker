@@ -8,6 +8,7 @@ require_relative '../metadata.rb'
 # Local path var(s)
 pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
 pdfmaker_dir = File.join(Bkmkr::Paths.core_dir, "pdfmaker")
+assets_dir = File.join(Bkmkr::Paths.scripts_dir, "bookmaker_assets", "pdfmaker")
 
 # Authentication data is required to use docraptor and 
 # to post images and other assets to the ftp for inclusion 
@@ -71,13 +72,13 @@ end
 
 # copy assets to tmp upload dir and upload to ftp
 FileUtils.cp Dir["#{Bkmkr::Project.working_dir}/done/#{Metadata.pisbn}/layout/*"].select {|f| test ?f, f}, pdftmp_dir
-FileUtils.cp Dir["#{pdfmaker_dir}/images/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir
-FileUtils.cp Dir["#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir		
+FileUtils.cp Dir["#{assets_dir}/images/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir
+FileUtils.cp Dir["#{assets_dir}/scripts/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir		
 `#{Bkmkr::Paths.scripts_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
 
 # Link to custom javascript in the html head
-if File.file?("#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
-	pdfjs = File.read("#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
+if File.file?("#{assets_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
+	pdfjs = File.read("#{assets_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
 	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
 else
 	jsfile = ""
