@@ -8,6 +8,7 @@ require_relative '../metadata.rb'
 # Local path var(s)
 pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
 pdfmaker_dir = File.join(Bkmkr::Paths.core_dir, "pdfmaker")
+assets_dir = File.join(Bkmkr::Paths.scripts_dir, "bookmaker_assets", "pdfmaker")
 
 # Authentication data is required to use docraptor and 
 # to post images and other assets to the ftp for inclusion 
@@ -28,7 +29,7 @@ if File.file?("#{Bkmkr::Paths.resource_dir}/staging.txt") then testing_value = "
 Dir.mkdir(pdftmp_dir)
 
 # Link to custom javascript in the html head
-if File.file?("#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
+if File.file?("#{assets_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
 	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
 else
 	jsfile = ""
