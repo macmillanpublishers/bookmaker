@@ -13,37 +13,15 @@ tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
 OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
 cover_jpg = File.join(OEBPS_dir, "cover.jpg")
-
-# Finding author name(s)
-authorname1 = File.read(Bkmkr::Paths.outputtmp_html).scan(/<p class="TitlepageAuthorNameau">.*?</).join(",")
-authorname2 = authorname1.gsub(/<p class="TitlepageAuthorNameau">/,"").gsub(/</,"")
-
-#set logo image based on project directory
-logo_img = "#{Bkmkr::Paths.core_dir}/epubmaker/images/#{Bkmkr::Project.project_dir}/logo.jpg"
-
-# finding imprint name
-imprint = File.read(Bkmkr::Paths.outputtmp_html).scan(/<p class="TitlepageImprintLineimp">.*?</).to_s.gsub(/\["<p class=\\"TitlepageImprintLineimp\\">/,"").gsub(/"\]/,"").gsub(/</,"")
+epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
-# Adding imprint logo to title page
-filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content='#{authorname2}' /><meta name='publisher' content='#{imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/<p class="TitlepageImprintLineimp">/,"<img src=\"logo.jpg\"/><p class=\"TitlepageImprintLineimp\">").gsub(/src="images\//,"src=\"")
-# Update several copyright elements for epub
-if filecontents.include?('data-type="copyright-page"')
-	copyright_txt = filecontents.match(/(<section data-type=\"copyright-page\" .*?\">)((.|\n)*?)(<\/section>)/)[2]
-	# Note: last gsub here presumes Printer's key is the only copyright item that might be a <p>with just a number, eg <p class="xxx">13</p>
-	new_copyright = copyright_txt.to_s.gsub(/(ISBN )([0-9\-]{13,20})( \(e-book\))/, "e\\1\\2").gsub(/ Printed in the United States of America./, "").gsub(/ Copyright( |\D|&.*?;)+/, " Copyright &#169; ").gsub(/<p class="\w*?">(\d+|(\d+\s){1,9}\d)<\/p>/, "")
-	# Note: this gsub block presumes that these urls do not already have <a href> tags.
-	new_copyright = new_copyright.gsub(/([^\s>]+.(com|org|net)[^\s<]*)/) do |m|
-		url_prefix = "http:\/\/"
-		if m.match(/@/)
-			url_prefix = "mailto:"
-		elsif m.match(/http/)
-			url_prefix = ""
-		end
-		"<a href=\"#{url_prefix}#{m}\">#{m}<\/a>"
-	end
-	filecontents = filecontents.gsub(/(^(.|\n)*?<section data-type="copyright-page" id=".*?">)((.|\n)*?)(<\/section>(.|\n)*$)/, "\\1#{new_copyright}\\5")
+# Allowing for users to preprocess epub html if desired
+if File.file?(epub_tmp_html)
+	filecontents = File.read(epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+else
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 end
 
 # Saving revised HTML into tmp file
@@ -55,9 +33,6 @@ end
 File.open(convert_log_txt, 'a+') do |f|
 	f.puts "----- EPUBMAKER PROCESSES"
 end
-
-# strip halftitlepage from html
-`java -jar "#{saxonpath}" -s:"#{epub_tmp_html}" -xsl:"#{strip_halftitle_xsl}" -o:"#{epub_tmp_html}"`
 
 # convert to epub and send stderr to log file
 # do these commands need to stack, or can I do this prior? (there was a cd and saxon invoke on top of each other)
@@ -86,30 +61,21 @@ FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/cover/cover.jpg", OEBPS
 # add image files to epub folder
 sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images")
 
+# using imgmagick to optimize image sizes for epub
 if sourceimages.any?
-	unless File.exist?("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
-		Dir.mkdir("#{Bkmkr::Paths.project_tmp_dir}/epubimg")
+	unless File.exist?(epub_img_dir)
+		Dir.mkdir(epub_img_dir)
 	end
-	#using this model for Fileutils.cp to select all files in a dir (* won't work directly):  FileUtils.cp Dir["#{dir1}/*"].select {|f| test ?f, f}, "#{dir2}"
-	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, "#{Bkmkr::Paths.project_tmp_dir}/epubimg"
-	#not sure why below line was here, this file shouldn't exist in this dir anyways? commenting
-	#FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/epubimg/clear_ftp_log.txt")
+	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, epub_img_dir
 	images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir}/epubimg").select { |f| File.file?(f) }
 	images.each do |i|
 		path_to_i = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg", "#{i}")
 		`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
 	end
-	FileUtils.cp Dir["#{Bkmkr::Paths.project_tmp_dir}/epubimg/*"].select {|f| test ?f, f}, OEBPS_dir
+	FileUtils.cp Dir["#{epub_img_dir}/*"].select {|f| test ?f, f}, OEBPS_dir
 end
 
-#copy logo image file to epub folder
-FileUtils.cp(logo_img, "#{OEBPS_dir}/logo.jpg")
-
-if Bkmkr::Project.stage_dir.include? "egalley" or Bkmkr::Project.stage_dir.include? "firstpass"
-	csfilename = "#{Metadata.eisbn}_EPUBfirstpass"
-else
-	csfilename = "#{Metadata.eisbn}_EPUB"
-end
+csfilename = "#{Metadata.eisbn}_EPUB"
 
 # zip epub
 # do these commands need to stack, or can I do this FileUtils prior instead of the cd's??
@@ -120,9 +86,6 @@ FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
 # move epub into archive folder
 FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}")
 FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub")
-
-# delete temp epub html file
-#`del #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\epub_tmp.html`
 
 # TESTING
 

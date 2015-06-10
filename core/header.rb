@@ -108,4 +108,18 @@ module Bkmkr
 			@@log_file
 		end
 	end
+
+	class Keys
+		def self.docraptor_key
+	      $docraptor_key
+	    end
+
+	    def self.http_username
+	      $http_username
+	    end
+
+	    def self.http_password
+	      $http_password
+	    end
+	end
 end
