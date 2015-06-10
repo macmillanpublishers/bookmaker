@@ -20,7 +20,9 @@ testing_value = "false"
 if File.file?("#{Bkmkr::Paths.resource_dir}/staging.txt") then testing_value = "true" end
 
 # create pdf tmp directory
-Dir.mkdir(pdftmp_dir)
+unless File.exist?(pdftmp_dir)
+	Dir.mkdir(pdftmp_dir)
+end
 
 # Link to print css in the html head
 cssfile = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout", "pdf.css")
