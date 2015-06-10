@@ -17,7 +17,12 @@ epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
-filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+# allowing for users to preprocess epub html if desired
+if File.file?(epub_tmp_html)
+	filecontents = File.read(Bkmkr::Paths.epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+else
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+end
 
 # Saving revised HTML into tmp file
 File.open(epub_tmp_html, 'w') do |output| 
@@ -28,9 +33,6 @@ end
 File.open(convert_log_txt, 'a+') do |f|
 	f.puts "----- EPUBMAKER PROCESSES"
 end
-
-# strip halftitlepage from html
-`java -jar "#{saxonpath}" -s:"#{epub_tmp_html}" -xsl:"#{strip_halftitle_xsl}" -o:"#{epub_tmp_html}"`
 
 # convert to epub and send stderr to log file
 # do these commands need to stack, or can I do this prior? (there was a cd and saxon invoke on top of each other)
