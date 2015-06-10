@@ -70,29 +70,6 @@ FileUtils.mv("#{Metadata.pisbn}.pdf","#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}
 
 # TESTING
 
-# count, report images in file
-if image_count > 0
-
-	# test if sites are up/logins work?
-
-	# verify files were uploaded, and match image array
-    upload_report = []
-    File.read("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt").each_line {|line|
-          line_b = line.gsub(/\n$/, "")
-          upload_report.push line_b}
- 	upload_count = upload_report.count
-	
-	if upload_report.sort == images.sort
-		test_image_array_compare = "pass: Images in Done dir match images uploaded to ftp"
-	else
-		test_image_array_compare = "FAIL: Images in Done dir match images uploaded to ftp"
-	end
-	
-else
-	upload_count = 0
-	test_image_array_compare = "pass: There are no missing image files"
-end
-
 # verify pdf was produced
 
 if File.file?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{Metadata.pisbn}_POD.pdf")
@@ -103,8 +80,8 @@ end
 
 # is there custom javascript?
 
-if File.file?("#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
-	test_custom_js = "#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js"
+if File.file?(Metadata.printjs)
+	test_custom_js = Metadata.printjs
 else
 	test_custom_js = "none"
 end
