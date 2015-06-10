@@ -27,64 +27,15 @@ if File.file?("#{Bkmkr::Paths.resource_dir}/staging.txt") then testing_value = "
 # create pdf tmp directory
 Dir.mkdir(pdftmp_dir)
 
-#if any images are in 'done' dir, grayscale and upload them to macmillan.tools site
-images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir_img}").select {|f| !File.directory? f}
-image_count = images.count
-if image_count > 0
-	#using this model for Fileutils.cp to select all files in a dir (* won't work):  FileUtils.cp Dir["#{dir1}/*"].select {|f| test ?f, f}, "#{dir2}"
-	FileUtils.cp Dir["#{Bkmkr::Paths.project_tmp_dir_img}/*"].select {|f| test ?f, f}, pdftmp_dir
-	pdfimages = Dir.entries("#{Bkmkr::Paths.project_tmp_dir_img}/pdftmp").select { |f| !File.directory? f }
-	pdfimages.each do |i|
-		pdfimage = File.join(pdftmp_dir, "#{i}")
-		if i.include?("fullpage")
-			#convert command for ImageMagick should work the same on any platform
-			`convert "#{pdfimage}" -colorspace gray "#{pdfimage}"`
-		elsif i.include?("_FC") or i.include?(".txt") or i.include?(".css") or i.include?(".js")
-			FileUtils.rm("#{pdfimage}")
-		else
-			myres = `identify -format "%y" "#{pdfimage}"`
-			myres = myres.to_f
-			myheight = `identify -format "%h" "#{pdfimage}"`
-			myheight = myheight.to_f
-			myheightininches = ((myheight / myres) * 72.0)
-			mywidth = `identify -format "%h" "#{pdfimage}"`
-			mywidth = mywidth.to_f
-			mywidthininches = ((mywidth / myres) * 72.0)
-			if mywidthininches > 3.5 or myheightininches > 5.5 then
-				targetheight = 5.5 * myres
-				targetwidth = 3.5 * myres
-				`convert "#{pdfimage}" -resize "#{targetwidth}x#{targetheight}>" "#{pdfimage}"`
-			end
-			myheight = `identify -format "%h" "#{pdfimage}"`
-			myheight = myheight.to_f
-			myheightininches = ((myheight / myres) * 72.0)
-			mymultiple = ((myheight / myres) * 72.0) / 16.0
-			if mymultiple <= 1
-				`convert "#{pdfimage}" -colorspace gray "#{pdfimage}"`
-			else 
-				newheight = ((mymultiple.floor * 16.0) / 72.0) * myres
-				`convert "#{pdfimage}" -resize "x#{newheight}" -colorspace gray "#{pdfimage}"`
-			end
-		end
-	end
-end
-
-# copy assets to tmp upload dir and upload to ftp
-FileUtils.cp Dir["#{Bkmkr::Project.working_dir}/done/#{Metadata.pisbn}/layout/*"].select {|f| test ?f, f}, pdftmp_dir
-FileUtils.cp Dir["#{pdfmaker_dir}/images/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir
-FileUtils.cp Dir["#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/*"].select {|f| test ?f, f}, pdftmp_dir		
-`#{Bkmkr::Paths.scripts_dir}\\bookmaker_ftpupload\\imageupload.bat #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images\\pdftmp #{Bkmkr::Paths.tmp_dir}\\#{Bkmkr::Project.filename}\\images`
-
 # Link to custom javascript in the html head
 if File.file?("#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
-	pdfjs = File.read("#{pdfmaker_dir}/scripts/#{Bkmkr::Project.project_dir}/pdf.js")
 	jsfile = "<script src='#{ftp_dir}/pdf.js'></script>"
 else
 	jsfile = ""
 end
 
 # inserts links to the css and js into the head of the html, fixes images
-pdf_html = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"#{jsfile}<link rel=\"stylesheet\" type=\"text/css\" href=\"#{ftp_dir}/pdf.css\" /></head>").gsub(/src="images\//,"src=\"#{ftp_dir}/").gsub(/\. \. \./,"<span class=\"bookmakerkeeptogetherkt\">\. \. \.</span>").to_s
+pdf_html = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"#{jsfile}<link rel=\"stylesheet\" type=\"text/css\" href=\"#{ftp_dir}/pdf.css\" /></head>").to_s
 
 # sends file to docraptor for conversion
 FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
