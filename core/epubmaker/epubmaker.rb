@@ -105,11 +105,8 @@ end
 #copy logo image file to epub folder
 FileUtils.cp(logo_img, "#{OEBPS_dir}/logo.jpg")
 
-if Bkmkr::Project.stage_dir.include? "egalley" or Bkmkr::Project.stage_dir.include? "firstpass"
-	csfilename = "#{Metadata.eisbn}_EPUBfirstpass"
-else
-	csfilename = "#{Metadata.eisbn}_EPUB"
-end
+csfilename = "#{Metadata.eisbn}_EPUB"
+
 
 # zip epub
 # do these commands need to stack, or can I do this FileUtils prior instead of the cd's??
