@@ -89,9 +89,6 @@ end
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- PDFMAKER PROCESSES"
-	f.puts "----- I found #{image_count} images to be uploaded"
-	f.puts "----- I found #{upload_count} files uploaded"
 	f.puts "----- I found the following custom javascript: #{test_custom_js}"
-	f.puts "#{test_image_array_compare}"
 	f.puts "#{test_pdf_created}"	
 end
