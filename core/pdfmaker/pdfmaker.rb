@@ -27,7 +27,7 @@ end
 # Link to print css in the html head
 cssfile = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout", "pdf.css")
 if File.file?(cssfile)
-	embedcss = File.read(cssfile)
+	embedcss = File.read(cssfile).gsub(/[\\]/,"\\\\")
 else
 	embedcss = " "
 end
