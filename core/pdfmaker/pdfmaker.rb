@@ -27,14 +27,16 @@ end
 # Link to print css in the html head
 cssfile = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout", "pdf.css")
 if File.file?(cssfile)
-	embedcss = File.read(cssfile)
+	embedcss = File.read(cssfile).gsub(/(\\)/,"\\0\\0")
 else
 	embedcss = " "
 end
 
+File.open(cssfile, "w") {|file| file.puts embedcss}
+
 # Link to custom javascript in the html head
 if File.file?(Metadata.printjs)
-	embedjs = File.read(Metadata.printjs)
+	embedjs = File.read(Metadata.printjs).to_s
 else
 	embedjs = " "
 end
@@ -67,6 +69,13 @@ end
 # moves rendered pdf to archival dir
 FileUtils.mv("#{Metadata.pisbn}.pdf","#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{Metadata.pisbn}_POD.pdf")
 
+if File.file?(cssfile)
+	revertcss = File.read(cssfile).gsub(/(\\)(\\)/,"\\1")
+else
+	revertcss = " "
+end
+
+File.open(cssfile, "w") {|file| file.puts revertcss}
 
 # TESTING
 
