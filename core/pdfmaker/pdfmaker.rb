@@ -27,14 +27,14 @@ end
 # Link to print css in the html head
 cssfile = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout", "pdf.css")
 if File.file?(cssfile)
-	embedcss = File.read(cssfile)
+	embedcss = File.read(cssfile).to_s
 else
 	embedcss = " "
 end
 
 # Link to custom javascript in the html head
 if File.file?(Metadata.printjs)
-	embedjs = File.read(Metadata.printjs)
+	embedjs = File.read(Metadata.printjs).to_s
 else
 	embedjs = " "
 end
