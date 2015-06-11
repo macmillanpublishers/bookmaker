@@ -72,7 +72,7 @@ docpdf = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "docraptor.h
 File.open(docpdf, "w") {|file| file.puts pdf_html}
 
 doccss = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "docraptor.css")
-File.open(docpdf, "w") {|file| file.puts embedcss}
+File.open(doccss, "w") {|file| file.puts embedcss}
 
 
 # TESTING
