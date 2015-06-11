@@ -67,6 +67,10 @@ end
 # moves rendered pdf to archival dir
 FileUtils.mv("#{Metadata.pisbn}.pdf","#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{Metadata.pisbn}_POD.pdf")
 
+#temporary, for testing
+docpdf = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "docraptor.html")
+File.open(docpdf, "w") {|file| file.puts pdf_html}
+
 
 # TESTING
 
