@@ -71,6 +71,9 @@ FileUtils.mv("#{Metadata.pisbn}.pdf","#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}
 docpdf = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "docraptor.html")
 File.open(docpdf, "w") {|file| file.puts pdf_html}
 
+doccss = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "docraptor.css")
+File.open(docpdf, "w") {|file| file.puts embedcss}
+
 
 # TESTING
 
