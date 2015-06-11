@@ -32,6 +32,8 @@ else
 	embedcss = " "
 end
 
+File.open(cssfile, "w") {|file| file.puts embedcss}
+
 # Link to custom javascript in the html head
 if File.file?(Metadata.printjs)
 	embedjs = File.read(Metadata.printjs).to_s
