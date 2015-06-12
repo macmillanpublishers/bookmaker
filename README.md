@@ -10,7 +10,9 @@ It's important to note that correct transformation depends on correct applicatio
 
 The scripts are as follows:
 
-[header](https://github.com/macmillanpublishers/bookmaker/blob/master/core/header.rb): This is the core Bookmaker library, that contains paths and references common to all the Bookmaker scripts. This is also where you will configure your local file paths.
+[config.rb](https://github.com/macmillanpublishers/bookmaker/blob/master/config.rb): This is where you configure your system set-up, for example, the location of your cloned core scripts, location of the external dependencies, etc.
+
+[header](https://github.com/macmillanpublishers/bookmaker/blob/master/core/header.rb): This is the core Bookmaker library, that contains paths and references common to all the Bookmaker scripts.
 
 [tmparchive](https://github.com/macmillanpublishers/bookmaker/blob/master/core/tmparchive/tmparchive.rb): Creates the temporary working directory for the file to be converted, and opens an alert to the user telling them the tool is in use.
 
@@ -36,13 +38,13 @@ The scripts are as follows:
 
 *Dependencies: tmparchive, htmlmaker, filearchive*
 
-[chapterheads](https://github.com/macmillanpublishers/bookmaker/blob/master/core/chapterheads/chapterheads.rb): Copies EPUB and PDF css into the final archive, while also counting how many chapters are in the book and adjusting the CSS to suppress chapter numbers if only one chapter is found.
+[stylesheets](https://github.com/macmillanpublishers/bookmaker/blob/master/core/stylesheets/stylesheets.rb): Copies EPUB and PDF css into the final archive, while also counting how many chapters are in the book and adjusting the CSS to suppress chapter numbers if only one chapter is found.
 
 *Dependencies: tmparchive, htmlmaker, filearchive*
 
 [pdfmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/pdfmaker/pdfmaker.rb): Preps the HTML file and sends to the DocRaptor service for conversion to PDF.
 
-*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, SSL cert file, DocRaptor cloud service, doc_raptor ruby gem, ftp*
+*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, SSL cert file, DocRaptor cloud service, doc_raptor ruby gem*
 
 [epubmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/epubmaker/epubmaker.rb): Preps the HTML file and converts to EPUB using the HTMLBook scripts.
 
@@ -50,22 +52,18 @@ The scripts are as follows:
 
 [cleanup](https://github.com/macmillanpublishers/bookmaker/blob/master/core/cleanup/cleanup.rb): Removes all temporary working files and working dirs.
 
-*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads*
+*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, stylesheets
+
+## Project Metadata
+Bookmaker requires a few pieces of metadata to accompany each project, which you can provide in a JSON file. Please include the following fields:
 
 ## Required Folder Structure
 
 The Bookmaker toolchain requires a specific folder structure and sequence of parent folders in order to function correctly. The requirements are as follows:
 
-* The folder in which the conversion takes place should be nested within a single parent folder, as follows: _MainParentFolder\_ProjectStage/ConversionFolder/_
-* The *main parent folder* part of the name lists the name of the imprint or book series. This naming must exactly match the css and images subfolders within the pdfmaker, epubmaker, and covermaker repositories.
-* The *project stage* should list the variant for the book series. For example, "galleyfiles", etc. This second level allows us to create different conversion instructions for the same series, if needed. This name _may not_ include an \_ character.
-* The *main parent folder* and *project stage* _must_ be separated by an _ character.
 * The *conversion folder* is the folder where files to be converted should be dropped. It should contain _only_ the file to be converted.
-
-At the same level as the conversion folder, two sibling folders are required, following these exact naming conventions:
-
-* *submitted_images*: This is where any images (including book front cover) should be placed before initiating the conversion.
-* *done*: This is where completed conversion will be archived automatically by Bookmaker.
+* *submitted_images*: This is where any images (including book front cover) should be placed before initiating the conversion. This should live at the same level as the conversion folder.
+* *done*: This is where completed conversion will be archived automatically by Bookmaker. This should live at the same level as the conversion and submitted_images folders.
 
 Additionally, the following directory structures are required:
 * All supplemental resources (saxon, zip) should live in the same parent folder, at the same level (i.e., they should be siblings to each other).
