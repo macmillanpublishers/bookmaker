@@ -55,7 +55,25 @@ The scripts are as follows:
 *Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, stylesheets
 
 ## Project Metadata
+
 Bookmaker requires a few pieces of metadata to accompany each project, which you can provide in a JSON file. Please include the following fields:
+
+Here's a sample:
+config.json
+{
+"title":"Alice in Wonderland",
+"author":"Lewis Carroll",
+"productid":"99237561",
+"printid":"9781234567890",
+"ebookid":"9781234567899",
+"imprint":"Project Gutenberg",
+"publisher":"Project Gutenberg",
+"printcss":"/Users/nellie/Documents/css/pdf.css",
+"printjs":"/Users/nellie/Documents/js/pdf.js",
+"ebookcss":"/Users/nellie/Documents/css/epub.css",
+"frontcover":"cover.jpg"
+}
+
 
 ## Required Folder Structure
 
