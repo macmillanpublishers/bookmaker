@@ -56,9 +56,9 @@ The scripts are as follows:
 
 ## Project Metadata
 
-Bookmaker requires a few pieces of metadata to accompany each project, which you can provide in a JSON file. Please include the following fields:
+Bookmaker requires a few pieces of metadata to accompany each project, which you can provide in a JSON file. Here's a sample:
 
-Here's a sample:
+```
 config.json
 {
 "title":"Alice in Wonderland",
@@ -73,6 +73,20 @@ config.json
 "ebookcss":"/Users/nellie/Documents/css/epub.css",
 "frontcover":"cover.jpg"
 }
+```
+
+Each of the following fields is used for various purposes throughout the Bookmaker toolchain:
+
+* title. Required for ebook metadata. If not found, will fallback to "Unknown".
+* author. Required for ebook metadata. If not found, will fallback to "Unknown".
+* productid. Required for file naming. If not found, will fallback to input file name.
+* printid. Required for file naming. If not found, will fallback to input file name.
+* ebookid. Required for ebook metadata and file naming. If not found, will fallback to input file name.
+* imprint. Required for ebook metadata. If not found, will fallback to "Unknown".
+* publisher. Required for ebook metadata. If not found, will fallback to "Unknown".
+* printcss. Required for PDF formatting. If not found, will use the default Prince stylesheet.
+* ebookcss. Required for ebook formatting. If not found, no extra formatting will be applied.
+* frontcover. Required for ebook. If not found, Bookmaker will fail :cry:.
 
 
 ## Required Folder Structure
@@ -109,25 +123,17 @@ The Bookmaker scripts depend on various other utilities, as follows:
 
 Install Bookmaker by following these steps, in order.
 
-### Install the Dependencies
-
-Install the utilities listed in the previous section, as needed. For reference, you need to install the following in order to create these outputs:
-
-* To create an HTML file: Ruby, Java, Saxon, Microsoft Word
-* To create a PDF file: Ruby, Java, Saxon, Microsoft Word, Docraptor gem, ftp server, SSL cert file, Imagemagick
-* To create an EPUB file: Ruby, Java, Saxon, Microsoft Word, Zip.exe, Imagemagick
-
 ### Create the Folder Structure
 
 On your server, create the following folders and subfolders.
 
-* A folder to drop the project to be converted. See the naming convention requirements above. The folder name should follow this convention: _MainParentFolder\_ProjectStage/ConversionFolder/_
+* A folder to drop the project to be converted (see above).
 * A folder to drop book images to be included in the conversion. This folder must be named _submitted\_images_.
 * A folder to archive the final converted files. This folder must be named _done_.
-* Temp folder: A folder where the system can store temporary files created during conversion. This can live anywhere and have the name of your choosing.
-* Bookmaker folder: A main parent folder to contain all of the separate bookmaker script folders. This can live anywhere and have the name of your choosing.
-* Resources folder: A folder for all the supplemental utilities (saxon, zip, etc). This can live anywhere and have the name of your choosing.
-* Log folder: A folder for storing log files. This can live anywhere and have the name of your choosing.
+* Temp folder: A folder where the system can store temporary files created during conversion. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
+* Bookmaker folder: A main parent folder to contain all of the separate bookmaker script folders. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
+* Resources folder: A folder for all the supplemental utilities (saxon, zip, etc). This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
+* Log folder: A folder for storing log files. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
 
 ### Install Git and Set Up Your GitHub Account
 
@@ -144,56 +150,88 @@ The source code for the Bookmaker scripts is hosted in the Macmillan GitHub acco
 
 If you plan to make changes to the source code, you will want to fork those repositories and then clone them, so that you can maintain your version of the code.
 
-### Create Auth Key and FTP Folders
+### Install the Dependencies
 
-At the same level as the bookmaker scripts, create the following folders:
+Install the utilities listed in the previous section, as needed. For reference, you need to install the following in order to create these outputs:
 
-* bookmaker\_authkeys
-* bookmaker\_ftpupload
+* To create an HTML file: Ruby, Java, Saxon, Microsoft Word
+* To create a PDF file: Ruby, Java, Saxon, Microsoft Word, PrinceXML OR the Docraptor gem, SSL cert file
+* To create an EPUB file: Ruby, Java, Saxon, Microsoft Word, Zip.exe, Imagemagick
 
-Within bookmaker\_authkeys, create the following three files:
+#### Saxon
 
-* *api_key.txt*: single line of text containing your DocRaptor API key.
-* *ftp_username.txt*: single line of text containing your ftp username.
-* *ftp_pass.txt*: single line of text containing your ftp password.
+#### Zip.exe
 
-Within bookmaker\_ftpupload, create the following two files:
+#### FOR PRINCE: Download Prince
 
-imageupload.bat
+#### FOR DOCRAPTOR: Configure Docraptor Auth Settings
 
-    REM %1 is local upload dir, %2 is logdir
-    REM to debug: capture all connection info by adding output file to ftpline, like so:
-    REM ftp -i -n -s:ftpcmd.dat YOUR_SERVER_NAME_OR_IP > text.txt
-    @echo off
-    echo user YOUR_USER_NAME> ftpcmd.dat
-    echo YOUR_PASSWORD>> ftpcmd.dat
-    echo bin>> ftpcmd.dat
-    echo cd YOUR_FOLDER_LOCATION>> ftpcmd.dat
-    echo lcd %1>> ftpcmd.dat
-    echo mput *.*>> ftpcmd.dat
-    REM echo put %1>> ftpcmd.dat
-    echo lcd %2>> ftpcmd.dat
-    echo ls . uploaded_image_log.txt>> ftpcmd.dat
-    echo quit>> ftpcmd.dat
-    ftp -i -n -s:ftpcmd.dat YOUR_SERVER_NAME_OR_IP
-    del ftpcmd.dat
+If you choose to use DocRaptor to create PDFs, you'll need to set up a DocRaptor account and give Bookmaker your authentication credentials. 
 
-imagedelete.bat
+To set up a DocRaptor account: 
 
-    REM %1 is logdir
-    REM to debug: capture all connection info by adding output file to ftpline, like so:
-    REM ftp -i -n -s:ftpcmd.dat YOUR_SERVER_NAME_OR_IP > text.txt
-    @echo off
-    echo user YOUR_USER_NAME> ftpcmd.dat
-    echo YOUR_PASSWORD>> ftpcmd.dat
-    echo bin>> ftpcmd.dat
-    echo cd YOUR_FOLDER_LOCATION>> ftpcmd.dat
-    echo mdelete *>> ftpcmd.dat
-    echo lcd %1>> ftpcmd.dat
-    echo ls . clear_ftp_log.txt>> ftpcmd.dat
-    echo quit>> ftpcmd.dat
-    ftp -i -n -s:ftpcmd.dat YOUR_SERVER_NAME_OR_IP
-    del ftpcmd.dat
+To install the DocRaptor ruby gem:
+
+To configure Bookmaker to use DocRaptor, open config.rb and edit the following fields:
+
+```ruby
+$pdf_processor = "docraptor"
+
+...
+
+$docraptor_key = "YOUR_KEY_HERE"
+```
+
+Note that Docraptor requires all images that you want to include in the text to be hosted somewhere online, so you'll need to make sure your image src's point to this online location. You can store these images behind a basic http auth barrier--you'll just need to provide the auth credentials in config.rb by editing the following fields: 
+
+```ruby
+$http_username = "YOUR_USERNAME_HERE"
+$http_password = "YOUR_PASSWORD_HERE"
+```
+
+#### HTMLBook
+
+The EPUB generation script relies on a collection of open source scripts called HTMLBook (created by O'Reilly). Macmillan has a forked version of the HTMLBook scripts that include the customizations outlined below, and are maintained on GitHub here: https://github.com/macmillanpublishers/HTMLBook. (The original, unmodified O'Reilly scripts are hosted on GitHub here: https://github.com/oreillymedia/HTMLBook.)
+
+The entire contents of the repository should be cloned or copied to your server, at the same level as the other Bookmaker scripts.
+
+The following customizations have been made to the HTMLBook .xsl files:
+
+**epub.xsl**
+
+Lines 208-213: Comment out this whole chunk. It references font files we do not use.
+
+    <!--<xsl:param name="embedded.fonts.list"\>DejaVuSerif.otf
+    DejaVuSans-Bold.otf
+    UbuntuMono-Regular.otf
+    UbuntuMono-Bold.otf
+    UbuntuMono-BoldItalic.otf
+    UbuntuMono-Italic.otf</xsl:param>-->
+
+We currently do not embed any fonts in our EPUB files. Update this list and uncomment if fonts ever need to be embedded.
+
+Line 225: set xsl:param name="autogenerate.labels" to "0". This turns off autonumbering, since numbering is added to manuscripts manually.
+htmlbook.xsl
+
+Line 22: Comment out this line. It refers to the exsl package, which is not supported by our conversion software.
+
+    <!--<xsl:include href="functions-exsl.xsl"/>--> <!-- Functions that are compatible with exsl package -->
+
+Line 24: Uncomment this line--our conversion software (Saxon) uses xslt2, so we need to activate these functions.
+
+    <xsl:include href="functions-xslt2.xsl"/> <!-- Functions that are compatible with XSLT 2.0 processors -->
+
+**opf.xsl**
+
+Line 152: Replace with the following, to fix namespace and iBooks metadata rendering:
+
+    <package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en" prefix="rendition: http://www.idpf.org/vocab/rendition/#" unique-identifier="{$metadata.unique-identifier.id}">
+
+Lines 158-160: Comment out this block. It adds extra namespace values to the content.opf file in the generated EPUB, which causes metadata not to render in iBooks.
+
+    <!--<xsl:for-each select="exsl:node-set($package.namespaces)//*/namespace::*">
+    <xsl:copy-of select="."/>
+    </xsl:for-each>-->
 
 ### Configure Your Settings
 
@@ -215,66 +253,8 @@ The full path of the Resource folder:
 
     $resource_dir = "YOUR_PATH_HERE"
 
-### Download HTMLBook
-
-The EPUB generation script relies on a collection of open source scripts called HTMLBook (created by O'Reilly). Macmillan has a forked version of the HTMLBook scripts that include the customizations outlined below, and are maintained on GitHub here: https://github.com/macmillanpublishers/HTMLBook. (The original, unmodified O'Reilly scripts are hosted on GitHub here: https://github.com/oreillymedia/HTMLBook.)
-
-The entire contents of the repository should be cloned or copied to your server, at the same level as the other Bookmaker scripts.
-
-The following customizations have been made to the HTMLBook .xsl files:
-
-#### epub.xsl
-
-Lines 208-213: Comment out this whole chunk. It references font files we do not use.
-
-    <!--<xsl:param name="embedded.fonts.list"\>DejaVuSerif.otf
-    DejaVuSans-Bold.otf
-    UbuntuMono-Regular.otf
-    UbuntuMono-Bold.otf
-    UbuntuMono-BoldItalic.otf
-    UbuntuMono-Italic.otf</xsl:param>-->
-
-We currently do not embed any fonts in our EPUB files. Update this list and uncomment if fonts ever need to be embedded.
-
-Line 225: set xsl:param name="autogenerate.labels" to "0". This turns off autonumbering, since numbering is added to manuscripts manually.
-htmlbook.xsl
-
-Line 22: Comment out this line. It refers to the exsl package, which is not supported by our conversion software.
-
-    <!--<xsl:include href="functions-exsl.xsl"/>--> <!-- Functions that are compatible with exsl package -->
-
-Line 24: Uncomment this line--our conversion software uses xslt2, so we need to activate these functions.
-
-    <xsl:include href="functions-xslt2.xsl"/> <!-- Functions that are compatible with XSLT 2.0 processors -->
-
-#### opf.xsl
-
-Line 152: Replace with the following, to fix namespace and iBooks metadata rendering:
-
-    <package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en" prefix="rendition: http://www.idpf.org/vocab/rendition/#" unique-identifier="{$metadata.unique-identifier.id}">
-
-Lines 158-160: Comment out this block. It adds extra namespace values to the content.opf file in the generated EPUB, which causes metadata not to render in iBooks.
-
-    <!--<xsl:for-each select="exsl:node-set($package.namespaces)//*/namespace::*">
-    <xsl:copy-of select="."/>
-    </xsl:for-each>-->
-
 ## Run Bookmaker
 
 You can run bookmaker by firing the scripts one\-by\-one on the command line, or by combining them into a bash or batch file to fire all at once. You can see examples of Macmillan's .bat files [here: https://github.com/macmillanpublishers/bookmaker_deploy/](https://github.com/macmillanpublishers/bookmaker_deploy/).
 
-To convert a project, drop the input text file along with any assets (interior images, etc.) into your conversion folder. Project metadata is read from a _config.json_ file that should be submitted along with your book assets. The json file should be structured as follows, with these exact key names:
-
-    {
-    "title":"Your Book Title",
-    "subtitle":"Your Book Subtitle",
-    "author":"Your Book Author",
-    "productid":"A general product ID",
-    "printid":"A print product ID like an ISBN",
-    "ebookid":"An ebook product ID like an ISBN",
-    "imprint":"The name of the imprint",
-    "publisher":"The name of the publisher",
-    "frontcover":"The filename for the cover image"
-    }
-
-All fields are optional. If you choose not to include any of the above information, and that information is required at any point in Bookmaker (for example, _printid_ and _ebookid_ are used for naming the output files), those fields will instead use the value "Unknown" (so, you'll end up with an EPUB file called _Unknown_EPUB.epub_). If you choose not to include a front cover filename, Bookmaker will look for a file called _cover.jpg_.
+To convert a project, drop the input text file along with any assets (interior images, etc.) into your conversion folder. Project metadata is read from a _config.json_ file that should be submitted along with your book assets.
