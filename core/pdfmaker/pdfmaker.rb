@@ -49,6 +49,8 @@ else
 	pdf_html = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<script>#{embedjs}</script><style>#{embedcss}</style></head>").to_s
 end
 
+File.open(pdf_tmp_html, "w") {|file| file.puts pdf_html}
+
 # sends file to docraptor for conversion
 FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
 File.open("#{Metadata.pisbn}.pdf", "w+b") do |f|

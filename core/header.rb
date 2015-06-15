@@ -122,4 +122,33 @@ module Bkmkr
 	      $http_password
 	    end
 	end
+
+	class Tools
+		def self.pdfprocessor
+			$pdf_processor
+		end
+
+		def self.makepdf(pdfprocessor)
+			if pdfprocessor = "prince"
+				tk "prince pdf_tmp_html -o #{Metadata.pisbn}.pdf"
+			elsif pdfprocessor = "docraptor"
+				File.open("#{Metadata.pisbn}.pdf", "w+b") do |f|
+				f.write DocRaptor.create(:document_content => pdf_html,
+				                           :name             => "#{Metadata.pisbn}.pdf",
+				                           :document_type    => "pdf",
+				                           :strict			     => "none",
+				                           :test             => "#{testing_value}",
+					                         :prince_options	 => {
+					                           :http_user		 => "#{Bkmkr::Keys.http_username}",
+					                           :http_password	 => "#{Bkmkr::Keys.http_password}",
+					                           :javascript 		 => "true"
+											             }
+				                       		)
+				                           
+				end
+			else
+				TK pdf error
+			end
+		end
+	end
 end
