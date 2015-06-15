@@ -680,7 +680,7 @@
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
       <xsl:apply-templates select=".//w:r[w:rPr/w:rStyle/@w:val]"/>
-      <xsl:apply-templates select=".//w:r"/>
+      <xsl:apply-templates select="w:p/w:r/w:t"/>
     </p>
   </xsl:template>
 
@@ -692,7 +692,7 @@
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
       <xsl:apply-templates select=".//w:r[w:rPr/w:rStyle/@w:val]"/>
-      <xsl:apply-templates select=".//w:r"/>
+      <xsl:apply-templates select="w:p/w:r/w:t"/>
     </p>
   </xsl:template>
 
