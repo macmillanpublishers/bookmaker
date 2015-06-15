@@ -679,8 +679,8 @@
         <xsl:value-of select="'footnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
-      <xsl:apply-templates select="w:p/w:r[w:rPr/w:rStyle/@w:val]"/>
-      <xsl:apply-templates select="w:p/w:r"/>
+      <xsl:apply-templates select=".//w:r[w:rPr/w:rStyle/@w:val]"/>
+      <xsl:apply-templates select=".//w:r"/>
     </p>
   </xsl:template>
 
@@ -691,8 +691,8 @@
         <xsl:value-of select="'endnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
-      <xsl:apply-templates select="w:p/w:r[w:rPr/w:rStyle/@w:val]"/>
-      <xsl:apply-templates select="w:p/w:r"/>
+      <xsl:apply-templates select=".//w:r[w:rPr/w:rStyle/@w:val]"/>
+      <xsl:apply-templates select=".//w:r"/>
     </p>
   </xsl:template>
 
