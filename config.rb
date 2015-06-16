@@ -24,6 +24,9 @@ $scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
 # for example your pdf processor, zip utility, etc.
 $resource_dir = "C:"
 
+# Choose either prince or docraptor to create your PDFs.
+$pdf_processor = "docraptor" #"prince"
+
 # Your API key to create PDFs via DocRaptor
 $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 
