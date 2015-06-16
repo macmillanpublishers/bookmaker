@@ -122,4 +122,37 @@ module Bkmkr
 	      $http_password
 	    end
 	end
+
+	class Tools
+		def self.pdfprocessor
+			$pdf_processor
+		end
+
+		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, testing_value, http_username, http_password)
+			if pdfprocessor == "prince"
+				`prince #{pdf_html_file} -o #{pisbn}.pdf`
+			elsif pdfprocessor == "docraptor"
+				pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
+				File.open(pdffile, "w+b") do |f|
+				f.write DocRaptor.create(:document_content => pdf_html,
+				                           :name             => "#{pisbn}.pdf",
+				                           :document_type    => "pdf",
+				                           :strict			 => "none",
+				                           :test             => "#{testing_value}",
+					                         :prince_options	 => {
+					                           :http_user		 => "#{http_username}",
+					                           :http_password	 => "#{http_password}",
+					                           :javascript 		 => "true"
+											             }
+				                       		)
+				                           
+				end
+			else
+				pdf_error = File.join(Paths.done_dir, "PDF_ERROR.txt")
+				File.open(pdf_error, 'w+') do |output|
+					output.write "You have not configured a PDF processor. Please open config.rb and fill in the pdfprocessor variable with either 'prince' or 'docraptor'."
+				end
+			end
+		end
+	end
 end
