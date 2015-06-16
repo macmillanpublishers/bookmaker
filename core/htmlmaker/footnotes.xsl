@@ -16,6 +16,15 @@
   </xsl:copy>
 </xsl:template>
 
+<xsl:template match="h:span[@data-type='footnote']/h:p">
+	<span>
+		<xsl:attribute name="class">
+      		<xsl:value-of select="@class"/>
+    	</xsl:attribute>
+		<xsl:apply-templates select="@*|node()" />
+	</span>
+</xsl:template>
+
 <xsl:template match="h:section[@data-type='footnotes']"/>
 
 <xsl:template match="h:p[@id='endnotetext--1']"/>
