@@ -5,7 +5,7 @@ require_relative '../metadata.rb'
 
 # Local path var(s)
 epub_dir = Bkmkr::Paths.project_tmp_dir
-saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "saxon9pe.jar")
+saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
 epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
 strip_halftitle_xsl = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-halftitle.xsl")
 epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub.xsl")

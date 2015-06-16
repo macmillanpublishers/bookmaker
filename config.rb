@@ -24,8 +24,15 @@ $scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
 # for example your pdf processor, zip utility, etc.
 $resource_dir = "C:"
 
+# Which version of saxon are you using?
+# Uncomment the correct version and update the version number if needed.
+$saxon_version = "saxon9pe"
+#$saxon_version = "saxon9he"
+#$saxon_version = "saxon9ee"
+
 # Choose either prince or docraptor to create your PDFs.
-$pdf_processor = "docraptor" #"prince"
+$pdf_processor = "docraptor"
+#$pdf_processor = "prince"
 
 # Your API key to create PDFs via DocRaptor
 $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
