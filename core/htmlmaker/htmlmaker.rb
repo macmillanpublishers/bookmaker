@@ -21,7 +21,7 @@ filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
 replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
-footnotes = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/(<div class="footnotetext" id=")(\d+)(">)(\s)(.*?)(<\/div>)/)
+footnotes = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/(<div class="footnotetext" id=")(\d+)(">)(\s?)(.*?)(<\/div>)/)
 
 footnotes.each do |f|
 	noteref = f[1]
