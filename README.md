@@ -164,13 +164,25 @@ Install the utilities listed in the previous section, as needed. For reference, 
 
 #### FOR PRINCE: Download Prince
 
+Download Prince (http://www.princexml.com/download/) and follow the instructions to install.
+
+To configure Bookmaker to use Prince, open config.rb and edit the following fields:
+
+```ruby
+$pdf_processor = "prince"
+```
+
 #### FOR DOCRAPTOR: Configure Docraptor Auth Settings
 
 If you choose to use DocRaptor to create PDFs, you'll need to set up a DocRaptor account and give Bookmaker your authentication credentials. 
 
-To set up a DocRaptor account: 
+To set up a DocRaptor account, go to docraptor.com, and follow the instructions to create an account. You'll need to know your API key to use Bookmaker; you can find your API key at the top right of your Dashboard.
 
-To install the DocRaptor ruby gem:
+You also need to install the DocRaptor ruby gem. In terminal or command prompt, type: 
+
+```
+$ gem install doc_raptor
+```
 
 To configure Bookmaker to use DocRaptor, open config.rb and edit the following fields:
 
@@ -179,10 +191,10 @@ $pdf_processor = "docraptor"
 
 ...
 
-$docraptor_key = "YOUR_KEY_HERE"
+$docraptor_key = "YOUR_API_KEY_HERE"
 ```
 
-Note that Docraptor requires all images that you want to include in the text to be hosted somewhere online, so you'll need to make sure your image src's point to this online location. You can store these images behind a basic http auth barrier--you'll just need to provide the auth credentials in config.rb by editing the following fields: 
+Note that Docraptor requires all images that you want to include in the text to be hosted somewhere online, so you'll need to make sure your image src's in your Word or HTML file point to this online location. You can store these images behind a basic http auth barrier--you'll just need to provide the auth credentials in config.rb by editing the following fields: 
 
 ```ruby
 $http_username = "YOUR_USERNAME_HERE"
@@ -252,6 +264,9 @@ The full path of the main parent folder where all your scripts (including this r
 The full path of the Resource folder:
 
     $resource_dir = "YOUR_PATH_HERE"
+
+If you didn't already do this earlier, choose either prince or docraptor to create your PDFs:
+    $pdf_processor = "docraptor" (or "prince")
 
 ## Run Bookmaker
 
