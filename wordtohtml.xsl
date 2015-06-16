@@ -674,13 +674,13 @@
 
   <!-- Preserve footnote text as paras to be moved via ruby -->
   <xsl:template match=".//w:footnote">
-    <p>
+    <div>
       <xsl:attribute name="class">
         <xsl:value-of select="'footnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
-      <xsl:apply-templates select="w:p/w:r/w:t"/>
-    </p>
+      <xsl:apply-templates select="w:p"/>
+    </div>
   </xsl:template>
 
   <!-- Preserve endnote text -->
@@ -690,7 +690,7 @@
         <xsl:value-of select="'endnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
-      <xsl:apply-templates select="w:p/w:r/w:t"/>
+      <xsl:apply-templates select="w:p/w:r"/>
     </p>
   </xsl:template>
 
