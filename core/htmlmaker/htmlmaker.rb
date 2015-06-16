@@ -3,7 +3,7 @@ require 'fileutils'
 require_relative '../header.rb'
 
 # Local path variables
-saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "saxon9pe.jar")
+saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
 source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.xml")
 word_to_html_xsl = File.join(Bkmkr::Paths.scripts_dir, "WordXML-to-HTML", "wordtohtml.xsl")
 footnotes_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.xsl")

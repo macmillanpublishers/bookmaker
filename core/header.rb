@@ -124,6 +124,10 @@ module Bkmkr
 	end
 
 	class Tools
+		def self.xslprocessor
+			$saxon_version
+		end
+		
 		def self.pdfprocessor
 			$pdf_processor
 		end
