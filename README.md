@@ -266,7 +266,8 @@ The full path of the Resource folder:
     $resource_dir = "YOUR_PATH_HERE"
 
 If you didn't already do this earlier, choose either prince or docraptor to create your PDFs:
-    $pdf_processor = "docraptor" (or "prince")
+
+    $pdf_processor = "docraptor" #(or "prince")
 
 ## Run Bookmaker
 
