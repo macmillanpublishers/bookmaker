@@ -142,8 +142,14 @@ module Bkmkr
 				`#{$python_processor} #{py_script} #{input_file}`
 			elsif os == "mac" or os == "unix" and pythonv.include? "Python 2"
 				`python #{py_script} #{input_file}`
+				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
+					f.puts "----- Running #{pythonv}"
+				end
 			elsif os == "windows" and pythonv.include? "Python 2"
 				`python #{py_script} #{input_file}`
+				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
+					f.puts "----- Running #{pythonv}"
+				end
 			else
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- PYTHON ERROR"
