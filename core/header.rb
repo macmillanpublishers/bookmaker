@@ -140,7 +140,8 @@ module Bkmkr
 			if os == "mac" or os == "unix"
 				`python #{py_script} #{input_file}`
 			elsif os == "windows"
-				`python.exe #{py_script} #{input_file}`
+				pythonpath = File.join(Paths.resource_dir, "Python27", "python.exe")
+				`#{pythonpath} #{py_script} #{input_file}`
 			elsif $python_processor
 				`#{$python_processor} #{py_script} #{input_file}`
 			else
