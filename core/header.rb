@@ -137,13 +137,13 @@ module Bkmkr
 		end
 
 		def self.runpython(py_script, input_file)
-			if os == "mac" or os == "unix"
-				`python #{py_script} #{input_file}`
-			elsif os == "windows"
-				pythonpath = File.join(Paths.resource_dir, "Python27", "python.exe")
-				`#{pythonpath} #{py_script} #{input_file}`
-			elsif $python_processor
+			pythonv = `python --version`
+			if $python_processor
 				`#{$python_processor} #{py_script} #{input_file}`
+			elsif os == "mac" or os == "unix" and pythonv.include? "Python 2"
+				`python #{py_script} #{input_file}`
+			elsif os == "windows" and pythonv.include? "Python 2"
+				`python #{py_script} #{input_file}`
 			else
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- PYTHON ERROR"
