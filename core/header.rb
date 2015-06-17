@@ -137,19 +137,12 @@ module Bkmkr
 		end
 
 		def self.runpython(py_script, input_file)
-			pythonv = `python --version`
 			if $python_processor
 				`#{$python_processor} #{py_script} #{input_file}`
-			elsif os == "mac" or os == "unix" and pythonv.include? "Python 2"
+			elsif os == "mac" or os == "unix"
 				`python #{py_script} #{input_file}`
-				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-					f.puts "----- Running #{pythonv}"
-				end
-			elsif os == "windows" and pythonv.include? "Python 2"
+			elsif os == "windows"
 				`python #{py_script} #{input_file}`
-				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-					f.puts "----- Running #{pythonv}"
-				end
 			else
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- PYTHON ERROR"
