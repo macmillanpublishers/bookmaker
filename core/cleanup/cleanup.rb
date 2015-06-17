@@ -23,7 +23,6 @@ end
 
 # Delete all the working files and dirs
 FileUtils.rm_r(Bkmkr::Paths.project_tmp_dir)
-FileUtils.rm_rf("#{Bkmkr::Paths.submitted_images}/.")
 FileUtils.rm(Bkmkr::Project.input_file)
 FileUtils.rm(Bkmkr::Paths.alert)
 

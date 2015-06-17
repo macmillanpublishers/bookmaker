@@ -6,7 +6,7 @@ require_relative '../header.rb'
 test_images_before = Dir.entries(Bkmkr::Paths.submitted_images)
 
 # Local path variables
-all_submitted_images = File.join(Bkmkr::Paths.submitted_images, "*")
+all_submitted_images = Dir.entries(Bkmkr::Paths.submitted_images)
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
 if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
@@ -14,8 +14,13 @@ if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
 end
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir)
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir_img)
-FileUtils.cp(Dir.glob(all_submitted_images), Bkmkr::Paths.project_tmp_dir_img)
 FileUtils.cp(Bkmkr::Project.input_file, Bkmkr::Paths.project_tmp_file)
+
+all_submitted_images.each do |c|
+	unless c.include?(".db") or c.include?("DS_Store")
+		FileUtils.mv(c, Bkmkr::Paths.project_tmp_dir_img)
+	end
+end
 
 # Add a notice to the conversion dir warning that the process is in use
 File.open("#{Bkmkr::Paths.alert}", 'w') do |output|
