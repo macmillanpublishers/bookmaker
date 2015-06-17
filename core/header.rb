@@ -142,7 +142,8 @@ module Bkmkr
 			elsif os == "mac" or os == "unix"
 				`python #{py_script} #{input_file}`
 			elsif os == "windows"
-				`python #{py_script} #{input_file}`
+				pythonpath = File.join(Paths.resource_dir, "Python27", "python.exe")
+				`#{pythonpath} #{py_script} #{input_file}`
 			else
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- PYTHON ERROR"
