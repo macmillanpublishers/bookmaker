@@ -50,5 +50,6 @@ $http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_pass.txt")
 # uncomment as needed
 
 # If the standard windows and mac/unix python commands don't work for you,
-# you can specify a custom command here.
+# or you want to install python in a location other than $resource_dir,
+# you can specify a custom path/command here.
 # $python_processor = ""
