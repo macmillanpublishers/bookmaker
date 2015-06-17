@@ -18,7 +18,8 @@ FileUtils.cp(Bkmkr::Project.input_file, Bkmkr::Paths.project_tmp_file)
 
 all_submitted_images.each do |c|
 	unless c.include?(".db") or c.include?("DS_Store")
-		FileUtils.mv(c, Bkmkr::Paths.project_tmp_dir_img)
+		filename = c.split("/").pop
+		FileUtils.mv(c, "#{Bkmkr::Paths.project_tmp_dir_img}/filename")
 	end
 end
 
