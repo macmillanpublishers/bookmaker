@@ -8,6 +8,11 @@ $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].
 # Bookmaker toolchain. Update these paths to 
 # reflect your current system setup.
 
+# Are you on a windows, mac, or unix system?
+$op_system = "windows"
+#$op_system = "mac"
+#$op_system = "unix"
+
 # The location of the temporary working folder.
 # This is where bookmaker will perform most actions
 # before moving the finalized files to the "done" directory.
@@ -40,3 +45,10 @@ $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 # username and password for online resources
 $http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_username.txt")
 $http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_pass.txt")
+
+# OPTIONAL VARIABLES
+# uncomment as needed
+
+# If the standard windows and mac/unix python commands don't work for you,
+# you can specify a custom command here.
+# $python_processor = ""
