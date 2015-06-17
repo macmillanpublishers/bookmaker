@@ -14,7 +14,7 @@ if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
 end
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir)
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir_img)
-FileUtils.mv(Dir.glob(all_submitted_images), Bkmkr::Paths.project_tmp_dir_img)
+FileUtils.cp(Dir.glob(all_submitted_images), Bkmkr::Paths.project_tmp_dir_img)
 FileUtils.cp(Bkmkr::Project.input_file, Bkmkr::Paths.project_tmp_file)
 
 # Add a notice to the conversion dir warning that the process is in use
