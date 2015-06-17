@@ -124,12 +124,33 @@ module Bkmkr
 	end
 
 	class Tools
+		def self.os
+			$op_system
+		end
+
 		def self.xslprocessor
 			$saxon_version
 		end
 		
 		def self.pdfprocessor
 			$pdf_processor
+		end
+
+		def self.runpython(py_script, input_file)
+			if os == "mac" or os == "unix"
+				`python #{py_script} #{input_file}`
+			elsif os == "windows"
+				`python.exe #{py_script} #{input_file}`
+			elsif $python_processor
+				`#{$python_processor} #{py_script} #{input_file}`
+			else
+				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
+					f.puts "----- PYTHON ERROR"
+					f.puts "ERROR: I can't seem to run python. Is it installed and part of your system PATH?"
+					f.puts "ABORTING. All following processes will fail."
+				end
+				File.delete(Project.alert)
+			end
 		end
 
 		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, testing_value, http_username, http_password)

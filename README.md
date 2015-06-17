@@ -160,6 +160,10 @@ Install the utilities listed in the previous section, as needed. For reference, 
 
 #### Saxon
 
+Saxon is an XSLT processor that runs the script to convert the Word document to HTML, and also transforms the HTML to create the EPUB file. Right now Bookmaker can only run with Saxon, but we'd love to add support for other XSLT2.0 processors.
+
+To install the free Saxon HE, go here: 
+
 #### Zip.exe
 
 #### FOR PRINCE: Download Prince

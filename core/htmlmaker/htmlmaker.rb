@@ -4,6 +4,7 @@ require_relative '../header.rb'
 
 # Local path variables
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
+docxtoxml_py = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "docxtoxml.py")
 source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.xml")
 word_to_html_xsl = File.join(Bkmkr::Paths.scripts_dir, "WordXML-to-HTML", "wordtohtml.xsl")
 footnotes_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.xsl")
@@ -12,6 +13,8 @@ parts_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.xsl")
 headings_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.xsl")
 inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
 
+# convert docx to xml
+Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Project.input_file)
 
 # convert xml to html
 `java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
