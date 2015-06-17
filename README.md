@@ -18,13 +18,9 @@ The scripts are as follows:
 
 *Dependencies: Pre-determined folder structure*
 
-[DocxToXml](https://github.com/macmillanpublishers/WordXML-to-HTML): Converts the source Word file (.doc or .docx) to Word XML (via PowerShell).
-
-*Dependencies: tmparchive, PowerShell, Microsoft Word & correct application of [the Macmillan Word template](https://github.com/macmillanpublishers/Word-template)*
-
 [htmlmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/htmlmaker/htmlmaker.rb): Converts the .xml file to HTML using wordtohtml.xsl.
 
-*Dependencies: tmparchive, DocxToXml, Java JDK, Saxon, wordtohtml.xsl*
+*Dependencies: tmparchive, Python 2.7.x, correct application of [the Macmillan Word template](https://github.com/macmillanpublishers/Word-template), Java JDK, Saxon, wordtohtml.xsl*
 
 [filearchive](https://github.com/macmillanpublishers/bookmaker/blob/master/core/filearchive/filearchive.rb): Creates the directory structure for the converted filesbookmaker_coverchecker: Verifies that a cover image has been submitted. If yes, copies the cover image file into the final archive. If no, creates an error file notifying the user that the cover is missing.
 
@@ -110,8 +106,8 @@ Paths for the above four folders can be configured in config.rb. See the install
 The Bookmaker scripts depend on various other utilities, as follows:
 
 * Java: Saxon requires the Java JDK. 
+* Python (version 2.7.x): Converts Word .docx files to XML.
 * Saxon: An XSLT processor that runs our Word-to-HTML scripts. 
-* Microsoft Word: The WordXML-to-HTML converter (PowerShell) requires MS Word to convert .doc files to .xml.
 * Ruby: The primary scripting language used in the Bookmaker scripts. 
 * Docraptor: The external service that performs the HTML-to-PDF conversion. It requires a ruby gem, and you'll also need to create an account and get your unique API key.
 * An ftp server (if you'll be creating PDFs and your book contains images, custom fonts, custom CSS, or other resources besides the HTML).
@@ -154,9 +150,19 @@ If you plan to make changes to the source code, you will want to fork those repo
 
 Install the utilities listed in the previous section, as needed. For reference, you need to install the following in order to create these outputs:
 
-* To create an HTML file: Ruby, Java, Saxon, Microsoft Word
-* To create a PDF file: Ruby, Java, Saxon, Microsoft Word, PrinceXML OR the Docraptor gem, SSL cert file
-* To create an EPUB file: Ruby, Java, Saxon, Microsoft Word, Zip.exe, Imagemagick
+* To create an HTML file: Ruby, Java, Saxon, Python
+* To create a PDF file: Ruby, Java, Saxon, Python, PrinceXML OR the Docraptor gem, SSL cert file
+* To create an EPUB file: Ruby, Java, Saxon, Python, Zip.exe, Imagemagick
+
+#### Ruby
+
+#### Python
+
+Bookmaker requires Python version 2.7.
+
+For Mac, download and install python [from here](https://www.python.org/downloads/mac-osx/).
+
+For Windows, [follow the directions here](http://www.pythoncentral.io/add-python-to-path-python-is-not-recognized-as-an-internal-or-external-command/).
 
 #### Saxon
 
@@ -164,7 +170,9 @@ Saxon is an XSLT processor that runs the script to convert the Word document to 
 
 To install the free Saxon HE, go here: 
 
-#### Zip.exe
+#### WINDOWS USERS: Zip.exe
+
+Download here: http://stahlworks.com/dev/index.php?tool=zipunzip
 
 #### FOR PRINCE: Download Prince
 
