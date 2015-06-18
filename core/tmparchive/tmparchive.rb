@@ -16,13 +16,6 @@ Dir.mkdir(Bkmkr::Paths.project_tmp_dir)
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir_img)
 FileUtils.cp(Bkmkr::Project.input_file, Bkmkr::Paths.project_tmp_file)
 
-all_submitted_images.each do |c|
-	unless c.include?(".db") or c.include?("DS_Store") or c == "." or c ==".."
-		filename = c.split("/").pop
-		FileUtils.mv("#{Bkmkr::Paths.submitted_images}/#{c}", "#{Bkmkr::Paths.project_tmp_dir_img}/#{filename}")
-	end
-end
-
 # Add a notice to the conversion dir warning that the process is in use
 File.open("#{Bkmkr::Paths.alert}", 'w') do |output|
 	output.write "The conversion processor is currently running. Please do not submit any new files or images until the process completes."

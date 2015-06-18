@@ -19,21 +19,13 @@ module Bkmkr
 		def self.filename_normalized
 			@@filename_normalized
 		end
-		@@working_dir_split = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
-		def self.working_dir_split
-			@@working_dir_split
+		@@input_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
+		def self.input_dir
+			@@input_dir
 		end
 		@@working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 		def self.working_dir
 			@@working_dir
-		end
-		@@project_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop.to_s.split("_").shift
-		def self.project_dir
-			@@project_dir
-		end
-		@@stage_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop.to_s.split("_").pop
-		def self.stage_dir
-			@@stage_dir
 		end
 	end
 
@@ -60,10 +52,13 @@ module Bkmkr
 			@@core_dir
 		end
 
-		# Path to the submitted_images directory
-		@@submitted_images = File.join(Project.working_dir, "submitted_images")
+		# Path to the submitted_assets directory
 		def self.submitted_images
-			@@submitted_images
+			if $assets_dir
+				$assets_dir
+			else 
+				Project.input_dir
+			end
 		end
 
 		# Path to the temporary working directory
@@ -97,9 +92,12 @@ module Bkmkr
 		end
 
 		# Full path and filename for the "done" directory in Project working directory
-		@@done_dir = File.join(Project.working_dir, "done")
 		def self.done_dir
-			@@done_dir
+			if $done_dir
+				$done_dir
+			else 
+				Project.input_dir
+			end
 		end
 
 		# Full path to project log file
@@ -111,15 +109,27 @@ module Bkmkr
 
 	class Keys
 		def self.docraptor_key
-	      $docraptor_key
+	      if $docraptor_key
+	      	$docraptor_key
+	      else
+	      	"none"
+	      end
 	    end
 
 	    def self.http_username
-	      $http_username
+	      if $http_username
+	      	$http_username
+	      else
+	      	"none"
+	      end
 	    end
 
 	    def self.http_password
-	      $http_password
+	      if $http_password
+	      	$http_password
+	      else
+	      	"none"
+	      end
 	    end
 	end
 

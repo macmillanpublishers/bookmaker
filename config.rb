@@ -3,6 +3,9 @@
 $currpath = Dir.pwd
 $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 
+input_file = ARGV[0].split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
+working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+
 # ------------------ GLOBAL VARIABLES
 # These variables are required throughout the 
 # Bookmaker toolchain. Update these paths to 
@@ -39,17 +42,28 @@ $saxon_version = "saxon9pe"
 $pdf_processor = "docraptor"
 #$pdf_processor = "prince"
 
+# ------------------ OPTIONAL VARIABLES
+# uncomment as needed
+
+# Where will you drop assets to accompany your input files? 
+# For example, the config.json, images, cover, etc.
+# If not specified, bookmaker will look in the same folder 
+# as the input file.
+$assets_dir = File.join(working_dir, "submitted_images")
+
+# Where should the output files be stored? 
+# If not specified, bookmaker will make a new subfolder 
+# within the input foler, named by project isbn or filename,
+$done_dir = File.join(working_dir, "done")
+
+# If the standard windows and mac/unix python commands don't work for you,
+# or you want to install python in a location other than $resource_dir,
+# you can specify a custom path/command here.
+# $python_processor = ""
+
 # Your API key to create PDFs via DocRaptor
 $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 
 # username and password for online resources
 $http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_username.txt")
 $http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_pass.txt")
-
-# OPTIONAL VARIABLES
-# uncomment as needed
-
-# If the standard windows and mac/unix python commands don't work for you,
-# or you want to install python in a location other than $resource_dir,
-# you can specify a custom path/command here.
-# $python_processor = ""
