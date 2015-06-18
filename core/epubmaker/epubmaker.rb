@@ -3,6 +3,12 @@ require 'FileUtils'
 require_relative '../header.rb'
 require_relative '../metadata.rb'
 
+configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
+file = File.read(configfile)
+data_hash = JSON.parse(file)
+
+cover = data_hash['frontcover']
+
 # Local path var(s)
 epub_dir = Bkmkr::Paths.project_tmp_dir
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
@@ -12,6 +18,7 @@ epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub
 tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
 OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
+final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
 cover_jpg = File.join(OEBPS_dir, "cover.jpg")
 epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 
@@ -55,7 +62,7 @@ File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
 
 # add cover image file to epub folder
-FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/cover/cover.jpg", OEBPS_dir)
+FileUtils.cp(final_cover, cover_jpg)
 `convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
 
 # add image files to epub folder
