@@ -73,7 +73,7 @@ config.json
 
 Each of the following fields is used for various purposes throughout the Bookmaker toolchain:
 
-* title. Required for ebook metadata. If not found, will fallback to "Unknown".
+* title. Required for ebook metadata. If not found, will fallback to input file name.
 * author. Required for ebook metadata. If not found, will fallback to "Unknown".
 * productid. Required for file naming. If not found, will fallback to input file name.
 * printid. Required for file naming. If not found, will fallback to input file name.
@@ -85,21 +85,18 @@ Each of the following fields is used for various purposes throughout the Bookmak
 * frontcover. Required for ebook. If not found, Bookmaker will fail :cry:.
 
 
-## Required Folder Structure
+## Folder Structure
 
-The Bookmaker toolchain requires a specific folder structure and sequence of parent folders in order to function correctly. The requirements are as follows:
-
-* The *conversion folder* is the folder where files to be converted should be dropped. It should contain _only_ the file to be converted.
-* *submitted_images*: This is where any images (including book front cover) should be placed before initiating the conversion. This should live at the same level as the conversion folder.
-* *done*: This is where completed conversion will be archived automatically by Bookmaker. This should live at the same level as the conversion and submitted_images folders.
+By default, Bookmaker will look for all files (images, config.json) in the same folder as the input file, and create the output folders there as well. However, you can specify a custom submission folder and done folder in config.rb.
 
 Additionally, the following directory structures are required:
+
 * All supplemental resources (saxon, zip) should live in the same parent folder, at the same level (i.e., they should be siblings to each other).
 * All bookmaker scripts (including WordXML-to-HTML, HTMLBook, and covermaker) should live within the same parent folder, at the same level.
 * A folder must exist for storing log files. This can live anywhere.
 * A temporary working directory should be created, where Bookmaker can perform the conversions before archiving the final files. This can live anywhere.
 
-Paths for the above four folders can be configured in config.rb. See the installation instructions below for details.
+Paths for all of the above four folders should be configured in config.rb. See the installation instructions below for details.
 
 ## Dependencies
 
@@ -124,12 +121,10 @@ Install Bookmaker by following these steps, in order.
 On your server, create the following folders and subfolders.
 
 * A folder to drop the project to be converted (see above).
-* A folder to drop book images to be included in the conversion. This folder must be named _submitted\_images_.
-* A folder to archive the final converted files. This folder must be named _done_.
-* Temp folder: A folder where the system can store temporary files created during conversion. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
-* Bookmaker folder: A main parent folder to contain all of the separate bookmaker script folders. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
-* Resources folder: A folder for all the supplemental utilities (saxon, zip, etc). This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
-* Log folder: A folder for storing log files. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is it in config.rb).
+* Temp folder: A folder where the system can store temporary files created during conversion. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is in config.rb).
+* Bookmaker folder: A main parent folder to contain all of the separate bookmaker script folders. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is in config.rb).
+* Resources folder: A folder for all the supplemental utilities (saxon, zip, etc). This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is in config.rb).
+* Log folder: A folder for storing log files. This can live anywhere and have the name of your choosing (you'll tell Bookmaker where it is in config.rb).
 
 ### Install Git and Set Up Your GitHub Account
 
@@ -158,7 +153,7 @@ Install the utilities listed in the previous section, as needed. For reference, 
 
 #### Python
 
-Bookmaker requires Python version 2.7.
+Bookmaker requires Python version 2.7. Windows users must install python in the specified Resources directory (see "Create the Folder Structure" above).
 
 For Mac, download and install python [from here](https://www.python.org/downloads/mac-osx/).
 
