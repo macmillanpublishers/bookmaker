@@ -3,17 +3,21 @@ require 'fileutils'
 require_relative '../header.rb'
 require_relative '../metadata.rb'
 
-# The directory where the cover was moved in tmparchive
-coverdir = Bkmkr::Paths.project_tmp_dir_img
+configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
+file = File.read(configfile)
+data_hash = JSON.parse(file)
 
-# the revised cover filename
-cover = "#{Metadata.pisbn}_FC.jpg"
+# the cover filename
+cover = data_hash['frontcover']
+
+# The directory where the cover was submitted
+coverdir = Bkmkr::Paths.submitted_images
 
 # the full path to the cover in tmp, including file name
-tmp_cover = File.join(Bkmkr::Paths.project_tmp_dir_img, cover)
+tmp_cover = File.join(Bkmkr::Paths.submitted_images, cover)
 
 # the full path to the cover in the archival location, including file name
-final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", "cover.jpg")
+final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
 
 # full path of cover error file
 cover_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "COVER_ERROR.txt")
@@ -30,7 +34,7 @@ end
 # if yes, copies cover to archival location and deletes from submission dir
 # if no, prints an error to the archival directory 
 if files.include?("#{cover}")
-	FileUtils.cp(tmp_cover, final_cover)
+	FileUtils.mv(tmp_cover, final_cover)
 else
 	File.open(cover_error, 'w') do |output|
 		output.write "There is no cover image for this title. Download the cover image from Biblio and place it in the submitted_images folder, then re-submit the manuscript for conversion; cover images must be named ISBN_FC.jpg."

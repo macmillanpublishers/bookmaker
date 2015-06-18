@@ -13,7 +13,7 @@ class Metadata
 		if @@data_hash['title']
 			@@data_hash['title']
 		else 
-			"Unknown"
+			Bkmkr::Project.filename
 		end
 	end
 
@@ -37,7 +37,7 @@ class Metadata
 		if @@data_hash['productid']
 			@@data_hash['productid']
 		else 
-			"Unknown"
+			Bkmkr::Project.filename
 		end
 	end
 
@@ -45,7 +45,7 @@ class Metadata
 		if @@data_hash['printid']
 			@@data_hash['printid']
 		else 
-			"Unknown"
+			Bkmkr::Project.filename
 		end
 	end
 
@@ -53,7 +53,7 @@ class Metadata
 		if @@data_hash['ebookid']
 			@@data_hash['ebookid']
 		else 
-			"Unknown"
+			Bkmkr::Project.filename
 		end
 	end
 

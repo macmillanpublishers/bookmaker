@@ -4,7 +4,7 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # The location where the images are moved to by tmparchive
-imagedir = Bkmkr::Paths.project_tmp_dir_img
+imagedir = Bkmkr::Paths.submitted_images
 
 # The working dir location that images will be moved to (for test 3)
 image_dest = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
@@ -45,6 +45,7 @@ source.each do |m|
 	if images.include?("#{match}")
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
+		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 	else
 		missing << match
 	end
