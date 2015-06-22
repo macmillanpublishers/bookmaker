@@ -1,1 +1,172 @@
-hello world
+<html>
+<head>
+  <title>Bookmaker: Macmillan's bookmaking tool</title>
+  <style>
+  *, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+ }
+
+html {
+  /*background-image: url(../assets/bg.jpg);*/
+  /*background-color: #fceef1;*/
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+div.container {
+  background-color: #fff;
+  width: 100%;
+  margin-top: 0;
+  padding: 0.5em 5em 3em 5em;
+  margin-left: auto;
+  margin-right: auto;
+  /*border-left: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;*/
+}
+
+div.container:nth-of-type(4) {
+  background-color: rgb(255,88,93);
+  }
+
+div.container:nth-of-type(2), 
+div.container:nth-of-type(5) {
+  background-color: rgb(238,220,0);
+  }
+
+div.container:nth-of-type(3), 
+div.container:nth-of-type(6) {
+  background-color: rgb(42,210,201);
+  }
+
+h1 {
+  font-size: 5em;
+  margin-top: 0;
+  padding-bottom: 10px;
+}
+
+h2 {
+  font-size: 4em;
+  /*color: rgb(255,88,93);*/
+  color: #fff;
+  padding-bottom: 10px;
+}
+
+h3 {
+  font-size: 2em;
+}
+
+h4 {
+  font-size: 1.5em;
+}
+
+p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+ul li {
+  text-align: left;
+}
+
+img {
+  max-width: 100%;
+}
+
+img.logo {
+  max-height: 150px;
+  margin-top: 3em;
+  margin-bottom: 50px;
+}
+
+img.postit {
+  max-width: 300px;
+}
+
+a {
+  text-decoration: none;
+  color: #00A1DE;
+}
+
+a:hover {
+  color: #7AB800;
+}
+
+/* iPad
+------------------------------------------------ */
+
+@media screen and (min-width: 480px) and (max-width: 1024px) {
+
+}
+
+/* iPhone [portrait + landscape] 
+--------------------------------------------------------------------------- */
+
+@media screen and (max-width: 480px) {
+
+  h1 {
+    font-size: 3em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  h3 {
+    font-size: 1.5em;
+  }
+
+  h4 {
+    font-size: 1.2em;
+  }
+  div.container {
+    max-width: 100%;
+  }
+  p {
+    max-width: 100%;
+  }
+  img.postit {
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <img class="logo" src="logo.png" alt="Bookmaker logo" />
+    <h1>Codex, Meet Bookmaker</h1>
+    <p>The open-source bookmaking tool from Macmillan Publishers.</p>
+  </div>
+  <div class="container">
+    <h2>Install Bookmaker</h2>
+    <p>Right now, bookmaker requires an extra program called Saxon in order to convert .docx to HTML (and Saxon requires Java). We're in the process of transitioning to a Python-based solution, but you can circumvent Saxon by only testing with HTML files. To go that route, follow the quick and dirty install directions below, and use the HTML sample files. But if you're ok with a little extra setup and want to convert .docx files, then follow the "fully functional" instructions.</p>
+    <h3>The Quick And Dirty Version</h3>
+    <p>Text goes here.</p>
+    <h3>The Fully Functional Version</h3>
+    <p>Text goes here.</p>
+  </div>
+  <div class="container">
+    <h2>Download Sample Files</h2>
+    <p>To save you some time, we put together some test files for you to use. Included in the zip file are a sample .docx file, a sample HTML file, a few images that are part of the sample book, and the associated JSON file (which bookmaker needs for metadata). If you're going the quick-and-dirty route, use the HTML file. If you want to develop using the fully-functional version of bookmaker, then you can use either the .docx or the HTML file.</p>
+  </div>
+  <div class="container">
+    <h2>Run Bookmaker</h2>
+    <p>Text goes here.</p>
+  </div>
+  <div class="container">
+    <h2>Project Ideas</h2>
+    <p>Text goes here.</p>
+  </div>
+</body>
+</html>
