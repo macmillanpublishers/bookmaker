@@ -21,22 +21,22 @@ Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_tmp_file)
 
 # place footnote text inline per htmlbook
 filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
+replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3").gsub(/(<span class="spansuperscriptcharacterssup">)(<span class="FootnoteReference" id="\d+"><\/span>)(<\/span>)/,"\\2")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 footnotes = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/(<div class="footnotetext" id=")(\d+)(">)(\s?)(.*?)(<\/div>)/)
 
 footnotes.each do |f|
 	noteref = f[1]
-	notetext = f[4]
+	notetext = f[4].gsub(/<p/,"<span").gsub(/<\/p/,"</span")
 	filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-	replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
+	replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>").gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 	File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 end
 
 # add endnote ref id as static content
 filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = filecontents.gsub(/(<span class="EndnoteReference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
+replace = filecontents.gsub(/(<span class="endnotereference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 # replace nbsp entities with 160 and fix img closing tags
