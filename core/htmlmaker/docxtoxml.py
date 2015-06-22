@@ -16,11 +16,11 @@ def convert_manuscript(self):
         document = zipfile.ZipFile(self)
         xml_content = document.read('word/document.xml')
         endnote_content = document.read('word/endnotes.xml')
-        endnote_content = document.read('word/footnotes.xml')
+        footnote_content = document.read('word/footnotes.xml')
         document.close()
         
         file = open(path_to_xml_file, "w")
-        file.write(xml_content)
+        file.write(xml_content + endnote_content + footnote_content)
         file.close()
 
         return 
