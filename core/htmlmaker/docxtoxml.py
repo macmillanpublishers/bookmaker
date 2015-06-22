@@ -15,6 +15,8 @@ def convert_manuscript(self):
         # convert to xml
         document = zipfile.ZipFile(self)
         xml_content = document.read('word/document.xml')
+        endnote_content = document.read('word/endnotes.xml')
+        endnote_content = document.read('word/footnotes.xml')
         document.close()
         
         file = open(path_to_xml_file, "w")
