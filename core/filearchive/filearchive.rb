@@ -4,13 +4,11 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # create the archival directory structure and copy xml and html there
-filetype = Bkmkr::Project.filename_split.split(".").pop
-
 final_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn)
 final_dir_images = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
 final_dir_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover")
 final_dir_layout = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout")
-final_manuscript = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "#{Metadata.pisbn}_MNU.#{filetype}")
+final_manuscript = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "#{Metadata.pisbn}_MNU.#{Bkmkr::Project.filetype}")
 final_html = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "#{Metadata.pisbn}.html")
 tmp_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
 final_config = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "config.json")

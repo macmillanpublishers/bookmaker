@@ -15,6 +15,10 @@ module Bkmkr
 		def self.filename
 			@@filename
 		end
+		@@filetype = Bkmkr::Project.filename_split.split(".").pop
+		def self.filetype
+			@@filetype
+		end
 		@@filename_normalized = filename_split.gsub(/ /, "")
 		def self.filename_normalized
 			@@filename_normalized

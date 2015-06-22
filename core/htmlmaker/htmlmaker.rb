@@ -12,59 +12,68 @@ strip_toc_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.xsl")
 parts_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.xsl")
 headings_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.xsl")
 inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
+filetype_alert = File.join(Project.working_dir, "FILETYPE_ERROR.txt")
 
-# convert docx to xml
-Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_tmp_file)
+if Bkmkr::Project.filetype == "docx"
+	# convert docx to xml
+	Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_tmp_file)
 
-# convert xml to html
-`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+	# convert xml to html
+	`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
-# place footnote text inline per htmlbook
-filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
-File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
-
-footnotes = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/(<div class="footnotetext" id=")(\d+)(">)(\s?)(.*?)(<\/div>)/)
-
-footnotes.each do |f|
-	noteref = f[1]
-	notetext = f[4]
+	# place footnote text inline per htmlbook
 	filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-	replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
+	replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
 	File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
-end
 
-# add endnote ref id as static content
-filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = filecontents.gsub(/(<span class="EndnoteReference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
-File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
+	footnotes = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/(<div class="footnotetext" id=")(\d+)(">)(\s?)(.*?)(<\/div>)/)
 
-# replace nbsp entities with 160 and fix img closing tags
-nbspcontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
-File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
+	footnotes.each do |f|
+		noteref = f[1]
+		notetext = f[4]
+		filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
+		replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
+		File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
+	end
 
-# strip extraneous footnote section from html
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{footnotes_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-
-# strip static toc from html
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{strip_toc_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-
-# convert parts to divs
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{parts_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-
-# add headings to all sections
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{headings_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-
-# add correct markup for inlines (em, strong, sup, sub)
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{inlines_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-
-# removes endnotes section if no content
-filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-endnote_txt = filecontents.match(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/).to_s
-unless endnote_txt.include?("<p")
-	replace = filecontents.gsub(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/,"")
+	# add endnote ref id as static content
+	filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
+	replace = filecontents.gsub(/(<span class="EndnoteReference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
 	File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
+
+	# replace nbsp entities with 160 and fix img closing tags
+	nbspcontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
+	replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
+	File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
+
+	# strip extraneous footnote section from html
+	`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{footnotes_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+
+	# strip static toc from html
+	`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{strip_toc_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+
+	# convert parts to divs
+	`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{parts_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+
+	# add headings to all sections
+	`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{headings_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+
+	# add correct markup for inlines (em, strong, sup, sub)
+	`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{inlines_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+
+	# removes endnotes section if no content
+	filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
+	endnote_txt = filecontents.match(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/).to_s
+	unless endnote_txt.include?("<p")
+		replace = filecontents.gsub(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/,"")
+		File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
+	end
+elsif Bkmkr::Project.filetype == "html"
+	FileUtils.cp(Bkmkr::Project.input_file, Bkmkr::Paths.outputtmp_html)
+else
+	File.open(filetype_alert, 'w') do |output|
+		output.write "Bookmaker can only run on docx or html files."
+	end
 end
 
 # TESTING
