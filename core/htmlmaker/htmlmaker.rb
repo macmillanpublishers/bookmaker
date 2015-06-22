@@ -16,10 +16,6 @@ inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
 # convert docx to xml
 Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_tmp_file)
 
-#filecontents = File.read(source_xml)
-#replace = filecontents.gsub(/><\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\?>/,">").gsub(/><\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\?>/,">")
-#File.open(source_xml, "w") {|file| file.puts replace}
-
 # convert xml to html
 `java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
@@ -32,7 +28,7 @@ footnotes = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/(<div class="footn
 
 footnotes.each do |f|
 	noteref = f[1]
-	notetext = f[4]
+	notetext = f[4].gsub(/<p/,"<span").gsub(/<\/p/,"</span")
 	filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
 	replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>").gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 	File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
@@ -49,7 +45,7 @@ replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 # strip extraneous footnote section from html
-#{}`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{footnotes_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{footnotes_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
 
 # strip static toc from html
 `java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{strip_toc_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
