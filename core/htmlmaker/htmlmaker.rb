@@ -17,7 +17,7 @@ inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
 Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_tmp_file)
 
 filecontents = File.read(source_xml)
-replace = filecontents.gsub(/<\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\?>\n<w:endnotes/,"<w:endnotes").gsub(/<\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\?>\n<w:footnotes/,"<w:footnotes")
+replace = filecontents.gsub(/><\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\?>/,">").gsub(/><\?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"\?>/,">")
 File.open(source_xml, "w") {|file| file.puts replace}
 
 # convert xml to html
