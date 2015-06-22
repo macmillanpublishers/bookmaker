@@ -21,7 +21,7 @@ Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_tmp_file)
 
 # place footnote text inline per htmlbook
 filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
+replace = filecontents.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3").gsub(/(<span class="spansuperscriptcharacterssup">)(<span class="FootnoteReference" id="\d+"><\/span>)(<\/span>)/,"\\2")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 footnotes = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/(<div class="footnotetext" id=")(\d+)(">)(\s?)(.*?)(<\/div>)/)
