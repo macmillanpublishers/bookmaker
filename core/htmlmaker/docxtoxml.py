@@ -24,7 +24,7 @@ def convert_manuscript(self):
         document.close()
         
         file = open(path_to_xml_file, "w")
-        file.write(xml_content + str1 + str2 + endnote_content + str3 + footnote_content + str4)
+        file.write(xml_content + str1 + str2 + endnote_content + str1 + str3 + footnote_content + str1 + str4)
         file.close()
 
         return 
