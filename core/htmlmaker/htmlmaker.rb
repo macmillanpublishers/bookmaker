@@ -30,7 +30,7 @@ footnotes.each do |f|
 	noteref = f[1]
 	notetext = f[4]
 	filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-	replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
+	replace = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>").gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 	File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 end
 
