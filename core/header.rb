@@ -163,7 +163,6 @@ module Bkmkr
 				File.delete(Project.alert)
 			end
 		end
-
 		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, http_username, http_password)
 			if pdfprocessor == "prince"
 				`prince -s #{pdf_css} --javascript #{pdf_html_file} -o #{pisbn}.pdf`
@@ -190,5 +189,24 @@ module Bkmkr
 				end
 			end
 		end
+		def self.zip_epub(target_path, zipfilename)
+            if $zip_install_path
+            	zippath = "#{$zip_install_path}"
+            elsif os == "windows"
+                zippath = File.join(Paths.resource_dir, "zip", "zip.exe")              
+            elsif os == "mac" or os == "unix"
+  				zippath == "zip"
+            else
+                File.open(Bkmkr::Paths.log_file, 'a+') do |f|
+                    f.puts "----- ZIP ERROR"
+                    f.puts "ERROR: I can't seem to run zip. Is it installed and part of your system PATH? (or custom path specified in config.rb?)"
+                    f.puts "ABORTING. All following processes will fail."
+                end
+                File.delete(Project.alert)
+            end
+			`cd "#{target_path}"`
+			`#{zippath} #{zipfilename} -DX0 mimetype`
+			`#{zippath} #{zipfilename} -rDX9 META-INF OEBPS`    
+        end   
 	end
 end

@@ -85,10 +85,7 @@ end
 csfilename = "#{Metadata.eisbn}_EPUB"
 
 # zip epub
-# do these commands need to stack, or can I do this FileUtils prior instead of the cd's??
-FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
-`cd "#{Bkmkr::Paths.project_tmp_dir}" & #{Bkmkr::Paths.resource_dir}\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
-`cd "#{Bkmkr::Paths.project_tmp_dir}" & #{Bkmkr::Paths.resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
+Bkmkr::Tools.zip_epub(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
 
 # move epub into archive folder
 FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}")
