@@ -25,10 +25,16 @@ epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
 # Allowing for users to preprocess epub html if desired
+#if File.file?(epub_tmp_html)
+#	filecontents = File.read(epub_tmp_html).gsub(/<\?xml version="1.0" encoding="UTF-8"\?>/,"<?xml version=\"1.0\" encoding=\"UTF-8\" lang=\"en\"?>").gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+#else
+#	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\?xml version="1.0" encoding="UTF-8"\?>/,"<?xml version=\"1.0\" encoding=\"UTF-8\" lang=\"en\"?>").gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+#end
+
 if File.file?(epub_tmp_html)
-	filecontents = File.read(epub_tmp_html).gsub(/<\?xml version="1.0" encoding="UTF-8"\?>/,"<?xml version=\"1.0\" encoding=\"UTF-8\" lang=\"en\"?>").gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+	filecontents = File.read(epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 else
-	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\?xml version="1.0" encoding="UTF-8"\?>/,"<?xml version=\"1.0\" encoding=\"UTF-8\" lang=\"en\"?>").gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 end
 
 # Saving revised HTML into tmp file
@@ -57,6 +63,11 @@ tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
 copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
 replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
 File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
+
+# fix toc entry in ncx
+ncxcontents = File.read("#{OEBPS_dir}/toc.ncx")
+replace = ncxcontents.gsub(/<navLabel><text\/><\/navLabel><content src="toc/,"<navLabel><text>Contents</text><\/navLabel><content src=\"toc")
+File.open("#{OEBPS_dir}/toc.ncx", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
