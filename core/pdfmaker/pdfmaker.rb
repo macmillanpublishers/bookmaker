@@ -52,7 +52,7 @@ end
 File.open(pdf_tmp_html, "w") {|file| file.puts pdf_html}
 
 # create PDF
-Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, pdf_html, testing_value, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
+Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, pdf_html, cssfile, testing_value, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
 
 # moves rendered pdf to archival dir
 FileUtils.mv("#{Bkmkr::Paths.project_tmp_dir}/#{Metadata.pisbn}.pdf","#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{Metadata.pisbn}_POD.pdf")
