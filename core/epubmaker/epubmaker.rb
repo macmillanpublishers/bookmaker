@@ -55,7 +55,7 @@ File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 opfcontents = File.read("#{OEBPS_dir}/content.opf")
 tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
 copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")#.gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>")
 File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
