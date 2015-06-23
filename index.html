@@ -1,6 +1,8 @@
 <html>
 <head>
   <title>Bookmaker: Macmillan's bookmaking tool</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
   *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
@@ -45,6 +47,11 @@ div.container:nth-of-type(6) {
   background-color: rgb(42,210,201);
   }
 
+div.container:last-of-type {
+  background-color: transparent;
+  padding-bottom: 1em;
+  }
+
 h1 {
   font-size: 5em;
   margin-top: 0;
@@ -67,8 +74,22 @@ h4 {
 }
 
 p {
+  font-size: 1.1em;
   margin-left: auto;
   margin-right: auto;
+  line-height: 140%;
+  max-width: 800px;
+  text-align: left;
+}
+
+p.subhead {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+p.footer {
+  text-align: center;
+  font-size: 0.9em;
 }
 
 ul {
@@ -90,8 +111,21 @@ img.logo {
   margin-bottom: 50px;
 }
 
+img.footer {
+  max-width: 200px;
+  margin-top: 0.5em;
+}
+
 img.postit {
   max-width: 300px;
+}
+
+pre {
+  background-color: #fff;
+  width: 600px;
+  padding: 1em;
+  border-radius: 1em;
+  text-align: left;
 }
 
 a {
@@ -132,6 +166,7 @@ a:hover {
   }
   div.container {
     max-width: 100%;
+    padding: 1em;
   }
   p {
     max-width: 100%;
@@ -146,7 +181,15 @@ a:hover {
   <div class="container">
     <img class="logo" src="logo.png" alt="Bookmaker logo" />
     <h1>Codex, Meet Bookmaker</h1>
-    <p>The open-source bookmaking tool from Macmillan Publishers.</p>
+    <p class="subhead">The open-source bookmaking tool from Macmillan Publishers.</p>
+  </div>
+  <div class="container">
+    <h2>What Is Bookmaker?</h2>
+    <p>Text goes here.</p>
+    <h3>Requirements</h3>
+    <p>It's hard to create well-structured HTML from scratch, so we had to impose some requirements on the input files.</p>
+    <p>Macmillan Word template. .docx files must be styled with the Macmillan Word template.</p>
+    <p>HTMLBook HTML</p>
   </div>
   <div class="container">
     <h2>Install Bookmaker</h2>
@@ -158,15 +201,30 @@ a:hover {
   </div>
   <div class="container">
     <h2>Download Sample Files</h2>
-    <p>To save you some time, we put together some test files for you to use. Included in the zip file are a sample .docx file, a sample HTML file, a few images that are part of the sample book, and the associated JSON file (which bookmaker needs for metadata). If you're going the quick-and-dirty route, use the HTML file. If you want to develop using the fully-functional version of bookmaker, then you can use either the .docx or the HTML file.</p>
+    <p>Here are some files that are ready to use with bookmaker.</p>
+    <p>Contents: .docx file, a sample HTML file, images, cover, metadata JSON file.</p>
+    <h3>Which files should I use?</h3>
+    <p>Quick-and-dirty install? > HTML</p>
+    <p>Fully-functional install? > .docx or HTML</p>
   </div>
   <div class="container">
     <h2>Run Bookmaker</h2>
     <p>Text goes here.</p>
+    <pre>&gt; makebook.bat alice_in_wonderland.html</pre>
+    <pre>&gt; makebook.sh alice_in_wonderland.html</pre>
+    <p>Windows .bat file</p>
+    <p>Mac/Linux .sh file</p>
   </div>
   <div class="container">
     <h2>Project Ideas</h2>
-    <p>Text goes here.</p>
+    <p>Want to build something around bookmaker? Here are some ideas!</p>
+    <p>Bookmaker doesn't ship with any CSS files to make the output prettier. Create a library of well-designed CSS templates for EPUB and PDF files. Tips: Writing CSS for EPUBs is a lot like writing CSS for very basic websites. Here's some help getting started writing CSS for PDFs. Difficulty: Easy to Intermediate.</p>
+    <p>Right now .docx files must be styled with the Macmillan Word template in order to convert well. Lots of publishing houses have their own unique templates, and many authors like to use their own styles. Write an extension to re-map a different template's styles to the Macmillan styles. Extra challenge: make it scalable--that is, make it so that the extension can be reused for any set of styles, and doesn't require a developer to add support for new styles. Difficulty: Intermediate.</p>
+    <p>Bookmaker requires input HTML files to be valid HTMLBook. Write an extension to convert plain HTML files to HTMLBook. Difficulty: Advanced.</p>
+  </div>
+  <div class="container">
+    <img src="m_p_mono_b.png" alt="Macmillan Publishers" class="footer" />
+    <p class="footer">We want to hear from you! Email us at workflows@macmillan.com</p>
   </div>
 </body>
 </html>
