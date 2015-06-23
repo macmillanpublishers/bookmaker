@@ -64,6 +64,11 @@ copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
 replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
 File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 
+# fix toc entry in ncx
+ncxcontents = File.read("#{OEBPS_dir}/toc.ncx")
+replace = ncxcontents.gsub(/<navLabel><text\/><\/navLabel><content src="toc/,"<navLabel><text>Contents</text><\/navLabel><content src=\"toc")
+File.open("#{OEBPS_dir}/toc.ncx", "w") {|file| file.puts replace}
+
 # add epub css to epub folder
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
 
