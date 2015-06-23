@@ -5,12 +5,12 @@ require_relative '../metadata.rb'
 
 # clean up the ftp site if files were uploaded
 if File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt")
-	`#{Bkmkr::Paths.scripts_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images`
+	`#{Bkmkr::Paths.scripts_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.project_tmp_dir}`
 end
 
 # verify ftp site is clean
 if File.exists?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/clear_ftp_log.txt")
-	if File.zero?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/clear_ftp_log.txt")
+	if File.zero?("#{Bkmkr::Paths.project_tmp_dir}/clear_ftp_log.txt")
 		test_ftp_files_removed = "pass: The ftp server directory (bookmakerimg) is clean"
 	else
 		test_ftp_files_removed = "FAIL: The ftp server directory (bookmakerimg) is clean"
