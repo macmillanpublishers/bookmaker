@@ -164,9 +164,9 @@ module Bkmkr
 			end
 		end
 
-		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, testing_value, http_username, http_password)
+		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, http_username, http_password)
 			if pdfprocessor == "prince"
-				`prince #{pdf_html_file} -o #{pisbn}.pdf`
+				`prince -s #{} --javascript #{pdf_html_file} -o #{pisbn}.pdf`
 			elsif pdfprocessor == "docraptor"
 				pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 				File.open(pdffile, "w+b") do |f|
