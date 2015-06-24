@@ -44,7 +44,7 @@ The scripts are as follows:
 
 [epubmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/epubmaker/epubmaker.rb): Preps the HTML file and converts to EPUB using the HTMLBook scripts.
 
-*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, Saxon, HTMLBook, zip.exe*
+*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, Saxon, HTMLBook, python*
 
 [cleanup](https://github.com/macmillanpublishers/bookmaker/blob/master/core/cleanup/cleanup.rb): Removes all temporary working files and working dirs.
 
@@ -164,10 +164,6 @@ For Windows, [follow the directions here](http://www.pythoncentral.io/add-python
 Saxon is an XSLT processor that runs the script to convert the Word document to HTML, and also transforms the HTML to create the EPUB file. Right now Bookmaker can only run with Saxon, but we'd love to add support for other XSLT2.0 processors.
 
 To install the free Saxon HE, go here: 
-
-#### WINDOWS USERS: Zip.exe
-
-Download here: http://stahlworks.com/dev/index.php?tool=zipunzip
 
 #### FOR PRINCE: Download Prince
 

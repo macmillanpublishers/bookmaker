@@ -60,20 +60,8 @@ File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 
 # fix author info in opf, add toc to text flow
 opfcontents = File.read("#{OEBPS_dir}/content.opf")
-tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
-copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'")
 File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
-
-# fix toc entry in ncx
-ncxcontents = File.read("#{OEBPS_dir}/toc.ncx")
-replace = ncxcontents.gsub(/<navLabel><text\/><\/navLabel><content src="toc/,"<navLabel><text>Contents</text><\/navLabel><content src=\"toc")
-File.open("#{OEBPS_dir}/toc.ncx", "w") {|file| file.puts replace}
-
-# fix toc entry in ncx
-htmlcontents = File.read("#{OEBPS_dir}/toc01.html")
-replace = htmlcontents.gsub(/(<li data-type="copyright-page">)/,"<li data-type=\"toc\" class=\"Nonprinting\"><a href=\"toc01.html\">Contents</a></li>\\1").gsub(/(titlepage01.html#.*?">)(.*?)(<\/a>)/,"\\1Title Page\\3")
-File.open("#{OEBPS_dir}/toc01.html", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
