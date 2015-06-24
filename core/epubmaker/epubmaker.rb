@@ -62,7 +62,7 @@ FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS
 
 # add cover image file to epub folder
 FileUtils.cp(final_cover, cover_jpg)
-unless Bkmkr::Tools.processimages == false
+unless Bkmkr::Tools.processimages == "false"
 	`convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
 end
 
@@ -75,7 +75,7 @@ if sourceimages.any?
 		Dir.mkdir(epub_img_dir)
 	end
 	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, epub_img_dir
-	unless Bkmkr::Tools.processimages == false
+	unless Bkmkr::Tools.processimages == "false"
 		images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir}/epubimg").select { |f| File.file?(f) }
 		images.each do |i|
 			path_to_i = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg", "#{i}")
