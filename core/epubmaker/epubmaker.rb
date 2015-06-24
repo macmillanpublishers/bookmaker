@@ -12,6 +12,7 @@ cover = data_hash['frontcover']
 # Local path var(s)
 epub_dir = Bkmkr::Paths.project_tmp_dir
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
+zipepub_py = File.join(Bkmkr::Paths.core_dir, "epubmaker", "zipepub.py")
 epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
 strip_halftitle_xsl = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-halftitle.xsl")
 epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub.xsl")
@@ -101,7 +102,7 @@ end
 csfilename = "#{Metadata.eisbn}_EPUB"
 
 # zip epub
-Bkmkr::Tools.zip_epub(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
+Bkmkr::Tools.runpython(zipepub_py, "#{csfilename}.epub #{Bkmkr::Paths.project_tmp_dir}")
 
 # move epub into archive folder
 FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}")
