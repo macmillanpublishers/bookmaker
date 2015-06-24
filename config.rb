@@ -43,6 +43,12 @@ $saxon_version = "saxon9pe"
 $pdf_processor = "docraptor"
 #$pdf_processor = "prince"
 
+# Do you want to use image magick to process your images
+# for optimal epub display?
+# NB: This requires you to install image magick.
+$processimages = "true"
+# $processimages = "false"
+
 # ------------------ OPTIONAL VARIABLES
 # uncomment as needed
 
