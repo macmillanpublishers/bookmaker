@@ -146,6 +146,16 @@ module Bkmkr
 			$pdf_processor
 		end
 
+		def self.processxsl(html_file, xsl_file, epub_file, convert_log_txt)
+			if $xsl_processor
+				xsl_command = $xsl_processor.gsub(/\S*\.html/,"#{html_file}").gsub(/\S*\.xsl/,"#{xsl_file}").gsub(/\S*\.epub/,"#{epub_file}")
+				`$xsl_command 2>>"#{convert_log_txt}"`
+			else
+				saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{xslprocessor}.jar")
+				`java -jar "#{saxonpath}" -s:"#{html_file}" -xsl:"#{xsl_file}" -o:"#{epub_file}" 2>>"#{convert_log_txt}"`
+			end
+		end
+
 		def self.runpython(py_script, input_file)
 			if $python_processor
 				`#{$python_processor} #{py_script} #{input_file}`

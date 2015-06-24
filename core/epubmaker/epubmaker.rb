@@ -45,7 +45,7 @@ end
 # convert to epub and send stderr to log file
 # do these commands need to stack, or can I do this prior? (there was a cd and saxon invoke on top of each other)
 FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
-`java -jar "#{saxonpath}" -s:"#{epub_tmp_html}" -xsl:"#{epub_xsl}" -o:"#{tmp_epub}" 2>>"#{convert_log_txt}"`
+Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 
 # fix cover.html doctype
 covercontents = File.read("#{OEBPS_dir}/cover.html")

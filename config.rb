@@ -62,10 +62,10 @@ $done_dir = File.join(working_dir, "done")
 # you can specify a custom path/command here.
 # $python_processor = ""
 
-# If the standard windows and mac/unix zip commands don't work for you,
-# or you want to install zip in a location other than $resource_dir,
-# specify a custom path/command here.
-# $zip_install_path = ""
+# If you're using your own xslt processor, you can specify 
+# the command here, including file placeholders as shown below.
+# $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
+# $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
 
 # Your API key to create PDFs via DocRaptor
 $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
