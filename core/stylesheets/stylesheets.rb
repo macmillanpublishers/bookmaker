@@ -12,8 +12,13 @@ tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "
 pdf_css_file = Metadata.printcss
 epub_css_file = Metadata.epubcss
 
+find_pdf_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.printcss)
+find_epub_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.epubcss)
+
 if File.file?(pdf_css_file)
 	FileUtils.cp(pdf_css_file, "#{tmp_layout_dir}/pdf.css")
+elsif File.file?(find_pdf_css_file)
+	FileUtils.cp(find_pdf_css_file, "#{tmp_layout_dir}/pdf.css")
 else
 	File.open("#{tmp_layout_dir}/pdf.css", 'w') do |p|
 		p.write "/* no print css supplied */"
@@ -22,6 +27,8 @@ end
 
 if File.file?(epub_css_file)
 	FileUtils.cp(epub_css_file, "#{tmp_layout_dir}/epub.css")
+elsif File.file?(find_epub_css_file)
+	FileUtils.cp(find_epub_css_file, "#{tmp_layout_dir}/epub.css")
 else
 	File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
 		e.write "/* no epub css supplied */"
