@@ -46,8 +46,7 @@
        pre. -->
   <xsl:variable name="poetry-paras" as="xs:string*">
     <xsl:sequence
-      select="'Extract-VerseorPoetryextv',
-              'PoemTitlevt',
+      select="'PoemTitlevt',
               'PoemSubtitlevst',
               'PoemLevel-1Subheadvh1',
               'PoemLevel-2Subheadvh2',
@@ -55,8 +54,7 @@
               'PoemLevel-4Subheadvh4',
               'VerseTextvtx',
               'VerseRun-inTextNo-Indentvrtx1',
-              'VerseRun-inTextvrtx',
-              'Extract-VerseorPoetryextv'"/>
+              'VerseRun-inTextvrtx'"/>
   </xsl:variable>
 
 <!-- Paragraph styles which should get aggregated in a box
