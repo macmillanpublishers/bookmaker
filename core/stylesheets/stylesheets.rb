@@ -19,6 +19,7 @@ if File.file?(pdf_css_file)
 	FileUtils.cp(pdf_css_file, "#{tmp_layout_dir}/pdf.css")
 elsif File.file?(find_pdf_css_file)
 	FileUtils.cp(find_pdf_css_file, "#{tmp_layout_dir}/pdf.css")
+	FileUtils.rm(find_pdf_css_file)
 else
 	File.open("#{tmp_layout_dir}/pdf.css", 'w') do |p|
 		p.write "/* no print css supplied */"
@@ -29,6 +30,7 @@ if File.file?(epub_css_file)
 	FileUtils.cp(epub_css_file, "#{tmp_layout_dir}/epub.css")
 elsif File.file?(find_epub_css_file)
 	FileUtils.cp(find_epub_css_file, "#{tmp_layout_dir}/epub.css")
+	FileUtils.rm(find_epub_css_file)
 else
 	File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
 		e.write "/* no epub css supplied */"
