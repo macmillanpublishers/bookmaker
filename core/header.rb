@@ -2,7 +2,7 @@ require_relative '../config.rb'
 
 module Bkmkr
 	class Project
-  		@input_file = ARGV[0]
+  		@input_file = File.expand_path(ARGV[0])
   		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
 			@@input_file
@@ -178,10 +178,10 @@ module Bkmkr
 			end
 		end
 		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, http_username, http_password)
+			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if pdfprocessor == "prince"
-				`prince -s #{pdf_css} --javascript #{pdf_html_file} -o #{pisbn}.pdf`
+				`prince -s #{pdf_css} --javascript #{pdf_html_file} -o #{pdffile}`
 			elsif pdfprocessor == "docraptor"
-				pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 				File.open(pdffile, "w+b") do |f|
 				f.write DocRaptor.create(:document_content => pdf_html,
 				                           :name             => "#{pisbn}.pdf",

@@ -49,7 +49,11 @@ Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 
 # fix cover.html doctype
 covercontents = File.read("#{OEBPS_dir}/cover.html")
-replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
+if File.file?(final_cover)
+	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
+else
+	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>").gsub(/<img src="cover.jpg"\/>/," ")
+end
 File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 
 # fix author info in opf, add toc to text flow
@@ -61,9 +65,11 @@ File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
 
 # add cover image file to epub folder
-FileUtils.cp(final_cover, cover_jpg)
-unless Bkmkr::Tools.processimages == "false"
-	`convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
+if File.file?(final_cover)
+	FileUtils.cp(final_cover, cover_jpg)
+	unless Bkmkr::Tools.processimages == "false"
+		`convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
+	end
 end
 
 # add image files to epub folder
