@@ -1,0 +1,166 @@
+<html>
+<head>
+  <title>Bookmaker and Windows</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <img class="logo" src="logo.png" alt="Bookmaker logo" />
+    <h1>Windows Installation</h1>
+    <p class="subhead">Take a deep breath. This could get complicated.</p>
+  </div>
+  <div class="container">
+<h3>A Note About C:</h3>
+<p class="short">For the sake of speed, the installer is going to assume you are working in your C: drive. If you aren't, you'll need to follow the manual instructions over at INSERTLINK.</p>
+
+<p class="short">For the following steps, please install Python, Ruby, and saxon in C: at the top level.</p>
+</div>
+
+<div class="container">
+
+<h3>Python</h3>
+
+<p class="short">Download this file: <a href="https://www.python.org/ftp/python/2.7.10/python-2.7.10.msi">https://www.python.org/ftp/python/2.7.10/python-2.7.10.msi</a></p>
+
+<p class="short">Double click to open the installer and follow the prompts. Make note of the location where python is being installed (the installer typically suggests C:\Python27, which is exactly where we need it to be).</p>
+
+<h3>Ruby</h3>
+
+<p class="short">Download this file: <a href="http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.1.6.exe">http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.1.6.exe</a></p>
+
+<p class="short">Double click to open the installer and follow the prompts. Make a note of where Ruby is being installed (the installer typically suggests C:\Ruby21, which is exactly where we need it to be).</p>
+
+</div>
+<div class="container">
+<h3>xsltproc</h3>
+
+<p class="short">Go here: <a href="ftp://ftp.zlatkovic.com/libxml/">ftp://ftp.zlatkovic.com/libxml/</a> and download these 7 files: </p>
+
+<pre>
+iconv-1.9.2.win32.zip
+libxml2-2.7.8.win32.zip
+libxmlsec-1.2.18.win32.zip
+libxslt-1.1.26.win32.zip
+openssl-0.9.8a.win32.zip
+xsldbg-3.1.7.win32.zip
+zlib-1.2.5.win32.zip
+</pre>
+
+<p class="short">Create a folder in C: called <em>xsltproc</em>. Within each of the above 7 folders, copy all the files that are in the <em>bin</em> folder into your new <em>xsltproc</em> folder. Once you've done all 7, you should a folder full of stuff, that looks like this: </p>
+
+<p class="short">[screenshot]</p>
+</div>
+
+<div class="container">
+
+<h3>Java</h3>
+
+<p class="short">Download and install the Java jdk: <a href="http://download.oracle.com/otn-pub/java/jdk/8u45-b15/jdk-8u45-windows-i586.exe">http://download.oracle.com/otn-pub/java/jdk/8u45-b15/jdk-8u45-windows-i586.exe</a>.</p>
+
+<p class="short">Make note of the installation location and make sure it looks like this: <em>C:\Program Files (x86)\Java\jre1.8.0_45\bin</em>. If it doesn't match this, then you'll need to update the Java path in the "Update Your PATH" step below.</p>
+
+<h3>Saxon</h3>
+
+<p class="short">In C:, create a new folder called <em>saxon</em>.</p>
+
+<p class="short">Download Saxon HE: <a href="http://sourceforge.net/projects/saxon/files/latest/download?source=files">http://sourceforge.net/projects/saxon/files/latest/download?source=files</a>. Extract the contents of the folder to your new <em>saxon</em> folder.</p>
+</div>
+
+<div class="container">
+
+<h3>Prince</h3>
+
+<p class="short">Download the Prince ZIP: <a href="http://www.princexml.com/download/prince-10r2-windows.zip">http://www.princexml.com/download/prince-10r2-windows.zip</a>.</p>
+
+<p class="short">Create a new folder in C: called <em>prince</em>, and extract all the contents of the prince zip file to this folder.</p>
+
+</div>
+
+<div class="container">
+
+<h3>Update Your PATH</h3>
+
+<p class="short">Update your path variable to include Python, Ruby, xsltproc, Java, and Prince. In Command Prompt, type:</p>
+
+<pre class="wrap">setx PATH "C:\Python27;C:\xsltproc;C:\Ruby21\bin;C:\Program Files (x86)\Java\jdk1.8.0_45\bin;C:\prince\bin;"</pre>
+
+<p class="short">Close Command Prompt and then reopen it. Now let's make sure everything works so far. If you get any messages like "command is not recognized," that means something went wrong and you'll need to do some troubleshooting.</p>
+
+<p class="short">Make sure ruby is installed correctly by typing:</p>
+
+<pre>ruby -v</pre>
+
+<p class="short">Make sure python is installed correctly by typing:</p>
+
+<pre>python -V</pre>
+
+<p class="short">Make sure xsltproc is installed correctly by typing:</p>
+
+<pre>xsltproc -version</pre>
+
+<p class="short">Make sure java is installed correctly by typing:</p>
+
+<pre>java -version</pre>
+
+<p class="short">Make sure prince is installed correctly by typing:</p>
+
+<pre>prince --version</pre>
+
+<p class="short">You should get results like these:</p>
+
+<p class="short">[secreenshot]</p>
+
+</div>
+<div class="container">
+
+<h3>Ruby Dev Kit and Gems</h3>
+
+<p class="short">Download the Ruby Development Kit: <a href="http://dl.bintray.com/oneclick/rubyinstaller/DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe">http://dl.bintray.com/oneclick/rubyinstaller/DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe</a>.</p>
+
+<p class="short">Double click to open the installer and follow the prompts. When prompted to choose a location to extract the files, click the "…" button, and select "C:\DevKit" (you'll need to create the DevKit folder by clicking "Make New Folder").</p>
+
+<p class="short">Click "OK", and then "Extract" to extract the files.</p>
+
+<p class="short">Now in Command Prompt, enter the following commands:</p>
+
+<pre>chdir C:\DevKit</pre>
+<pre>ruby dk.rb init</pre>
+<pre>ruby dk.rb install</pre>
+
+<p class="short">Now install a ruby gem that bookmaker will be using. In Command Prompt, type the following:</p>
+
+<pre>gem install doc_raptor</pre>
+
+</div>
+
+<div class="container">
+
+<h3>Run the Installer</h3>
+
+<p class="short">Next, make a folder where you want to run bookmaker, download these two zip files and put them inside it:</p>
+
+<p class="short">https://github.com/oreillymedia/HTMLBook/archive/master.zip</p>
+
+<p class="short">[our zip file]</p>
+
+<p class="short">Extract the contents of both zip files to the following folders at the top level of your bookmaker folder: "bookmaker-master", "HTMLBook-master". Make sure that when you extracted the files, Windows didn't add an extra subfolder. The folder structure should look like this:</p>
+
+<p class="short">[screenshot]</p>
+
+<p class="short">Now let's run the installer to get everything up and running. We're going to use some preset folder and config settings, just for the sake of time, but everything is configurable--you can see the full docs at <a href="http://github.com/macmillanpublishers.com/bookmaker">http://github.com/macmillanpublishers.com/bookmaker</a>. <strong>TIP: You can just drag the <em>install.rb</em> file onto your Command Prompt window instead of typing the full path.</strong></p>
+
+<pre>ruby /path/to/install.rb</pre>
+
+<p class="short">That's it, my friend. It is done. Use the new "convert" folder to put your files for conversion, and the finished files will show up in the "done" folder.</p>
+
+<p class="short">Oh, except if you want to enable epub image processing, you should also install image magick: <a href="http://cactuslab.com/imagemagick/">http://cactuslab.com/imagemagick/</a>. But this isn't required and we have it turned off by default.</p>
+  </div>
+  </div>
+  <div class="container">
+    <img src="m_p_mono_b.png" alt="Macmillan Publishers" class="footer" />
+    <p class="footer">We want to hear from you! Email us at workflows@macmillan.com</p>
+  </div>
+</body>
+</html>

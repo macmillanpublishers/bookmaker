@@ -1,0 +1,71 @@
+<html>
+<head>
+  <title>Bookmaker and Mac</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <img class="logo" src="logo.png" alt="Bookmaker logo" />
+    <h1>Mac Installation</h1>
+    <p class="subhead">Hopefully this won't take too long.</p>
+  </div>
+  <div class="container">
+<h3>Check the Dependencies</h3>
+<p class="short">Most Macs come with a lot of the stuff we need pre-installed. Let's make sure yours does, too.</p>
+
+<p class="short">Open a command line and type the following commands. If a mesage like "command not found" gets returned, that means you'll need to install it.</p>
+
+<pre>ruby -v</pre>
+
+<p class="short">If ruby isn't installed, you can get it here: <a href="https://www.ruby-lang.org/en/documentation/installation/#homebrew">https://www.ruby-lang.org/en/documentation/installation/#homebrew</a>.</p>
+
+<p class="short">Once you've verified that ruby is installed, install a few gems we'll be using:</p>
+
+<pre>gem install doc_raptor</pre>
+
+<p class="short"><strong>Tip: If any of these steps ever fail and you get a "Permission denied" warning, try adding the word "sudo" before the command, like this: <code>sudo gem install doc_raptor</code>.</strong></p>
+
+<pre>python -V</pre>
+
+<p class="short">If python isn't installed, you can get it here: <a href="https://www.python.org/downloads/release/python-2710/">https://www.python.org/downloads/release/python-2710/</a>.</p>
+
+<pre>java -version</pre>
+
+<p class="short">If java isn't installed, you can get it here: https://www.java.com/en/download/help/mac_install.xml</p>
+
+<pre>xsltproc -version</pre>
+
+<p class="short">If xsltproc isn't installed, you can get it here: <a href="http://www.sagehill.net/docbookxsl/InstallingAProcessor.html">http://www.sagehill.net/docbookxsl/InstallingAProcessor.html</a></p>
+
+<p class="short">Now install Prince. Download the zip file: <a href="http://www.princexml.com/download/prince-10r2-macosx.tar.gz">http://www.princexml.com/download/prince-10r2-macosx.tar.gz</a>, and run the "install.sh" script that is included.</p>
+</div>
+<div class="container">
+<h3>Run the Installer</h3>
+
+<p class="short">Next, make a folder where you want to run bookmaker, download these three zip files and put them inside it:</p>
+
+<p class="short"><a href="https://github.com/oreillymedia/HTMLBook/archive/master.zip">https://github.com/oreillymedia/HTMLBook/archive/master.zip</a></p>
+
+<p class="short"><a href="http://sourceforge.net/projects/saxon/files/latest/download?source=files">http://sourceforge.net/projects/saxon/files/latest/download?source=files</a></p>
+
+<p class="short">[our zip file]</p>
+
+<p class="short">Double click to unzip all three zip files, but don't do anything else to them.</p>
+
+<p class="short">Now let's run the installer to get everything up and running. We're going to use some preset folder and config settings, just for the sake of time, but everything is configurable--you can see the full docs at <a href="http://github.com/macmillanpublishers.com/bookmaker">http://github.com/macmillanpublishers.com/bookmaker</a>. <strong>TIP: You can just drag the <em>install.rb</em> file onto your Terminal window instead of typing the full path.</strong></p>
+
+<pre>ruby /path/to/install.rb</pre>
+
+<p class="short">That's it, my friend. It is done. Use the new "convert" folder to put your files for conversion, and the finished files will show up in the "done" folder.</p>
+
+<p class="short">Oh, except if you want to enable epub image processing, you should also install image magick: <a href="http://cactuslab.com/imagemagick/">http://cactuslab.com/imagemagick/</a>. But this isn't required and we have it turned off by default.</p>
+  </div>
+  </div>
+  <div class="container">
+    <img src="m_p_mono_b.png" alt="Macmillan Publishers" class="footer" />
+    <p class="footer">We want to hear from you! Email us at workflows@macmillan.com</p>
+  </div>
+</body>
+</html>
