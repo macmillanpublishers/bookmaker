@@ -146,6 +146,10 @@ img.icon {
   max-width: 100px;
 }
 
+img.docs {
+  max-width: 750px;
+}
+
 pre {
   background-color: #fff;
   width: 600px;
