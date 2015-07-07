@@ -55,8 +55,6 @@ source.each do |m|
 	end
 end
 
-if images.include?(Metadata.frontcover)
-
 # Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
 if missing.any?
 	File.open(image_error, 'w') do |output|
