@@ -45,6 +45,7 @@ source.each do |m|
 	if images.include?("#{match}") and match == Metadata.frontcover
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
+		FileUtils.cp(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 	elsif images.include?("#{match}") and match != Metadata.frontcover
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
