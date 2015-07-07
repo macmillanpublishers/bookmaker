@@ -58,6 +58,17 @@ if missing.any?
 	end
 end
 
+# Copy cover to images dir just in case
+tmp_cover = File.join(Bkmkr::Paths.submitted_images, Metadata.frontcover)
+final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata.frontcover)
+img_cover = File.join(Bkmkr::Paths.project_tmp_dir_img, Metadata.frontcover)
+
+if File.file?("#{tmp_cover}")
+	FileUtils.cp(tmp_cover, img_cover)
+elsif File.file?("#{final_cover}")
+	FileUtils.cp(final_cover, img_cover)
+end
+
 # TESTING
 
 # Count how many images are referenced in the book
