@@ -42,7 +42,10 @@ matched = []
 source.each do |m|
 	match = m.split("/").pop.gsub(/"/,'')
 	matched_file = File.join(imagedir, match)
-	if images.include?("#{match}")
+	if images.include?("#{match}") and match == Metadata.frontcover
+		FileUtils.cp(matched_file, image_dest)
+		matched << match
+	elsif images.include?("#{match}") and match != Metadata.frontcover
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
 		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
@@ -51,22 +54,13 @@ source.each do |m|
 	end
 end
 
+if images.include?(Metadata.frontcover)
+
 # Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
 if missing.any?
 	File.open(image_error, 'w') do |output|
 		output.write "The following images are missing from the submitted_images folder: #{missing}"
 	end
-end
-
-# Copy cover to images dir just in case
-tmp_cover = File.join(Bkmkr::Paths.submitted_images, Metadata.frontcover)
-final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata.frontcover)
-img_cover = File.join(Bkmkr::Paths.project_tmp_dir_img, Metadata.frontcover)
-
-if File.file?("#{tmp_cover}")
-	FileUtils.cp(tmp_cover, img_cover)
-elsif File.file?("#{final_cover}")
-	FileUtils.cp(final_cover, img_cover)
 end
 
 # TESTING
