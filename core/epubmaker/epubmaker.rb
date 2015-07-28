@@ -86,6 +86,7 @@ if sourceimages.any?
 	unless Bkmkr::Tools.processimages == "false"
 		puts "A-OK"
 		images = Dir.entries(epub_img_dir).select { |f| File.file?(f) }
+		puts images
 		images.each do |i|
 			puts i
 			path_to_i = File.join(epub_img_dir, i)
