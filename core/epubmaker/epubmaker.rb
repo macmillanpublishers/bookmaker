@@ -77,18 +77,13 @@ sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images")
 
 # using imgmagick to optimize image sizes for epub
 if sourceimages.any?
-	puts "I found some images"
 	unless File.exist?(epub_img_dir)
 		Dir.mkdir(epub_img_dir)
 	end
 	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, epub_img_dir
-	puts Bkmkr::Tools.processimages
 	unless Bkmkr::Tools.processimages == "false"
-		puts "A-OK"
 		images = Dir.entries(epub_img_dir)
-		puts images
 		images.each do |i|
-			puts i
 			path_to_i = File.join(epub_img_dir, i)
 			`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
 		end
