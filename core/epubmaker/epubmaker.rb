@@ -82,7 +82,9 @@ if sourceimages.any?
 		Dir.mkdir(epub_img_dir)
 	end
 	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, epub_img_dir
+	puts Bkmkr::Tools.processimages
 	unless Bkmkr::Tools.processimages == "false"
+		puts "A-OK"
 		images = Dir.entries(epub_img_dir).select { |f| File.file?(f) }
 		images.each do |i|
 			puts i
