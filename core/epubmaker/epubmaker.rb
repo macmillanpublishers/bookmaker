@@ -82,10 +82,11 @@ if sourceimages.any?
 	end
 	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, epub_img_dir
 	unless Bkmkr::Tools.processimages == "false"
-		images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir}/epubimg").select { |f| File.file?(f) }
+		images = Dir.entries(epub_img_dir).select { |f| File.file?(f) }
 		images.each do |i|
-			path_to_i = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg", "#{i}")
+			path_to_i = File.join(epub_img_dir, "#{i}")
 			`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
+			puts "converted image"
 		end
 	end
 	FileUtils.cp Dir["#{epub_img_dir}/*"].select {|f| test ?f, f}, OEBPS_dir
