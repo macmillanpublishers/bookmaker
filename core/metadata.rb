@@ -26,10 +26,10 @@ class Metadata
 	end
 
 	def self.bookauthor
-		if @@data_hash['author']
-			@@data_hash['author']
-		else 
+		if @@data_hash['author'].empty?
 			"Unknown"
+		else 
+			@@data_hash['author']
 		end
 	end
 
