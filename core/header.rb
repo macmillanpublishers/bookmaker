@@ -222,7 +222,7 @@ module Bkmkr
 			addons = []
 
 			addon_hash['projects'].each do |p|
-				if p['name'] == Project.working_dir.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop
+				if p['name'] == Project.working_dir.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
 					addons = p['addons']
 				end
 			end
