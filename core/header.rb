@@ -297,6 +297,8 @@ module Bkmkr
 						end
 					end
 
+					addonfiledir = addonparams.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+					addonfile = File.join(addonfiledir, f['filename'])
 					addoncontent = File.read(f['filename']).gsub(/\n/,"").gsub(/"/,"\\\"")
 
 					# puts "2= #{inputfile}"
