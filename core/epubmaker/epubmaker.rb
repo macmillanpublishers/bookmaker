@@ -19,9 +19,19 @@ epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub
 tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
 OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
+METAINF_dir = File.join(Bkmkr::Paths.project_tmp_dir, "META-INF")
 final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
 cover_jpg = File.join(OEBPS_dir, "cover.jpg")
 epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
+
+# Delete any old conversion stuff
+if File.exists?(OEBPS_dir)
+	FileUtils.rm_r(OEBPS_dir)
+end
+
+if File.exists?(METAINF_dir)
+	FileUtils.rm_r(METAINF_dir)
+end
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
