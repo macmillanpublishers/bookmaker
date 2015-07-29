@@ -9,7 +9,9 @@ var s = process.argv[7] - 1;
 var locationName = process.argv[8];
 
 fs.readFile(file, function insertAddon (err, contents) {
-  $ = cheerio.load(contents);
+  $ = cheerio.load(contents, {
+          xmlMode: true
+        });
   if (locationType && locationClass) { 
   	var marker = $(locationContainer + '[class="' + locationClass + '"][data-type="' + locationType + '"]')[s]; 
   } else if (locationType && !locationClass) {
