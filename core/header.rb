@@ -309,8 +309,10 @@ module Bkmkr
 					# puts "7= #{sequence}"
 					# puts "8= #{location}"
 
+					jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
+
 					# Insert the addon via node.js
-					`node insertaddon.js "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{location}"`
+					`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{location}"`
 				end
 			end
 		end
