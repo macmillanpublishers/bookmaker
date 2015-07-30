@@ -2,7 +2,7 @@ require_relative '../config.rb'
 
 module Bkmkr
 	class Project
-  		@input_file = ARGV[0]
+  		@input_file = File.expand_path(ARGV[0])
   		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
 			@@input_file
@@ -146,6 +146,20 @@ module Bkmkr
 			$pdf_processor
 		end
 
+		def self.processimages
+			$processimages
+		end
+
+		def self.processxsl(html_file, xsl_file, epub_file, convert_log_txt)
+			if $xsl_processor
+				xsl_command = $xsl_processor.gsub(/\S*\.html/,"#{html_file}").gsub(/\S*\.xsl/,"#{xsl_file}").gsub(/\S*\.epub/,"#{epub_file}")
+				`#{xsl_command} 2>>"#{convert_log_txt}"`
+			else
+				saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{xslprocessor}.jar")
+				`java -jar "#{saxonpath}" -s:"#{html_file}" -xsl:"#{xsl_file}" -o:"#{epub_file}" 2>>"#{convert_log_txt}"`
+			end
+		end
+
 		def self.runpython(py_script, input_file)
 			if $python_processor
 				`#{$python_processor} #{py_script} #{input_file}`
@@ -163,12 +177,11 @@ module Bkmkr
 				File.delete(Project.alert)
 			end
 		end
-
-		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, testing_value, http_username, http_password)
+		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, http_username, http_password)
+			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if pdfprocessor == "prince"
-				`prince #{pdf_html_file} -o #{pisbn}.pdf`
+				`prince -s #{pdf_css} --javascript #{pdf_html_file} -o #{pdffile}`
 			elsif pdfprocessor == "docraptor"
-				pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 				File.open(pdffile, "w+b") do |f|
 				f.write DocRaptor.create(:document_content => pdf_html,
 				                           :name             => "#{pisbn}.pdf",

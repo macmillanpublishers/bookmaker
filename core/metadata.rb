@@ -10,98 +10,98 @@ class Metadata
 	@@data_hash = JSON.parse(@@file)
 
 	def self.booktitle
-		if @@data_hash['title']
-			@@data_hash['title']
-		else 
+		if @@data_hash['title'].empty? or !@@data_hash['title']
 			Bkmkr::Project.filename
+		else 
+			@@data_hash['title']
 		end
 	end
 
 	def self.booksubtitle
-		if @@data_hash['subtitle']
-			@@data_hash['subtitle']
-		else 
+		if @@data_hash['subtitle'].empty? or !@@data_hash['subtitle']
 			"Unknown"
+		else 
+			@@data_hash['subtitle']
 		end
 	end
 
 	def self.bookauthor
-		if @@data_hash['author']
-			@@data_hash['author']
-		else 
+		if @@data_hash['author'].empty? or !@@data_hash['author']
 			"Unknown"
+		else 
+			@@data_hash['author']
 		end
 	end
 
 	def self.productid
-		if @@data_hash['productid']
-			@@data_hash['productid']
-		else 
+		if @@data_hash['productid'].empty? or !@@data_hash['productid']
 			Bkmkr::Project.filename
+		else 
+			@@data_hash['productid']
 		end
 	end
 
 	def self.pisbn
-		if @@data_hash['printid']
-			@@data_hash['printid']
-		else 
+		if @@data_hash['printid'].empty? or !@@data_hash['printid']
 			Bkmkr::Project.filename
+		else 
+			@@data_hash['printid']
 		end
 	end
 
 	def self.eisbn
-		if @@data_hash['ebookid']
-			@@data_hash['ebookid']
-		else 
+		if @@data_hash['ebookid'].empty? or !@@data_hash['ebookid']
 			Bkmkr::Project.filename
+		else 
+			@@data_hash['ebookid']
 		end
 	end
 
 	def self.imprint
-		if @@data_hash['imprint']
-			@@data_hash['imprint']
-		else 
+		if @@data_hash['imprint'].empty? or !@@data_hash['imprint']
 			"Unknown"
+		else 
+			@@data_hash['imprint']
 		end
 	end
 
 	def self.publisher
-		if @@data_hash['publisher']
-			@@data_hash['publisher']
-		else 
+		if @@data_hash['publisher'].empty? or !@@data_hash['publisher']
 			"Unknown"
+		else 
+			@@data_hash['publisher']
 		end
 	end
 
 	def self.printcss
-		if @@data_hash['printcss']
-			@@data_hash['printcss']
-		else 
+		if @@data_hash['printcss'].empty? or !@@data_hash['printcss']
 			"none"
+		else 
+			@@data_hash['printcss']
 		end
 	end
 
 	def self.printjs
-		if @@data_hash['printjs']
-			@@data_hash['printjs']
-		else 
+		if @@data_hash['printjs'].empty? or !@@data_hash['printjs']
 			"none"
+		else 
+			@@data_hash['printjs']
 		end
 	end
 
 	def self.epubcss
-		if @@data_hash['ebookcss']
-			@@data_hash['ebookcss']
-		else 
+		if @@data_hash['ebookcss'].empty? or !@@data_hash['ebookcss']
 			"none"
+		else 
+			@@data_hash['ebookcss']
 		end
 	end
 
 	def self.frontcover
-		if @@data_hash['frontcover']
-			@@data_hash['frontcover']
-		else 
+		if @@data_hash['frontcover'].empty? or !@@data_hash['frontcover']
 			"Unknown"
+		else 
+			@@data_hash['frontcover']
 		end
 	end
 end

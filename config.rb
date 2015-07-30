@@ -3,7 +3,7 @@
 $currpath = Dir.pwd
 $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 
-input_file = ARGV[0].split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
+input_file = File.expand_path(ARGV[0]).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 
 # ------------------ GLOBAL VARIABLES
@@ -30,6 +30,7 @@ $scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
 
 # The location that any other resources are installed, 
 # for example your pdf processor, zip utility, etc.
+# (on Windows zip is expected at path: $resource_dir\zip\zip.exe)
 $resource_dir = "C:"
 
 # Which version of saxon are you using?
@@ -41,6 +42,12 @@ $saxon_version = "saxon9pe"
 # Choose either prince or docraptor to create your PDFs.
 $pdf_processor = "docraptor"
 #$pdf_processor = "prince"
+
+# Do you want to use image magick to process your images
+# for optimal epub display?
+# NB: This requires you to install image magick.
+$processimages = "true"
+# $processimages = "false"
 
 # ------------------ OPTIONAL VARIABLES
 # uncomment as needed
@@ -60,6 +67,11 @@ $done_dir = File.join(working_dir, "done")
 # or you want to install python in a location other than $resource_dir,
 # you can specify a custom path/command here.
 # $python_processor = ""
+
+# If you're using your own xslt processor, you can specify 
+# the command here, including file placeholders as shown below.
+# $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
+# $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
 
 # Your API key to create PDFs via DocRaptor
 $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")

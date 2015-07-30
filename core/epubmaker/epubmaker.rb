@@ -1,4 +1,4 @@
-require 'FileUtils'
+require 'fileutils'
 
 require_relative '../header.rb'
 require_relative '../metadata.rb'
@@ -12,6 +12,7 @@ cover = data_hash['frontcover']
 # Local path var(s)
 epub_dir = Bkmkr::Paths.project_tmp_dir
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
+zipepub_py = File.join(Bkmkr::Paths.core_dir, "epubmaker", "zipepub.py")
 epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
 strip_halftitle_xsl = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-halftitle.xsl")
 epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub.xsl")
@@ -26,9 +27,9 @@ epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 # Replacing toc with empty nav, as required by htmlbook xsl
 # Allowing for users to preprocess epub html if desired
 if File.file?(epub_tmp_html)
-	filecontents = File.read(epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+	filecontents = File.read(epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /><meta name='publisher' content=\"#{Metadata.imprint}\" /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 else
-	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content='#{Metadata.bookauthor}' /><meta name='publisher' content='#{Metadata.imprint}' /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /><meta name='publisher' content=\"#{Metadata.imprint}\" /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 end
 
 # Saving revised HTML into tmp file
@@ -44,26 +45,32 @@ end
 # convert to epub and send stderr to log file
 # do these commands need to stack, or can I do this prior? (there was a cd and saxon invoke on top of each other)
 FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
-`java -jar "#{saxonpath}" -s:"#{epub_tmp_html}" -xsl:"#{epub_xsl}" -o:"#{tmp_epub}" 2>>"#{convert_log_txt}"`
+Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 
 # fix cover.html doctype
 covercontents = File.read("#{OEBPS_dir}/cover.html")
-replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
+if File.file?(final_cover)
+	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
+else
+	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>").gsub(/<img src="cover.jpg"\/>/," ")
+end
 File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 
 # fix author info in opf, add toc to text flow
 opfcontents = File.read("#{OEBPS_dir}/content.opf")
-tocid = opfcontents.match(/(id=")(toc-.*?)(")/)[2]
-copyright_tag = opfcontents.match(/<itemref idref="copyright-page-.*?"\/>/)
-replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'").gsub(/(<itemref idref="titlepage-.*?"\/>)/,"\\1<itemref idref=\"#{tocid}\"\/>").gsub(/#{copyright_tag}/,"").gsub(/<\/spine>/,"#{copyright_tag}<\/spine>")
+replace = opfcontents.gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'")
 File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 
 # add epub css to epub folder
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
 
 # add cover image file to epub folder
-FileUtils.cp(final_cover, cover_jpg)
-`convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
+if File.file?(final_cover)
+	FileUtils.cp(final_cover, cover_jpg)
+	unless Bkmkr::Tools.processimages == "false"
+		`convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
+	end
+end
 
 # add image files to epub folder
 sourceimages = Dir.entries("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images")
@@ -74,10 +81,12 @@ if sourceimages.any?
 		Dir.mkdir(epub_img_dir)
 	end
 	FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, epub_img_dir
-	images = Dir.entries("#{Bkmkr::Paths.project_tmp_dir}/epubimg").select { |f| File.file?(f) }
-	images.each do |i|
-		path_to_i = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg", "#{i}")
-		`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
+	unless Bkmkr::Tools.processimages == "false"
+		images = Dir.entries(epub_img_dir)
+		images.each do |i|
+			path_to_i = File.join(epub_img_dir, i)
+			`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
+		end
 	end
 	FileUtils.cp Dir["#{epub_img_dir}/*"].select {|f| test ?f, f}, OEBPS_dir
 end
@@ -85,10 +94,7 @@ end
 csfilename = "#{Metadata.eisbn}_EPUB"
 
 # zip epub
-# do these commands need to stack, or can I do this FileUtils prior instead of the cd's??
-FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
-`cd "#{Bkmkr::Paths.project_tmp_dir}" & #{Bkmkr::Paths.resource_dir}\\zip\\zip.exe #{csfilename}.epub -DX0 mimetype`
-`cd "#{Bkmkr::Paths.project_tmp_dir}" & #{Bkmkr::Paths.resource_dir}\\zip\\zip.exe #{csfilename}.epub -rDX9 META-INF OEBPS`
+Bkmkr::Tools.runpython(zipepub_py, "#{csfilename}.epub #{Bkmkr::Paths.project_tmp_dir}")
 
 # move epub into archive folder
 FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}")

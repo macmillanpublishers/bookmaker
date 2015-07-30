@@ -44,7 +44,7 @@ The scripts are as follows:
 
 [epubmaker](https://github.com/macmillanpublishers/bookmaker/blob/master/core/epubmaker/epubmaker.rb): Preps the HTML file and converts to EPUB using the HTMLBook scripts.
 
-*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, Saxon, HTMLBook, zip.exe*
+*Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, chapterheads, Saxon, HTMLBook, python*
 
 [cleanup](https://github.com/macmillanpublishers/bookmaker/blob/master/core/cleanup/cleanup.rb): Removes all temporary working files and working dirs.
 
@@ -80,9 +80,9 @@ Each of the following fields is used for various purposes throughout the Bookmak
 * ebookid. Required for ebook metadata and file naming. If not found, will fallback to input file name.
 * imprint. Required for ebook metadata. If not found, will fallback to "Unknown".
 * publisher. Required for ebook metadata. If not found, will fallback to "Unknown".
-* printcss. Required for PDF formatting. If not found, will use the default Prince stylesheet.
-* ebookcss. Required for ebook formatting. If not found, no extra formatting will be applied.
-* frontcover. Required for ebook. If not found, Bookmaker will fail :cry:.
+* printcss. Required for PDF formatting. Can be either a full path to a file on your computer, or just a filename (if just a filename is provided, bookmaker will assume the css file is in the assets directory, along with the cover and config.json files). If not found, will use the default Prince stylesheet.
+* ebookcss. Required for ebook formatting. Can be either a full path to a file on your computer, or just a filename (if just a filename is provided, bookmaker will assume the css file is in the assets directory, along with the cover and config.json files). If not found, no extra formatting will be applied.
+* frontcover. Front cover image to include in the ebook. If not found, no cover image will appear.
 
 
 ## Folder Structure
@@ -146,8 +146,8 @@ If you plan to make changes to the source code, you will want to fork those repo
 Install the utilities listed in the previous section, as needed. For reference, you need to install the following in order to create these outputs:
 
 * To create an HTML file: Ruby, Java, Saxon, Python
-* To create a PDF file: Ruby, Java, Saxon, Python, PrinceXML OR the Docraptor gem, SSL cert file
-* To create an EPUB file: Ruby, Java, Saxon, Python, Zip.exe, Imagemagick
+* To create a PDF file: Ruby, Java, Saxon (any version), Python, PrinceXML OR a Docraptor account+SSL cert file
+* To create an EPUB file: Ruby, Saxon PE+Java OR xsltproc, Python, Imagemagick (optional)
 
 #### Ruby
 
@@ -164,10 +164,6 @@ For Windows, [follow the directions here](http://www.pythoncentral.io/add-python
 Saxon is an XSLT processor that runs the script to convert the Word document to HTML, and also transforms the HTML to create the EPUB file. Right now Bookmaker can only run with Saxon, but we'd love to add support for other XSLT2.0 processors.
 
 To install the free Saxon HE, go here: 
-
-#### WINDOWS USERS: Zip.exe
-
-Download here: http://stahlworks.com/dev/index.php?tool=zipunzip
 
 #### FOR PRINCE: Download Prince
 
@@ -210,27 +206,13 @@ $http_password = "YOUR_PASSWORD_HERE"
 
 #### HTMLBook
 
-The EPUB generation script relies on a collection of open source scripts called HTMLBook (created by O'Reilly). Macmillan has a forked version of the HTMLBook scripts that include the customizations outlined below, and are maintained on GitHub here: https://github.com/macmillanpublishers/HTMLBook. (The original, unmodified O'Reilly scripts are hosted on GitHub here: https://github.com/oreillymedia/HTMLBook.)
+The EPUB generation script relies on a collection of open source scripts called HTMLBook (created by O'Reilly), which are hosted on GitHub here: https://github.com/oreillymedia/HTMLBook.
 
 The entire contents of the repository should be cloned or copied to your server, at the same level as the other Bookmaker scripts.
 
-The following customizations have been made to the HTMLBook .xsl files:
+**If you are using Saxon PE as your EPUB XSL processor, you'll need to edit the following files:**
 
-**epub.xsl**
-
-Lines 208-213: Comment out this whole chunk. It references font files we do not use.
-
-    <!--<xsl:param name="embedded.fonts.list"\>DejaVuSerif.otf
-    DejaVuSans-Bold.otf
-    UbuntuMono-Regular.otf
-    UbuntuMono-Bold.otf
-    UbuntuMono-BoldItalic.otf
-    UbuntuMono-Italic.otf</xsl:param>-->
-
-We currently do not embed any fonts in our EPUB files. Update this list and uncomment if fonts ever need to be embedded.
-
-Line 225: set xsl:param name="autogenerate.labels" to "0". This turns off autonumbering, since numbering is added to manuscripts manually.
-htmlbook.xsl
+**htmlbook.xsl**
 
 Line 22: Comment out this line. It refers to the exsl package, which is not supported by our conversion software.
 
@@ -239,18 +221,6 @@ Line 22: Comment out this line. It refers to the exsl package, which is not supp
 Line 24: Uncomment this line--our conversion software (Saxon) uses xslt2, so we need to activate these functions.
 
     <xsl:include href="functions-xslt2.xsl"/> <!-- Functions that are compatible with XSLT 2.0 processors -->
-
-**opf.xsl**
-
-Line 152: Replace with the following, to fix namespace and iBooks metadata rendering:
-
-    <package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en" prefix="rendition: http://www.idpf.org/vocab/rendition/#" unique-identifier="{$metadata.unique-identifier.id}">
-
-Lines 158-160: Comment out this block. It adds extra namespace values to the content.opf file in the generated EPUB, which causes metadata not to render in iBooks.
-
-    <!--<xsl:for-each select="exsl:node-set($package.namespaces)//*/namespace::*">
-    <xsl:copy-of select="."/>
-    </xsl:for-each>-->
 
 ### Configure Your Settings
 

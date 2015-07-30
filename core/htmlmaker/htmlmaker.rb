@@ -6,7 +6,7 @@ require_relative '../header.rb'
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
 docxtoxml_py = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "docxtoxml.py")
 source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.xml")
-word_to_html_xsl = File.join(Bkmkr::Paths.scripts_dir, "WordXML-to-HTML", "wordtohtml.xsl")
+word_to_html_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "wordtohtml.xsl")
 footnotes_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.xsl")
 strip_toc_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.xsl")
 parts_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.xsl")
@@ -39,7 +39,7 @@ filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
 replace = filecontents.gsub(/(<span class="endnotereference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
-# replace nbsp entities with 160 and fix img closing tags
+# replace nbsp entities with 160 and fix img closing tags, and add lang attr
 nbspcontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
 replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}

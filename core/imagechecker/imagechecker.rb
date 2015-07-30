@@ -42,7 +42,11 @@ matched = []
 source.each do |m|
 	match = m.split("/").pop.gsub(/"/,'')
 	matched_file = File.join(imagedir, match)
-	if images.include?("#{match}")
+	if images.include?("#{match}") and match == Metadata.frontcover
+		FileUtils.cp(matched_file, image_dest)
+		matched << match
+		FileUtils.cp(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+	elsif images.include?("#{match}") and match != Metadata.frontcover
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
 		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
