@@ -313,6 +313,8 @@ module Bkmkr
 
 					# Insert the addon via node.js
 					`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{location}"`
+
+					puts "inserted #{addonfile}"
 				end
 			end
 		end
