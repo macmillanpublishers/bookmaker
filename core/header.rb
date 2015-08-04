@@ -240,81 +240,83 @@ module Bkmkr
 			locationname = ""
 
 			# for each addon, apply it to the HTML
-			addon_hash['files'].each do |f|
-				if addons.include?(f['filename'])
-					validlocations = []
+			addons.each do |a|
+				addon_hash['files'].each do |f|
+					if f['filename'] == a
+						validlocations = []
 
-					# figure out where to insert the new content
-					f['locations'].each do |l|
-						section = true
-						datatype = true
-						thisclass = true
-						section_hash['sections'].each do |x|
-							if x['name'] == l['name']
-								if x['containertype']
-									fsection = x['containertype']
-									search = contents.scan(/#{fsection}/)
-									unless search.any?
-										section = false
+						# figure out where to insert the new content
+						f['locations'].each do |l|
+							section = true
+							datatype = true
+							thisclass = true
+							section_hash['sections'].each do |x|
+								if x['name'] == l['name']
+									if x['containertype']
+										fsection = x['containertype']
+										search = contents.scan(/#{fsection}/)
+										unless search.any?
+											section = false
+										end
 									end
-								end
-								if x['datatype']
-									fdatatype = x['datatype']
-									search = contents.scan(/data-type="#{fdatatype}"/)
-									unless search.any?
-										datatype = false
+									if x['datatype']
+										fdatatype = x['datatype']
+										search = contents.scan(/data-type="#{fdatatype}"/)
+										unless search.any?
+											datatype = false
+										end
 									end
-								end
-								if x['class']
-									fclass = x['class']
-									search = contents.scan(/class="#{fclass}"/)
-									unless search.any?
-										thisclass = false
+									if x['class']
+										fclass = x['class']
+										search = contents.scan(/class="#{fclass}"/)
+										unless search.any?
+											thisclass = false
+										end
 									end
 								end
 							end
+							if section == true and datatype == true and thisclass == true
+								validlocations << l['name']
+							end
 						end
-						if section == true and datatype == true and thisclass == true
-							validlocations << l['name']
+
+						location = validlocations.shift
+						puts "insertion location is: #{location}"
+
+						# get insertion point values from first existing location
+						section_hash['sections'].each do |w|
+							if w['name'] == location
+								if w['datatype'] then locationtype = w['datatype'] end
+								if w['class'] then locationclass = w['class'] end
+								if w['containertype'] then locationcontainer = w['containertype'] end
+							end
 						end
+
+						f['locations'].each do |v|
+							if v['name'] == location
+								if v['sequence'] then sequence = v['sequence'] end
+							end
+						end
+
+						addonfiledir = addonparams.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1]
+						addonfile = File.join(addonfiledir, f['filename'])
+						addoncontent = File.read(addonfile).gsub(/\n/,"").gsub(/"/,"\\\"")
+
+						# puts "2= #{inputfile}"
+						# puts "3= #{addoncontent}"
+						# puts "4= #{locationcontainer}"
+						# puts "5= #{locationtype}"
+						# puts "6= #{locationclass}"
+						# puts "7= #{sequence}"
+						# puts "8= #{location}"
+
+						jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
+
+						# Insert the addon via node.js
+						`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{location}"`
+
+						puts "inserted #{addonfile}"
 					end
-
-					location = validlocations.shift
-					puts "insertion location is: #{location}"
-
-					# get insertion point values from first existing location
-					section_hash['sections'].each do |w|
-						if w['name'] == location
-							if w['datatype'] then locationtype = w['datatype'] end
-							if w['class'] then locationclass = w['class'] end
-							if w['containertype'] then locationcontainer = w['containertype'] end
-						end
-					end
-
-					f['locations'].each do |v|
-						if v['name'] == location
-							if v['sequence'] then sequence = v['sequence'] end
-						end
-					end
-
-					addonfiledir = addonparams.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1]
-					addonfile = File.join(addonfiledir, f['filename'])
-					addoncontent = File.read(addonfile).gsub(/\n/,"").gsub(/"/,"\\\"")
-
-					# puts "2= #{inputfile}"
-					# puts "3= #{addoncontent}"
-					# puts "4= #{locationcontainer}"
-					# puts "5= #{locationtype}"
-					# puts "6= #{locationclass}"
-					# puts "7= #{sequence}"
-					# puts "8= #{location}"
-
-					jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
-
-					# Insert the addon via node.js
-					`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{location}"`
-
-					puts "inserted #{addonfile}"
 				end
 			end
 		end
