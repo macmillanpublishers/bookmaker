@@ -205,15 +205,11 @@ module Bkmkr
 		end
 		def self.insertaddons(inputfile, sectionparams, addonparams)
 			# The section types JSON
-			#sectionfile = File.join(Bkmkr::Paths.base_dir, "sections.json")
-			#sectionfile = "sections.json"
 			sectionfile = sectionparams
 			file2 = File.read(sectionfile)
 			section_hash = JSON.parse(file2)
 
 			# The addon files JSON
-			#addonfile = File.join(Bkmkr::Paths.base_dir, "addons.json")
-			#addonfile = "addons.json"
 			addonfile = addonparams
 			file3 = File.read(addonfile)
 			addon_hash = JSON.parse(file3)
@@ -236,6 +232,7 @@ module Bkmkr
 			locationtype = ""
 			locationclass = ""
 			locationcontainer = ""
+			order = "before"
 			sequence = 1
 			locationname = ""
 
@@ -295,6 +292,7 @@ module Bkmkr
 						f['locations'].each do |v|
 							if v['name'] == location
 								if v['sequence'] then sequence = v['sequence'] end
+								if v['order'] then order = v['order'] end
 							end
 						end
 
@@ -313,12 +311,54 @@ module Bkmkr
 						jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
 
 						# Insert the addon via node.js
-						`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{location}"`
+						`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{order}" "#{location}"`
 
 						puts "inserted #{addonfile}"
 					end
 				end
 			end
+		end
+		def self.movesection(inputfile, sectionparams, src, srcseq, dest, destseq)
+			# The section types JSON
+			sectionfile = sectionparams
+			file2 = File.read(sectionfile)
+			section_hash = JSON.parse(file2)
+
+			contents = File.read(inputfile)
+
+			# Set preliminary var values, in case of null values
+			srctype = ""
+			srcclass = ""
+			srccontainer = ""
+			desttype = ""
+			destclass = ""
+			destcontainer = ""
+
+			# get source values from src section hash
+			section_hash['sections'].each do |w|
+				if w['name'] == src
+					if w['datatype'] then srctype = w['datatype'] end
+					if w['class'] then srcclass = w['class'] end
+					if w['containertype'] then srccontainer = w['containertype'] end
+				elsif w['name'] == dest
+					if w['datatype'] then desttype = w['datatype'] end
+					if w['class'] then destclass = w['class'] end
+					if w['containertype'] then destcontainer = w['containertype'] end
+				end
+			end
+
+			# puts "2= #{inputfile}"
+			# puts "3= #{addoncontent}"
+			# puts "4= #{locationcontainer}"
+			# puts "5= #{locationtype}"
+			# puts "6= #{locationclass}"
+			# puts "7= #{sequence}"
+			# puts "8= #{location}"
+
+			jsfile = File.join(Paths.core_dir, "utilities", "movesection.js")
+
+			# Insert the addon via node.js
+			`node #{jsfile} "#{inputfile}" "#{srccontainer}" "#{srctype}" "#{srcclass}" "#{srcseq}" "#{destcontainer}" "#{desttype}" "#{destclass}" "#{destseq}"`
 		end
 	end
 end
