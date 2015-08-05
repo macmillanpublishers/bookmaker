@@ -31,6 +31,9 @@ fs.readFile(file, function moveSection (err, contents) {
   } else {
     var destination = $(dest)[ds];
   };
+
+  console.log(source);
+  console.log(destination);
   
   if (dest == "body") {
   	$('body').append(source);
