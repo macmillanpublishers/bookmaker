@@ -47,11 +47,3 @@ fs.readFile(file, function moveSection (err, contents) {
 	    console.log("Section has been moved!");
 	});
 });
-
-// find section to be moved
-// find position to move it to
-// move it
-
-var cover = $()
-var halftitlepage = $()
-var titlepage = $()
