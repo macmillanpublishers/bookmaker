@@ -1,41 +1,41 @@
 var fs = require('fs');
 var cheerio = require('cheerio');
 var file = process.argv[2];
-var src = process.argv[3];
+var srcEl = process.argv[3];
 var srcType = process.argv[4];
 var srcClass = process.argv[5];
-var ss = process.argv[6];
-var dest = process.argv[7];
+var ss = process.argv[6] - 1;
+var destEl = process.argv[7];
 var destType = process.argv[8];
 var destClass = process.argv[9];
-var ds = process.argv[10];
+var ds = process.argv[10] - 1;
 
 fs.readFile(file, function moveSection (err, contents) {
-  $ = cheerio.load(contents);
+  $ = cheerio.load(contents, {
+          xmlMode: true
+        });
+
   if (srcType && srcClass) { 
-  	var source = $(src + '[class="' + srcClass + '"][data-type="' + srcType + '"]')[ss]; 
+  	var source = $(srcEl + '[class="' + srcClass + '"][data-type="' + srcType + '"]')[ss]; 
   } else if (srcType && !srcClass) {
-  	var source = $(src + '[data-type="' + srcType + '"]')[ss];
+  	var source = $(srcEl + '[data-type="' + srcType + '"]')[ss];
   } else if (!srcType && srcClass) {
-  	var source = $(src + '[class="' + srcClass + '"]')[ss];
+  	var source = $(srcEl + '[class="' + srcClass + '"]')[ss];
   } else {
-  	var source = $(src)[ss];
+  	var source = $(srcEl)[ss];
   };
 
   if (destType && destClass) { 
-    var destination = $(dest + '[class="' + destClass + '"][data-type="' + destType + '"]')[ds]; 
+    var destination = $(destEl + '[class="' + destClass + '"][data-type="' + destType + '"]')[ds]; 
   } else if (destType && !destClass) {
-    var destination = $(dest + '[data-type="' + destType + '"]')[ds];
+    var destination = $(destEl + '[data-type="' + destType + '"]')[ds];
   } else if (!destType && destClass) {
-    var destination = $(dest + '[class="' + destClass + '"]')[ds];
+    var destination = $(destEl + '[class="' + destClass + '"]')[ds];
   } else {
-    var destination = $(dest)[ds];
+    var destination = $(destEl)[ds];
   };
-
-  console.log(source);
-  console.log(destination);
   
-  if (dest == "body") {
+  if (destEl == "body") {
   	$('body').append(source);
   } else {
     $(source).insertBefore(destination);
