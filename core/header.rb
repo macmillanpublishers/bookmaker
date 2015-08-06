@@ -241,6 +241,7 @@ module Bkmkr
 				addon_hash['files'].each do |f|
 					if f['filename'] == a
 						validlocations = []
+						order = "before"
 
 						# figure out where to insert the new content
 						f['locations'].each do |l|
