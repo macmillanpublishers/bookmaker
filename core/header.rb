@@ -349,15 +349,15 @@ module Bkmkr
 				end
 			end
 
-			puts "2= #{inputfile}"
-			puts "3= #{srccontainer}"
-			puts "4= #{srctype}"
-			puts "5= #{srcclass}"
-			puts "6= #{srcseq}"
-			puts "7= #{destcontainer}"
-			puts "8= #{desttype}"
-			puts "9= #{destclass}"
-			puts "10= #{destseq}"
+			# puts "2= #{inputfile}"
+			# puts "3= #{srccontainer}"
+			# puts "4= #{srctype}"
+			# puts "5= #{srcclass}"
+			# puts "6= #{srcseq}"
+			# puts "7= #{destcontainer}"
+			# puts "8= #{desttype}"
+			# puts "9= #{destclass}"
+			# puts "10= #{destseq}"
 
 			jsfile = File.join(Paths.core_dir, "utilities", "movesection.js")
 
