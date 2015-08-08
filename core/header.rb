@@ -1,3 +1,5 @@
+require "open-uri"
+
 require_relative '../config.rb'
 
 module Bkmkr
@@ -363,6 +365,59 @@ module Bkmkr
 
 			# Insert the addon via node.js
 			`node #{jsfile} "#{inputfile}" "#{srccontainer}" "#{srctype}" "#{srcclass}" "#{srcseq}" "#{destcontainer}" "#{desttype}" "#{destclass}" "#{destseq}"`
+		end
+		def self.getImages(file, destdir)
+			thisdir = File.expand_path(file).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
+			parentdir = File.expand_path(file).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+			images = File.read(file).scan(/(["'\(])([^"'\(]((.*?\.jpe?g)|(.*?\.png)|(.*?\.gif)|(.*?\.pdf)|(.*?\.eps)|(.*?\.ai)|(.*?\.tif+)|(.*?\.svg)))(["'\)])/)[2]
+			if images.any?
+				images.each do |e|
+					imgsplit = e.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
+					imgname = e.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+					destpath = File.join(destdir, imgname)
+					searchassets = File.join(assets_dir, imgname)
+					searchthisdir = File.join(thisdir, imgname)
+					searchparent = File.join(parentdir, imgname)
+					siblings = Dir.entries(thisdir).select {|entry| File.directory? File.join(thisdir,entry) and !(entry =='.' || entry == '..') }
+					cousins = Dir.entries(parentdir).select {|entry| File.directory? File.join(parentdir,entry) and !(entry =='.' || entry == '..') }
+					if imgsplit[0] == "http" or "https" or "www"
+						# copy image from web resource
+						File.open(destpath, 'wb') do |fo|
+						  fo.write open(e).read 
+						end
+					else
+						# find and copy
+						if File.exist?(e)
+							File.copy(e, destdir)
+						# search: assets dir, file dir, file parent dir, file sibling dirs
+						elsif File.exist?(searchassets)
+							File.copy(searchassets, destdir)
+						elsif File.exist?(searchthisdir)
+							File.copy(searchthisdir, destdir)
+						elsif File.exist?(searchparent)
+							File.copy(searchparent, destdir)
+						elsif siblings.any?
+							siblings.each do |s|
+								#search each s
+								findimg = File.join(File.expand_path(s), imgname)
+								if File.exist?(findimg)
+									File.copy(findimg, destdir)
+								end
+							end
+						elsif cousins.any?
+							cousins.each do |c|
+								#search each c
+								findimg = File.join(File.expand_path(c), imgname)
+								if File.exist?(findimg)
+									File.copy(findimg, destdir)
+								end
+							end
+						end
+					end
+					# change img source
+					# filecontents = File.read(file).gsub(/e/,"#{destpath}")
+				end
+			end
 		end
 	end
 end
