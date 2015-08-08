@@ -6,7 +6,8 @@ var locationContainer = process.argv[4];
 var locationType = process.argv[5];
 var locationClass = process.argv[6];
 var s = process.argv[7] - 1;
-var locationName = process.argv[8];
+var order = process.argv[8];
+var locationName = process.argv[9];
 
 fs.readFile(file, function insertAddon (err, contents) {
   $ = cheerio.load(contents, {
@@ -22,10 +23,18 @@ fs.readFile(file, function insertAddon (err, contents) {
   	var marker = $(locationContainer)[s];
   };
   
-  if (locationName == "endofbook") {
-  	$('body').append(addonContent);
-  } else {
-    $(marker).before(addonContent);
+  if (order == "after") {
+    if (locationName == "startofbook") {
+      $('body').prepend(addonContent);
+    } else {
+      $(marker).after(addonContent);
+    };
+  } else { 
+    if (locationName == "endofbook") {
+    	$('body').append(addonContent);
+    } else {
+      $(marker).before(addonContent);
+    };
   };
 
   var output = $.html();
