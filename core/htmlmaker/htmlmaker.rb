@@ -39,9 +39,9 @@ filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
 replace = filecontents.gsub(/(<span class="endnotereference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
-# replace nbsp entities with 160 and fix img closing tags, and add lang attr
+# replace nbsp entities with 160 and fix img and br closing tags, and add lang attr
 nbspcontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
+replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2").gsub(/(<br.*?)(>)/,"\\1/\\2")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 # strip extraneous footnote section from html

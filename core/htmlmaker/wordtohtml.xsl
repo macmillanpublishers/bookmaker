@@ -744,8 +744,7 @@
 
   <!-- preserving soft breaks -->
   <xsl:template match="w:br">
-    <br>
-    </br>
+    <br/>
   </xsl:template>
 
   <!-- Processing paragraphs in box mode.  Check each following
