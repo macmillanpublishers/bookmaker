@@ -713,6 +713,7 @@
 
   <xsl:template match="w:r">
     <xsl:apply-templates select="w:t"/>
+    <xsl:apply-templates select="w:br"/>
   </xsl:template>
 
   <!-- Footnote references -->
@@ -739,6 +740,11 @@
        elements. -->
   <xsl:template match="w:t">
     <xsl:value-of select="."/>
+  </xsl:template>
+
+  <!-- preserving soft breaks -->
+  <xsl:template match="w:br">
+    <br />
   </xsl:template>
 
   <!-- Processing paragraphs in box mode.  Check each following
