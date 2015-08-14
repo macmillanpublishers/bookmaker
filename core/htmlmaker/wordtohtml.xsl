@@ -706,6 +706,7 @@
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
       <xsl:apply-templates select="w:t"/>
+      <xsl:apply-templates select="w:br"/>
       <xsl:apply-templates select="w:footnoteReference"/>
       <xsl:apply-templates select="w:endnoteReference"/>
     </span>
