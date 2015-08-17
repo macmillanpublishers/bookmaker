@@ -382,7 +382,8 @@
               <xsl:when test="$word-style = 'AdCardMainHeadacmh'">
                 <xsl:value-of select="'preface'"/>
               </xsl:when>
-              <xsl:when test="$word-style = 'BMHeadbmh'">
+              <xsl:when test="$word-style = 'BMHeadbmh' or 
+                              $word-style = 'AboutAuthorTextHeadatah'">
                 <xsl:value-of select="'appendix'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'PartNumberpn' or
