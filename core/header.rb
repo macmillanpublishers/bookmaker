@@ -370,7 +370,7 @@ module Bkmkr
 			jsfile = File.join(Paths.core_dir, "utilities", "evaltemplates.js")
 			templates = File.read(file).scan(/(")(eval-\S+)(")/)
 			templates.each do |t|
-				`node #{jsfile} "#{file}" "#{t[1]}"`
+				`node #{jsfile} "#{file}" "#{t}"`
 			end
 		end
 	end

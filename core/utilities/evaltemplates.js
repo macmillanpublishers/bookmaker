@@ -16,9 +16,11 @@ fs.readFile(file, function processTemplates (err, contents) {
 
     // evaluate the templates
     if (template == "eval-link") {
+      //Matt's code starts here
       var LinkId;
+      var el;
 
-      if (baseArgs.length > 0) {
+      if (baseArgs.length > 1) {
         var seq = baseArgs[1] - 1;
       } else {
         var seq = 0;
@@ -26,26 +28,31 @@ fs.readFile(file, function processTemplates (err, contents) {
 
       if (baseArgs[0] == "abouttheauthor") {
         if ($('section[class="abouttheauthor"]').length) {
-          Linkid = $('section[class="abouttheauthor"]')[seq].attr('id');
+          var el = $('section[class="abouttheauthor"]')[seq];
+          var LinkId = $(el).attr('id');
         } else {
           $('a[class="eval-link"][id="abouttheauthor"]').parent().remove();
         };
       } else if (baseArgs[0] == "copyright-page") {
         if ($('section[data-type="copyright-page"]').length) {
-          Linkid = $('section[data-type="copyright-page"]')[seq].attr('id');
+          var el = $('section[data-type="copyright-page"]')[seq];
+          var LinkId = $(el).attr('id');
         } else {
           $('a[class="eval-link"][id="copyright-page"]').parent().remove();
         };
       } else if (baseArgs[0] == "beginreading") {
         if ($('section[data-type="introduction"]').length) {
-          Linkid = $('section[data-type="introduction"]')[seq].attr('id');
+          var el = $('section[data-type="introduction"]')[seq];
+          var LinkId = $(el).attr('id');
         } else if ($('div[data-type="part"]').length) {
-          Linkid = $('div[data-type="part"]')[seq].attr('id');
+          var el = $('div[data-type="part"]')[seq];
+          var LinkId = $(el).attr('id');
         } else {
-          Linkid = $('section[data-type="chapter"]')[seq].attr('id');
+          var el = $('section[data-type="chapter"]')[seq];
+          var LinkId = $(el).attr('id');
         }
       } else if (baseArgs[0] == "toc") {
-        LinkId = "z_TOC";
+        var LinkId = "z_TOC";
         $('nav[data-type="toc"]').attr('id', LinkId); 
       };
       
