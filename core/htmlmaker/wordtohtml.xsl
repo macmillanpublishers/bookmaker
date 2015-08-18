@@ -382,7 +382,8 @@
               <xsl:when test="$word-style = 'AdCardMainHeadacmh'">
                 <xsl:value-of select="'preface'"/>
               </xsl:when>
-              <xsl:when test="$word-style = 'BMHeadbmh'">
+              <xsl:when test="$word-style = 'BMHeadbmh' or 
+                              $word-style = 'AboutAuthorTextHeadatah'">
                 <xsl:value-of select="'appendix'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'PartNumberpn' or
@@ -706,6 +707,7 @@
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
       <xsl:apply-templates select="w:t"/>
+      <xsl:apply-templates select="w:br"/>
       <xsl:apply-templates select="w:footnoteReference"/>
       <xsl:apply-templates select="w:endnoteReference"/>
     </span>
@@ -744,7 +746,7 @@
 
   <!-- preserving soft breaks -->
   <xsl:template match="w:br">
-    <br />
+    <br/>
   </xsl:template>
 
   <!-- Processing paragraphs in box mode.  Check each following
