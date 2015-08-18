@@ -8,7 +8,7 @@ fs.readFile(file, function processTemplates (err, contents) {
         });
 
   // empty the nav for epub generation
-  $('nav[data-type="toc"').empty();
+  $('nav[data-type="toc"]').empty();
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
