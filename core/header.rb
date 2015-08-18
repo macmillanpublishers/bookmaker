@@ -205,6 +205,9 @@ module Bkmkr
 				end
 			end
 		end
+		def self.runnode(js, html)
+			`node #{js} #{html}`
+		end
 		def self.insertaddons(inputfile, sectionparams, addonparams)
 			# The section types JSON
 			sectionfile = sectionparams
