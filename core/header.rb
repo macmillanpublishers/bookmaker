@@ -371,6 +371,7 @@ module Bkmkr
 			templates = File.read(file).scan(/(")(eval-\S+)(")/)
 			templates.each do |t|
 				`node #{jsfile} "#{file}" "#{t[1]}"`
+			end
 		end
 	end
 end
