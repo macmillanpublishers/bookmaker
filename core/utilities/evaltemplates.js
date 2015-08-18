@@ -55,8 +55,10 @@ fs.readFile(file, function processTemplates (err, contents) {
         var LinkId = "z_TOC";
         $('nav[data-type="toc"]').attr('id', LinkId); 
       };
+
+      target = "#" + LinkId;
       
-      $('a[class="eval-link"][id="' + baseArgs[0] + '"]').attr('href', LinkId);
+      $('a[class="eval-link"][id="' + baseArgs[0] + '"]').attr('href', target);
 
       // replace sourceEl class so it doesn't get reprocessed
       $(thisNode).attr('class', 'spanhyperlink');
