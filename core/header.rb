@@ -296,7 +296,6 @@ module Bkmkr
 						end
 
 						location = validlocations.shift
-						puts "insertion location is: #{location}"
 
 						# get insertion point values from first existing location
 						section_hash['sections'].each do |w|
@@ -325,13 +324,13 @@ module Bkmkr
 						# puts "6= #{locationclass}"
 						# puts "7= #{sequence}"
 						# puts "8= #{location}"
-						puts "9= #{order}"
+						puts "insertion location is: #{order} #{location}"
 
 						jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
 
 						# Insert the addon via node.js
 						#{}`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{order}" "#{location}"`
-						Bkmkr::Tools.runnode(jsfile, inputfile, "#{addoncontent} #{locationcontainer} #{locationtype} #{locationclass} #{sequence} #{order} #{location}")
+						Bkmkr::Tools.runnode(jsfile, inputfile, "'#{addoncontent}' '#{locationcontainer}' '#{locationtype}' '#{locationclass}' '#{sequence}' '#{order}' '#{location}'")
 
 						puts "inserted #{addonfile}"
 					end
@@ -381,7 +380,7 @@ module Bkmkr
 
 			# Insert the addon via node.js
 			#{}`node #{jsfile} "#{inputfile}" "#{srccontainer}" "#{srctype}" "#{srcclass}" "#{srcseq}" "#{destcontainer}" "#{desttype}" "#{destclass}" "#{destseq}"`
-			Bkmkr::Tools.runnode(jsfile, inputfile, "#{srccontainer} #{srctype} #{srcclass} #{srcseq} #{destcontainer} #{desttype} #{destclass} #{destseq}")
+			Bkmkr::Tools.runnode(jsfile, inputfile, "'#{srccontainer}' '#{srctype}' '#{srcclass}' '#{srcseq}' '#{destcontainer}' '#{desttype}' '#{destclass}' '#{destseq}'")
 		end
 		def self.compileJS(file)
 			jsfile = File.join(Paths.core_dir, "utilities", "evaltemplates.js")
