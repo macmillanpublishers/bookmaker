@@ -206,6 +206,7 @@ module Bkmkr
 			end
 		end
 		def self.runnode(js, args)
+			puts args
 			if os == "mac" or os == "unix"
 				`node #{js} #{args}`
 			elsif os == "windows"
@@ -317,15 +318,15 @@ module Bkmkr
 						addonfile = File.join(addonfiledir, f['filename'])
 						addoncontent = File.read(addonfile).gsub(/\n/,"").gsub(/"/,"\\\"")
 
-						puts "2= #{inputfile}"
-						#puts "3= #{addoncontent}"
-						puts "4= #{locationcontainer}"
-						puts "5= #{locationtype}"
-						puts "6= #{locationclass}"
-						puts "7= #{sequence}"
-						puts "8= #{location}"
-						puts "inserting file: #{addonfile}"
-						puts "insertion location is: #{order} #{location}"
+						# puts "2= #{inputfile}"
+						# puts "3= #{addoncontent}"
+						# puts "4= #{locationcontainer}"
+						# puts "5= #{locationtype}"
+						# puts "6= #{locationclass}"
+						# puts "7= #{sequence}"
+						# puts "8= #{location}"
+						# puts "inserting file: #{addonfile}"
+						# puts "insertion location is: #{order} #{location}"
 
 						jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
 
@@ -367,15 +368,15 @@ module Bkmkr
 				end
 			end
 
-			puts "2= #{inputfile}"
-			puts "3= #{srccontainer}"
-			puts "4= #{srctype}"
-			puts "5= #{srcclass}"
-			puts "6= #{srcseq}"
-			puts "7= #{destcontainer}"
-			puts "8= #{desttype}"
-			puts "9= #{destclass}"
-			puts "10= #{destseq}"
+			# puts "2= #{inputfile}"
+			# puts "3= #{srccontainer}"
+			# puts "4= #{srctype}"
+			# puts "5= #{srcclass}"
+			# puts "6= #{srcseq}"
+			# puts "7= #{destcontainer}"
+			# puts "8= #{desttype}"
+			# puts "9= #{destclass}"
+			# puts "10= #{destseq}"
 
 			jsfile = File.join(Paths.core_dir, "utilities", "movesection.js")
 
