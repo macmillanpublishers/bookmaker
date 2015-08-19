@@ -318,7 +318,7 @@ module Bkmkr
 						addoncontent = File.read(addonfile).gsub(/\n/,"").gsub(/"/,"\\\"")
 
 						puts "2= #{inputfile}"
-						puts "3= #{addoncontent}"
+						#puts "3= #{addoncontent}"
 						puts "4= #{locationcontainer}"
 						puts "5= #{locationtype}"
 						puts "6= #{locationclass}"
