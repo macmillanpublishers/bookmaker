@@ -332,7 +332,7 @@ module Bkmkr
 
 						# Insert the addon via node.js
 						#{}`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{order}" "#{location}"`
-						Bkmkr::Tools.runnode(jsfile, "#{inputfile} #{addoncontent} #{locationcontainer} #{locationtype} #{locationclass} #{sequence} #{order} #{location}")
+						Bkmkr::Tools.runnode(jsfile, "\"#{inputfile}\" \"#{addoncontent}\" \"#{locationcontainer}\" \"#{locationtype}\" \"#{locationclass}\" \"#{sequence}\" \"#{order}\" \"#{location}\"")
 
 						puts "inserted #{addonfile}"
 					end
