@@ -9,42 +9,40 @@ var s = process.argv[7] - 1;
 var order = process.argv[8];
 var locationName = process.argv[9];
 
-console.log(process.argv);
-
-// fs.readFile(file, function insertAddon (err, contents) {
-//   $ = cheerio.load(contents, {
-//           xmlMode: true
-//         });
-//   if (locationType && locationClass) { 
-//   	var marker = $(locationContainer + '[class="' + locationClass + '"][data-type="' + locationType + '"]')[s]; 
-//   } else if (locationType && !locationClass) {
-//   	var marker = $(locationContainer + '[data-type="' + locationType + '"]')[s];
-//   } else if (!locationType && locationClass) {
-//   	var marker = $(locationContainer + '[class="' + locationClass + '"]')[s];
-//   } else {
-//   	var marker = $(locationContainer)[s];
-//   };
+fs.readFile(file, function insertAddon (err, contents) {
+  $ = cheerio.load(contents, {
+          xmlMode: true
+        });
+  if (locationType && locationClass) { 
+  	var marker = $(locationContainer + '[class="' + locationClass + '"][data-type="' + locationType + '"]')[s]; 
+  } else if (locationType && !locationClass) {
+  	var marker = $(locationContainer + '[data-type="' + locationType + '"]')[s];
+  } else if (!locationType && locationClass) {
+  	var marker = $(locationContainer + '[class="' + locationClass + '"]')[s];
+  } else {
+  	var marker = $(locationContainer)[s];
+  };
   
-//   if (order == "after") {
-//     if (locationName == "startofbook") {
-//       $('body').prepend(addonContent);
-//     } else {
-//       $(marker).after(addonContent);
-//     };
-//   } else { 
-//     if (locationName == "endofbook") {
-//     	$('body').append(addonContent);
-//     } else {
-//       $(marker).before(addonContent);
-//     };
-//   };
+  if (order == "after") {
+    if (locationName == "startofbook") {
+      $('body').prepend(addonContent);
+    } else {
+      $(marker).after(addonContent);
+    };
+  } else { 
+    if (locationName == "endofbook") {
+    	$('body').append(addonContent);
+    } else {
+      $(marker).before(addonContent);
+    };
+  };
 
-//   var output = $.html();
-// 	  fs.writeFile(file, output, function(err) {
-// 	    if(err) {
-// 	        return console.log(err);
-// 	    }
+  var output = $.html();
+	  fs.writeFile(file, output, function(err) {
+	    if(err) {
+	        return console.log(err);
+	    }
 
-// 	    console.log("Addon content has been inserted!");
-// 	});
-// });
+	    console.log("Addon content has been inserted!");
+	});
+});
