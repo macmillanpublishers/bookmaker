@@ -330,7 +330,6 @@ module Bkmkr
 						jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
 
 						# Insert the addon via node.js
-						#{}`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{order}" "#{location}"`
 						Bkmkr::Tools.runnode(jsfile, "\"#{inputfile}\" \"#{addoncontent}\" \"#{locationcontainer}\" \"#{locationtype}\" \"#{locationclass}\" \"#{sequence}\" \"#{order}\" \"#{location}\"")
 
 						puts "inserted #{addonfile}"
@@ -380,14 +379,12 @@ module Bkmkr
 			jsfile = File.join(Paths.core_dir, "utilities", "movesection.js")
 
 			# Insert the addon via node.js
-			#{}`node #{jsfile} "#{inputfile}" "#{srccontainer}" "#{srctype}" "#{srcclass}" "#{srcseq}" "#{destcontainer}" "#{desttype}" "#{destclass}" "#{destseq}"`
 			Bkmkr::Tools.runnode(jsfile, "\"#{inputfile}\" \"#{srccontainer}\" \"#{srctype}\" \"#{srcclass}\" \"#{srcseq}\" \"#{destcontainer}\" \"#{desttype}\" \"#{destclass}\" \"#{destseq}\"")
 		end
 		def self.compileJS(file)
 			jsfile = File.join(Paths.core_dir, "utilities", "evaltemplates.js")
 			templates = File.read(file).scan(/(")(eval-\S+)(")/)
 			templates.each do |t|
-				#{}`node #{jsfile} "#{file}" "#{t[1]}"`
 				Bkmkr::Tools.runnode(jsfile, "\"#{file}\" \"#{t[1]}\"")
 			end
 		end
