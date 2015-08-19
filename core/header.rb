@@ -324,8 +324,8 @@ module Bkmkr
 						# puts "6= #{locationclass}"
 						# puts "7= #{sequence}"
 						# puts "8= #{location}"
-						# puts "inserting file: #{addonfile}"
-						# puts "insertion location is: #{order} #{location}"
+						puts "inserting file: #{addonfile}"
+						puts "insertion location is: #{order} #{location}"
 
 						jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
 
