@@ -205,12 +205,12 @@ module Bkmkr
 				end
 			end
 		end
-		def self.runnode(js, html, args)
+		def self.runnode(js, args)
 			if os == "mac" or os == "unix"
-				`node #{js} #{html} #{args}`
+				`node #{js} #{args}`
 			elsif os == "windows"
 				nodepath = File.join(Paths.resource_dir, "nodejs", "node.exe")
-				`#{nodepath} #{js} #{html}`
+				`#{nodepath} #{js} #{args}`
 			else
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- NODE ERROR"
@@ -324,13 +324,14 @@ module Bkmkr
 						# puts "6= #{locationclass}"
 						# puts "7= #{sequence}"
 						# puts "8= #{location}"
+						puts "inserting file: #{addonfile}"
 						puts "insertion location is: #{order} #{location}"
 
 						jsfile = File.join(Paths.core_dir, "utilities", "insertaddon.js")
 
 						# Insert the addon via node.js
 						#{}`node #{jsfile} "#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{order}" "#{location}"`
-						Bkmkr::Tools.runnode(jsfile, inputfile, "'#{addoncontent}' '#{locationcontainer}' '#{locationtype}' '#{locationclass}' '#{sequence}' '#{order}' '#{location}'")
+						Bkmkr::Tools.runnode(jsfile, '"#{inputfile}" "#{addoncontent}" "#{locationcontainer}" "#{locationtype}" "#{locationclass}" "#{sequence}" "#{order}" "#{location}"')
 
 						puts "inserted #{addonfile}"
 					end
@@ -380,14 +381,14 @@ module Bkmkr
 
 			# Insert the addon via node.js
 			#{}`node #{jsfile} "#{inputfile}" "#{srccontainer}" "#{srctype}" "#{srcclass}" "#{srcseq}" "#{destcontainer}" "#{desttype}" "#{destclass}" "#{destseq}"`
-			Bkmkr::Tools.runnode(jsfile, inputfile, "'#{srccontainer}' '#{srctype}' '#{srcclass}' '#{srcseq}' '#{destcontainer}' '#{desttype}' '#{destclass}' '#{destseq}'")
+			Bkmkr::Tools.runnode(jsfile, '"#{inputfile}" "#{srccontainer}" "#{srctype}" "#{srcclass}" "#{srcseq}" "#{destcontainer}" "#{desttype}" "#{destclass}" "#{destseq}"')
 		end
 		def self.compileJS(file)
 			jsfile = File.join(Paths.core_dir, "utilities", "evaltemplates.js")
 			templates = File.read(file).scan(/(")(eval-\S+)(")/)
 			templates.each do |t|
 				#{}`node #{jsfile} "#{file}" "#{t[1]}"`
-				Bkmkr::Tools.runnode(jsfile, file, t[1])
+				Bkmkr::Tools.runnode(jsfile, "#{file} #{t[1]}")
 			end
 		end
 	end
