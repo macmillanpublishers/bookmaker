@@ -9,9 +9,7 @@ var s = process.argv[7] - 1;
 var order = process.argv[8];
 var locationName = process.argv[9];
 
-fs.readFile(file, function insertAddon (err, contents) {
-  console.log(process.argv[2]);
-});
+console.log(process.argv);
 
 // fs.readFile(file, function insertAddon (err, contents) {
 //   $ = cheerio.load(contents, {
