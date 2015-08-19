@@ -41,7 +41,10 @@ fs.readFile(file, function processTemplates (err, contents) {
           $('a[class="eval-link"][id="copyright-page"]').parent().remove();
         };
       } else if (baseArgs[0] == "beginreading") {
-        if ($('section[data-type="introduction"]').length) {
+        if ($('section[data-type="dedication"]').length) {
+          var el = $('section[data-type="dedication"]')[seq];
+          var LinkId = $(el).attr('id');
+        } else if ($('section[data-type="introduction"]').length) {
           var el = $('section[data-type="introduction"]')[seq];
           var LinkId = $(el).attr('id');
         } else if ($('div[data-type="part"]').length) {
