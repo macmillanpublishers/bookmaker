@@ -9,6 +9,8 @@ var s = process.argv[7] - 1;
 var order = process.argv[8];
 var locationName = process.argv[9];
 
+console.log(process.argv[2]);
+
 fs.readFile(file, function insertAddon (err, contents) {
   $ = cheerio.load(contents, {
           xmlMode: true
