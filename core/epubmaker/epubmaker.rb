@@ -14,28 +14,41 @@ epub_dir = Bkmkr::Paths.project_tmp_dir
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
 zipepub_py = File.join(Bkmkr::Paths.core_dir, "epubmaker", "zipepub.py")
 epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
+strip_tocnodes_js = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-tocnodes.js")
 strip_halftitle_xsl = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-halftitle.xsl")
 epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub.xsl")
 tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
 OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
+METAINF_dir = File.join(Bkmkr::Paths.project_tmp_dir, "META-INF")
 final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
 cover_jpg = File.join(OEBPS_dir, "cover.jpg")
 epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
+
+# Delete any old conversion stuff
+if File.exists?(OEBPS_dir)
+	FileUtils.rm_r(OEBPS_dir)
+end
+
+if File.exists?(METAINF_dir)
+	FileUtils.rm_r(METAINF_dir)
+end
 
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
 # Allowing for users to preprocess epub html if desired
 if File.file?(epub_tmp_html)
-	filecontents = File.read(epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /><meta name='publisher' content=\"#{Metadata.imprint}\" /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+	filecontents = File.read(epub_tmp_html).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /><meta name='publisher' content=\"#{Metadata.imprint}\" /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 else
-	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /><meta name='publisher' content=\"#{Metadata.imprint}\" /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/<nav.*<\/nav>/,"<nav data-type='toc' />").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /><meta name='publisher' content=\"#{Metadata.imprint}\" /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>").gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\"><img src=\"cover.jpg\"/></figure>").gsub(/&nbsp;/,"&#160;").gsub(/src="images\//,"src=\"")
 end
 
 # Saving revised HTML into tmp file
 File.open(epub_tmp_html, 'w') do |output| 
 	output.write filecontents
 end
+
+Bkmkr::Tools.runnode(strip_tocnodes_js, epub_tmp_html)
 
 # Add new section to log file
 File.open(convert_log_txt, 'a+') do |f|
