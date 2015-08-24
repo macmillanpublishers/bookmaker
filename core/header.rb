@@ -376,6 +376,8 @@ module Bkmkr
 			# puts "9= #{destclass}"
 			# puts "10= #{destseq}"
 
+			puts "Moving #{src} before #{dest}"
+
 			jsfile = File.join(Paths.core_dir, "utilities", "movesection.js")
 
 			# Insert the addon via node.js
