@@ -24,11 +24,11 @@ module Bkmkr
 		def self.filename_normalized
 			@@filename_normalized
 		end
-		@@input_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
+		@@input_dir = filename_normalized.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
 		def self.input_dir
 			@@input_dir
 		end
-		@@working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+		@@working_dir = filename_normalized.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 		def self.working_dir
 			@@working_dir
 		end
