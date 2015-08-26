@@ -4,7 +4,8 @@ require_relative '../config.rb'
 
 module Bkmkr
 	class Project
-  		@input_file = File.expand_path(ARGV[0])
+		@unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
+  		@input_file = File.expand_path(unescapeargv)
   		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
 			@@input_file
