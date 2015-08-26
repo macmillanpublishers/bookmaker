@@ -3,9 +3,6 @@ require 'fileutils'
 require_relative '../header.rb'
 
 # For TEST purposes
-puts Bkmkr::Project.input_file
-puts ARGV[0]
-puts Bkmkr::Paths.submitted_images
 test_images_before = Dir.entries(Bkmkr::Paths.submitted_images)
 
 # Local path variables
