@@ -12,6 +12,10 @@ module Bkmkr
 		def self.input_file
 			@@input_file
 		end
+		@@input_file_normalized = input_file.gsub(/ /, "")
+		def self.input_file_normalized
+			@@input_file_normalized
+		end
 		@@filename_split = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
 		def self.filename_split
 			@@filename_split
@@ -24,11 +28,11 @@ module Bkmkr
 		def self.filename_normalized
 			@@filename_normalized
 		end
-		@@input_dir = filename_normalized.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
+		@@input_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
 		def self.input_dir
 			@@input_dir
 		end
-		@@working_dir = filename_normalized.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+		@@working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 		def self.working_dir
 			@@working_dir
 		end
