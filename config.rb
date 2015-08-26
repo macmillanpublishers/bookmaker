@@ -3,7 +3,8 @@
 $currpath = Dir.pwd
 $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 
-input_file = File.expand_path(ARGV[0]).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
+unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
+input_file = File.expand_path(unescapeargv).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 
 # ------------------ GLOBAL VARIABLES
