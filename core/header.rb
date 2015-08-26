@@ -4,10 +4,15 @@ require_relative '../config.rb'
 
 module Bkmkr
 	class Project
-  		@input_file = File.expand_path(ARGV[0])
+		@unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
+  		@input_file = File.expand_path(@unescapeargv)
   		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
 			@@input_file
+		end
+		@@input_file_normalized = input_file.gsub(/ /, "")
+		def self.input_file_normalized
+			@@input_file_normalized
 		end
 		@@filename_split = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
 		def self.filename_split
@@ -70,19 +75,19 @@ module Bkmkr
 		end
 
 		# Path to the images subdirectory of the temporary working directory
-		@@project_tmp_dir_img = File.join(tmp_dir, Project.filename, "images")
+		@@project_tmp_dir_img = File.join(project_tmp_dir, "images")
 		def self.project_tmp_dir_img
 			@@project_tmp_dir_img
 		end
 		
 		# Full path to outputtmp.html file
-		@@outputtmp_html = File.join(tmp_dir, Project.filename, "outputtmp.html")
+		@@outputtmp_html = File.join(project_tmp_dir, "outputtmp.html")
 		def self.outputtmp_html
 			@@outputtmp_html
 		end
 		
 		# Full path and filename for the normalized (i.e., spaces removed) input file in the temporary working dir
-		@@project_tmp_file = File.join(tmp_dir, Project.filename, Project.filename_normalized)
+		@@project_tmp_file = File.join(project_tmp_dir, Project.filename_normalized)
 		def self.project_tmp_file
 			@@project_tmp_file
 		end
