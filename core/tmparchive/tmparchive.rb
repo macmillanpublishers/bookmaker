@@ -3,6 +3,8 @@ require 'fileutils'
 require_relative '../header.rb'
 
 # For TEST purposes
+puts Bkmkr::Project.input_file
+puts ARGV[0]
 puts Bkmkr::Paths.submitted_images
 test_images_before = Dir.entries(Bkmkr::Paths.submitted_images)
 
@@ -17,9 +19,6 @@ if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
 end
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir)
 Dir.mkdir(Bkmkr::Paths.project_tmp_dir_img)
-puts Bkmkr::Project.testest
-puts Bkmkr::Project.input_file
-puts ARGV[0]
 FileUtils.cp("'#{Bkmkr::Project.input_file}'", Bkmkr::Paths.project_tmp_file)
 if File.file?(input_config)
 	FileUtils.mv(input_config, tmp_config)
