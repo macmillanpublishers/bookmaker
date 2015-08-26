@@ -67,7 +67,7 @@ module Bkmkr
 		end
 
 		# Path to the temporary working directory
-		@@project_tmp_dir = File.join(tmp_dir, Project.filename_normalized)
+		@@project_tmp_dir = File.join(tmp_dir, Project.filename)
 		def self.project_tmp_dir
 			@@project_tmp_dir
 		end
