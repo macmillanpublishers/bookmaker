@@ -96,20 +96,21 @@ Additionally, the following directory structures are required:
 * A folder must exist for storing log files. This can live anywhere.
 * A temporary working directory should be created, where Bookmaker can perform the conversions before archiving the final files. This can live anywhere.
 
-Paths for all of the above four folders should be configured in config.rb. See the installation instructions below for details.
+Paths for all of the above four folders must be configured in config.rb. See the installation instructions below for details.
 
 ## Dependencies
 
 The Bookmaker scripts depend on various other utilities, as follows:
 
 * Java: Saxon requires the Java JDK. 
+* Node.js: Platform for server-side JavaScript execution, used for content transformations.
 * Python (version 2.7.x): Converts Word .docx files to XML.
 * Saxon: An XSLT processor that runs our Word-to-HTML scripts. 
 * Ruby: The primary scripting language used in the Bookmaker scripts. 
 * Docraptor: The external service that performs the HTML-to-PDF conversion. It requires a ruby gem, and you'll also need to create an account and get your unique API key.
 * An ftp server (if you'll be creating PDFs and your book contains images, custom fonts, custom CSS, or other resources besides the HTML).
-* SSL Cert: The SSL Cert file needs to be updated to allow the scripts to post and receive from DocRaptor. 
-* Zip.exe: Packages the EPUB file; download here and place in your resources folder (see below).
+* SSL Cert (Windows only): The SSL Cert file needs to be updated to allow the scripts to post and receive from DocRaptor. 
+* Zip.exe (Windows only): Packages the EPUB file; download here and place in your resources folder (see below).
 * Imagemagick: enables command line image edits. Download here and add to path via cmd line: set PATH=C:\Program Files\ImageMagick-6.9.1-Q16n;%PATH% (<-version suffix may change, use your own path)
 
 ## Installation
@@ -145,9 +146,9 @@ If you plan to make changes to the source code, you will want to fork those repo
 
 Install the utilities listed in the previous section, as needed. For reference, you need to install the following in order to create these outputs:
 
-* To create an HTML file: Ruby, Java, Saxon, Python
-* To create a PDF file: Ruby, Java, Saxon (any version), Python, PrinceXML OR a Docraptor account+SSL cert file
-* To create an EPUB file: Ruby, Saxon PE+Java OR xsltproc, Python, Imagemagick (optional)
+* To create an HTML file: Ruby, Java, Saxon, Python, node.js
+* To create a PDF file: Ruby, Java, Saxon (any version), Python, node.js, PrinceXML OR a Docraptor account+SSL cert file
+* To create an EPUB file: Ruby, Saxon PE+Java OR xsltproc, Python, node.js, Imagemagick (optional)
 
 #### Ruby
 
@@ -162,8 +163,6 @@ For Windows, [follow the directions here](http://www.pythoncentral.io/add-python
 #### Saxon
 
 Saxon is an XSLT processor that runs the script to convert the Word document to HTML, and also transforms the HTML to create the EPUB file. Right now Bookmaker can only run with Saxon, but we'd love to add support for other XSLT2.0 processors.
-
-To install the free Saxon HE, go here: 
 
 #### FOR PRINCE: Download Prince
 
