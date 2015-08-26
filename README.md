@@ -247,6 +247,24 @@ If you didn't already do this earlier, choose either prince or docraptor to crea
 
 ## Run Bookmaker
 
-You can run bookmaker by firing the scripts one\-by\-one on the command line, or by combining them into a bash or batch file to fire all at once. You can see examples of Macmillan's .bat files [here: https://github.com/macmillanpublishers/bookmaker_deploy/](https://github.com/macmillanpublishers/bookmaker_deploy/).
+You can run bookmaker by firing the scripts one\-by\-one on the command line, or by combining them into a bash or batch file to fire all at once. You can see examples of Macmillan's .bat files [here: https://github.com/macmillanpublishers/bookmaker_deploy/](https://github.com/macmillanpublishers/bookmaker_deploy/). A simple deployment script for Mac might look like this (this script would take the input filename as the command line argument):
+
+```
+#! /bin/sh
+
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/tmparchive/tmparchive.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/htmlmaker/htmlmaker.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/filearchive/filearchive.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/imagechecker/imagechecker.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/coverchecker/coverchecker.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/stylesheets/stylesheets.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/pdfmaker/pdfmaker.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/epubmaker/epubmaker.rb $1
+ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/cleanup/cleanup.rb $1
+```
 
 To convert a project, drop the input text file along with any assets (interior images, etc.) into your conversion folder. Project metadata is read from a _config.json_ file that should be submitted along with your book assets.
+
+## Extend Bookmaker
+
+Because of it's modular architecture, users can insert extensions to the Bookmaker toolchain to customize their content conversions. For example, Macmillan has a number of custom content conversions that they insert before and after various pieces of the Bookmaker toolchain. You can peruse these extensions [here](https://github.com/macmillanpublishers/bookmaker_addons). Extensions are added as intermediary steps during deployment; see [Macmillan's deployment scripts](https://github.com/macmillanpublishers/bookmaker_deploy/) for examples.
