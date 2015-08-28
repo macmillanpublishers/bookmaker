@@ -706,7 +706,7 @@
   <xsl:template match="w:r[w:rPr/w:rStyle/@w:val]">
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
-      <xsl:apply-templates select="w:t or w:br or w:footnoteReference or w:endnoteReference"/>
+      <xsl:apply-templates select="w:t | w:br | w:footnoteReference | w:endnoteReference"/>
       <!--<xsl:apply-templates select="w:br"/>
       <xsl:apply-templates select="w:footnoteReference"/>
       <xsl:apply-templates select="w:endnoteReference"/>-->
@@ -714,7 +714,7 @@
   </xsl:template>
 
   <xsl:template match="w:r">
-    <xsl:apply-templates select="w:t or w:br"/>
+    <xsl:apply-templates select="w:t | w:br"/>
     <!--<xsl:apply-templates select="w:br"/>-->
   </xsl:template>
 
