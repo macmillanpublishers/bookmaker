@@ -706,7 +706,7 @@
   <xsl:template match="w:r[w:rPr/w:rStyle/@w:val]">
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
-      <xsl:apply-templates select="w:t | w:br | w:footnoteReference | w:endnoteReference"/>
+      <xsl:apply-templates select="w:t | w:br | w:sym | w:footnoteReference | w:endnoteReference"/>
       <!--<xsl:apply-templates select="w:br"/>
       <xsl:apply-templates select="w:footnoteReference"/>
       <xsl:apply-templates select="w:endnoteReference"/>-->
@@ -714,7 +714,7 @@
   </xsl:template>
 
   <xsl:template match="w:r">
-    <xsl:apply-templates select="w:t | w:br"/>
+    <xsl:apply-templates select="w:t | w:br | w:sym"/>
     <!--<xsl:apply-templates select="w:br"/>-->
   </xsl:template>
 
@@ -747,6 +747,18 @@
   <!-- preserving soft breaks -->
   <xsl:template match="w:br">
     <br/>
+  </xsl:template>
+
+  <!-- preserving soft breaks -->
+  <xsl:template match="w:sym">
+    <xsl:choose>
+      <xsl:when test="current()/@w:char = 'F0D3'">
+        <xsl:value-of select="'©'"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@w:char"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Processing paragraphs in box mode.  Check each following
