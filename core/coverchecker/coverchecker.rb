@@ -8,7 +8,7 @@ file = File.read(configfile)
 data_hash = JSON.parse(file)
 
 # the cover filename
-cover = data_hash['frontcover']
+cover = Metadata.frontcover
 
 # The directory where the cover was submitted
 coverdir = Bkmkr::Paths.submitted_images
@@ -41,17 +41,10 @@ else
 	end
 end
 
-# TESTING
-
-# Count how many images are referenced in the book
-if files.include?("#{cover}")
-	test_missing_cover = "pass: I found a cover for this book."
-else
-	test_missing_cover = "FAIL: The cover file is missing."
-end
+# LOGGING
 
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- COVERCHECKER PROCESSES"
-	f.puts "#{test_missing_cover}"
+	f.puts "finished coverchecker"
 end
