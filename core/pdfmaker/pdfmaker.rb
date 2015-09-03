@@ -66,15 +66,7 @@ end
 File.open(cssfile, "w") {|file| file.puts revertcss}
 FileUtils.rm(pdf_tmp_html)
 
-# TESTING
-
-# verify pdf was produced
-
-if File.file?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{Metadata.pisbn}_POD.pdf")
-	test_pdf_created = "pass: PDF file exists in DONE directory"
-else
-	test_pdf_created = "FAIL: PDF file exists in DONE directory"
-end
+# LOGGING
 
 # is there custom javascript?
 
@@ -88,5 +80,5 @@ end
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- PDFMAKER PROCESSES"
 	f.puts "----- I found the following custom javascript: #{test_custom_js}"
-	f.puts "#{test_pdf_created}"	
+	f.puts "finished pdfmaker"
 end

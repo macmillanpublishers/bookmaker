@@ -8,7 +8,7 @@ file = File.read(configfile)
 data_hash = JSON.parse(file)
 
 # the cover filename
-cover = data_hash['frontcover']
+cover = Metadata.frontcover
 
 # The directory where the cover was submitted
 coverdir = Bkmkr::Paths.submitted_images

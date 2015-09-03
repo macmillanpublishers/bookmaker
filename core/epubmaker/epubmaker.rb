@@ -113,7 +113,7 @@ Bkmkr::Tools.runpython(zipepub_py, "#{csfilename}.epub #{Bkmkr::Paths.project_tm
 FileUtils.cp("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub", "#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}")
 FileUtils.rm("#{Bkmkr::Paths.project_tmp_dir}/#{csfilename}.epub")
 
-# TESTING
+# LOGGING
 
 # epub file should exist in done dir 
 if File.file?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{csfilename}.epub")
@@ -122,21 +122,11 @@ else
 	test_epub_status = "FAIL: the EPUB was created successfully"
 end
 
-# ebook isbn should exist AND be 13-digit string of digits
-test_eisbn_chars = Metadata.eisbn.scan(/\d\d\d\d\d\d\d\d\d\d\d\d\d/)
-test_eisbn_length = Metadata.eisbn.split(%r{\s*})
-
-if test_eisbn_length.length == 13 and test_eisbn_chars.length != 0
-	test_eisbn_status = "pass: ebook isbn is composed of 13 consecutive digits"
-else
-	test_eisbn_status = "FAIL: ebook isbn is composed of 13 consecutive digits"
-end
-
 # Add new section to log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts " "
 	f.puts "-----"
 	f.puts test_epub_status
 	f.puts "----- ebook ISBN: #{Metadata.eisbn}"
-	f.puts test_eisbn_status
+	f.puts "finished epubmaker"
 end

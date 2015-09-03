@@ -62,7 +62,7 @@ if missing.any?
 	end
 end
 
-# TESTING
+# LOGGING
 
 # Count how many images are referenced in the book
 test_img_src = source.count
@@ -73,19 +73,10 @@ else
 	test_missing_img = "pass: There are no missing image files!"
 end
 
-images_moved = Dir.entries("#{image_dest}").select {|f| !File.directory? f}
-images_moved -= %w{clear_ftp_log.txt}
-match_check = matched.uniq.sort
-if images_moved.sort == match_check
-	test_imgs_match_refs = "pass: Images' names in Done folder match references in html"
-else
-	test_imgs_match_refs = "FAIL: Images' names in Done folder match references in html"
-end
-
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- IMAGECHECKER PROCESSES"
 	f.puts "I found #{test_img_src} image references in this book"
 	f.puts "#{test_missing_img}"
-	f.puts "#{test_imgs_match_refs}"
+	f.puts "finished imagechecker"
 end

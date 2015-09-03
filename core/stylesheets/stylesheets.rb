@@ -37,27 +37,13 @@ else
 	end
 end
 
-# TESTING
-
-# css files should exist in project directory
-if File.file?("#{tmp_layout_dir}/pdf.css")
-	test_pcss_status = "pass: PDF CSS file was added to the project directory"
-else
-	test_pcss_status = "FAIL: PDF CSS file was added to the project directory"
-end
-
-if File.file?("#{tmp_layout_dir}/epub.css")
-	test_ecss_status = "pass: EPUB CSS file was added to the project directory"
-else
-	test_ecss_status = "FAIL: EPUB CSS file was added to the project directory"
-end
+# LOGGING
 
 chapterheadsnum = chapterheads.count
 
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-	f.puts "----- CHAPTERHEADS PROCESSES"
+	f.puts "----- STYLESHEETS PROCESSES"
 	f.puts "----- I found #{chapterheadsnum} chapters in this book."
-	f.puts test_pcss_status
-	f.puts test_ecss_status
+	f.puts "finished stylesheets"
 end
