@@ -64,7 +64,7 @@ else
 end
 
 File.open(cssfile, "w") {|file| file.puts revertcss}
-FileUtils.rm(pdf_tmp_html)
+#FileUtils.rm(pdf_tmp_html)
 
 # LOGGING
 
