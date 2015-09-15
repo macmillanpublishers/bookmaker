@@ -246,7 +246,9 @@ module Bkmkr
 			end
 
 			puts "Addons to insert: #{addons}"
-			addons = addons.split(",")
+			unless addons.nil?
+				addons = addons.split(",")
+			end
 
 			contents = File.read(inputfile)
 
