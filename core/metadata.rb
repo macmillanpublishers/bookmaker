@@ -10,7 +10,7 @@ class Metadata
 	@@data_hash = JSON.parse(@@file)
 
 	def self.booktitle
-		if @@data_hash['title'].empty? or !@@data_hash['title']
+		if @@data_hash['title'].nil? or !@@data_hash['title']
 			Bkmkr::Project.filename
 		else 
 			@@data_hash['title']
@@ -18,7 +18,7 @@ class Metadata
 	end
 
 	def self.booksubtitle
-		if @@data_hash['subtitle'].empty? or !@@data_hash['subtitle']
+		if @@data_hash['subtitle'].nil? or !@@data_hash['subtitle']
 			"Unknown"
 		else 
 			@@data_hash['subtitle']
@@ -26,7 +26,7 @@ class Metadata
 	end
 
 	def self.bookauthor
-		if @@data_hash['author'].empty? or !@@data_hash['author']
+		if @@data_hash['author'].nil? or !@@data_hash['author']
 			"Unknown"
 		else 
 			@@data_hash['author']
@@ -34,7 +34,7 @@ class Metadata
 	end
 
 	def self.productid
-		if @@data_hash['productid'].empty? or !@@data_hash['productid']
+		if @@data_hash['productid'].nil? or !@@data_hash['productid']
 			Bkmkr::Project.filename
 		else 
 			@@data_hash['productid']
@@ -42,7 +42,7 @@ class Metadata
 	end
 
 	def self.pisbn
-		if @@data_hash['printid'].empty? or !@@data_hash['printid']
+		if @@data_hash['printid'].nil? or !@@data_hash['printid']
 			Bkmkr::Project.filename
 		else 
 			@@data_hash['printid']
@@ -50,7 +50,7 @@ class Metadata
 	end
 
 	def self.eisbn
-		if @@data_hash['ebookid'].empty? or !@@data_hash['ebookid']
+		if @@data_hash['ebookid'].nil? or !@@data_hash['ebookid']
 			Bkmkr::Project.filename
 		else 
 			@@data_hash['ebookid']
@@ -58,7 +58,7 @@ class Metadata
 	end
 
 	def self.imprint
-		if @@data_hash['imprint'].empty? or !@@data_hash['imprint']
+		if @@data_hash['imprint'].nil? or !@@data_hash['imprint']
 			"Unknown"
 		else 
 			@@data_hash['imprint']
@@ -66,7 +66,7 @@ class Metadata
 	end
 
 	def self.publisher
-		if @@data_hash['publisher'].empty? or !@@data_hash['publisher']
+		if @@data_hash['publisher'].nil? or !@@data_hash['publisher']
 			"Unknown"
 		else 
 			@@data_hash['publisher']
@@ -74,7 +74,7 @@ class Metadata
 	end
 
 	def self.printcss
-		if @@data_hash['printcss'].empty? or !@@data_hash['printcss']
+		if @@data_hash['printcss'].nil? or !@@data_hash['printcss']
 			"none"
 		else 
 			@@data_hash['printcss']
@@ -82,7 +82,7 @@ class Metadata
 	end
 
 	def self.printjs
-		if @@data_hash['printjs'].empty? or !@@data_hash['printjs']
+		if @@data_hash['printjs'].nil? or !@@data_hash['printjs']
 			"none"
 		else 
 			@@data_hash['printjs']
@@ -90,7 +90,7 @@ class Metadata
 	end
 
 	def self.epubcss
-		if @@data_hash['ebookcss'].empty? or !@@data_hash['ebookcss']
+		if @@data_hash['ebookcss'].nil? or !@@data_hash['ebookcss']
 			"none"
 		else 
 			@@data_hash['ebookcss']
@@ -98,7 +98,7 @@ class Metadata
 	end
 
 	def self.frontcover
-		if @@data_hash['frontcover'].empty? or !@@data_hash['frontcover']
+		if @@data_hash['frontcover'].nil? or !@@data_hash['frontcover']
 			"Unknown"
 		else 
 			@@data_hash['frontcover']
@@ -106,7 +106,7 @@ class Metadata
 	end
 
 	def self.epubtitlepage
-		if @@data_hash['epubtitlepage'].empty? or !@@data_hash['epubtitlepage']
+		if @@data_hash['epubtitlepage'].nil? or !@@data_hash['epubtitlepage']
 			"Unknown"
 		else 
 			@@data_hash['epubtitlepage']
@@ -114,7 +114,7 @@ class Metadata
 	end
 
 	def self.podtitlepage
-		if @@data_hash['podtitlepage'].empty? or !@@data_hash['podtitlepage']
+		if @@data_hash['podtitlepage'].nil? or !@@data_hash['podtitlepage']
 			"Unknown"
 		else 
 			@@data_hash['podtitlepage']
