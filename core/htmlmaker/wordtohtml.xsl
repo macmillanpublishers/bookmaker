@@ -485,6 +485,9 @@
       <xsl:attribute name="data-autolabel">
         <xsl:value-of select="'yes'"/>
       </xsl:attribute>
+      <xsl:attribute name="data-labeltext">
+        <xsl:value-of select="preceding::w:p/w:r/w:t"/>
+      </xsl:attribute>
     </xsl:if>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
       <xsl:apply-templates select=".//w:r"/>
