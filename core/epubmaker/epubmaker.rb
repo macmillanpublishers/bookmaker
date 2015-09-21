@@ -98,7 +98,7 @@ if sourceimages.any?
 		images = Dir.entries(epub_img_dir).select {|f| !File.directory? f}
 		images.each do |i|
 			path_to_i = File.join(epub_img_dir, i)
-			`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
+			`convert "#{path_to_i}" -trim -resize "600x800>" "#{path_to_i}"`
 		end
 	end
 	FileUtils.cp Dir["#{epub_img_dir}/*"].select {|f| test ?f, f}, OEBPS_dir
