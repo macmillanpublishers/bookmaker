@@ -106,7 +106,7 @@ class Metadata
 	end
 
 	def self.epubtitlepage
-		if @@data_hash['epubtitlepage'].nil? or !@@data_hash['epubtitlepage']
+		if @@data_hash['epubtitlepage'].nil? or @@data_hash['epubtitlepage'].empty? or !@@data_hash['epubtitlepage']
 			"Unknown"
 		else 
 			@@data_hash['epubtitlepage']
@@ -114,7 +114,7 @@ class Metadata
 	end
 
 	def self.podtitlepage
-		if @@data_hash['podtitlepage'].nil? or !@@data_hash['podtitlepage']
+		if @@data_hash['podtitlepage'].nil? or @@data_hash['podtitlepage'].empty? or !@@data_hash['podtitlepage']
 			"Unknown"
 		else 
 			@@data_hash['podtitlepage']
