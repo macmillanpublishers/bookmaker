@@ -48,6 +48,14 @@ File.open(epub_tmp_html, 'w') do |output|
 	output.write filecontents
 end
 
+if File.file?(final_cover)
+	filecontents = File.read(epub_tmp_html).gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\" id=\"bookcover01\"><img src=\"cover.jpg\"/></figure>")
+	# Saving revised HTML into tmp file
+	File.open(epub_tmp_html, 'w') do |output| 
+		output.write filecontents
+	end
+end
+
 Bkmkr::Tools.runnode(strip_tocnodes_js, epub_tmp_html)
 
 # Add new section to log file
@@ -60,14 +68,15 @@ end
 FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
 Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 
-# fix cover.html doctype
+# fix cover.html doctype and ncx entry
+# at some point I should move this to addons
 covercontents = File.read("#{OEBPS_dir}/cover.html")
 if File.file?(final_cover)
 	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
-else
-	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>").gsub(/<img src="cover.jpg"\/>/," ")
+	File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
+	ncx = File.read("#{OEBPS_dir}/toc.ncx")
+	ncxreplace = ncx.gsub(/(<text\/>)(<\/navLabel><content src=")(#bookcover01)("\/>)/,"<text>Cover</text>\\2cover.html\\4")
 end
-File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 
 # fix author info in opf, add toc to text flow
 opfcontents = File.read("#{OEBPS_dir}/content.opf")
