@@ -75,8 +75,8 @@ if File.file?(final_cover)
 	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
 	File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 	ncx = File.read("#{OEBPS_dir}/toc.ncx")
-	ncxreplace = ncx.gsub(/(<text\/>)(<\/navLabel><content src=")(#bookcover01)("\/>)/,"<text>Cover</text>\\2cover.html\\4")
-	File.open("#{OEBPS_dir}/toc.ncx", "w") {|file| file.puts ncxreplace}
+	#ncxreplace = ncx.gsub(/(<text\/>)(<\/navLabel><content src=")(#bookcover01)("\/>)/,"<text>Cover</text>\\2cover.html\\4")
+	#File.open("#{OEBPS_dir}/toc.ncx", "w") {|file| file.puts ncxreplace}
 end
 
 # fix author info in opf, add toc to text flow
