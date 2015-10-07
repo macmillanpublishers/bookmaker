@@ -35,10 +35,14 @@ end
 # if no, prints an error to the archival directory 
 if files.include?("#{cover}")
 	FileUtils.mv(tmp_cover, final_cover)
+	covercheck = "Found a new cover submitted"
+elsif !files.include?("#{cover}") and File.file?(final_cover)
+	covercheck = "Picking up existing cover"
 else
 	File.open(cover_error, 'w') do |output|
 		output.write "There is no cover image for this title. Download the cover image from Biblio and place it in the submitted_images folder, then re-submit the manuscript for conversion; cover images must be named ISBN_FC.jpg."
 	end
+	covercheck = "No cover found"
 end
 
 # LOGGING
@@ -46,5 +50,6 @@ end
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- COVERCHECKER PROCESSES"
+	f.puts covercheck
 	f.puts "finished coverchecker"
 end
