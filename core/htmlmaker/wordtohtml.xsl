@@ -25,21 +25,21 @@
        blockquote. -->
   <xsl:variable name="epigraph-paras" as="xs:string*">
     <xsl:sequence
-      select="'PartEpigraphnon-versepepi',
-              'PartEpigraphversepepiv',
+      select="'PartEpigraph-non-versepepi',
+              'PartEpigraph-versepepiv',
               'PartEpigraphSourcepeps',
-              'ChapEpigraphnon-versecepi',
-              'ChapEpigraphversecepiv',
+              'ChapEpigraph-non-versecepi',
+              'ChapEpigraph-versecepiv',
               'ChapEpigraphSourceceps',
-              'FMEpigraphnon-versefmepi',
-              'FMEpigraphversefmepiv',
+              'FMEpigraph-non-versefmepi',
+              'FMEpigraph-versefmepiv',
               'FMEpigraphSourcefmeps',
-              'Epigraphnon-verseepi',
-              'Epigraphverseepiv',
+              'Epigraph-non-verseepi',
+              'Epigraph-verseepiv',
               'EpigraphSourceeps',
-              'EpigraphinTextnon-versetepi',
-              'EpigraphinTextversetepiv',
-              'EpigraphinTextSourceteps'"/>
+              'EpigraphinText-non-versetepi',
+              'EpigraphinText-versetepiv',
+              'EpigraphinText-Sourceteps'"/>
   </xsl:variable>
 
   <!-- Paragraph styles which should get aggregated in a poetry
@@ -63,14 +63,9 @@
     <xsl:sequence
       select="'BoxHeadbh',
               'BoxSubheadbsh',
-              'BoxEpigraphnon-versebepi',
+              'BoxEpigraph-non-versebepi',
               'BoxEpigraphSourcebeps',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
+              'BoxEpigraph-versebepiv',
               'BoxEpigraphSourcebeps',
               'BoxTextNo-Indentbtx1',
               'BoxHead-Level-1bh1',
@@ -108,14 +103,9 @@
     <xsl:sequence
       select="'SidebarHeadsbh',
               'SidebarSubheadsbsh',
-              'SidebarEpigraphnon-versesbepi',
+              'SidebarEpigraph-non-versesbepi',
               'SidebarEpigraphSourcesbeps',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraph-versesbepiv',
               'SidebarEpigraphSourcesbeps',
               'SidebarTextNo-Indentsbtx1',
               'SidebarHead-Level-1sbh1',
@@ -252,9 +242,9 @@
               'ChapSubtitlecst',
               'ChapAuthorca',
               'Dateline-Chapterdl',
-              'ChapEpigraphnon-versecepi',
+              'ChapEpigraph-non-versecepi',
               'ChapEpigraphSourceceps',
-              'ChapEpigraphversecepiv',
+              'ChapEpigraph-versecepiv',
               'ChapterContentscc'"/>
   </xsl:variable>
 
