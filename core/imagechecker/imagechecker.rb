@@ -3,8 +3,10 @@ require 'fileutils'
 require_relative '../header.rb'
 require_relative '../metadata.rb'
 
-# The location where the images are moved to by tmparchive
+# The locations to check for images
 imagedir = Bkmkr::Paths.submitted_images
+final_dir_images = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
+final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata.frontcover)
 
 # The working dir location that images will be moved to (for test 3)
 image_dest = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
@@ -14,6 +16,9 @@ image_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "IMAGE_ERROR.txt"
 
 # An array listing all the submitted images
 images = Dir.entries("#{imagedir}")
+
+# An array listing all images in the archive dir
+finalimages = Dir.entries("#{final_dir_images}")
 
 # If a cover_error file exists, delete it
 if File.file?(image_error)
@@ -42,14 +47,17 @@ matched = []
 source.each do |m|
 	match = m.split("/").pop.gsub(/"/,'')
 	matched_file = File.join(imagedir, match)
+	matched_file_pickup = File.join(final_dir_images, match)
 	if images.include?("#{match}") and match == Metadata.frontcover
-		FileUtils.cp(matched_file, image_dest)
 		matched << match
 		FileUtils.cp(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 	elsif images.include?("#{match}") and match != Metadata.frontcover
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
 		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+	elsif !images.include?("#{match}") and match != Metadata.frontcover and finalimages.include?("#{match}")
+		matched << match
+		FileUtils.cp(matched_file_pickup, Bkmkr::Paths.project_tmp_dir_img)
 	else
 		missing << match
 	end
