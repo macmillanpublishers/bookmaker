@@ -25,21 +25,21 @@
        blockquote. -->
   <xsl:variable name="epigraph-paras" as="xs:string*">
     <xsl:sequence
-      select="'PartEpigraphnon-versepepi',
-              'PartEpigraphversepepiv',
+      select="'PartEpigraph-non-versepepi',
+              'PartEpigraph-versepepiv',
               'PartEpigraphSourcepeps',
-              'ChapEpigraphnon-versecepi',
-              'ChapEpigraphversecepiv',
+              'ChapEpigraph-non-versecepi',
+              'ChapEpigraph-versecepiv',
               'ChapEpigraphSourceceps',
-              'FMEpigraphnon-versefmepi',
-              'FMEpigraphversefmepiv',
+              'FMEpigraph-non-versefmepi',
+              'FMEpigraph-versefmepiv',
               'FMEpigraphSourcefmeps',
-              'Epigraphnon-verseepi',
-              'Epigraphverseepiv',
+              'Epigraph-non-verseepi',
+              'Epigraph-verseepiv',
               'EpigraphSourceeps',
-              'EpigraphinTextnon-versetepi',
-              'EpigraphinTextversetepiv',
-              'EpigraphinTextSourceteps'"/>
+              'EpigraphinText-non-versetepi',
+              'EpigraphinText-versetepiv',
+              'EpigraphinText-Sourceteps'"/>
   </xsl:variable>
 
   <!-- Paragraph styles which should get aggregated in a poetry
@@ -63,14 +63,9 @@
     <xsl:sequence
       select="'BoxHeadbh',
               'BoxSubheadbsh',
-              'BoxEpigraphnon-versebepi',
+              'BoxEpigraph-non-versebepi',
               'BoxEpigraphSourcebeps',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
-              'BoxEpigraphversebepiv',
+              'BoxEpigraph-versebepiv',
               'BoxEpigraphSourcebeps',
               'BoxTextNo-Indentbtx1',
               'BoxHead-Level-1bh1',
@@ -108,14 +103,9 @@
     <xsl:sequence
       select="'SidebarHeadsbh',
               'SidebarSubheadsbsh',
-              'SidebarEpigraphnon-versesbepi',
+              'SidebarEpigraph-non-versesbepi',
               'SidebarEpigraphSourcesbeps',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
-              'SidebarEpigraphversesbepiv',
+              'SidebarEpigraph-versesbepiv',
               'SidebarEpigraphSourcesbeps',
               'SidebarTextNo-Indentsbtx1',
               'SidebarHead-Level-1sbh1',
@@ -252,9 +242,9 @@
               'ChapSubtitlecst',
               'ChapAuthorca',
               'Dateline-Chapterdl',
-              'ChapEpigraphnon-versecepi',
+              'ChapEpigraph-non-versecepi',
               'ChapEpigraphSourceceps',
-              'ChapEpigraphversecepiv',
+              'ChapEpigraph-versecepiv',
               'ChapterContentscc'"/>
   </xsl:variable>
 
@@ -382,7 +372,8 @@
               <xsl:when test="$word-style = 'AdCardMainHeadacmh'">
                 <xsl:value-of select="'preface'"/>
               </xsl:when>
-              <xsl:when test="$word-style = 'BMHeadbmh'">
+              <xsl:when test="$word-style = 'BMHeadbmh' or 
+                              $word-style = 'AboutAuthorTextHeadatah'">
                 <xsl:value-of select="'appendix'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'PartNumberpn' or
@@ -483,6 +474,9 @@
             and ./w:pPr/w:pStyle/@w:val = 'ChapTitlect'">
       <xsl:attribute name="data-autolabel">
         <xsl:value-of select="'yes'"/>
+      </xsl:attribute>
+      <xsl:attribute name="data-labeltext">
+        <xsl:value-of select="preceding::w:p[1]/w:r/w:t"/>
       </xsl:attribute>
     </xsl:if>
       <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
@@ -705,14 +699,16 @@
   <xsl:template match="w:r[w:rPr/w:rStyle/@w:val]">
     <span>
       <xsl:apply-templates select="w:rPr/w:rStyle/@w:val"/>
-      <xsl:apply-templates select="w:t"/>
+      <xsl:apply-templates select="w:t | w:br | w:sym | w:footnoteReference | w:endnoteReference"/>
+      <!--<xsl:apply-templates select="w:br"/>
       <xsl:apply-templates select="w:footnoteReference"/>
-      <xsl:apply-templates select="w:endnoteReference"/>
+      <xsl:apply-templates select="w:endnoteReference"/>-->
     </span>
   </xsl:template>
 
   <xsl:template match="w:r">
-    <xsl:apply-templates select="w:t"/>
+    <xsl:apply-templates select="w:t | w:br | w:sym"/>
+    <!--<xsl:apply-templates select="w:br"/>-->
   </xsl:template>
 
   <!-- Footnote references -->
@@ -739,6 +735,23 @@
        elements. -->
   <xsl:template match="w:t">
     <xsl:value-of select="."/>
+  </xsl:template>
+
+  <!-- preserving soft breaks -->
+  <xsl:template match="w:br">
+    <br/>
+  </xsl:template>
+
+  <!-- preserving soft breaks -->
+  <xsl:template match="w:sym">
+    <xsl:choose>
+      <xsl:when test="current()/@w:char = 'F0D3'">
+        <xsl:value-of select="'©'"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@w:char"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Processing paragraphs in box mode.  Check each following

@@ -39,9 +39,9 @@ filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
 replace = filecontents.gsub(/(<span class="endnotereference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
-# replace nbsp entities with 160 and fix img closing tags, and add lang attr
+# replace nbsp entities with 160 and fix img and br closing tags, and add lang attr
 nbspcontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2")
+replace = nbspcontents.gsub(/&nbsp/,"&#160").gsub(/(<img.*?)(>)/,"\\1/\\2").gsub(/(<br)(>)/,"\\1/\\2")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 # strip extraneous footnote section from html
@@ -67,7 +67,7 @@ unless endnote_txt.include?("<p")
 	File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 end
 
-# TESTING
+# LOGGING
 
 # html file should exist
 if File.file?("#{Bkmkr::Paths.outputtmp_html}")
@@ -76,20 +76,9 @@ else
 	test_html_status = "FAIL: html file was created successfully"
 end
 
-# html file should contain html tag, body tag, and title should be non-empty
-test_html_html = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/<html/)
-test_html_body = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/<body/)
-test_html_content = File.read("#{Bkmkr::Paths.outputtmp_html}").scan(/<title>.+<\/title>/)
-
-if test_html_html.length != 0 and test_html_body.length!= 0 and test_html_content != 0
-	test_content_status = "pass: html file has content and a title"
-else 
-	test_content_status = "FAIL: html file has content and a title"
-end
-
 # Printing the test results to the log file
 File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
 	f.puts "----- HTMLMAKER PROCESSES"
 	f.puts test_html_status
-	f.puts test_content_status
+	f.puts "finished htmlmaker"
 end

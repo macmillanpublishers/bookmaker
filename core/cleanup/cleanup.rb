@@ -26,26 +26,10 @@ FileUtils.rm_r(Bkmkr::Paths.project_tmp_dir)
 FileUtils.rm(Bkmkr::Project.input_file)
 FileUtils.rm(Bkmkr::Paths.alert)
 
-# TESTING
-
-# verify input file is gone
-if File.exists?("#{Bkmkr::Project.input_file}")
-	test_inputfile_removed = "FAIL: Input file has been deleted from Convert directory"
-else
-	test_inputfile_removed = "pass: Input file has been deleted from Convert directory"
-end
-
-# verify tmp folder for pisbn is gone
-if File.exists?("#{Bkmkr::Paths.tmp_dir}/#{Bkmkr::Project.filename}")
-	test_tmpdir_removed = "FAIL: Tmp directory has been removed"
-else
-	test_tmpdir_removed = "pass: Tmp directory has been removed"
-end
+# LOGGING
 
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- CLEANUP PROCESSES"
-	f.puts "#{test_inputfile_removed}"
-	f.puts "#{test_ftp_files_removed}"	
-	f.puts "#{test_tmpdir_removed}"	
+	f.puts "finished cleanup"	
 end
