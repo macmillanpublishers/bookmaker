@@ -21,7 +21,7 @@ tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
 OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
 METAINF_dir = File.join(Bkmkr::Paths.project_tmp_dir, "META-INF")
-unless data_hash['frontcover'].nil? or @@data_hash['frontcover'].empty? or !@@data_hash['frontcover']
+unless data_hash['frontcover'].nil? or data_hash['frontcover'].empty? or !data_hash['frontcover']
 	final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
 else
 	final_cover = ""
