@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <a href="http://macmillanpublishers.github.io/bookmaker/"><img class="logo" src="logo.png" alt="Bookmaker logo" /></a>
-    <h1>Codex, Meet Bookmaker</h1>
+    <h1>Hello World! Meet Bookmaker</h1>
     <p class="subhead">The open-source bookmaking tool from Macmillan Publishers.</p>
   </div>
   <div class="container">
@@ -20,7 +20,7 @@
     </div>
     <div class="container">
     <div class="grid">
-    <h2>Requirements</h2>
+    <h2>What Can I Convert?</h2>
     <p></p>
     <div class="gridspan50">
       <div class="icon"><img class="icon" src="img/word.png"/></div>
@@ -33,107 +33,88 @@
       <p class="small">Just like with the Word files, we need to have some rules around how the HTML is structured, so bookmaker knows what to do with it. We used O'Reilly's HTMLBook spec, which you can read about <a href="http://oreillymedia.github.io/HTMLBook/">here</a>.</p>
     </div>
     <div class="clear">&nbsp;</div>
-    <div class="gridspan20">
-    <div class="icon"><img class="icon" src="img/ruby.png"/></div>
-    <p class="lead">Ruby</p>
-    <p class="small">This open-source programming language lies at the heart of bookmaker.</p>
     </div>
-    <div class="gridspan20">
-    <div class="icon"><img class="icon" src="img/python.png"/></div>
-    <p class="lead">Python</p>
-    <p class="small">Also open-source, python assists the ruby processes.</p>
+  </div>
+  <div class="container">
+    <div class="grid">
+    <h2>What's the Output?</h2>
+    <p></p>
+    <div class="gridspan30">
+      <div class="icon"><img class="icon" src="img/html.png"/></div>
+      <p class="lead">HTMLBook HTML</p>
+      <p class="small">HTML is Bookmaker's gateway to the PDF and EPUB formats, and paves the way for you to create Web versions of your content.</p>
     </div>
-    <div class="gridspan20">
-    <div class="icon"><img class="icon" src="img/htmlbook.png"/></div>
-    <p class="lead">HTMLBook</p>
-    <p class="small">We use O'Reilly's HTMLBook toolkit to create the EPUB files (why reinvent the wheel, right?).</p>
+    <div class="gridspan30">
+    <div class="icon"><img class="icon" src="img/pdf.png"/></div>
+      <p class="lead">PDF<p>
+      <p class="small">Bookmaker can create a PDF for the Web or to send to the printer, laid out without human intervention using CSS and the new CSS 3 Paged Media spec.</p>
     </div>
-    <div class="gridspan20">
-    <div class="icon"><img class="icon" src="img/java.png"/></div>
-    <p class="lead">Java and Saxon</p>
-    <p class="small">Turns .docx into HTML. (Help us get rid of this--see the Project Ideas below.)</p>
-    </div>
-    <div class="gridspan20">
-    <div class="icon"><img class="icon" src="img/xslt.png"/></div>
-    <p class="lead">An XSL1 Processor</p>
-    <p class="small">Turns HTML into an EPUB.</p>
+    <div class="gridspan30">
+    <div class="icon"><img class="icon" src="img/epub.png"/></div>
+      <p class="lead">EPUB<p>
+      <p class="small">Bookmaker uses O'Reilly's HTMLBook scripts to create an EPUB, the popular open-source ebook format that can be read on most ereader devices.</p>
     </div>
     <div class="clear">&nbsp;</div>
     </div>
   </div>
   <div class="container">
-  <div class="grid">
-    <h2>Install Bookmaker</h2>
-    <p class="short">We put together together a special installation package for Codex folks, to help you get up-and-running (relatively) quickly. These two packages include installation instructions and installation files to set up bookmaker. We've also preconfigured the tool for each operating system and included a batch script to run it, so all you have to worry about is getting the pieces in place. Click through to see the instructions and get the downloads for your system.</p>
-    <div class="gridspan50">
-    <div class="icon"><a href="mac.html"><img class="icon" src="img/apple.png"/></a></div>
-    <h3><a href="mac.html">Mac</a></h3>
-    </div>
-    <div class="gridspan50">
-    <div class="icon"><a href="windows.html"><img class="icon" src="img/windows.png"/></a></div>
-    <h3><a href="windows.html">Windows</a></h3>
-    </div>
-    <div class="clear"> </div>
-    </div>
-  </div>
-  <div class="container">
     <div class="grid">
-    <h2>Download Sample Files</h2>
-    <p class="short">We put together a little sample book that you can use with bookmaker. It includes a Word .docx file with the Macmillan template already applied, an HTMLBook version of the same book, a cover file, the metadata JSON file, and some CSS to make the PDF a little bit prettier (just a little bit). Drop either the .docx or the HTML file into your conversion folder along with the cover and JSON, and follow the instructions below to convert your book to PDF and EPUB.</p>
-    <div class="icon"><a href="https://www.dropbox.com/s/adfqebhn272991z/AliceInWonderland.zip?dl=0"><img class="icon" src="img/down.png"/></a></div>
-    <h3>Which files should I use?</h3>
-    <div class ="gridspan50">
-    <p class="lead">.docx</p>
-    <p class="small">If you installed all the dependencies, inclduing Saxon and Java, then the Word file is for you.</p>
-    </div>
-    <div class ="gridspan50">
-    <p class="lead">HTML</p>
-    <p class="small">If you decided not to install Saxon and Java, you can still run bookmaker--just use the HTML file.</p>
-    </div>
-    <div class="clear"> </div>
+    <h2>How Does It Work?</h2>
+    <p class="short">Bookmaker is fully configurable for your system and workflow. In the config.rb file, you tell it what kind of system you have and where you want to keep the files it creates. You can also configure each project in a config.json file, to give Bookmaker your project metadata, CSS design files, cover files, and so on. You can run each component Bookmaker script one by one, or package them into .bat or .sh file to run all at once. See <a href="https://github.com/macmillanpublishers/bookmaker">in the Bookmaker repository on GitHub</a> for more guidance.</p>
+    <h3>How Do I Install It?</h3>
+    <p class="short">Right now, Bookmaker needs to be installed by a developer or someone comfortable with the command-line and system configuration. Remember--this is a tool we built for ourselves, and we're not a software company! We'd love to make it easy to install someday, but right now it's all up to you. There are more complete installation instructions <a href="https://github.com/macmillanpublishers/bookmaker">in the Bookmaker repository on GitHub</a>.</p>
     </div>
   </div>
   <div class="container">
   <div class="grid">
-    <h2>Run Bookmaker</h2>
-    <p class="short">To run bookmaker, place your book files in the "convert" folder, and then open a Terminal or Command Prompt window and run the file called "makebook" (you can find it inside the bookmaker-master folder) on your .docx or HTML file, like this:</p>
-    <h3>Windows:</h3>
-    <pre>makebook.bat /Users/You/Desktop/convert/alice_in_wonderland.docx</pre>
-    <h3>Mac:</h3>
-    <pre>makebook.sh /Users/You/Desktop/convert/alice_in_wonderland.docx</pre>
-    <p class="short">Tip: Make sure to include the full path to the .docx or HTML file in your command. You can also just drag the file onto your Terminal or Command Prompt window and the full path will be auto-completed for you.</p>
+    <h2>Tech Requirements</h2>
+    <p class="short">Bookmaker is built on a number of open-source technologies and tools. Bookmaker is not self-contained software like Adobe InDesign or Calibre--it is a compilation of processes and tools, organized into a functional stack. In order to run Bookmaker, you'll need the following things:</p>
+    <div class="gridspan30">
+    <div class="icon"><img class="icon" src="img/ruby.png"/></div>
+    <p class="lead">Ruby</p>
+    <p class="small">This open-source programming language lies at the heart of bookmaker.</p>
     </div>
+    <div class="gridspan30">
+    <div class="icon"><img class="icon" src="img/python.png"/></div>
+    <p class="lead">Python</p>
+    <p class="small">Also open-source, python assists the ruby processes.</p>
+    </div>
+    <div class="gridspan30">
+    <div class="icon"><img class="icon" src="img/node.png"/></div>
+    <p class="lead">Node.js &amp; JavaScript</p>
+    <p class="small">Node lets us harness the power of JavaScript to perform content conversions.</p>
+    </div>
+    <div class="clear">&nbsp;</div>
+    <div class="gridspan25">
+    <div class="icon"><img class="icon" src="img/htmlbook.png"/></div>
+    <p class="lead">HTMLBook</p>
+    <p class="small">We use O'Reilly's HTMLBook toolkit to create the EPUB files (why reinvent the wheel, right?).</p>
+    </div>
+    <div class="gridspan25">
+    <div class="icon"><img class="icon" src="img/java.png"/></div>
+    <p class="lead">Java and Saxon</p>
+    <p class="small">Turns .docx into HTML (but we're in the process of replacing this with JavaScript).</p>
+    </div>
+    <div class="gridspan25">
+    <div class="icon"><img class="icon" src="img/xslt.png"/></div>
+    <p class="lead">An XSL1 Processor</p>
+    <p class="small">Turns HTML into an EPUB. (We use <a href="http://xmlsoft.org/XSLT/xsltproc2.html">xsltproc</a>.)</p>
+    </div>
+    <div class="gridspan25">
+    <div class="icon"><img class="icon" src="img/pdf.png"/></div>
+    <p class="lead">Prince XML or DocRaptor</p>
+    <p class="small">Creates the final PDF. <a href="http://www.princexml.com/">Download Prince</a> or <a href="http://docraptor.com">sign-up for Docraptor</a>.</p>
+    </div>
+    <div class="clear">&nbsp;</div>
+  </div>
   </div>
   <div class="container">
   <div class="grid">
-    <h2>Project Ideas</h2>
-    <p class='center'>Want to build something around bookmaker? Here are some ideas!</p>
-    <div class="gridspan50 project">
-    <p class="lead">.docx to HTML, the open version</p>
-    <p>Bookmaker currently uses XSLT2 to transform .docx to HTML (we use Java and Saxon to run these scripts). Write a script that can transform the tagged .docx file to HTML in the same way, but using a more open language like Python or JavaScript (with Node or some other non-browser-based JavaScript utility).</p>
-    <p>Requires: Document transformation language like Javascript, or Python.</p>
-    </div>
-    <div class="gridspan50 project">
-    <p class="lead">Any Word file</p>
-    <p>Right now .docx files must be styled with the Macmillan Word template in order to convert well. Write an extension to re-map a different template's styles to the Macmillan styles. Extra challenge: make it scalable--that is, make it so that the extension can be reused for any set of styles, and doesn't require a developer to add support for new styles.</p>
-    <p>Requires: Programming language like Ruby or Python (or even JavaScript?)</p>
-    </div>
-    <div class="gridspan50 project">
-    <p class="lead">Any HTML to HTMLBook</p>
-    <p>Bookmaker requires input HTML files to be valid HTMLBook. Write an extension to convert plain HTML files to HTMLBook.</p>
-    <p>Requires: Document transformation language like XSLT, Javascript, or Python</p>
-    </div>
-    <div class="gridspan50 project">
-    <p class="lead">Beautiful books</p>
-    <p>Bookmaker doesn't ship with any CSS files to make the output prettier. Create a library of well-designed CSS templates for EPUB and PDF files. Tips: Writing CSS for EPUBs is a lot like writing CSS for very basic websites. Here's some help getting started writing CSS for PDFs.</p>
-    <p>Requires: CSS, good design sense</p>
-    </div>
-    <div class="gridspan50 project">
-    <p class="lead">Dropbox + bookmaker</p>
-    <p>Using the Dropbox API, create an app that can send files between DropBox and bookmaker.</p>
-    <p>Requires: DropBox API, programming language that can work the API (like Ruby or Python), some sort of front end.</p>
-    </div>
-    <div class="clear"> </div>
+    <h2>What's Next?</h2>
+    <p class='short'>Bookmaker is still actively in development. Here are a few of the things we're working on:</p>
+    <p class='short'><strong>Lighter, easier-to-maintain transformation engine.</strong> We're in the process of replacing the XSL scripts that convert .docx to HTML with JavaScript and node.js.</p>
+    <p class="short"><strong>Better fallbacks.</strong> While we've tried to make Bookmaker versatile, there are still some processes that are linked to Macmillan's internal workflow. We're working to build fallbacks so that you can use Bookmaker however you want, without getting a lot of errors.</p>
+    <p class="short"><strong>Integrated testing.</strong> Test-driven development is very important. Bookmaker grew very quickly from a proof-of-concept to a minimum viable product, and integrated tests weren't included at those stages. However, now that Bookmaker is gaining more use internally, we need to add tests to make sure that as we add new features, we don't accidentally break any of the existing functionality.</p>
   </div>
   </div>
   <div class="container">

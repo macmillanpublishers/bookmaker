@@ -187,6 +187,16 @@ a:hover {
   margin-left: 1%;
 }
 
+.gridspan30 {
+  width: 31%;
+  margin-left: 1%;
+}
+
+.gridspan25 {
+  width: 23%;
+  margin-left: 1%;
+}
+
 .gridspan20 {
   width: 18%;
   margin-left: 1%;
@@ -269,7 +279,7 @@ a:hover {
   margin-left: 0;
 }
 
-.gridspan20 {
+.gridspan20, .gridspan25, .gridspan30 {
   width: 100%;
   margin-left: 0;
 }
