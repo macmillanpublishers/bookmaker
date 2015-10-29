@@ -107,10 +107,9 @@ The Bookmaker scripts depend on various other utilities, as follows:
 * Python (version 2.7.x): Converts Word .docx files to XML.
 * Saxon: An XSLT processor that runs our Word-to-HTML scripts. 
 * Ruby: The primary scripting language used in the Bookmaker scripts. 
-* Docraptor: The external service that performs the HTML-to-PDF conversion. It requires a ruby gem, and you'll also need to create an account and get your unique API key.
+* Prince or docraptor: The external service that performs the HTML-to-PDF conversion. Prince is downloadable software. Docraptor requires a ruby gem, and you'll also need to create an account and get your unique API key.
 * An ftp server (if you'll be creating PDFs and your book contains images, custom fonts, custom CSS, or other resources besides the HTML).
 * SSL Cert (Windows only): The SSL Cert file needs to be updated to allow the scripts to post and receive from DocRaptor. 
-* Zip.exe (Windows only): Packages the EPUB file; download here and place in your resources folder (see below).
 * Imagemagick: enables command line image edits. Download here and add to path via cmd line: set PATH=C:\Program Files\ImageMagick-6.9.1-Q16n;%PATH% (<-version suffix may change, use your own path)
 
 ## Installation
@@ -138,7 +137,6 @@ Now install git on your server, following the standard instructions.
 The source code for the Bookmaker scripts is hosted in the Macmillan GitHub account, broken down into several repositories. The production-ready versions of each script live in the master branch in each repository. The repositories are as follows:
 
 * https://github.com/macmillanpublishers/bookmaker/
-* https://github.com/macmillanpublishers/WordXML-to-HTML/
 
 If you plan to make changes to the source code, you will want to fork those repositories and then clone them, so that you can maintain your version of the code.
 
@@ -151,6 +149,17 @@ Install the utilities listed in the previous section, as needed. For reference, 
 * To create an EPUB file: Ruby, Saxon PE+Java OR xsltproc, Python, node.js, Imagemagick (optional)
 
 #### Ruby
+
+Bookmaker requires Ruby 1.9.x. Follow standard installation instructions for your operating system.
+
+Once Ruby is installed, you'll need to install a few gems:
+
+```
+gem install open-uri
+gem install json
+gem install fileutils
+gem install doc_raptor
+```
 
 #### Python
 

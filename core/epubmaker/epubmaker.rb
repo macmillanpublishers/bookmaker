@@ -21,7 +21,11 @@ tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
 OEBPS_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
 METAINF_dir = File.join(Bkmkr::Paths.project_tmp_dir, "META-INF")
-final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
+unless data_hash['frontcover'].nil? or @@data_hash['frontcover'].empty? or !@@data_hash['frontcover']
+	final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
+else
+	final_cover = ""
+end
 cover_jpg = File.join(OEBPS_dir, "cover.jpg")
 epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 
@@ -48,7 +52,7 @@ File.open(epub_tmp_html, 'w') do |output|
 	output.write filecontents
 end
 
-if File.file?(final_cover)
+if !final_cover.nil? and File.file?(final_cover)
 	filecontents = File.read(epub_tmp_html).gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\" id=\"bookcover01\"><img src=\"cover.jpg\"/></figure>")
 	# Saving revised HTML into tmp file
 	File.open(epub_tmp_html, 'w') do |output| 
@@ -71,7 +75,7 @@ Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 # fix cover.html doctype and ncx entry
 # at some point I should move this to addons
 covercontents = File.read("#{OEBPS_dir}/cover.html")
-if File.file?(final_cover)
+if !final_cover.nil? and File.file?(final_cover)
 	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
 	File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
 	ncx = File.read("#{OEBPS_dir}/toc.ncx")
@@ -88,7 +92,7 @@ File.open("#{OEBPS_dir}/content.opf", "w") {|file| file.puts replace}
 FileUtils.cp("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/layout/epub.css", OEBPS_dir)
 
 # add cover image file to epub folder
-if File.file?(final_cover)
+if !final_cover.nil? and File.file?(final_cover)
 	FileUtils.cp(final_cover, cover_jpg)
 	unless Bkmkr::Tools.processimages == "false"
 		`convert "#{cover_jpg}" -resize "600x800>" "#{cover_jpg}"`
