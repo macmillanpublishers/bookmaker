@@ -74,7 +74,10 @@ Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 
 # fix cover.html doctype and ncx entry
 # at some point I should move this to addons
-covercontents = File.read("#{OEBPS_dir}/cover.html")
+if File.file?("#{OEBPS_dir}/cover.html")
+	covercontents = File.read("#{OEBPS_dir}/cover.html")
+end
+
 if !final_cover.nil? and File.file?(final_cover)
 	replace = covercontents.gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>")
 	File.open("#{OEBPS_dir}/cover.html", "w") {|file| file.puts replace}
