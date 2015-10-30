@@ -40,6 +40,8 @@ source = source.uniq
 missing = []
 # An empty array to store nospace names of html images existing in submission folder (for test 3)
 matched = []
+# An empty array to store filenames with resolution less than 300
+resolution = []
 
 # Checks to see if each image referenced in the html exists in the tmp images folder
 # If no, saves the image file name in the missing array
@@ -51,10 +53,20 @@ source.each do |m|
 	if images.include?("#{match}") and match == Metadata.frontcover
 		matched << match
 		FileUtils.cp(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+		myres = `identify -format "%y" "#{matched_file}"`
+		myres = myres.to_f
+		if myres < 300
+			resolution << match
+		end
 	elsif images.include?("#{match}") and match != Metadata.frontcover
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
 		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+		myres = `identify -format "%y" "#{matched_file}"`
+		myres = myres.to_f
+		if myres < 300
+			resolution << match
+		end
 	elsif !images.include?("#{match}") and match != Metadata.frontcover and finalimages.include?("#{match}")
 		matched << match
 		FileUtils.cp(matched_file_pickup, Bkmkr::Paths.project_tmp_dir_img)
@@ -66,7 +78,23 @@ end
 # Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
 if missing.any?
 	File.open(image_error, 'w') do |output|
-		output.write "The following images are missing from the submitted_images folder: #{missing}"
+		output.write "MISSING IMAGES:"
+		output.write "The following images are missing from the submitted_images folder:"
+		missing.each do |m|
+			output.write m
+		end
+	end
+end
+
+# Check image resolution
+if resolution.any?
+	File.open(image_error, 'a') do |output|
+		output.write "RESOLUTION ERRORS:"
+		output.write "Your images will look best in both print and ebook formats at 300dpi or higher."
+		output.write "The following images have a resolution less than 300dpi:"
+		resolution.each do |r|
+			output.write r
+		end
 	end
 end
 
