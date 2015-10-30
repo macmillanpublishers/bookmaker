@@ -115,10 +115,12 @@ if sourceimages.any?
 		images = Dir.entries(epub_img_dir).select {|f| !File.directory? f}
 		images.each do |i|
 			path_to_i = File.join(epub_img_dir, i)
+			myres = `identify -format "%y" "#{path_to_i}"`
+			myres = myres.to_f
 			if i.include?("_crop")
-				`convert "#{path_to_i}" -bordercolor white -border 1x1  -trim -resize "600x800>" "#{path_to_i}"`
+				`convert "#{path_to_i}" -density #{myres} -bordercolor white -border 1x1  -trim -resize "600x800>" -quality 100 "#{path_to_i}"`
 			else
-				`convert "#{path_to_i}" -resize "600x800>" "#{path_to_i}"`
+				`convert "#{path_to_i}" -density #{myres} -resize "600x800>" -quality 100 "#{path_to_i}"`
 			end
 		end
 	end
