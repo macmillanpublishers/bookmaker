@@ -78,10 +78,10 @@ end
 # Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
 if missing.any?
 	File.open(image_error, 'w') do |output|
-		output.write "MISSING IMAGES:"
-		output.write "The following images are missing from the submitted_images folder:"
+		output.puts "MISSING IMAGES:"
+		output.puts "The following images are missing from the submitted_images folder:"
 		missing.each do |m|
-			output.write m
+			output.puts m
 		end
 	end
 end
@@ -89,11 +89,11 @@ end
 # Check image resolution
 if resolution.any?
 	File.open(image_error, 'a') do |output|
-		output.write "RESOLUTION ERRORS:"
-		output.write "Your images will look best in both print and ebook formats at 300dpi or higher."
-		output.write "The following images have a resolution less than 300dpi:"
+		output.puts "RESOLUTION ERRORS:"
+		output.puts "Your images will look best in both print and ebook formats at 300dpi or higher."
+		output.puts "The following images have a resolution less than 300dpi:"
 		resolution.each do |r|
-			output.write r
+			output.puts r
 		end
 	end
 end
