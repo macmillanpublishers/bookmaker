@@ -52,21 +52,21 @@ source.each do |m|
 	matched_file_pickup = File.join(final_dir_images, match)
 	if images.include?("#{match}") and match == Metadata.frontcover
 		matched << match
-		FileUtils.cp(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		myres = `identify -format "%y" "#{matched_file}"`
 		myres = myres.to_f
 		if myres < 300
 			resolution << match
 		end
+		FileUtils.cp(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 	elsif images.include?("#{match}") and match != Metadata.frontcover
 		FileUtils.cp(matched_file, image_dest)
 		matched << match
-		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		myres = `identify -format "%y" "#{matched_file}"`
 		myres = myres.to_f
 		if myres < 300
 			resolution << match
 		end
+		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 	elsif !images.include?("#{match}") and match != Metadata.frontcover and finalimages.include?("#{match}")
 		matched << match
 		FileUtils.cp(matched_file_pickup, Bkmkr::Paths.project_tmp_dir_img)
