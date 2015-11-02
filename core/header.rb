@@ -87,7 +87,7 @@ module Bkmkr
 		end
 		
 		# Full path and filename for the normalized (i.e., spaces removed) input file in the temporary working dir
-		@@project_tmp_file = File.join(project_tmp_dir, Project.filename_normalized)
+		@@project_tmp_file = File.join(project_tmp_dir, "#{Project.filename}.docx")
 		def self.project_tmp_file
 			@@project_tmp_file
 		end
