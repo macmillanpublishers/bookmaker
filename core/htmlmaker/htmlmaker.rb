@@ -14,7 +14,7 @@ headings_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.xsl")
 inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
 
 # convert docx to xml
-Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_tmp_file)
+Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
 
 # convert xml to html
 `java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
