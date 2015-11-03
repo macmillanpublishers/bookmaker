@@ -36,7 +36,7 @@ end
 
 # add endnote ref id as static content
 filecontents = File.read("#{Bkmkr::Paths.outputtmp_html}")
-replace = filecontents.gsub(/(<span class="endnotereference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(p class="endnotetext" id=")/,"\\1endnotetext-")
+replace = filecontents.gsub(/(<span class="Endnotereference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(<span class="endnotereference" id=")(\d+)(">)(<\/span>)/,"\\1endnoteref-\\2\\3\\2\\4").gsub(/(div class="endnotetext" id=")/,"\\1endnotetext-")
 File.open("#{Bkmkr::Paths.outputtmp_html}", "w") {|file| file.puts replace}
 
 # replace nbsp entities with 160 and fix img and br closing tags, and add lang attr
