@@ -677,13 +677,13 @@
 
   <!-- Preserve endnote text -->
   <xsl:template match=".//w:endnote">
-    <p>
+    <div>
       <xsl:attribute name="class">
         <xsl:value-of select="'endnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
       <xsl:apply-templates select="w:p"/>
-    </p>
+    </div>
   </xsl:template>
 
   <!-- All other paragraphs become p elements. -->
