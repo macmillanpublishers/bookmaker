@@ -682,7 +682,7 @@
         <xsl:value-of select="'endnotetext'"/>
       </xsl:attribute>
       <xsl:apply-templates select="@w:id"/>
-      <xsl:apply-templates select="w:p/w:r"/>
+      <xsl:apply-templates select="w:p"/>
     </p>
   </xsl:template>
 
