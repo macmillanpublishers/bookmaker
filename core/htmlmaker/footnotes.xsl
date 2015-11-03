@@ -27,8 +27,8 @@
 
 <xsl:template match="h:section[@data-type='footnotes']"/>
 
-<xsl:template match="h:p[@id='endnotetext--1']"/>
+<xsl:template match="h:div[@id='endnotetext--1']"/>
 
-<xsl:template match="h:p[@id='endnotetext-0']"/>
+<xsl:template match="h:div[@id='endnotetext-0']"/>
 
 </xsl:stylesheet> 
