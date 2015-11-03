@@ -252,7 +252,7 @@ module Bkmkr
 			end
 
 			puts "Addons to insert: #{addons}"
-			unless addons.nil?
+			unless addons.nil? or addons.empty? or !addons
 				addons = addons.split(",")
 			end
 
