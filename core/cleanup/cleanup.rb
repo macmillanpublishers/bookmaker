@@ -3,9 +3,16 @@ require 'fileutils'
 require_relative '../header.rb'
 require_relative '../metadata.rb'
 
+configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
+file = File.read(configfile)
+data_hash = JSON.parse(file)
+
+project_dir = data_hash['project']
+stage_dir = data_hash['stage']
+
 # clean up the ftp site if files were uploaded
 if File.exists?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt") && !File.zero?("#{Bkmkr::Paths.project_tmp_dir_img}/uploaded_image_log.txt")
-	`#{Bkmkr::Paths.scripts_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.project_tmp_dir}`
+	`#{Bkmkr::Paths.scripts_dir}/bookmaker_ftpupload/imagedelete.bat #{Bkmkr::Paths.project_tmp_dir} #{project_dir}_#{stage_dir} #{Metadata.pisbn}`
 end
 
 # verify ftp site is clean
