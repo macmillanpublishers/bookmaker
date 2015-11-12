@@ -6,6 +6,7 @@ $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].
 unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
 input_file = File.expand_path(unescapeargv).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+project = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop
 
 # ------------------ GLOBAL VARIABLES
 # These variables are required throughout the 
@@ -20,7 +21,7 @@ $op_system = "windows"
 # The location of the temporary working folder.
 # This is where bookmaker will perform most actions
 # before moving the finalized files to the "done" directory.
-$tmp_dir = File.join($currvol, "bookmaker_tmp")
+$tmp_dir = File.join($currvol, "bookmaker_tmp", project)
 
 # The location to store the log file that gets created 
 # for each conversion.

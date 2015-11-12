@@ -11,6 +11,10 @@ input_config = File.join(Bkmkr::Paths.submitted_images, "config.json")
 tmp_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
+unless Dir.exist?(Bkmkr::Paths.tmp_dir)
+	Dir.mkdir(Bkmkr::Paths.tmp_dir)
+end
+
 if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
 	FileUtils.rm_r(Bkmkr::Paths.project_tmp_dir)
 end
