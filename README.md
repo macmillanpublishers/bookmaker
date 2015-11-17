@@ -274,6 +274,25 @@ ruby /Users/nellie.mckesson/bookmaker/bookmaker/core/cleanup/cleanup.rb $1
 
 To convert a project, drop the input text file along with any assets (interior images, etc.) into your conversion folder. Project metadata is read from a _config.json_ file that should be submitted along with your book assets.
 
+## Layout and Design
+
+Bookmaker uses CSS to layout both the print (PDF) and ebook files. The CSS should be supplied with the project and included in the project metadata (see Project Metadata above). 
+
+Print layout is based on the new CSS 3 Paged Media spec. To learn how to write CSS for paged media, checkout out these resources:
+
+### Video tutorials
+
+* [Part 1: Introduction to HTML and CSS](http://youtu.be/OZeoiotzPFg)
+* [Part 2: Basic Layout and Text Formatting](http://youtu.be/yyqvXhu-HOc)
+* [Part 3: Paged Media Basics](http://youtu.be/P-bDFt2wZDA)
+* [Part 4: Generated Content - Counters & Strings](http://youtu.be/mTgxZmOpJls)
+
+### Reading
+
+* [Building Books with CSS3 by Nellie McKesson](http://alistapart.com/article/building-books-with-css3)
+
+You may also include oneoff CSS files, for example if you're working with templated CSS but need to change just a few design elements for a specific book. To use oneoff CSS, include a file called either "oneoff_pdf.css" or "oneoff_epub.css" (as appropriate) in your assets folder alongside any other assets (e.g., book cover, interior images, project metadata, etc.). Bookmaker will apply this CSS to the appropriate format, and archive the oneoff CSS file in your final archive folder. Additionally, if you already created a oneoff CSS file for a previous conversion of the same book, Bookmaker will pick up that CSS file automatically from the final archive folder (no need to resubmit it).
+
 ## Extend Bookmaker
 
 Because of it's modular architecture, users can insert extensions to the Bookmaker toolchain to customize their content conversions. For example, Macmillan has a number of custom content conversions that they insert before and after various pieces of the Bookmaker toolchain. You can peruse these extensions [here](https://github.com/macmillanpublishers/bookmaker_addons). Extensions are added as intermediary steps during deployment; see [Macmillan's deployment scripts](https://github.com/macmillanpublishers/bookmaker_deploy/) for examples.
