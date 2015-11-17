@@ -26,6 +26,22 @@ else
 	end
 end
 
+oneoffcss_p_new = File.join(Bkmkr::Paths.submitted_images, "oneoff_pdf.css")
+oneoffcss_p_pickup = File.join(tmp_layout_dir, "oneoff_pdf.css")
+
+if File.file?(oneoffcss_p_new)
+	FileUtils.mv(oneoffcss_p_new, oneoffcss_p_pickup)
+	oneoffcss = File.read(oneoffcss_p_pickup)
+	File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |o|
+		o.write oneoffcss
+	end
+elsif File.file?(oneoffcss_p_pickup)
+	oneoffcss = File.read(oneoffcss_p_pickup)
+	File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |o|
+		o.write oneoffcss
+	end
+end
+
 if File.file?(epub_css_file)
 	FileUtils.cp(epub_css_file, "#{tmp_layout_dir}/epub.css")
 elsif File.file?(find_epub_css_file)
@@ -34,6 +50,22 @@ elsif File.file?(find_epub_css_file)
 else
 	File.open("#{tmp_layout_dir}/epub.css", 'w') do |e|
 		e.write "/* no epub css supplied */"
+	end
+end
+
+oneoffcss_e_new = File.join(Bkmkr::Paths.submitted_images, "oneoff_epub.css")
+oneoffcss_e_pickup = File.join(tmp_layout_dir, "oneoff_epub.css")
+
+if File.file?(oneoffcss_e_new)
+	FileUtils.mv(oneoffcss_e_new, oneoffcss_e_pickup)
+	oneoffcss = File.read(oneoffcss_e_pickup)
+	File.open("#{tmp_layout_dir}/epub.css", 'a+') do |o|
+		o.write oneoffcss
+	end
+elsif File.file?(oneoffcss_e_pickup)
+	oneoffcss = File.read(oneoffcss_e_pickup)
+	File.open("#{tmp_layout_dir}/epub.css", 'a+') do |o|
+		o.write oneoffcss
 	end
 end
 
