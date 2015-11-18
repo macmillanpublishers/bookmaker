@@ -7,6 +7,7 @@ def evalImports(file, path)
 	filecontents = File.read(file)
 	thispath = file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
 	if filecontents.include? "@import"
+		puts "found a CSS import file"
 		imports = filecontents.scan(/@import.*?;{1}/)
 		imports.each do |i|
 			importarr = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
@@ -66,6 +67,14 @@ chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="c
 tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
 tmp_pdf_css = File.join(tmp_layout_dir, "pdf.css")
 tmp_epub_css = File.join(tmp_layout_dir, "epub.css")
+
+if File.file?(tmp_pdf_css)
+	FileUtils.rm(tmp_pdf_css)
+end
+
+if File.file?(tmp_epub_css)
+	FileUtils.rm(tmp_epub_css)
+end
 
 pdf_css_file = Metadata.printcss
 epub_css_file = Metadata.epubcss
