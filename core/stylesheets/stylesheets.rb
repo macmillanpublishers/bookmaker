@@ -10,6 +10,8 @@ def evalImports(file, path)
 		puts "found a CSS import file"
 		imports = filecontents.scan(/@import.*?;{1}/)
 		imports.each do |i|
+			myimport = i.gsub(/@import/,"").gsub(/\"/,"").gsub(/\'/,"")
+			myimport = myimport.gsub(/^\s*/,"")
 			importarr = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
 			importfile = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
 			if importarr.length >= 2 and importarr.include? ".."
