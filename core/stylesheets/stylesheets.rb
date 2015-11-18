@@ -11,12 +11,12 @@ def evalImports(file, path)
 		imports.each do |i|
 			importarr = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
 			importfile = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
-			if importarr.length? >= 2 and importarr.include? ".."
+			if importarr.count? >= 2 and importarr.include? ".."
 				searchdir = thispath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 				importpath = File.join(searchdir, importfile)
-			elsif importarr.length? >= 2 and importarr.include? "."
+			elsif importarr.count? >= 2 and importarr.include? "."
 				importpath = File.join(thispath, importfile)
-			elsif importarr.length? >= 2
+			elsif importarr.count? >= 2
 				searchdir = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 				importpath = File.join(searchdir, importfile)
 			else
