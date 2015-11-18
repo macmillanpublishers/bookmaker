@@ -41,6 +41,7 @@ def copyCSS(file, path)
 end
 
 def evalOneoffs(file, path)
+	tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
 	oneoffcss_new = File.join(Bkmkr::Paths.submitted_images, file)
 	oneoffcss_pickup = File.join(tmp_layout_dir, file)
 
