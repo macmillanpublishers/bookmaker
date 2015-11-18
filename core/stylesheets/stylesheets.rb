@@ -23,6 +23,7 @@ def evalImports(file, path)
 			else
 				importpath = File.join(thispath, importfile)
 			end
+			puts "CSS import file: #{importpath}"
 			if File.file?(importpath)
 				thisimport = File.read(importpath)
 				File.open(path, 'a+') do |p|
