@@ -12,15 +12,15 @@ def evalImports(file, path)
 		imports.each do |i|
 			myimport = i.gsub(/@import/,"").gsub(/\"/,"").gsub(/\'/,"")
 			myimport = myimport.gsub(/^\s*/,"")
-			importarr = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
-			importfile = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+			importarr = myimport.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))
+			importfile = myimport.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
 			if importarr.length >= 2 and importarr.include? ".."
 				searchdir = thispath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 				importpath = File.join(searchdir, importfile)
 			elsif importarr.length >= 2 and importarr.include? "."
 				importpath = File.join(thispath, importfile)
 			elsif importarr.length >= 2
-				searchdir = i.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
+				searchdir = myimport.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 				importpath = File.join(searchdir, importfile)
 			else
 				importpath = File.join(thispath, importfile)
