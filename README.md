@@ -278,6 +278,20 @@ To convert a project, drop the input text file along with any assets (interior i
 
 Bookmaker uses CSS to layout both the print (PDF) and ebook files. The CSS should be supplied with the project and included in the project metadata (see Project Metadata above). 
 
+Bookmaker can support local CSS imports. Imported CSS files will be placed at the top of the compiled CSS file. Imports must be local files (i.e., Bookmaker can not yet support web resources), and must be structured as follows: 
+
+```css
+@import "path/to/file.css"; 
+```
+
+or 
+
+```css
+@import 'path/to/file.css';
+```
+
+You may also include oneoff CSS files, for example if you're working with templated CSS but need to change just a few design elements for a specific book. To use oneoff CSS, include a file called either "oneoff_pdf.css" or "oneoff_epub.css" (as appropriate) in your assets folder alongside any other assets (e.g., book cover, interior images, project metadata, etc.). Bookmaker will apply this CSS to the appropriate format, and archive the oneoff CSS file in your final archive folder. Additionally, if you already created a oneoff CSS file for a previous conversion of the same book, Bookmaker will pick up that CSS file automatically from the final archive folder (no need to resubmit it).
+
 Print layout is based on the new CSS 3 Paged Media spec. To learn how to write CSS for paged media, checkout out these resources:
 
 ### Video tutorials
@@ -290,8 +304,6 @@ Print layout is based on the new CSS 3 Paged Media spec. To learn how to write C
 ### Reading
 
 * [Building Books with CSS3 by Nellie McKesson](http://alistapart.com/article/building-books-with-css3)
-
-You may also include oneoff CSS files, for example if you're working with templated CSS but need to change just a few design elements for a specific book. To use oneoff CSS, include a file called either "oneoff_pdf.css" or "oneoff_epub.css" (as appropriate) in your assets folder alongside any other assets (e.g., book cover, interior images, project metadata, etc.). Bookmaker will apply this CSS to the appropriate format, and archive the oneoff CSS file in your final archive folder. Additionally, if you already created a oneoff CSS file for a previous conversion of the same book, Bookmaker will pick up that CSS file automatically from the final archive folder (no need to resubmit it).
 
 ## Extend Bookmaker
 
