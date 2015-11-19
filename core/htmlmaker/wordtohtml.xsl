@@ -255,6 +255,7 @@
     <xsl:sequence
       select="$top-level-body-breaks,
               'AdCardMainHeadacmh',
+              'FrontSalesTitlefst',
               'CopyrightTextsinglespacecrtx',
               'CopyrightTextdoublespacecrtxd',
               'Dedicationded',
