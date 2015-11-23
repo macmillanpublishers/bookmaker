@@ -17,7 +17,7 @@
 </xsl:template>
 
 <xsl:template
-    match="h:section[@data-type='preface'][h:h1[contains(., 'Contents')]]"/>
+    match="h:section[@data-type='preface'][h:h1[contains(., 'Contents')]]">
     <xsl:attribute name="class">
         <xsl:value-of select="'texttoc'"/>
     </xsl:attribute>
