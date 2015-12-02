@@ -79,5 +79,5 @@ $done_dir = File.join(working_dir, "done")
 $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 
 # username and password for online resources
-$http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_username.txt")
-$http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/ftp_pass.txt")
+$http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/http_username.txt")
+$http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/http_pass.txt")
