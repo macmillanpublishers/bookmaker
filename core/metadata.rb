@@ -4,7 +4,10 @@ require_relative 'header.rb'
 
 class Metadata
 
-	configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
+	@@configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
+	def self.configfile
+		@@configfile
+	end
 
 	@@file = File.read(configfile)
 	@@data_hash = JSON.parse(@@file)

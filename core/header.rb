@@ -1,4 +1,5 @@
 require "open-uri"
+require 'fileutils'
 
 require_relative '../config.rb'
 
@@ -159,8 +160,34 @@ module Bkmkr
 			$pdf_processor
 		end
 
+		def self.checkFileExist(file)
+			File.exists?("#{file}")
+		end
+
+		def self.checkFileEmpty(file)
+			File.zero?("#{file}")
+		end
+
+		def self.deleteDir(dir)
+			FileUtils.rm_r(dir)
+		end
+
+		def self.deleteFile(file)
+			FileUtils.rm(file)
+		end
+
+		def self.readFile(file)
+			File.read(file)
+		end
+
 		def self.processimages
 			$processimages
+		end
+
+		def self.readjson(inputfile)
+			file = File.read(inputfile)
+			json_hash = JSON.parse(file)
+			json_hash
 		end
 
 		def self.processxsl(html_file, xsl_file, epub_file, convert_log_txt)
