@@ -52,7 +52,7 @@ end
 
 # ---------------------- PROCESSES
 checkErrorFile(cover_error)
-checkCoverFile(files, cover, tmp_cover, final_cover, cover_error)
+covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error)
 
 # ---------------------- LOGGING
 # Printing the test results to the log file
