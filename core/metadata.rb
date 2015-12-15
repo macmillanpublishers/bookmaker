@@ -9,8 +9,7 @@ class Metadata
 		@@configfile
 	end
 
-	@@file = File.read(configfile)
-	@@data_hash = JSON.parse(@@file)
+	@@data_hash = Mcmlln::Tools.readjson(configfile)
 
 	def self.booktitle
 		if @@data_hash['title'].nil? or @@data_hash['title'].empty? or !@@data_hash['title']
