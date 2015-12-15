@@ -3,10 +3,7 @@ require 'fileutils'
 require_relative '../header.rb'
 require_relative '../metadata.rb'
 
-configfile = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
-file = File.read(configfile)
-data_hash = JSON.parse(file)
-
+# ---------------------- VARIABLES
 # the cover filename
 cover = Metadata.frontcover
 
@@ -23,30 +20,41 @@ final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
 cover_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "COVER_ERROR.txt")
 
 # An array listing all files in the submission dir
-files = Dir.entries("#{coverdir}")
+files = Mcmlln::Tools.dirList(coverdir)
 
+# ---------------------- METHODS
 # If a cover_error file exists, delete it
-if File.file?(cover_error)
-	FileUtils.rm(cover_error)
+def checkErrorFile(file)
+	if File.file?(file)
+		Mcmlln::Tools.deleteFile(file)
+	end
 end
 
 # checks to see if cover is in the submission dir
 # if yes, copies cover to archival location and deletes from submission dir
 # if no, prints an error to the archival directory 
-if files.include?("#{cover}")
-	FileUtils.mv(tmp_cover, final_cover)
-	covercheck = "Found a new cover submitted"
-elsif !files.include?("#{cover}") and File.file?(final_cover)
-	covercheck = "Picking up existing cover"
-else
-	File.open(cover_error, 'w') do |output|
-		output.write "There is no cover image for this title. Download the cover image from Biblio and place it in the submitted_images folder, then re-submit the manuscript for conversion; cover images must be named ISBN_FC.jpg."
+def checkCoverFile(file, tmpcover, finalcover, errorfile)
+	if files.include?("#{file}")
+		FileUtils.mv(tmpcover, finalcover)
+		covercheck = "Found a new cover submitted"
+	elsif !files.include?("#{file}") and File.file?(finalcover)
+		covercheck = "Picking up existing cover"
+	else
+		File.open(errorfile, 'w') do |output|
+			output.puts "There is no cover image for this title."
+			output.puts "Place the cover image file in the submitted_images folder, then re-submit the manuscript for conversion."
+			output.puts "Cover image must be named #{Metadata.frontcover}."
+		end
+		covercheck = "No cover found"
 	end
-	covercheck = "No cover found"
+	covercheck
 end
 
-# LOGGING
+# ---------------------- PROCESSES
+checkErrorFile(cover_error)
+checkCoverFile(cover, tmp_cover, final_cover, cover_error)
 
+# ---------------------- LOGGING
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- COVERCHECKER PROCESSES"

@@ -21,11 +21,16 @@ module Mcmlln
       File.read(file)
     end
 
+    # An array listing all files in a directory
+    def self.dirList(directory)
+      Dir.entries(directory)
+    end
+
     def self.readjson(inputfile)
       file = File.read(inputfile)
       json_hash = JSON.parse(file)
       json_hash
     end
-    
+
   end
 end
