@@ -38,7 +38,7 @@ module Mcmlln
 
     # An array listing all files in a directory
     def self.dirListFiles(directory)
-      Dir.entries(dir).select {|f| !File.directory? f}
+      Dir.entries(directory).select {|f| !File.directory? f}
     end
 
     def self.readjson(inputfile)
