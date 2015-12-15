@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Mcmlln
   class Tools
 
@@ -7,6 +9,14 @@ module Mcmlln
 
     def self.checkFileEmpty(file)
       File.zero?("#{file}")
+    end
+
+    def self.copyFile(file, dest)
+      FileUtils.cp(file, dest)
+    end
+
+    def self.copyAllFiles(dir, dest)
+      FileUtils.cp Dir["#{dir}/*"].select {|f| test ?f, f}, dest
     end
 
     def self.deleteDir(dir)
@@ -21,15 +31,26 @@ module Mcmlln
       File.read(file)
     end
 
-    # An array listing all files in a directory
+    # An array listing everything in a directory
     def self.dirList(directory)
       Dir.entries(directory)
+    end
+
+    # An array listing all files in a directory
+    def self.dirListFiles(directory)
+      Dir.entries(dir).select {|f| !File.directory? f}
     end
 
     def self.readjson(inputfile)
       file = File.read(inputfile)
       json_hash = JSON.parse(file)
       json_hash
+    end
+
+    def self.overwriteFile(file, content)
+      File.open(file, 'w') do |output| 
+        output.write content
+      end
     end
 
   end
