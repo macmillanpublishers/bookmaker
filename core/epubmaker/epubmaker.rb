@@ -194,7 +194,6 @@ if sourceimages.any?
 	unless File.exist?(epub_img_dir)
 		Dir.mkdir(epub_img_dir)
 	end
-	#FileUtils.cp Dir["#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/images/*"].select {|f| test ?f, f}, epub_img_dir
 	Mcmlln::Tools.copyAllFiles(img_dir, epub_img_dir)
 	unless Bkmkr::Tools.processimages == "false"
 		images = Mcmlln::Tools.dirListFiles(epub_img_dir)

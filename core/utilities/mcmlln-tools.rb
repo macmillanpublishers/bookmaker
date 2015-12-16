@@ -31,6 +31,10 @@ module Mcmlln
       File.read(file)
     end
 
+    def self.makeDir(directory)
+      Dir.mkdir(directory)
+    end
+
     # An array listing everything in a directory
     def self.dirList(directory)
       Dir.entries(directory)
