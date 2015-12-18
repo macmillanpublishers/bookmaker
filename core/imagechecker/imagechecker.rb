@@ -3,105 +3,139 @@ require 'fileutils'
 require_relative '../header.rb'
 require_relative '../metadata.rb'
 
+# ---------------------- VARIABLES
 # The locations to check for images
 imagedir = Bkmkr::Paths.submitted_images
-final_dir_images = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
-final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata.frontcover)
 
-# The working dir location that images will be moved to (for test 3)
-image_dest = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
+final_dir_images = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
+
+final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata.frontcover)
 
 # full path to the image error file
 image_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "IMAGE_ERROR.txt")
 
-# An array listing all the submitted images
-images = Dir.entries("#{imagedir}")
-
-# An array listing all images in the archive dir
-finalimages = Dir.entries("#{final_dir_images}")
-
-# If a cover_error file exists, delete it
-if File.file?(image_error)
-	FileUtils.rm(image_error)
+# ---------------------- METHODS
+# If an image_error file exists, delete it
+def checkErrorFile(file)
+	if File.file?(file)
+		Mcmlln::Tools.deleteFile(file)
+	end
 end
 
 #strips spaces from img names in html
-text = File.read(Bkmkr::Paths.outputtmp_html)
-new_contents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
-File.open(Bkmkr::Paths.outputtmp_html, "w") {|file| file.puts new_contents }
-
-# An array of all the image files referenced in the source html file
-source = File.read(Bkmkr::Paths.outputtmp_html).scan(/img src=".*?"/)
-
-# remove duplicate image names from source array
-source = source.uniq
-
-# An empty array to store the list of any missing images
-missing = []
-# An empty array to store nospace names of html images existing in submission folder (for test 3)
-matched = []
-# An empty array to store filenames with resolution less than 300
-resolution = []
-
-# Checks to see if each image referenced in the html exists in the tmp images folder
-# If no, saves the image file name in the missing array
-# If yes, copies the image file to the done/pisbn/images folder, and deletes original
-source.each do |m|
-	match = m.split("/").pop.gsub(/"/,'')
-	matched_file = File.join(imagedir, match)
-	matched_file_pickup = File.join(final_dir_images, match)
-	if images.include?("#{match}") and match == Metadata.frontcover
-		matched << match
-		myres = `identify -format "%y" "#{matched_file}"`
-		myres = myres.to_f
-		if myres < 300
-			resolution << match
-		end
-		FileUtils.cp(matched_file, Bkmkr::Paths.project_tmp_dir_img)
-	elsif images.include?("#{match}") and match != Metadata.frontcover
-		FileUtils.cp(matched_file, image_dest)
-		matched << match
-		myres = `identify -format "%y" "#{matched_file}"`
-		myres = myres.to_f
-		if myres < 300
-			resolution << match
-		end
-		FileUtils.mv(matched_file, Bkmkr::Paths.project_tmp_dir_img)
-	elsif !images.include?("#{match}") and match != Metadata.frontcover and finalimages.include?("#{match}")
-		matched << match
-		FileUtils.cp(matched_file_pickup, Bkmkr::Paths.project_tmp_dir_img)
-	else
-		missing << match
-	end
+def stripSpaces(content)
+	filecontents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
+	filecontents
 end
 
-# Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
-if missing.any?
-	File.open(image_error, 'w') do |output|
-		output.puts "MISSING IMAGES:"
-		output.puts "The following images are missing from the submitted_images folder:"
-		missing.each do |m|
-			output.puts m
-		end
-	end
+def listImages(file)
+	# An array of all the image files referenced in the source html file
+	imgarr = File.read(file).scan(/img src=".*?"/)
+	# remove duplicate image names from source array
+	imgarr = source.uniq
+	imgarr
 end
 
-# Check image resolution
-if resolution.any?
-	File.open(image_error, 'a') do |output|
-		output.puts "RESOLUTION ERRORS:"
-		output.puts "Your images will look best in both print and ebook formats at 300dpi or higher."
-		output.puts "The following images have a resolution less than 300dpi:"
-		resolution.each do |r|
-			output.puts r
+def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
+	# An empty array to store the list of any missing images
+	missing = []
+	# An empty array to store nospace names of html images existing in submission folder (for test 3)
+	matched = []
+	# An empty array to store filenames with resolution less than 300
+	resolution = []
+
+	# Checks to see if each image referenced in the html exists in the tmp images folder
+	# If no, saves the image file name in the missing array
+	# If yes, copies the image file to the done/pisbn/images folder, and deletes original
+	imglist.each do |m|
+		match = m.split("/").pop.gsub(/"/,'')
+		matched_file = File.join(inputdir, match)
+		matched_file_pickup = File.join(finaldir, match)
+		if inputdirlist.include?("#{match}") and match == Metadata.frontcover
+			matched << match
+			myres = `identify -format "%y" "#{matched_file}"`
+			myres = myres.to_f
+			if myres < 300
+				resolution << match
+			end
+			Mcmlln::Tools.copyFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+		elsif inputdirlist.include?("#{match}") and match != Metadata.frontcover
+			Mcmlln::Tools.copyFile(matched_file, finaldir)
+			matched << match
+			myres = `identify -format "%y" "#{matched_file}"`
+			myres = myres.to_f
+			if myres < 300
+				resolution << match
+			end
+			Mcmlln::Tools.moveFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+		elsif !inputdirlist.include?("#{match}") and match != Metadata.frontcover and finaldirlist.include?("#{match}")
+			matched << match
+			Mcmlln::Tools.copyFile(matched_file_pickup, Bkmkr::Paths.project_tmp_dir_img)
+		else
+			missing << match
+		end
+	end
+	resolution, missing
+end
+
+def writeMissingErrors(arr, file)
+	# Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
+	if arr.any?
+		File.open(file, 'w') do |output|
+			output.puts "MISSING IMAGES:"
+			output.puts "The following images are missing from the submitted_images folder:"
+			arr.each do |m|
+				output.puts m
+			end
 		end
 	end
 end
 
-# LOGGING
+def writeResErrors(arr, file)
+	# Writes an error text file in the done\pisbn\ folder that lists all low res image files as stored in the resolution array
+	if arr.any?
+		File.open(file, 'a') do |output|
+			output.puts "RESOLUTION ERRORS:"
+			output.puts "Your images will look best in both print and ebook formats at 300dpi or higher."
+			output.puts "The following images have a resolution less than 300dpi:"
+			arr.each do |r|
+				output.puts r
+			end
+		end
+	end
+end
+
+# ---------------------- PROCESSES
+
+images = Mcmlln::Tools.dirList(imagedir)
+
+finalimages = Mcmlln::Tools.dirList(final_dir_images)
+
+checkErrorFile(image_error)
+
+filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+
+# run method: stripSpaces
+filecontents = stripSpaces(filecontents)
+
+Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+
+# run method: listImages
+imgarr = listImages(Bkmkr::Paths.outputtmp_html)
+
+# run method: checkImages
+resolution, missing = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
+
+# run method: writeMissingErrors
+writeMissingErrors(missing, image_error)
+
+# run method: writeResErrors
+writeResErrors(missing, image_error)
+
+# ---------------------- LOGGING
 
 # Count how many images are referenced in the book
-test_img_src = source.count
+test_img_src = imgarr.count
 
 if missing.any?
 	test_missing_img = "FAIL: These image files seem to be missing: #{missing}"

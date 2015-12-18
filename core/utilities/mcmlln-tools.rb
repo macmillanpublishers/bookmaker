@@ -19,6 +19,10 @@ module Mcmlln
       FileUtils.cp Dir["#{dir}/*"].select {|f| test ?f, f}, dest
     end
 
+    def self.moveFile(file, dest)
+      FileUtils.mv(file, dest)
+    end
+
     def self.deleteDir(dir)
       FileUtils.rm_r(dir)
     end

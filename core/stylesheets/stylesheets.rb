@@ -3,6 +3,14 @@ require 'fileutils'
 require_relative '../header.rb'
 require_relative '../metadata.rb'
 
+# ---------------------- VARIABLES
+tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
+
+tmp_pdf_css = File.join(tmp_layout_dir, "pdf.css")
+
+tmp_epub_css = File.join(tmp_layout_dir, "epub.css")
+
+# ---------------------- METHODS
 def evalImports(file, path)
 	filecontents = File.read(file)
 	thispath = file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
@@ -63,35 +71,29 @@ def evalOneoffs(file, path)
 	end
 end
 
+# ---------------------- PROCESSES
+
 # an array of all occurances of chapters in the manuscript
 chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="chapter"/)
 
-# Local path vars, css files 
-tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
-tmp_pdf_css = File.join(tmp_layout_dir, "pdf.css")
-tmp_epub_css = File.join(tmp_layout_dir, "epub.css")
-
 if File.file?(tmp_pdf_css)
-	FileUtils.rm(tmp_pdf_css)
+	Mcmlln::Tools.deleteFile(tmp_pdf_css)
 end
 
 if File.file?(tmp_epub_css)
-	FileUtils.rm(tmp_epub_css)
+	Mcmlln::Tools.deleteFile(tmp_epub_css)
 end
-
-pdf_css_file = Metadata.printcss
-epub_css_file = Metadata.epubcss
 
 find_pdf_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.printcss)
 find_epub_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.epubcss)
 
-if File.file?(pdf_css_file)
-	evalImports(pdf_css_file, tmp_pdf_css)
+if File.file?(Metadata.printcss)
+	evalImports(Metadata.printcss, tmp_pdf_css)
 	copyCSS(pdf_css_file, tmp_pdf_css)
 elsif File.file?(find_pdf_css_file)
 	evalImports(find_pdf_css_file, tmp_pdf_css)
 	copyCSS(find_pdf_css_file, tmp_pdf_css)
-	FileUtils.rm(find_pdf_css_file)
+	Mcmlln::Tools.deleteFile(find_pdf_css_file)
 else
 	File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |p|
 		p.write "/* no print css supplied */"
@@ -100,13 +102,13 @@ end
 
 evalOneoffs("oneoff_pdf.css", tmp_pdf_css)
 
-if File.file?(epub_css_file)
-	evalImports(epub_css_file, tmp_epub_css)
-	copyCSS(epub_css_file, tmp_epub_css)
+if File.file?(Metadata.epubcss)
+	evalImports(Metadata.epubcss, tmp_epub_css)
+	copyCSS(Metadata.epubcss, tmp_epub_css)
 elsif File.file?(find_epub_css_file)
 	evalImports(find_epub_css_file, tmp_epub_css)
 	copyCSS(find_epub_css_file, tmp_epub_css)
-	FileUtils.rm(find_epub_css_file)
+	Mcmlln::Tools.deleteFile(find_epub_css_file)
 else
 	File.open("#{tmp_layout_dir}/epub.css", 'a+') do |e|
 		e.write "/* no epub css supplied */"
@@ -115,7 +117,7 @@ end
 
 evalOneoffs("oneoff_epub.css", tmp_epub_css)
 
-# LOGGING
+# ---------------------- LOGGING
 
 chapterheadsnum = chapterheads.count
 
