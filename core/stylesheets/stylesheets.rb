@@ -89,7 +89,7 @@ find_epub_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.epubcss)
 
 if File.file?(Metadata.printcss)
 	evalImports(Metadata.printcss, tmp_pdf_css)
-	copyCSS(pdf_css_file, tmp_pdf_css)
+	copyCSS(Metadata.printcss, tmp_pdf_css)
 elsif File.file?(find_pdf_css_file)
 	evalImports(find_pdf_css_file, tmp_pdf_css)
 	copyCSS(find_pdf_css_file, tmp_pdf_css)
