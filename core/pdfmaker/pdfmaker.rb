@@ -50,9 +50,9 @@ def readJS(file)
 	embedjs
 end
 
-def insertAssets(content)
+def insertAssets(content, js, css)
 	# add css and js to html head
-	filecontents = content.gsub(/<\/head>/,"<script>#{embedjs}</script><style>#{embedcss}</style></head>").to_s
+	filecontents = content.gsub(/<\/head>/,"<script>#{js}</script><style>#{css}</style></head>").to_s
 end
 
 def revertCSS(file)
@@ -95,7 +95,7 @@ else
 end
 
 # run method: insertAssets
-filecontents = insertAssets(filecontents)
+filecontents = insertAssets(filecontents, embedjs, embedcss)
 
 Mcmlln::Tools.overwriteFile(pdf_tmp_html, filecontents)
 
