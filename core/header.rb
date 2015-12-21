@@ -2,6 +2,7 @@ require "open-uri"
 require 'fileutils'
 
 require_relative '../config.rb'
+require_relative 'utilities/mcmlln-tools.rb'
 
 module Bkmkr
 	class Project
@@ -160,34 +161,8 @@ module Bkmkr
 			$pdf_processor
 		end
 
-		def self.checkFileExist(file)
-			File.exists?("#{file}")
-		end
-
-		def self.checkFileEmpty(file)
-			File.zero?("#{file}")
-		end
-
-		def self.deleteDir(dir)
-			FileUtils.rm_r(dir)
-		end
-
-		def self.deleteFile(file)
-			FileUtils.rm(file)
-		end
-
-		def self.readFile(file)
-			File.read(file)
-		end
-
 		def self.processimages
 			$processimages
-		end
-
-		def self.readjson(inputfile)
-			file = File.read(inputfile)
-			json_hash = JSON.parse(file)
-			json_hash
 		end
 
 		def self.processxsl(html_file, xsl_file, epub_file, convert_log_txt)
@@ -217,6 +192,7 @@ module Bkmkr
 				File.delete(Project.alert)
 			end
 		end
+
 		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, http_username, http_password)
 			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if pdfprocessor == "prince"
@@ -243,6 +219,7 @@ module Bkmkr
 				end
 			end
 		end
+
 		def self.runnode(js, args)
 			if os == "mac" or os == "unix"
 				`node #{js} #{args}`
@@ -258,6 +235,7 @@ module Bkmkr
 				File.delete(Project.alert)
 			end
 		end
+
 		def self.insertaddons(inputfile, sectionparams, addonparams)
 			# The section types JSON
 			sectionfile = sectionparams
@@ -377,6 +355,7 @@ module Bkmkr
 				end
 			end
 		end
+
 		def self.movesection(inputfile, sectionparams, src, srcseq, dest, destseq)
 			# The section types JSON
 			sectionfile = sectionparams
@@ -423,6 +402,7 @@ module Bkmkr
 			# Insert the addon via node.js
 			Bkmkr::Tools.runnode(jsfile, "\"#{inputfile}\" \"#{srccontainer}\" \"#{srctype}\" \"#{srcclass}\" \"#{srcseq}\" \"#{destcontainer}\" \"#{desttype}\" \"#{destclass}\" \"#{destseq}\"")
 		end
+
 		def self.compileJS(file)
 			jsfile = File.join(Paths.core_dir, "utilities", "evaltemplates.js")
 			templates = File.read(file).scan(/(")(eval-\S+)(")/)
@@ -430,5 +410,6 @@ module Bkmkr
 				Bkmkr::Tools.runnode(jsfile, "\"#{file}\" \"#{t[1]}\"")
 			end
 		end
+
 	end
 end
