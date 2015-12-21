@@ -86,7 +86,7 @@ embedcss = readCSS(cssfile)
 Mcmlln::Tools.overwriteFile(cssfile, embedcss)
 
 # run method: readJS
-embedcss = readJS(Metadata.printjs)
+embedjs = readJS(Metadata.printjs)
 
 if File.file?(pdf_tmp_html)
 	filecontents = File.read(pdf_tmp_html)
