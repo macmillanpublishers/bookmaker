@@ -75,7 +75,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			missing << match
 		end
 	end
-	resolution, missing
+	return resolution, missing
 end
 
 def writeMissingErrors(arr, file)
