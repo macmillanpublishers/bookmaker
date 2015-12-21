@@ -24,7 +24,7 @@ end
 
 #strips spaces from img names in html
 def stripSpaces(content)
-	filecontents = text.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
+	filecontents = content.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
 	filecontents
 end
 
