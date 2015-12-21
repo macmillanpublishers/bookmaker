@@ -100,7 +100,7 @@ filecontents = insertAssets(filecontents, embedjs, embedcss)
 Mcmlln::Tools.overwriteFile(pdf_tmp_html, filecontents)
 
 # create PDF
-Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, pdf_html, cssfile, testing_value, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
+Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, testing_value, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
 
 # moves rendered pdf to archival dir
 Mcmlln::Tools.moveFile(tmppdf, finalpdf)
