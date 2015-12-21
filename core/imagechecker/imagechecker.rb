@@ -32,7 +32,7 @@ def listImages(file)
 	# An array of all the image files referenced in the source html file
 	imgarr = File.read(file).scan(/img src=".*?"/)
 	# remove duplicate image names from source array
-	imgarr = source.uniq
+	imgarr = imgarr.uniq
 	imgarr
 end
 
