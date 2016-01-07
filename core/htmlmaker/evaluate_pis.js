@@ -8,7 +8,7 @@ fs.readFile(file, function processTemplates (err, contents) {
         });
 
   // evaluate processing instructions
-  $("p.bookmakerprocessinginstructionbpi").each(function () {
+  $("p.BookmakerProcessingInstructionbpi").each(function () {
       var val = $( this ).text()
       if (val = "Ebook-only") {
         $( this ).parent().attr('data-format','ebook')
