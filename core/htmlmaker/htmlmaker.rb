@@ -22,6 +22,8 @@ headings_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.xsl")
 
 inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
 
+evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
+
 # ---------------------- METHODS
 
 def fixFootnotes(content)
@@ -105,6 +107,9 @@ filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 filecontents = stripEndnotes(filecontents)
 
 Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+
+# evaluate processing instructions
+Bkmkr::Tools.runnode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
 
 # ---------------------- LOGGING
 
