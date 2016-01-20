@@ -17,10 +17,14 @@ fs.readFile(file, function processTemplates (err, contents) {
       } else if (val.indexOf("TRIM:") > -1) {
         var trimsize = val.split(":").pop().replace(/\s+/g, '');
         trimsize = trimsize.replace(/x/g, ' ');
-        console.log(trimsize);
+        console.log("TRIM: " + trimsize);
         var metabooktrim = '<meta name="size" content="' + trimsize + '"/>';
-        console.log(metabooktrim);
         $('head').append(metabooktrim);
+      } else if (val.indexOf("TOC:") > -1) {
+        var toctype = val.split(":").pop().toLowerCase().replace(/\s+/g, '');
+        console.log(toctype);
+        var metatoctype = '<meta name="toc" content="' + toctype + '"/>';
+        $('head').append("TOC: " + metatoctype);
       }
       $(this).remove();
   });
