@@ -75,13 +75,17 @@ def evalTrimPI(html, css)
 	filecontents = File.read(html)
 	csscontents = File.read(css)
 	size = filecontents.match(/(<meta name="size" content=")(\d*\.*\d*in \d*\.*\d*in)("\/>)/)[2]
+	log = "----- No trim size customizations found."
 	unless size.nil? or size.empty? or !size
 		trim = "@page { size: #{size}; }"
 		File.open(css, 'a+') do |o|
-			o.puts "Adjusting trim per processing instruction"
+			o.puts " "
+			o.puts "/* Adjusting trim per processing instruction */"
 			o.puts trim
 		end
+		log = "----- A custom trim size of #{size} has been added, per a processing instruction."
 	end
+	log
 end
 
 # ---------------------- PROCESSES
@@ -115,7 +119,7 @@ end
 
 evalOneoffs("oneoff_pdf.css", tmp_pdf_css)
 
-evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
+trimmessage = evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
 
 if File.file?(Metadata.epubcss)
 	evalImports(Metadata.epubcss, tmp_epub_css)
@@ -140,5 +144,6 @@ chapterheadsnum = chapterheads.count
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- STYLESHEETS PROCESSES"
 	f.puts "----- I found #{chapterheadsnum} chapters in this book."
+	f.puts trimmessage
 	f.puts "finished stylesheets"
 end
