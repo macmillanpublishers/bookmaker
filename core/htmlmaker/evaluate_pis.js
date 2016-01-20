@@ -9,17 +9,17 @@ fs.readFile(file, function processTemplates (err, contents) {
 
   // evaluate processing instructions
   $("p.BookmakerProcessingInstructionbpi").each(function () {
-      var val = $( this ).text()
-      if (val = "Ebook-only") {
-        $( this ).parent().attr('data-format','ebook')
-      } 
-      if (val = "Print-only") {
-        $( this ).parent().attr('data-format','print')
-      }
-      if (val.indexOf("TRIM:") > -1) {
+      var val = $( this ).text();
+      if (val == "Ebook-only") {
+        $( this ).parent().attr('data-format','ebook');
+      } else if (val == "Print-only") {
+        $( this ).parent().attr('data-format','print');
+      } else if (val.indexOf("TRIM:") > -1) {
         var trimsize = val.split(":").pop().replace(/\s+/g, '');
         trimsize = trimsize.replace(/x/g, ' ');
+        console.log(trimsize);
         var metabooktrim = '<meta name="size" content="' + trimsize + '"/>';
+        console.log(metabooktrim);
         $('head').append(metabooktrim);
       }
       $(this).remove();
