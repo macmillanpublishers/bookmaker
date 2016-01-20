@@ -22,9 +22,9 @@ fs.readFile(file, function processTemplates (err, contents) {
         $('head').append(metabooktrim);
       } else if (val.indexOf("TOC:") > -1) {
         var toctype = val.split(":").pop().toLowerCase().replace(/\s+/g, '');
-        console.log(toctype);
+        console.log("TOC: " + toctype);
         var metatoctype = '<meta name="toc" content="' + toctype + '"/>';
-        $('head').append("TOC: " + metatoctype);
+        $('head').append(metatoctype);
       }
       $(this).remove();
   });
