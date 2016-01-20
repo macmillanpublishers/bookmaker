@@ -94,7 +94,7 @@ def evalTocPI(html, css)
 	toctype = " "
 	toctype = filecontents.match(/(<meta name="toc" content=")(auto|manual)("\/>)/)[2]
 	log = "----- TOC will be hidden in PDF."
-	if toctype.include("auto")
+	if toctype.include?("auto")
 		override = "nav[data-type=\"toc\"] { display: block; } .texttoc { display: none; }"
 		File.open(css, 'a+') do |o|
 			o.puts " "
@@ -102,7 +102,7 @@ def evalTocPI(html, css)
 			o.puts override
 		end
 		log = "----- The TOC is set to #{toctype}, per a processing instruction."
-	elsif toctype.include("manual")
+	elsif toctype.include?("manual")
 		override = "nav[data-type=\"toc\"] { display: none; } .texttoc { display: block; }"
 		File.open(css, 'a+') do |o|
 			o.puts " "
