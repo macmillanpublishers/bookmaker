@@ -9,11 +9,22 @@ fs.readFile(file, function processTemplates (err, contents) {
 
   // evaluate processing instructions
   $("p.BookmakerProcessingInstructionbpi").each(function () {
-      var val = $( this ).text()
-      if (val = "Ebook-only") {
-        $( this ).parent().attr('data-format','ebook')
-      } else if ($( this ).text() = "Print-only") {
-        $( this ).parent().attr('data-format','print')
+      var val = $( this ).text();
+      if (val == "Ebook-only") {
+        $( this ).parent().attr('data-format','ebook');
+      } else if (val == "Print-only") {
+        $( this ).parent().attr('data-format','print');
+      } else if (val.indexOf("TRIM:") > -1) {
+        var trimsize = val.split(":").pop().replace(/\s+/g, '');
+        trimsize = trimsize.replace(/x/g, ' ');
+        console.log("TRIM: " + trimsize);
+        var metabooktrim = '<meta name="size" content="' + trimsize + '"/>';
+        $('head').append(metabooktrim);
+      } else if (val.indexOf("TOC:") > -1) {
+        var toctype = val.split(":").pop().toLowerCase().replace(/\s+/g, '');
+        console.log("TOC: " + toctype);
+        var metatoctype = '<meta name="toc" content="' + toctype + '"/>';
+        $('head').append(metatoctype);
       }
       $(this).remove();
   });
