@@ -88,6 +88,32 @@ def evalTrimPI(html, css)
 	log
 end
 
+def evalTocPI(html, css)
+	filecontents = File.read(html)
+	csscontents = File.read(css)
+	toctype = " "
+	toctype = filecontents.match(/(<meta name="toc" content=")(auto|manual)("\/>)/)[2]
+	log = "----- TOC will be hidden in PDF."
+	if toctype.include("auto")
+		override = "nav[data-type=\"toc\"] { display: block; } .texttoc { display: none; }"
+		File.open(css, 'a+') do |o|
+			o.puts " "
+			o.puts "/* Adjusting TOC display per processing instruction */"
+			o.puts override
+		end
+		log = "----- The TOC is set to #{toctype}, per a processing instruction."
+	elsif toctype.include("manual")
+		override = "nav[data-type=\"toc\"] { display: none; } .texttoc { display: block; }"
+		File.open(css, 'a+') do |o|
+			o.puts " "
+			o.puts "/* Adjusting TOC display per processing instruction */"
+			o.puts override
+		end
+		log = "----- The TOC is set to #{toctype}, per a processing instruction."
+	end
+	log
+end
+
 # ---------------------- PROCESSES
 
 # an array of all occurances of chapters in the manuscript
@@ -121,6 +147,8 @@ evalOneoffs("oneoff_pdf.css", tmp_pdf_css)
 
 trimmessage = evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
 
+tocmessage = evalTocPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
+
 if File.file?(Metadata.epubcss)
 	evalImports(Metadata.epubcss, tmp_epub_css)
 	copyCSS(Metadata.epubcss, tmp_epub_css)
@@ -145,5 +173,6 @@ File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- STYLESHEETS PROCESSES"
 	f.puts "----- I found #{chapterheadsnum} chapters in this book."
 	f.puts trimmessage
+	f.puts tocmessage
 	f.puts "finished stylesheets"
 end
