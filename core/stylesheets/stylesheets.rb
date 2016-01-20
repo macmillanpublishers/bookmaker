@@ -71,6 +71,19 @@ def evalOneoffs(file, path)
 	end
 end
 
+def evalTrimPI(html, css)
+	filecontents = File.read(html)
+	csscontents = File.read(css)
+	size = filecontents.match(/(<meta name="size" content=")(\d*\.*\d*in \d*\.*\d*in)("\/>)/)[2]
+	unless size.nil? or size.empty? or !size
+		trim = "@page { size: #{size}; }"
+		File.open(css, 'a+') do |o|
+			o.puts "Adjusting trim per processing instruction"
+			o.puts trim
+		end
+	end
+end
+
 # ---------------------- PROCESSES
 
 # an array of all occurances of chapters in the manuscript
@@ -101,6 +114,8 @@ else
 end
 
 evalOneoffs("oneoff_pdf.css", tmp_pdf_css)
+
+evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
 
 if File.file?(Metadata.epubcss)
 	evalImports(Metadata.epubcss, tmp_epub_css)
