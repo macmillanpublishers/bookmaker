@@ -95,7 +95,7 @@ def evalTocPI(html, css)
 	filecontents = File.read(html)
 	csscontents = File.read(css)
 	toctype = filecontents.scan(/<meta name="toc"/)
-	unless size.nil? or size.empty? or !size
+	unless toctype.nil? or toctype.empty? or !toctype
 		toctype = filecontents.match(/(<meta name="toc" content=")(auto|manual)("\/>)/)[2]
 	end
 	log = "----- TOC will be hidden in PDF."
