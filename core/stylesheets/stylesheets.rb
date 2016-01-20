@@ -74,7 +74,10 @@ end
 def evalTrimPI(html, css)
 	filecontents = File.read(html)
 	csscontents = File.read(css)
-	size = filecontents.match(/(<meta name="size" content=")(\d*\.*\d*in \d*\.*\d*in)("\/>)/)[2]
+	size = filecontents.scan(/<meta name="size"/)
+	unless size.nil? or size.empty? or !size
+		size = filecontents.match(/(<meta name="size" content=")(\d*\.*\d*in \d*\.*\d*in)("\/>)/)[2]
+	end
 	log = "----- No trim size customizations found."
 	unless size.nil? or size.empty? or !size
 		trim = "@page { size: #{size}; }"
@@ -91,8 +94,10 @@ end
 def evalTocPI(html, css)
 	filecontents = File.read(html)
 	csscontents = File.read(css)
-	toctype = " "
-	toctype = filecontents.match(/(<meta name="toc" content=")(auto|manual)("\/>)/)[2]
+	toctype = filecontents.scan(/<meta name="toc"/)
+	unless size.nil? or size.empty? or !size
+		toctype = filecontents.match(/(<meta name="toc" content=")(auto|manual)("\/>)/)[2]
+	end
 	log = "----- TOC will be hidden in PDF."
 	if toctype.include?("auto")
 		override = "nav[data-type=\"toc\"] { display: block; } .texttoc { display: none; }"
