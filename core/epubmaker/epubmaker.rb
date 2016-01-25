@@ -120,7 +120,7 @@ def firstOPFEdit(file)
 end
 
 def convertCoverImg(file)
-	`convert "#{file}" -resize "600x800>" "#{file}"`
+	`convert "#{file}" -colorspace RGB -resize "600x800>" "#{file}"`
 end
 
 def convertInteriorImg(file, dir)
@@ -128,9 +128,9 @@ def convertInteriorImg(file, dir)
 	myres = `identify -format "%y" "#{path_to_i}"`
 	myres = myres.to_f
 	if file.include?("_crop")
-		`convert "#{path_to_i}" -density #{myres} -bordercolor white -border 1x1  -trim -resize "600x800>" -quality 100 "#{path_to_i}"`
+		`convert "#{path_to_i}" -colorspace RGB -density #{myres} -bordercolor white -border 1x1  -trim -resize "600x800>" -quality 100 "#{path_to_i}"`
 	else
-		`convert "#{path_to_i}" -density #{myres} -resize "600x800>" -quality 100 "#{path_to_i}"`
+		`convert "#{path_to_i}" -colorspace RGB -density #{myres} -resize "600x800>" -quality 100 "#{path_to_i}"`
 	end
 end
 
