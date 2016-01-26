@@ -346,7 +346,7 @@ module Bkmkr
 						# copy any images to epub conversion dir
 						epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 						images = []
-						images = File.read(addonfile).scan(/<img/)
+						images = File.read(addonfile).scan(/<img.*?>/)
 						if images.any?
 							images.each do |i|
 								puts i
