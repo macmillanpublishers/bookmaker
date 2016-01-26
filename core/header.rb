@@ -335,13 +335,6 @@ module Bkmkr
 						addonfile = File.join(addonfiledir, f['filename'])
 						addoncontent = File.read(addonfile).gsub(/\n/,"").gsub(/"/,"\\\"")
 
-						# puts "2= #{inputfile}"
-						# puts "3= #{addoncontent}"
-						# puts "4= #{locationcontainer}"
-						# puts "5= #{locationtype}"
-						# puts "6= #{locationclass}"
-						# puts "7= #{sequence}"
-						# puts "8= #{location}"
 						puts "inserting file: #{addonfile}"
 						puts "insertion location is: #{order} #{location}"
 
@@ -349,6 +342,17 @@ module Bkmkr
 
 						# Insert the addon via node.js
 						Bkmkr::Tools.runnode(jsfile, "\"#{inputfile}\" \"#{addoncontent}\" \"#{locationcontainer}\" \"#{locationtype}\" \"#{locationclass}\" \"#{sequence}\" \"#{order}\" \"#{location}\"")
+
+						# copy any images to epub conversion dir
+						epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
+						images = addoncontent.scan(/<img/)
+						if images.any?
+							images.each do |i|
+								source = i.match(/(src=")(.*?)(")/)[2]
+								imagepath = File.join(addonfiledir, "images", source)
+								fileutils.cp(imagepath, epub_img_dir)
+							end
+						end
 
 						puts "inserted #{addonfile}"
 					end
