@@ -215,8 +215,8 @@ if sourceimages.any?
 			convertInteriorImg(i, epub_img_dir)
 		end
 	end
-	Mcmlln::Tools.copyAllFiles(epub_img_dir, OEBPS_dir)
 	epubimages = copyInteriorImg(epub_img_dir, content_opf, OEBPS_dir)
+	puts epubimages
 end
 
 # zip epub
