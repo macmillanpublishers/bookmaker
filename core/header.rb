@@ -352,7 +352,7 @@ module Bkmkr
 								puts i
 								source = i.match(/(src=")(.*?)(")/)[2]
 								imagepath = File.join(addonfiledir, "images", source)
-								fileutils.cp(imagepath, epub_img_dir)
+								Mcmlln::Tools.copyFile(imagepath, epub_img_dir)
 							end
 						end
 
