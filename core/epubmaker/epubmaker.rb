@@ -134,6 +134,20 @@ def convertInteriorImg(file, dir)
 	end
 end
 
+def copyInteriorImg(dir, opf, dest)
+	images = Mcmlln::Tools.dirListFiles(dir)
+	opfcontents = File.read(opf)
+	copied = []
+	images.each do |i|
+		path_to_i = File.join(dir, i)
+		if opfcontents.include? i
+			Mcmlln::Tools.copyFile(path_to_i, dest)
+			copied << i
+		end
+	end
+	copied
+end
+
 # ---------------------- PROCESSES
 deleteOld(OEBPS_dir)
 deleteOld(METAINF_dir)
@@ -202,6 +216,7 @@ if sourceimages.any?
 		end
 	end
 	Mcmlln::Tools.copyAllFiles(epub_img_dir, OEBPS_dir)
+	epubimages = copyInteriorImg(epub_img_dir, content_opf, OEBPS_dir)
 end
 
 # zip epub
