@@ -349,7 +349,7 @@ module Bkmkr
 						images = File.read(addonfile).scan(/<img.*?>/)
 						if images.any?
 							images.each do |i|
-								puts i
+								puts "copying addon image file: #{i}"
 								source = i.match(/(src=")(.*?)(")/)[2]
 								imagepath = File.join(addonfiledir, "images", source)
 								Mcmlln::Tools.copyFile(imagepath, epub_img_dir)
