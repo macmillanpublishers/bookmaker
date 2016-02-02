@@ -292,6 +292,7 @@
   <xsl:variable name="quotation-paras" as="xs:string*">
     <xsl:sequence
       select="'Extractext',
+              'ExtractSourceexts',
               'Extract-Newspapernews',
               'Extract-Diaryextd',
               'Extract-Transcripttrans',
