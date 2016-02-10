@@ -91,8 +91,8 @@ end
 def firstHTMLEdit(file)
 	filecontents = File.read(file)
 
-	hascreator = filecontents.scan(/meta name="author"/)
-	haspublisher = filecontents.scan(/meta name="publisher"/)
+	hascreator = filecontents.match(/meta name="author"/)
+	haspublisher = filecontents.match(/meta name="publisher"/)
 
 	if hascreator.nil?
 		filecontents = filecontents.gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /></head>")
