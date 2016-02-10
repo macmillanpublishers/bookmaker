@@ -103,8 +103,8 @@ def firstHTMLEdit(file)
 	end
 
 	filecontents = filecontents.gsub(/<\/head>/,"<meta name='isbn-13' content='#{Metadata.eisbn}' /></head>")
-								 								.gsub(/&nbsp;/,"&#160;")
-								 								.gsub(/src="images\//,"src=\"")
+								 							.gsub(/&nbsp;/,"&#160;")
+								 							.gsub(/src="images\//,"src=\"")
 	filecontents
 end
 
