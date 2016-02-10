@@ -89,7 +89,18 @@ end
 # Adding author meta element to head
 # Replacing toc with empty nav, as required by htmlbook xsl
 def firstHTMLEdit(file)
-	filecontents = File.read(file).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /><meta name='publisher' content=\"#{Metadata.imprint}\" /><meta name='isbn-13' content='#{Metadata.eisbn}' /></head>")
+	hascreator = File.read(file).scan(/meta name="author"/)
+	haspublisher = File.read(file).scan(/meta name="publisher"/)
+
+	if hascreator.nil?
+		filecontents = File.read(file).gsub(/<\/head>/,"<meta name='author' content=\"#{Metadata.bookauthor}\" /></head>")
+	end
+
+	if haspublisher.nil?
+		filecontents = File.read(file).gsub(/<\/head>/,"<meta name='publisher' content=\"#{Metadata.imprint}\" /></head>")
+	end
+
+	filecontents = File.read(file).gsub(/<\/head>/,"<meta name='isbn-13' content='#{Metadata.eisbn}' /></head>")
 								 								.gsub(/&nbsp;/,"&#160;")
 								 								.gsub(/src="images\//,"src=\"")
 	filecontents
