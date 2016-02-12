@@ -52,6 +52,7 @@ module Mcmlln
     def self.readjson(inputfile)
       file = File.open(inputfile, "r:utf-8")
       content = file.read
+      file.close
       json_hash = JSON.parse(content)
       json_hash
     end
