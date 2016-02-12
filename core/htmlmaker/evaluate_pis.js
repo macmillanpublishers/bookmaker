@@ -25,6 +25,12 @@ fs.readFile(file, function processTemplates (err, contents) {
         console.log("TOC: " + toctype);
         var metatoctype = '<meta name="toc" content="' + toctype + '"/>';
         $('head').append(metatoctype);
+      } else if (val.indexOf("DATA:") > -1) {
+        var datavalue = val.split("DATA:").pop().replace(/^\s+/g, '');
+        var datatype = val.split("DATA:").shift().toLowerCase().replace(/\s+/g, '');
+        console.log(datatype + ": " + datavalue);
+        var metabookdata = '<meta name="' + datatype + '" content="' + datavalue + '"/>';
+        $('head').append(metabookdata);
       }
       $(this).remove();
   });
