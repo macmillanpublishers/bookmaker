@@ -112,7 +112,7 @@ filecontents = stripEndnotes(filecontents)
 Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
 # set html title to match JSON
-Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} #{Metadata.booktitle}")
+Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
 
 # evaluate processing instructions
 Bkmkr::Tools.runnode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
