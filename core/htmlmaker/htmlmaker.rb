@@ -1,6 +1,7 @@
 require 'fileutils'
 
 require_relative '../header.rb'
+require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
 
@@ -23,6 +24,8 @@ headings_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.xsl")
 inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
 
 evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
+
+title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
 # ---------------------- METHODS
 
@@ -107,6 +110,9 @@ filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 filecontents = stripEndnotes(filecontents)
 
 Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+
+# set html title to match JSON
+Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
 
 # evaluate processing instructions
 Bkmkr::Tools.runnode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
