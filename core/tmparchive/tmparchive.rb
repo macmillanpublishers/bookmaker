@@ -43,7 +43,7 @@ Mcmlln::Tools.overwriteFile(Bkmkr::Paths.alert, filecontents)
 # ---------------------- LOGGING
 
 # Write test results
-File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
+File.open("#{Bkmkr::Paths.log_file}", 'w+') do |f|
 	f.puts "-----"
 	f.puts Time.now
 	f.puts "----- TMPARCHIVE PROCESSES"
