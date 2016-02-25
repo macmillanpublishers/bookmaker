@@ -11,8 +11,14 @@ stage_dir = data_hash['stage']
 # ---------------------- PROCESSES
 # Delete all the working files and dirs
 Mcmlln::Tools.deleteDir(Bkmkr::Paths.project_tmp_dir)
-Mcmlln::Tools.deleteFile(Bkmkr::Project.input_file)
-Mcmlln::Tools.deleteFile(Bkmkr::Paths.alert)
+
+if File.file?(Bkmkr::Project.input_file)
+  Mcmlln::Tools.deleteFile(Bkmkr::Project.input_file)
+end
+
+if File.file?(Bkmkr::Paths.alert)
+  Mcmlln::Tools.deleteFile(Bkmkr::Paths.alert)
+end
 
 # ---------------------- LOGGING
 # Printing the test results to the log file
