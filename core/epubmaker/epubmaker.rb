@@ -78,9 +78,6 @@ final_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn)
 # second epub conversion
 tmp_epub2 = File.join(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
 
-# path to epubcheck
-epubcheck = File.join(Bkmkr::Paths.core_dir, "epubmaker", "epubcheck", "epubcheck.jar")
-
 # ---------------------- METHODS
 # Delete any old conversion stuff
 def deleteOld(dir)
@@ -243,10 +240,6 @@ Mcmlln::Tools.copyFile(final_epub, final_dir)
 
 # remove temp epub file
 Mcmlln::Tools.deleteFile(tmp_epub2)
-
-# validate epub file
-puts "---RUNNING EPUBCHECK FOR EPUBMAKER.RB---"
-Bkmkr::Tools.runjar(epubcheck, "#{final_dir}/#{csfilename}.epub")
 
 # ---------------------- LOGGING
 # epub file should exist in done dir 
