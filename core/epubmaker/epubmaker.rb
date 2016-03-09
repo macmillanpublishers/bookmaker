@@ -245,6 +245,7 @@ Mcmlln::Tools.copyFile(final_epub, final_dir)
 Mcmlln::Tools.deleteFile(tmp_epub2)
 
 # validate epub file
+puts "---RUNNING EPUBCHECK FOR EPUBMAKER.RB---"
 Bkmkr::Tools.runjar(epubcheck, "#{final_dir}/#{csfilename}.epub")
 
 # ---------------------- LOGGING
