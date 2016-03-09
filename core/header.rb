@@ -176,6 +176,7 @@ module Bkmkr
 		end
 
 		def self.runjar(jar_script, input_file)
+			puts "---RUNNING #{input_file}---"
 			`java -jar "#{jar_script}" "#{input_file}"`
 		end
 
