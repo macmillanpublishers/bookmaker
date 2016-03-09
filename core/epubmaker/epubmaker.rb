@@ -119,7 +119,7 @@ end
 
 # fix cover.html doctype
 def firstCoverEdit(file)
-	covercontents = File.read(file).gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>").gsub(/<body>/,"<body><h1 class='Nonprinting'>Cover</h1>")
+	covercontents = File.read(file).gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>").gsub(/<body>/,"<body><h1 class=\"Nonprinting\">Cover</h1>")
 	covercontents
 end
 
