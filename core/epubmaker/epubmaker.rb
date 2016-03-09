@@ -153,7 +153,7 @@ def copyInteriorImg(dir, opf, dest)
 	copied = []
 	images.each do |i|
 		path_to_i = File.join(dir, i)
-		if opfcontents.include? i
+		if opfcontents.include? "\"#{i}"
 			Mcmlln::Tools.copyFile(path_to_i, dest)
 			copied << i
 		end
