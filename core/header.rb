@@ -175,6 +175,10 @@ module Bkmkr
 			end
 		end
 
+		def self.runjar(jar_script, input_file)
+			`java -jar #{jar_script}.jar #{input_file}.epub`
+		end
+
 		def self.runpython(py_script, input_file)
 			if $python_processor
 				`#{$python_processor} #{py_script} #{input_file}`

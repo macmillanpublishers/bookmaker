@@ -241,6 +241,9 @@ Mcmlln::Tools.copyFile(final_epub, final_dir)
 # remove temp epub file
 Mcmlln::Tools.deleteFile(tmp_epub2)
 
+# validate epub file
+Bkmkr::Tools.runjar(epubcheck, "#{final_dir}/#{}.epub")
+
 # ---------------------- LOGGING
 # epub file should exist in done dir 
 if File.file?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{csfilename}.epub")
