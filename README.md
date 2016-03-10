@@ -159,6 +159,11 @@ gem install open-uri
 gem install json
 gem install fileutils
 gem install doc_raptor
+gem install net-sftp
+gem install htmlentities
+gem install unidecoder
+gem install to_xml
+gem install ruby-oci8
 ```
 
 #### Python
