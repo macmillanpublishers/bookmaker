@@ -58,6 +58,10 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			if myres < 300
 				resolution << match
 			end
+			imgformat = match.split(".").pop.downcase
+			unless imgformat == "jpg" or imgformat == "jpeg" or imgformat == "png"
+				format << match
+			end
 			Mcmlln::Tools.copyFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		elsif inputdirlist.include?("#{match}") and match != Metadata.frontcover
 			Mcmlln::Tools.copyFile(matched_file, finaldir)
@@ -67,6 +71,10 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			if myres < 300
 				resolution << match
 			end
+			imgformat = match.split(".").pop.downcase
+			unless imgformat == "jpg" or imgformat == "jpeg" or imgformat == "png" or imgformat == "pdf" or imgformat == "ai" or imgformat == "eps" or imgformat == "psd" or imgformat == "svg"
+				format << match
+			end
 			Mcmlln::Tools.moveFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		elsif !inputdirlist.include?("#{match}") and match != Metadata.frontcover and finaldirlist.include?("#{match}")
 			matched << match
@@ -75,7 +83,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			missing << match
 		end
 	end
-	return resolution, missing
+	return resolution, missing, format
 end
 
 def writeMissingErrors(arr, file)
@@ -98,6 +106,20 @@ def writeResErrors(arr, file)
 			output.puts "RESOLUTION ERRORS:"
 			output.puts "Your images will look best in both print and ebook formats at 300dpi or higher."
 			output.puts "The following images have a resolution less than 300dpi:"
+			arr.each do |r|
+				output.puts r
+			end
+		end
+	end
+end
+
+def writeTypeErrors(arr, file)
+	# Writes an error text file in the done\pisbn\ folder that lists all low res image files as stored in the resolution array
+	if arr.any?
+		File.open(file, 'a') do |output|
+			output.puts "IMAGE FORMAT ERRORS:"
+			output.puts "Images should use one of the following image formats: .jpg, .jpeg, .png, .ai, .eps, .pdf, .psd, .svg."
+			output.puts "The following images have unsupported image types:"
 			arr.each do |r|
 				output.puts r
 			end
