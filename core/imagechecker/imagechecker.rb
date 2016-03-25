@@ -74,7 +74,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 				resolution << match
 			end
 			imgformat = match.split(".").pop.downcase
-			unless imgformat == "jpg" or imgformat == "jpeg" or imgformat == "png" or imgformat == "pdf" or imgformat == "ai" or imgformat == "eps" or imgformat == "psd" or imgformat == "svg"
+			unless imgformat == "jpg" or imgformat == "jpeg" or imgformat == "png" or imgformat == "pdf" or imgformat == "ai"
 				format << match
 			end
 			Mcmlln::Tools.moveFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
@@ -91,7 +91,7 @@ end
 def writeMissingErrors(arr, file)
 	# Writes an error text file in the done\pisbn\ folder that lists all missing image files as stored in the missing array
 	if arr.any?
-		File.open(file, 'w') do |output|
+		File.open(file, 'a+') do |output|
 			output.puts "MISSING IMAGES:"
 			output.puts "The following images are missing from the submitted_images folder:"
 			arr.each do |m|
@@ -104,7 +104,7 @@ end
 def writeResErrors(arr, file)
 	# Writes an error text file in the done\pisbn\ folder that lists all low res image files as stored in the resolution array
 	if arr.any?
-		File.open(file, 'a') do |output|
+		File.open(file, 'a+') do |output|
 			output.puts "RESOLUTION ERRORS:"
 			output.puts "Your images will look best in both print and ebook formats at 300dpi or higher."
 			output.puts "The following images have a resolution less than 300dpi:"
@@ -118,9 +118,9 @@ end
 def writeTypeErrors(arr, file)
 	# Writes an error text file in the done\pisbn\ folder that lists all low res image files as stored in the resolution array
 	if arr.any?
-		File.open(file, 'a') do |output|
+		File.open(file, 'a+') do |output|
 			output.puts "IMAGE FORMAT ERRORS:"
-			output.puts "Images should use one of the following image formats: .jpg, .jpeg, .png, .ai, .eps, .pdf, .psd, .svg."
+			output.puts "Images should use one of the following image formats: .jpg, .jpeg, .png, .ai, .pdf."
 			output.puts "The following images have unsupported image types:"
 			arr.each do |r|
 				output.puts r
