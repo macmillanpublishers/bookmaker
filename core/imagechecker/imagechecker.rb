@@ -149,6 +149,7 @@ imgarr = listImages(Bkmkr::Paths.outputtmp_html)
 
 # run method: checkImages
 resolution, missing, format = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
+puts format
 
 # run method: writeMissingErrors
 writeMissingErrors(missing, image_error)
