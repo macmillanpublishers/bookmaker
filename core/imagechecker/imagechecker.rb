@@ -43,6 +43,8 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 	matched = []
 	# An empty array to store filenames with resolution less than 300
 	resolution = []
+	# An empty array to store filenames with bad types
+	format = []
 
 	# Checks to see if each image referenced in the html exists in the tmp images folder
 	# If no, saves the image file name in the missing array
@@ -146,13 +148,16 @@ Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 imgarr = listImages(Bkmkr::Paths.outputtmp_html)
 
 # run method: checkImages
-resolution, missing = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
+resolution, missing, format = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
 
 # run method: writeMissingErrors
 writeMissingErrors(missing, image_error)
 
 # run method: writeResErrors
-writeResErrors(missing, image_error)
+writeResErrors(resolution, image_error)
+
+# run method: writeResErrors
+writeTypeErrors(format, image_error)
 
 # ---------------------- LOGGING
 
