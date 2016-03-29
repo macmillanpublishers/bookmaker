@@ -43,8 +43,6 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 	matched = []
 	# An empty array to store filenames with resolution less than 300
 	resolution = []
-	# An empty array to store filenames with bad types
-	format = []
 
 	# Checks to see if each image referenced in the html exists in the tmp images folder
 	# If no, saves the image file name in the missing array
@@ -60,10 +58,6 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			if myres < 300
 				resolution << match
 			end
-			imgformat = match.split(".").pop.downcase
-			unless imgformat == "jpg" or imgformat == "jpeg" or imgformat == "png"
-				format << match
-			end
 			Mcmlln::Tools.copyFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		elsif inputdirlist.include?("#{match}") and match != Metadata.frontcover
 			Mcmlln::Tools.copyFile(matched_file, finaldir)
@@ -73,10 +67,6 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			if myres < 300
 				resolution << match
 			end
-			imgformat = match.split(".").pop.downcase
-			unless imgformat == "jpg" or imgformat == "jpeg" or imgformat == "png" or imgformat == "pdf" or imgformat == "ai"
-				format << match
-			end
 			Mcmlln::Tools.moveFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		elsif !inputdirlist.include?("#{match}") and match != Metadata.frontcover and finaldirlist.include?("#{match}")
 			matched << match
@@ -85,7 +75,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			missing << match
 		end
 	end
-	return resolution, missing, format
+	return resolution, missing
 end
 
 def writeMissingErrors(arr, file)
@@ -115,20 +105,6 @@ def writeResErrors(arr, file)
 	end
 end
 
-def writeTypeErrors(arr, file)
-	# Writes an error text file in the done\pisbn\ folder that lists all low res image files as stored in the resolution array
-	if arr.any?
-		File.open(file, 'a+') do |output|
-			output.puts "IMAGE FORMAT ERRORS:"
-			output.puts "Images should use one of the following image formats: .jpg, .jpeg, .png, .ai, .pdf."
-			output.puts "The following images have unsupported image types:"
-			arr.each do |r|
-				output.puts r
-			end
-		end
-	end
-end
-
 # ---------------------- PROCESSES
 
 images = Mcmlln::Tools.dirList(imagedir)
@@ -148,17 +124,13 @@ Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 imgarr = listImages(Bkmkr::Paths.outputtmp_html)
 
 # run method: checkImages
-resolution, missing, format = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
-puts format
+resolution, missing = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
 
 # run method: writeMissingErrors
 writeMissingErrors(missing, image_error)
 
 # run method: writeResErrors
-writeResErrors(resolution, image_error)
-
-# run method: writeResErrors
-writeTypeErrors(format, image_error)
+writeResErrors(missing, image_error)
 
 # ---------------------- LOGGING
 
