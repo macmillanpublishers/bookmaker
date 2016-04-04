@@ -221,7 +221,7 @@ if sourceimages.any?
 	unless File.exist?(epub_img_dir)
 		Dir.mkdir(epub_img_dir)
 	end
-	Mcmlln::Tools.copyAllFiles(img_dir, epub_img_dir)
+	Mcmlln::Tools.copyAllFiles(Bkmkr::Paths.project_tmp_dir_img, epub_img_dir)
 	unless Bkmkr::Tools.processimages == "false"
 		images = Mcmlln::Tools.dirListFiles(epub_img_dir)
 		images.each do |i|
