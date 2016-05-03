@@ -5,6 +5,8 @@ require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
 
+filetype = Bkmkr::Project.filename_split.split(".").pop
+
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
 
 docxtoxml_py = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "docxtoxml.py")
@@ -71,10 +73,16 @@ end
 # ---------------------- PROCESSES
 
 # convert docx to xml
-Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
+unless filetype == "html"
+	Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
+end
 
 # convert xml to html
-`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+unless filetype == "html"
+	`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+else
+	Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
+end
 
 filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 
