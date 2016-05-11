@@ -30,7 +30,7 @@ module Mcmlln
     end
 
     def self.deleteDir(dir)
-      if Dir.exist?(file)
+      if Dir.exist?(dir)
         FileUtils.rm_r(dir)
       end
     end
