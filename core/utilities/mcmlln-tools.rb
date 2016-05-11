@@ -12,7 +12,7 @@ module Mcmlln
     end
 
     def self.copyFile(file, dest)
-      check = Mcmlln::Tolls.checkFileExist(file)
+      check = Mcmlln::Tools.checkFileExist(file)
       if check == true
         FileUtils.cp(file, dest)
       end
@@ -23,7 +23,7 @@ module Mcmlln
     end
 
     def self.moveFile(file, dest)
-      check = Mcmlln::Tolls.checkFileExist(file)
+      check = Mcmlln::Tools.checkFileExist(file)
       if check == true
         FileUtils.mv(file, dest)
       end
@@ -36,7 +36,7 @@ module Mcmlln
     end
 
     def self.deleteFile(file)
-      check = Mcmlln::Tolls.checkFileExist(file)
+      check = Mcmlln::Tools.checkFileExist(file)
       if check == true
         FileUtils.rm(file)
       end
