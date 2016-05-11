@@ -4,7 +4,7 @@ module Mcmlln
   class Tools
 
     def self.checkFileExist(file)
-      File.exists?("#{file}")
+      File.exist?("#{file}")
     end
 
     def self.checkFileEmpty(file)
@@ -12,7 +12,10 @@ module Mcmlln
     end
 
     def self.copyFile(file, dest)
-      FileUtils.cp(file, dest)
+      check = Mcmlln::Tolls.checkFileExist(file)
+      if check == true
+        FileUtils.cp(file, dest)
+      end
     end
 
     def self.copyAllFiles(dir, dest)
@@ -20,15 +23,23 @@ module Mcmlln
     end
 
     def self.moveFile(file, dest)
-      FileUtils.mv(file, dest)
+      check = Mcmlln::Tolls.checkFileExist(file)
+      if check == true
+        FileUtils.mv(file, dest)
+      end
     end
 
     def self.deleteDir(dir)
-      FileUtils.rm_r(dir)
+      if Dir.exist?(file)
+        FileUtils.rm_r(dir)
+      end
     end
 
     def self.deleteFile(file)
-      FileUtils.rm(file)
+      check = Mcmlln::Tolls.checkFileExist(file)
+      if check == true
+        FileUtils.rm(file)
+      end
     end
 
     def self.readFile(file)
