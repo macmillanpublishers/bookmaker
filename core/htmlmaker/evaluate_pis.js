@@ -34,9 +34,9 @@ fs.readFile(file, function processTemplates (err, contents) {
       } else if (val.indexOf("STYLES:") > -1) {
         var el = $(this);
         var stylearr = val.split(":").pop().split(" ").filter(Boolean);
-        $.each( stylearr, function( index, value ) {
-          $(el).prev().addClass(value);
-        });
+        for (i = 0; i < stylearr.length; i++) {
+          $(el).prev().addClass(i);
+        };
       }
       $(this).remove();
   });
