@@ -41,6 +41,8 @@ fs.readFile(file, function processTemplates (err, contents) {
       $(this).remove();
   });
 
+  $("section, div").children( ".notoc" ).parent().addClass("notoc");
+
   var output = $.html();
     fs.writeFile(file, output, function(err) {
 	    if(err) {
