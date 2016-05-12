@@ -35,7 +35,7 @@ fs.readFile(file, function processTemplates (err, contents) {
         var el = $(this);
         var stylearr = val.split(":").pop().split(" ").filter(Boolean);
         for (i = 0; i < stylearr.length; i++) {
-          $(el).prev().addClass(i);
+          $(el).prev().addClass(stylearr[i]);
         };
       }
       $(this).remove();
