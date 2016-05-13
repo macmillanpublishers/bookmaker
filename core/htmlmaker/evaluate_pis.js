@@ -38,7 +38,7 @@ fs.readFile(file, function processTemplates (err, contents) {
           $(el).prev().addClass(stylearr[i]);
         };
       } else if (val.indexOf("LINKTO:") > -1) {
-        var linkdest = val.split(":").pop().replace(/^\s+/g, '');
+        var linkdest = val.split("LINKTO:").pop().replace(/^\s+/g, '');
         var that = this.previousSibling;
         var el2 = $("<a class='temp'></a>");
         $(that).prepend(el2);
