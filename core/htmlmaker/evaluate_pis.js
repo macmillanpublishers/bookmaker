@@ -39,8 +39,14 @@ fs.readFile(file, function processTemplates (err, contents) {
         };
       } else if (val.indexOf("LINKTO:") > -1) {
         var linkdest = val.split(":").pop().replace(/^\s+/g, '');
-        $(this).prev().wrap("<a></a>");
-        $(this).prev().attr('href', linkdest);
+        var that = this.previousSibling;
+        var el2 = $("<a class='temp'></a>");
+        $(that).prepend(el2);
+        $(".temp").attr('href', linkdest);
+        while (that.firstChild.nextSibling) {
+            $(".temp").prepend(that.firstChild.nextSibling);
+        }
+        $(".temp").removeClass("temp");
       }
       $(this).remove();
   });
