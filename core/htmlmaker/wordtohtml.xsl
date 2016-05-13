@@ -256,6 +256,7 @@
       select="$top-level-body-breaks,
               'AdCardMainHeadacmh',
               'FrontSalesTitlefst',
+              'BOBAdTitlebobt',
               'CopyrightTextsinglespacecrtx',
               'CopyrightTextdoublespacecrtxd',
               'Dedicationded',
@@ -280,6 +281,7 @@
               'FMHeadfmh',
               'FMHeadALTafmh',
               'FrontSalesTitlefst',
+              'BOBAdTitlebobt',
               'AdCardMainHeadacmh',
               'TitlepageBookTitletit',
               'HalftitleBookTitlehtit'"/>
@@ -375,7 +377,8 @@
                 <xsl:value-of select="'preface'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'BMHeadbmh' or 
-                              $word-style = 'AboutAuthorTextHeadatah'">
+                              $word-style = 'AboutAuthorTextHeadatah' or 
+                              $word-style = 'BOBAdTitlebobt'">
                 <xsl:value-of select="'appendix'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'PartNumberpn' or
