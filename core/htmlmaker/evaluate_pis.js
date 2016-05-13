@@ -37,6 +37,10 @@ fs.readFile(file, function processTemplates (err, contents) {
         for (i = 0; i < stylearr.length; i++) {
           $(el).prev().addClass(stylearr[i]);
         };
+      } else if (val.indexOf("LINKTO:") > -1) {
+        var linkdest = val.split(":").pop().replace(/^\s+/g, '');
+        $(this).prev().wrap("<a></a>");
+        $(this).prev().attr('href', linkdest);
       }
       $(this).remove();
   });
