@@ -59,7 +59,7 @@
               <xsl:value-of select="'abouttheauthor'"/>
             </xsl:attribute>
     </xsl:if>
-    <xsl:if test="h:p[@class='BOBAdTitlebobt'] or
+    <xsl:if test="h:h1[@class='BOBAdTitlebobt'] or
                   h:p[@class='BOBAdTextbobtx']">
             <xsl:attribute name="class">
               <xsl:value-of select="'bobad'"/>
