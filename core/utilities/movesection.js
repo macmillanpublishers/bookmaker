@@ -28,11 +28,11 @@ fs.readFile(file, function moveSection (err, contents) {
   } else {
     var ss = "";
     if (srcType && srcClass) { 
-      var source = $(srcEl + '[class="' + srcClass + '"][data-type="' + srcType + '"]'); 
+      var source = $(srcEl + '.' + srcClass + '[data-type="' + srcType + '"]'); 
     } else if (srcType && !srcClass) {
       var source = $(srcEl + '[data-type="' + srcType + '"]');
     } else if (!srcType && srcClass) {
-      var source = $(srcEl + '[class="' + srcClass + '"]');
+      var source = $(srcEl + '.' + srcClass);
     } else {
       var source = $(srcEl);
     };
