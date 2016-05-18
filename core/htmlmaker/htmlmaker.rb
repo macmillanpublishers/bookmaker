@@ -15,15 +15,15 @@ source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}
 
 word_to_html_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "wordtohtml.xsl")
 
-footnotes_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.xsl")
+footnotes_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.js")
 
-strip_toc_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.xsl")
+strip_toc_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.js")
 
-parts_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.xsl")
+parts_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.js")
 
-headings_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.xsl")
+headings_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.js")
 
-inlines_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.xsl")
+inlines_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.js")
 
 evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
 
@@ -97,20 +97,20 @@ filecontents = fixEntities(filecontents)
 
 Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
-# strip extraneous footnote section from html
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{footnotes_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+# # strip extraneous footnote section from html
+Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
 
-# strip static toc from html
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{strip_toc_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+# # strip static toc from html
+Bkmkr::Tools.runnode(strip_toc_js, Bkmkr::Paths.outputtmp_html)
 
-# convert parts to divs
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{parts_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+# # convert parts to divs
+Bkmkr::Tools.runnode(parts_js, Bkmkr::Paths.outputtmp_html)
 
-# add headings to all sections
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{headings_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+# # add headings to all sections
+Bkmkr::Tools.runnode(headings_js, Bkmkr::Paths.outputtmp_html)
 
-# add correct markup for inlines (em, strong, sup, sub)
-`java -jar "#{saxonpath}" -s:"#{Bkmkr::Paths.outputtmp_html}" -xsl:"#{inlines_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+# # add correct markup for inlines (em, strong, sup, sub)
+Bkmkr::Tools.runnode(inlines_js, Bkmkr::Paths.outputtmp_html)
 
 filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 
