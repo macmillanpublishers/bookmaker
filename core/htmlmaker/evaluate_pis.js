@@ -31,9 +31,27 @@ fs.readFile(file, function processTemplates (err, contents) {
         console.log(datatype + ": " + datavalue);
         var metabookdata = '<meta name="' + datatype + '" content="' + datavalue + '"/>';
         $('head').append(metabookdata);
+      } else if (val.indexOf("STYLES:") > -1) {
+        var el = $(this);
+        var stylearr = val.split(":").pop().split(" ").filter(Boolean);
+        for (i = 0; i < stylearr.length; i++) {
+          $(el).prev().addClass(stylearr[i]);
+        };
+      } else if (val.indexOf("LINKTO:") > -1) {
+        var linkdest = val.split("LINKTO:").pop().replace(/^\s+/g, '');
+        var that = this.previousSibling;
+        var el2 = $("<a class='temp'></a>");
+        $(that).prepend(el2);
+        $(".temp").attr('href', linkdest);
+        while (that.firstChild.nextSibling) {
+            $(".temp").prepend(that.firstChild.nextSibling);
+        }
+        $(".temp").removeClass("temp");
       }
       $(this).remove();
   });
+
+  $("section, div").children( ".notoc" ).parent().addClass("notoc");
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
