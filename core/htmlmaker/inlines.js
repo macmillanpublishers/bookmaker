@@ -36,7 +36,7 @@ replaceEl (subs, "<sub/>");
 scitals.each(function(){
   $(this).wrap("<em/>");
 });
-scitals.each(function(){
+scbolds.each(function(){
   $(this).wrap("<strong/>");
 });
 //this span requires an element be replaced and wrapped, same function as above + this.wrap
