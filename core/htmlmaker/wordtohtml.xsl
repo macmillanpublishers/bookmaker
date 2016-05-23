@@ -323,6 +323,7 @@
               'LetterExtAddressladd',
               'LetterExtBodyTextNo-Indentltx1',
               'LetterExtBodyTextltx',
+              'LetterExtPostscriptlps',
               'BOBAdQuoteHeadbobqh',
               'BOBAdQuotebobq',
               'BOBAdQuoteNo-Indentbobq1',
