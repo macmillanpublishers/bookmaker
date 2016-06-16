@@ -172,7 +172,8 @@
               'AppendixListUnnumapul',
               'AppendixListBulletapbl',
               'Checklistck',
-              'ChapterContentscc'"/>
+              'ChapterContentscc',
+              'Extract-BulletListextbl"/>
   </xsl:variable>
   <xsl:variable name="list-sub-paras" as="xs:string*">
     <xsl:sequence
