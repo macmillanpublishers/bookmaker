@@ -12,16 +12,11 @@ fs.readFile(file, function processTemplates (err, contents) {
   $('*:not(p.Extract-BulletListextbl) + p.Extract-BulletListextbl, p.Extract-BulletListextbl:first-child').each(function() {
   var el = $("<ul/>").addClass("Extract-BulletListextbl");
   var innerobj = $(this).nextUntil('*:not(p.Extract-BulletListextbl)').addBack();
-$(this).before(el);
+  $(this).before(el);
   el.append(innerobj);
 });
 
-  $('p.Extract-BulletListextbl').wrapInner("<li></li>");
-
-  $('ul.Extract-BulletListextbl > p.Extract-BulletListextbl').each(function() {
-    newContent = this.firstChild;
-    $(this).replaceWith(newContent);
-  });
+  $('p.Extract-BulletListextbl').wrap("<li class='Extract-BulletListextbl'></li>");
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
