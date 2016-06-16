@@ -9,21 +9,27 @@ fs.readFile(file, function processTemplates (err, contents) {
 
 
 //function to wrap lists in parent ul
-  $('*:not(p.Extract-BulletListextbl) + p.Extract-BulletListextbl, p.Extract-BulletListextbl:first-child').each(function() {
-  var el = $("<ul/>").addClass("Extract-BulletListextbl");
-  var innerobj = $(this).nextUntil('*:not(p.Extract-BulletListextbl)').addBack();
-  $(this).before(el);
-  el.append(innerobj);
-});
-
   $('p.Extract-BulletListextbl').wrap("<li class='Extract-BulletListextbl'></li>");
 
-  var output = $.html();
-    fs.writeFile(file, output, function(err) {
-	    if(err) {
-	        return console.log(err);
-	    }
+  $('li.Extract-BulletListextbl').wrap("<ul class='Extract-BulletListextbl'></ul>");
 
-      console.log("Processing instructions have been evaluated!");
-	});
-});
+  $("ul.Extract-BulletListextbl").each(function () {
+      var that = this.previousSibling;
+      var thisclass = $(this).attr('class');
+      var previousclass = $(that).attr('class');
+      if ((that && that.nodeType === 1 && that.tagName === this.tagName && typeof $(that).attr('class') !== 'undefined' && thisclass === previousclass)) {
+        var mytag = this.tagName.toString();
+        var el = $("<" + mytag + "/>").addClass("temp");
+        $(this).after(el);
+        var node = $(".temp");
+        while (that.firstChild) {
+            node.append(that.firstChild);
+        }
+        while (this.firstChild) {
+            node.append(this.firstChild);
+        }
+        $(that).remove();
+        $(this).remove();
+      }
+      $(".temp").addClass(thisclass).removeClass("temp");
+    });
