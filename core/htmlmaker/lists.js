@@ -10,10 +10,11 @@ fs.readFile(file, function processTemplates (err, contents) {
 
 //function to wrap lists in parent ul
   $('*:not(p.Extract-BulletListextbl) + p.Extract-BulletListextbl, p.Extract-BulletListextbl:first-child').each(function() {
-    $(this).nextUntil('*:not(p.Extract-BulletListextbl)')
-           .addBack()
-           .wrapAll("<ul class='Extract-BulletListextbl' />");
-  });
+  var el = $("<ul/>").addClass("Extract-BulletListextbl");
+  var innerobj = $(this).nextUntil('*:not(p.Extract-BulletListextbl)').addBack();
+$(this).before(el);
+  el.append(innerobj);
+});
 
   $('p.Extract-BulletListextbl').wrapInner("<li></li>");
 
