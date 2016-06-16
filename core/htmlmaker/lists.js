@@ -33,3 +33,13 @@ fs.readFile(file, function processTemplates (err, contents) {
       }
       $(".temp").addClass(thisclass).removeClass("temp");
     });
+
+  var output = $.html();
+    fs.writeFile(file, output, function(err) {
+      if(err) {
+          return console.log(err);
+      }
+
+      console.log("Processing instructions have been evaluated!");
+  });
+});
