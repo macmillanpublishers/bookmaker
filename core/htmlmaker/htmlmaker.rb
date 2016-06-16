@@ -25,6 +25,8 @@ headings_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.js")
 
 inlines_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.js")
 
+lists_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "lists.js")
+
 evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
 
 title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
@@ -111,6 +113,9 @@ Bkmkr::Tools.runnode(headings_js, Bkmkr::Paths.outputtmp_html)
 
 # # add correct markup for inlines (em, strong, sup, sub)
 Bkmkr::Tools.runnode(inlines_js, Bkmkr::Paths.outputtmp_html)
+
+# # add correct markup for lists
+Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
 
 filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 
