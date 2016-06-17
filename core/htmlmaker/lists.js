@@ -9,11 +9,12 @@ fs.readFile(file, function processTemplates (err, contents) {
 
 
 //function to wrap lists in parent ul
-  $('p.Extract-BulletListextbl').wrap("<li class='Extract-BulletListextbl'></li>");
+function tagLists (myclass, listtype) {
+  $( "p." + myclass ).wrap("<li class='" + myclass + "'></li>");
 
-  $('li.Extract-BulletListextbl').wrap("<ul class='Extract-BulletListextbl'></ul>");
+  $( "li." + myclass ).wrap("<" + listtype + " class='" + myclass + "'></" + listtype + ">");
 
-  $("ul.Extract-BulletListextbl").each(function () {
+  $(listtype + "." + myclass).each(function () {
       var that = this.previousSibling;
       var thisclass = $(this).attr('class');
       var previousclass = $(that).attr('class');
@@ -33,6 +34,13 @@ fs.readFile(file, function processTemplates (err, contents) {
       }
       $(".temp").addClass(thisclass).removeClass("temp");
     });
+}
+
+tagLists ("Extract-BulletListextbl", "ul");
+tagLists ("SidebarListBulletsbbl", "ul");
+tagLists ("SidebarListNumsbnl", "ol");
+tagLists ("BoxListBulletbbl", "ul");
+tagLists ("BoxListNumbnl", "ol");
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
