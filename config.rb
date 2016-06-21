@@ -27,7 +27,7 @@ $tmp_dir = File.join($currvol, "bookmaker_tmp", project)
 
 # The location to store the log file that gets created 
 # for each conversion.
-$log_dir = File.join(logdir, "bookmaker_logs", logsubdir)
+$log_dir = File.join(logdir, "bookmaker_logs", logsubdir, project)
 
 # The location where your bookmaker scripts live.
 $scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
