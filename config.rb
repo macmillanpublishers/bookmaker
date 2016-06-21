@@ -7,6 +7,8 @@ unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
 input_file = File.expand_path(unescapeargv).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 project = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop
+logdir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-4].join(File::SEPARATOR)
+logsubdir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-3].pop
 
 # ------------------ GLOBAL VARIABLES
 # These variables are required throughout the 
@@ -25,7 +27,7 @@ $tmp_dir = File.join($currvol, "bookmaker_tmp", project)
 
 # The location to store the log file that gets created 
 # for each conversion.
-$log_dir = File.join("S:", "resources", "logs")
+$log_dir = File.join(logdir, "bookmaker_logs", logsubdir)
 
 # The location where your bookmaker scripts live.
 $scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
