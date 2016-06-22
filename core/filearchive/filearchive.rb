@@ -29,8 +29,17 @@ final_config = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "confi
 
 unless Dir.exist?(final_dir)
   Mcmlln::Tools.makeDir(final_dir)
+end
+
+unless Dir.exist?(final_dir_images)
   Mcmlln::Tools.makeDir(final_dir_images)
+end
+
+unless Dir.exist?(final_dir_cover)
   Mcmlln::Tools.makeDir(final_dir_cover)
+end
+
+unless Dir.exist?(final_dir_layout)
   Mcmlln::Tools.makeDir(final_dir_layout)
 end
 
