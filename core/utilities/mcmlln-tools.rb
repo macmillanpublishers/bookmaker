@@ -31,7 +31,7 @@ module Mcmlln
 
     def self.deleteDir(dir)
       if Dir.exist?(dir)
-        FileUtils.rm_r(dir)
+        FileUtils.rm_rf(dir)
       end
     end
 
