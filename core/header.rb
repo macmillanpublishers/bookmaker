@@ -66,7 +66,7 @@ module Bkmkr
 		def self.submitted_images
 			if $assets_dir
 				$assets_dir
-			else 
+			else
 				Project.input_dir
 			end
 		end
@@ -82,7 +82,7 @@ module Bkmkr
 		def self.project_tmp_dir_img
 			@@project_tmp_dir_img
 		end
-		
+
 		# Full path to outputtmp.html file
 		@@outputtmp_html = File.join(project_tmp_dir, "outputtmp.html")
 		def self.outputtmp_html
@@ -94,7 +94,7 @@ module Bkmkr
 		def self.project_tmp_file
 			@@project_tmp_file
 		end
-		
+
 		# Full path and filename for the .docx file
 		@@project_docx_file = File.join(project_tmp_dir, "#{Project.filename}.docx")
 		def self.project_docx_file
@@ -111,7 +111,7 @@ module Bkmkr
 		def self.done_dir
 			if $done_dir
 				$done_dir
-			else 
+			else
 				Project.input_dir
 			end
 		end
@@ -157,7 +157,7 @@ module Bkmkr
 		def self.xslprocessor
 			$saxon_version
 		end
-		
+
 		def self.pdfprocessor
 			$pdf_processor
 		end
@@ -178,7 +178,7 @@ module Bkmkr
 
 		def self.runjar(jar_script, input_file)
 			puts "---RUNNING #{jar_script}---"
-			stdout_stderr, status = Open3.capture2e("java -jar #{jar_script} #{input_file}")
+			stdout_stderr, status = Open3.capture2e("java -jar #{jar_script} \"#{input_file}\"")
 			return stdout_stderr
 		end
 
@@ -217,7 +217,7 @@ module Bkmkr
 					                           :javascript 		 => "true"
 											             }
 				                       		)
-				                           
+
 				end
 			else
 				pdf_error = File.join(Paths.done_dir, "PDF_ERROR.txt")
