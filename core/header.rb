@@ -1,5 +1,6 @@
 require "open-uri"
 require 'fileutils'
+require 'open3'
 
 require_relative '../config.rb'
 require_relative 'utilities/mcmlln-tools.rb'
@@ -177,7 +178,8 @@ module Bkmkr
 
 		def self.runjar(jar_script, input_file)
 			puts "---RUNNING #{jar_script}---"
-			`java -jar "#{jar_script}" "#{input_file}"`
+			stdout_stderr, status = Open3.capture2e("java -jar #{jar_script} #{input_file}")
+			return stdout_stderr
 		end
 
 		def self.runpython(py_script, input_file)
