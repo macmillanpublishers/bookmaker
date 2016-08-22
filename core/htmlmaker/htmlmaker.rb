@@ -31,6 +31,8 @@ evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
 
 title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
+preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
+
 # ---------------------- METHODS
 
 def fixFootnotes(content)
@@ -116,6 +118,9 @@ Bkmkr::Tools.runnode(inlines_js, Bkmkr::Paths.outputtmp_html)
 
 # # add correct markup for lists
 Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
+
+# # change p children of pre tags to spans
+Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
 
 filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 
