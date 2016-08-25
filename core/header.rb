@@ -21,7 +21,7 @@ module Bkmkr
 		def self.filename_split
 			@@filename_split
 		end
-		@@filename = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop.split(".").shift.gsub(/ /, "")
+		@@filename = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop.rpartition('.').first.gsub(/ /, "")
 		def self.filename
 			@@filename
 		end
