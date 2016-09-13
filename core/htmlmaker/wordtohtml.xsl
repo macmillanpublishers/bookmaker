@@ -220,11 +220,13 @@
   <xsl:variable name="top-level-body-breaks" as="xs:string*">
     <xsl:sequence
       select="'BMHeadbmh',
+              'BMHeadNonprintingbmhnp',
               'ChapTitlect',
               'ChapTitleNonprintingctnp',
               'PartNumberpn',
               'PartTitlept',
               'FMHeadfmh',
+              'FMHeadNonprintingfmhnp',
               'AboutAuthorTextHeadatah'"/>
   </xsl:variable>
 
@@ -271,6 +273,7 @@
   <xsl:variable name="top-level-heads" as="xs:string*">
     <xsl:sequence
       select="'BMHeadbmh',
+              'BMHeadNonprintingbmhnp',
               'BMHeadALTabmh',
               'AppendixHeadaph',
               'AboutAuthorTextHeadatah',
@@ -279,6 +282,7 @@
               'ChapTitlect',
               'ChapTitleNonprintingctnp',
               'FMHeadfmh',
+              'FMHeadNonprintingfmhnp',
               'FMHeadALTafmh',
               'FrontSalesTitlefst',
               'BOBAdTitlebobt',
@@ -378,6 +382,8 @@
                 <xsl:value-of select="'preface'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'BMHeadbmh' or 
+                              $word-style = 'BMHeadNonprintingbmhnp' or 
+                              $word-style = 'BMHeadALTabmh'
                               $word-style = 'AboutAuthorTextHeadatah' or 
                               $word-style = 'BOBAdTitlebobt'">
                 <xsl:value-of select="'appendix'"/>
@@ -398,7 +404,9 @@
               <xsl:when test="$word-style = 'Dedicationded'">
                 <xsl:value-of select="'dedication'"/>
               </xsl:when>
-              <xsl:when test="$word-style = 'FMHeadfmh'">
+              <xsl:when test="$word-style = 'FMHeadfmh' or 
+                              $word-style = 'FMHeadNonprintingfmhnp' or 
+                              $word-style = 'FMHeadALTafmh'">
                 <xsl:value-of select="'preface'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'HalftitleBookTitlehtit'">
