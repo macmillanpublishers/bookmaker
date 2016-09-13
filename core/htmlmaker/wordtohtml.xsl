@@ -383,7 +383,7 @@
               </xsl:when>
               <xsl:when test="$word-style = 'BMHeadbmh' or 
                               $word-style = 'BMHeadNonprintingbmhnp' or 
-                              $word-style = 'BMHeadALTabmh'
+                              $word-style = 'BMHeadALTabmh' or 
                               $word-style = 'AboutAuthorTextHeadatah' or 
                               $word-style = 'BOBAdTitlebobt'">
                 <xsl:value-of select="'appendix'"/>
