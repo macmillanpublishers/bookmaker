@@ -8,8 +8,13 @@ require_relative 'utilities/mcmlln-tools.rb'
 module Bkmkr
 	class Project
 		@unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
-  		@input_file = File.expand_path(@unescapeargv)
-  		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
+		if @unescapeargv.match(/'/) || @unescapeargv.scan(/./).length > 1
+			@new_infile = @unescapeargv.gsub(/'/,"").gsub(/\.(?=.*\.)/,"")
+			File.rename(@unescapeargv,@new_infile)
+			@unescapeargv = @new_infile
+		end
+		@input_file = File.expand_path(@unescapeargv)
+		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
 			@@input_file
 		end
