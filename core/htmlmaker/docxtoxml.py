@@ -11,7 +11,7 @@ def isdir(z, name):
 def convert_manuscript(self):
 
     # must be .docx or .docm
-    path_to_xml_file = self.replace("docx", "xml").replace('docm', 'xml')
+    path_to_xml_file = self[::-1].replace("xcod", "lmx", 1).replace('mcod', 'xml')[::-1]
     extension = os.path.splitext(self)[1]
 
     if extension in ('.docx', '.docm', '.doc'):
