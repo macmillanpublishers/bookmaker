@@ -11,7 +11,7 @@ def isdir(z, name):
 def convert_manuscript(self):
 
     # must be .docx or .docm
-    path_to_xml_file = self[::-1].replace("xcod", "lmx", 1).replace('mcod', 'xml')[::-1]
+    path_to_xml_file = self[::-1].replace("xcod", "lmx", 1).replace('mcod', 'xml', 1)[::-1]
     extension = os.path.splitext(self)[1]
 
     if extension in ('.docx', '.docm', '.doc'):
@@ -32,11 +32,11 @@ def convert_manuscript(self):
         str3 = "<pkg:part pkg:name=\"/word/footnotes.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.wordprocessingml.footnotes+xml\"><pkg:xmlData>"
         str4 = "</pkg:package>"
         document.close()
-        
+
         file = open(path_to_xml_file, "w")
         file.write(xml_content + str1 + str2 + endnote_content + str1 + str3 + footnote_content + str1 + str4)
         file.close()
 
-        return 
+        return
 
 convert_manuscript( filename )
