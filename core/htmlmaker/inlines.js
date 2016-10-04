@@ -49,7 +49,7 @@ fs.readFile(file, function processTemplates (err, contents) {
   });
 
   // support for inline images
-  $('span.Illustrationholderinlineilli').each(function () {
+  $('span.spanillustrationholderilli').each(function () {
     var mytext = $(this).text().trim();
     var el = $('<img src="images/' + mytext + '"></img>');
     $(this).empty();
