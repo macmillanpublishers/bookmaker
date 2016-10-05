@@ -214,6 +214,7 @@ module Bkmkr
 					                         :prince_options	 => {
 					                           :http_user		 => "#{http_username}",
 					                           :http_password	 => "#{http_password}",
+																		 :version	 => "10",
 					                           :javascript 		 => "true"
 											             }
 				                       		)
