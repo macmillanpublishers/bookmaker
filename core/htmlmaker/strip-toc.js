@@ -10,8 +10,8 @@ fs.readFile(file, function processTemplates (err, contents) {
 
 //addClass to 'preface' section (with h1 text containing 'Contents')
 $("section[data-type='preface']>h1:contains('Contents')").parents("section").addClass('texttoc');
-
-
+$("section[data-type='preface']>h1:contains('CONTENTS')").parents("section").addClass('texttoc');
+$("section[data-type='preface']>p[class^='TOC']").parents("section").addClass('texttoc');
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
