@@ -182,14 +182,14 @@ module Bkmkr
 			return stdout_stderr
 		end
 
-		def self.runpython(py_script, input_file)
+		def self.runpython(py_script, args)
 			if $python_processor
-				`#{$python_processor} #{py_script} #{input_file}`
+				`#{$python_processor} #{py_script} #{args}`
 			elsif os == "mac" or os == "unix"
-				`python #{py_script} #{input_file}`
+				`python #{py_script} #{args}`
 			elsif os == "windows"
 				pythonpath = File.join(Paths.resource_dir, "Python27", "python.exe")
-				`#{pythonpath} #{py_script} #{input_file}`
+				`#{pythonpath} #{py_script} #{args}`
 			else
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- PYTHON ERROR"
