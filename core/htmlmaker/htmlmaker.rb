@@ -4,6 +4,9 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
+json_log_hash = Bkmkr::Paths.jsonlog_hash
+json_log_hash[Bkmkr::Paths.thisscript] = {}
+log_hash = json_log_hash[Bkmkr::Paths.thisscript]
 
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
@@ -47,21 +50,27 @@ def fixFootnotes(content)
 		filecontents = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 														   .gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 	end
-	filecontents
+	return filecontents, true
+rescue => e
+	return content, e
 end
 
 def fixEndnotes(content)
 	# add endnote ref id as static content
 	filecontents = content.gsub(/(<span class=")(.ndnote.eference)(" id=")(\d+)(">)(<\/span>)/,"\\1endnotereference\\3endnoteref-\\4\\5\\4\\6")
 												.gsub(/(div class="endnotetext" id=")/,"\\1endnotetext-")
-	filecontents
+	return filecontents, true
+rescue => e
+	return content, e
 end
 
 def fixEntities(content)
 	filecontents = content.gsub(/&nbsp/,"&#160")
 												.gsub(/(<img.*?)(>)/,"\\1/\\2")
 												.gsub(/(<br)(>)/,"\\1/\\2")
-	filecontents
+	return filecontents, true
+rescue => e
+	return content, e
 end
 
 def stripEndnotes(content)
@@ -71,7 +80,9 @@ def stripEndnotes(content)
 	unless endnote_txt.include?("<p ")
 		filecontents = content.gsub(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/,"")
 	end
-	filecontents
+	return filecontents, true
+rescue => e
+	return content, e
 end
 
 # ---------------------- PROCESSES
@@ -88,18 +99,30 @@ else
 	Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
 end
 
-filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+def readOutputHtml()
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	return filecontents, true
+rescue => e
+	return '',e
+end
+filecontents, log_hash['read_output_html_a'] = readOutputHtml
 
 # run method: fixFootnotes
-filecontents = fixFootnotes(filecontents)
+filecontents, log_hash['fix_footnotes'] = fixFootnotes(filecontents)
 
 # run method: fixEndnotes
-filecontents = fixEndnotes(filecontents)
+filecontents, log_hash['fix_endnotes'] = fixEndnotes(filecontents)
 
 # run method: fixEntities
-filecontents = fixEntities(filecontents)
+filecontents, log_hash['fix_entities'] = fixEntities(filecontents)
 
-Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+def overwriteOutputHtml(filecontents)
+	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+	return true
+rescue => e
+	return e
+end
+log_hash['overwrite_output_html_a'] = overwriteOutputHtml(filecontents)
 
 # # strip extraneous footnote section from html
 Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
@@ -122,12 +145,12 @@ Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
 # # change p children of pre tags to spans
 Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
 
-filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+filecontents, log_hash['read_output_html_b'] = readOutputHtml
 
 # run method: stripEndnotes
-filecontents = stripEndnotes(filecontents)
+filecontents, log_hash['strip_endnotes'] = stripEndnotes(filecontents)
 
-Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+log_hash['overwrite_output_html_b'] = overwriteOutputHtml(filecontents)
 
 # set html title to match JSON
 Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
@@ -150,3 +173,7 @@ File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
 	f.puts test_html_status
 	f.puts "finished htmlmaker"
 end
+
+# Write json log:
+log_hash['completed'] = Time.now
+Mcmlln::Tools.write_json(json_log_hash, Bkmkr::Paths.json_log)

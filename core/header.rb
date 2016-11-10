@@ -1,6 +1,7 @@
 require "open-uri"
 require 'fileutils'
 require 'open3'
+require 'json'
 
 require_relative '../config.rb'
 require_relative 'utilities/mcmlln-tools.rb'
@@ -116,10 +117,33 @@ module Bkmkr
 			end
 		end
 
+		@@thisscript = File.basename($0)
+		def self.thisscript
+			@@thisscript
+		end
+
 		# Full path to project log file
 		@@log_file = File.join(log_dir, "#{Project.filename}.txt")
 		def self.log_file
 			@@log_file
+		end
+
+		# Full path to project json file
+		@@json_log = File.join(log_dir, "#{Project.filename}.json")
+		def self.json_log
+			@@json_log
+		end
+
+		#hash from json log- by putting this in the header we add lines of code to test if it exists etc)
+		def self.jsonlog_hash
+			json_hash = {}
+			if File.file?(@@json_log)
+				file = File.open(@@json_log, "r:utf-8")
+				content = file.read
+				file.close
+				json_hash = JSON.parse(content)
+			end
+			json_hash
 		end
 	end
 

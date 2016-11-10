@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'json'
 
 module Mcmlln
   class Tools
@@ -68,8 +69,13 @@ module Mcmlln
       json_hash
     end
 
+    def self.write_json(hash, json)
+      finaljson = JSON.pretty_generate(hash)
+      File.open(json, 'w+:UTF-8') { |f| f.puts finaljson }
+    end
+
     def self.overwriteFile(file, content)
-      File.open(file, 'w') do |output| 
+      File.open(file, 'w') do |output|
         output.write content
       end
     end
