@@ -24,74 +24,52 @@ test_images_before = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)
 all_submitted_images = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
-def createTmpDir()
+log_hash['tmp_folder_created'] = Mcmlln::Tools.methodize do
 	unless Dir.exist?(Bkmkr::Paths.tmp_dir)
 		Mcmlln::Tools.makeDir(Bkmkr::Paths.tmp_dir)
-		return true
+		true
 	else
-		return 'n-a'
+	 'n-a'
 	end
-rescue => e
-	return e
 end
-log_hash['tmp_folder_created'] = createTmpDir
 
-def deleteProjectTmpDir()
+log_hash['old_project_tmp_folder_deleted'] = Mcmlln::Tools.methodize do
 	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
 		Mcmlln::Tools.deleteDir(Bkmkr::Paths.project_tmp_dir)
-		return true
+		true
 	else
-		return 'n-a'
+		'n-a'
 	end
-rescue => e
-	return e
 end
-log_hash['old_project_tmp_folder_deleted'] = deleteProjectTmpDir
 
-def createProjectTmpDir()
+log_hash['project_tmp_folder_created'] = Mcmlln::Tools.methodize do
 	Mcmlln::Tools.makeDir(Bkmkr::Paths.project_tmp_dir)
-	return true
-rescue => e
-	return e
+	true
 end
-log_hash['project_tmp_folder_created'] = createProjectTmpDir
 
-def createProjectTmpImgDir()
+log_hash['project_tmp_img_folder_created'] = Mcmlln::Tools.methodize do
 	Mcmlln::Tools.makeDir(Bkmkr::Paths.project_tmp_dir_img)
-	return true
-rescue => e
-	return e
+	true
 end
-log_hash['project_tmp_img_folder_created'] = createProjectTmpImgDir
 
-def copyInputFile()
+log_hash['copy_input_file'] = Mcmlln::Tools.methodize do
 	Mcmlln::Tools.copyFile("#{Bkmkr::Project.input_file}", Bkmkr::Paths.project_tmp_file)
-	return true
-rescue => e
-	return e
+	true
 end
-log_hash['copy_input_file'] = copyInputFile
 
-def mvInputConfigFile(input_config, tmp_config)
+log_hash['moved_input_config_file'] = Mcmlln::Tools.methodize do
 	if File.file?(input_config)
 		Mcmlln::Tools.moveFile(input_config, tmp_config)
-		return true
+		true
 	else
-		return 'n-a'
+		'n-a'
 	end
-rescue => e
-	return e
 end
-log_hash['moved_input_config_file'] = mvInputConfigFile(input_config, tmp_config)
 
-def writeAlertFile(filecontents)
-	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.alert, filecontents)
-	return true
-rescue => e
-	return e
+log_hash['write_alert_file'] = Mcmlln::Tools.methodize do
+	(Mcmlln::Tools.overwriteFile(Bkmkr::Paths.alert, filecontents))
+	true
 end
-log_hash['copy_input_file'] = writeAlertFile(filecontents)
-
 
 # ---------------------- LOGGING
 

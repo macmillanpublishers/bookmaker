@@ -36,6 +36,16 @@ title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
 preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
+readHtml = lambda {
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	return true, filecontents
+}
+
+writeHtml = lambda { |filecontents|
+	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+	true
+}
+
 # ---------------------- METHODS
 
 def fixFootnotes(content)
@@ -99,13 +109,8 @@ else
 	Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
 end
 
-def readOutputHtml()
-	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
-	return filecontents, true
-rescue => e
-	return '',e
-end
-filecontents, log_hash['read_output_html_a'] = readOutputHtml
+#read in html
+log_hash['read_output_html_a'], filecontents = Mcmlln::Tools.methodize(&readHtml)
 
 # run method: fixFootnotes
 filecontents, log_hash['fix_footnotes'] = fixFootnotes(filecontents)
@@ -116,13 +121,8 @@ filecontents, log_hash['fix_endnotes'] = fixEndnotes(filecontents)
 # run method: fixEntities
 filecontents, log_hash['fix_entities'] = fixEntities(filecontents)
 
-def overwriteOutputHtml(filecontents)
-	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
-	return true
-rescue => e
-	return e
-end
-log_hash['overwrite_output_html_a'] = overwriteOutputHtml(filecontents)
+#write out edited html
+log_hash['overwrite_output_html_a'] = Mcmlln::Tools.methodize(filecontents, &writeHtml)
 
 # # strip extraneous footnote section from html
 Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
@@ -145,12 +145,12 @@ Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
 # # change p children of pre tags to spans
 Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
 
-filecontents, log_hash['read_output_html_b'] = readOutputHtml
+log_hash['read_output_html_b'], filecontents = Mcmlln::Tools.methodize(&readHtml)
 
 # run method: stripEndnotes
 filecontents, log_hash['strip_endnotes'] = stripEndnotes(filecontents)
 
-log_hash['overwrite_output_html_b'] = overwriteOutputHtml(filecontents)
+log_hash['overwrite_output_html_b'] = Mcmlln::Tools.methodize(filecontents, &writeHtml)
 
 # set html title to match JSON
 Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")

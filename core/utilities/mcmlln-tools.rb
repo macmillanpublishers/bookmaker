@@ -80,5 +80,15 @@ module Mcmlln
       end
     end
 
+    def self.methodize(*args, &block)
+    	if !args.empty?
+    		block.call(*args)
+    	else
+    		block.call
+    	end
+    rescue => e
+    	return e
+    end
+
   end
 end
