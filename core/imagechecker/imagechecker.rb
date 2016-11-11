@@ -4,6 +4,10 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
+json_log_hash = Bkmkr::Paths.jsonlog_hash
+json_log_hash[Bkmkr::Paths.thisscript] = {}
+log_hash = json_log_hash[Bkmkr::Paths.thisscript]
+
 # The locations to check for images
 imagedir = Bkmkr::Paths.submitted_images
 
@@ -14,18 +18,40 @@ final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata
 # full path to the image error file
 image_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "IMAGE_ERROR.txt")
 
+readHtml = lambda {
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	return true, filecontents
+}
+
+writeHtml = lambda { |filecontents|
+	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+	true
+}
+
+getFilesinDir = lambda { |path|
+	files = Mcmlln::Tools.dirList(path)
+	return true, files
+}
+
 # ---------------------- METHODS
 # If an image_error file exists, delete it
 def checkErrorFile(file)
 	if File.file?(file)
 		Mcmlln::Tools.deleteFile(file)
+	true
+	else
+		'n-a'
 	end
+rescue => e
+	e
 end
 
 #strips spaces from img names in html
 def stripSpaces(content)
 	filecontents = content.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
-	filecontents
+	return filecontents, true
+rescue => e
+	return content, e
 end
 
 def listImages(file)
@@ -33,7 +59,9 @@ def listImages(file)
 	imgarr = File.read(file).scan(/img src=".*?"/)
 	# remove duplicate image names from source array
 	imgarr = imgarr.uniq
-	imgarr
+	return imgarr, true
+rescue => e
+	return [], e
 end
 
 def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
@@ -75,7 +103,9 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			missing << match
 		end
 	end
-	return resolution, missing
+	return resolution, missing, true
+rescue => e
+	return [],[],e
 end
 
 def writeMissingErrors(arr, file)
@@ -88,7 +118,12 @@ def writeMissingErrors(arr, file)
 				output.puts m
 			end
 		end
+		true
+	else
+		'n-a'
 	end
+rescue => e
+	e
 end
 
 def writeResErrors(arr, file)
@@ -102,35 +137,48 @@ def writeResErrors(arr, file)
 				output.puts r
 			end
 		end
+		true
+	else
+		'n-a'
 	end
+rescue => e
+	e
 end
 
 # ---------------------- PROCESSES
 
-images = Mcmlln::Tools.dirList(imagedir)
+log_hash['get_imagedir_images'], images = Mcmlln::Tools.methodize(imagedir, &getFilesinDir)
 
-finalimages = Mcmlln::Tools.dirList(final_dir_images)
+log_hash['get_finaldir_images'], finalimages = Mcmlln::Tools.methodize(final_dir_images, &getFilesinDir)
 
-checkErrorFile(image_error)
+log_hash['delete_image_errfile'] = checkErrorFile(image_error)
 
 filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+log_hash['read_output_html_c'], filecontents = Mcmlln::Tools.methodize(&readHtml)
 
 # run method: stripSpaces
-filecontents = stripSpaces(filecontents)
+filecontents, log_hash['strip_spaces'] = stripSpaces(filecontents)
 
-Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+#write out edited html
+log_hash['overwrite_output_html_c'] = Mcmlln::Tools.methodize(filecontents, &writeHtml)
 
 # run method: listImages
-imgarr = listImages(Bkmkr::Paths.outputtmp_html)
+imgarr, log_hash['list_images'] = listImages(Bkmkr::Paths.outputtmp_html)
 
 # run method: checkImages
-resolution, missing = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
+resolution, missing, log_hash['check_images'] = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
 
 # run method: writeMissingErrors
-writeMissingErrors(missing, image_error)
+log_hash['write_missing_errors'] = writeMissingErrors(missing, image_error)
 
 # run method: writeResErrors
-writeResErrors(missing, image_error)
+log_hash['write_resolution_errors'] = writeResErrors(missing, image_error)
+
+log_hash['imagedir_images'] = images
+log_hash['finaldir_images'] = finalimages
+log_hash['unique_image_array'] = imgarr
+log_hash['lowres_images'] = resolution
+log_hash['missing_images'] = missing
 
 # ---------------------- LOGGING
 
@@ -150,3 +198,7 @@ File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "#{test_missing_img}"
 	f.puts "finished imagechecker"
 end
+
+# Write json log:
+log_hash['completed'] = Time.now
+Mcmlln::Tools.write_json(json_log_hash, Bkmkr::Paths.json_log)

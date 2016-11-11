@@ -13,15 +13,21 @@ tmp_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
 
 filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
 
+getFilesinDir = lambda { |path|
+	files = Mcmlln::Tools.dirList(path)
+	return true, files
+}
+
 # ---------------------- METHODS
 
 # ---------------------- PROCESSES
 
 # For TEST purposes
-test_images_before = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)
+# test_images_before = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)  <--can I get rid of this?
 
 # Local path variables
-all_submitted_images = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)
+log_hash['check_submitted_images'], all_submitted_images = Mcmlln::Tools.methodize(Bkmkr::Paths.submitted_images, &getFilesinDir)	#is this needed in tmparchive? is also in imgchecker (imagedir_images)
+log_hash['submitted_images'] = all_submitted_images
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
 log_hash['tmp_folder_created'] = Mcmlln::Tools.methodize do

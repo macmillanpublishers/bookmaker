@@ -53,7 +53,7 @@ module Mcmlln
 
     # An array listing everything in a directory
     def self.dirList(directory)
-      Dir.entries(directory)
+      Dir.entries(directory) - ['..', '.']
     end
 
     # An array listing all files in a directory
