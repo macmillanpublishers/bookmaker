@@ -18,13 +18,13 @@ final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata
 # full path to the image error file
 image_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "IMAGE_ERROR.txt")
 
-readHtml = lambda {
-	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+readHtml = lambda { |path|
+	filecontents = File.read(path)
 	return true, filecontents
 }
 
-writeHtml = lambda { |filecontents|
-	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+writeHtml = lambda { |path, filecontents|
+	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true
 }
 
@@ -153,14 +153,13 @@ log_hash['get_finaldir_images'], finalimages = Mcmlln::Tools.methodize(final_dir
 
 log_hash['delete_image_errfile'] = checkErrorFile(image_error)
 
-filecontents = File.read(Bkmkr::Paths.outputtmp_html)
-log_hash['read_output_html_c'], filecontents = Mcmlln::Tools.methodize(&readHtml)
+log_hash['read_output_html_c'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html,&readHtml)
 
 # run method: stripSpaces
 filecontents, log_hash['strip_spaces'] = stripSpaces(filecontents)
 
 #write out edited html
-log_hash['overwrite_output_html_c'] = Mcmlln::Tools.methodize(filecontents, &writeHtml)
+log_hash['overwrite_output_html_c'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &writeHtml)
 
 # run method: listImages
 imgarr, log_hash['list_images'] = listImages(Bkmkr::Paths.outputtmp_html)

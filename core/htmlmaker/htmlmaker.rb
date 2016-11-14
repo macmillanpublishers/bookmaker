@@ -36,13 +36,13 @@ title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
 preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
-readHtml = lambda {
-	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+readHtml = lambda { |path|
+	filecontents = File.read(path)
 	return true, filecontents
 }
 
-writeHtml = lambda { |filecontents|
-	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+writeHtml = lambda { |path, filecontents|
+	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true
 }
 
@@ -110,7 +110,7 @@ else
 end
 
 #read in html
-log_hash['read_output_html_a'], filecontents = Mcmlln::Tools.methodize(&readHtml)
+log_hash['read_output_html_a'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html,&readHtml)
 
 # run method: fixFootnotes
 filecontents, log_hash['fix_footnotes'] = fixFootnotes(filecontents)
@@ -122,7 +122,7 @@ filecontents, log_hash['fix_endnotes'] = fixEndnotes(filecontents)
 filecontents, log_hash['fix_entities'] = fixEntities(filecontents)
 
 #write out edited html
-log_hash['overwrite_output_html_a'] = Mcmlln::Tools.methodize(filecontents, &writeHtml)
+log_hash['overwrite_output_html_a'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &writeHtml)
 
 # # strip extraneous footnote section from html
 Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
@@ -145,12 +145,12 @@ Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
 # # change p children of pre tags to spans
 Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
 
-log_hash['read_output_html_b'], filecontents = Mcmlln::Tools.methodize(&readHtml)
+log_hash['read_output_html_b'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html,&readHtml)
 
 # run method: stripEndnotes
 filecontents, log_hash['strip_endnotes'] = stripEndnotes(filecontents)
 
-log_hash['overwrite_output_html_b'] = Mcmlln::Tools.methodize(filecontents, &writeHtml)
+log_hash['overwrite_output_html_b'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &writeHtml)
 
 # set html title to match JSON
 Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
