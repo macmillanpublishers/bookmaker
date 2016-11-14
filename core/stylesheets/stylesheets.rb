@@ -4,6 +4,10 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
+json_log_hash = Bkmkr::Paths.jsonlog_hash
+json_log_hash[Bkmkr::Paths.thisscript] = {}
+log_hash = json_log_hash[Bkmkr::Paths.thisscript]
+
 tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
 
 tmp_pdf_css = File.join(tmp_layout_dir, "pdf.css")
@@ -42,6 +46,9 @@ def evalImports(file, path)
 			end
 		end
 	end
+	true
+rescue => e
+	e
 end
 
 def copyCSS(file, path)
@@ -50,6 +57,9 @@ def copyCSS(file, path)
 	File.open(path, 'a+') do |p|
 		p.write filecontents
 	end
+	true
+rescue => e
+	e
 end
 
 def evalOneoffs(file, path)
@@ -63,12 +73,19 @@ def evalOneoffs(file, path)
 		File.open(path, 'a+') do |o|
 			o.write oneoffcss
 		end
+		log = "----- Found new one-off #{file} in submitted images dir, appending to css."
 	elsif File.file?(oneoffcss_pickup)
 		oneoffcss = File.read(oneoffcss_pickup)
 		File.open(path, 'a+') do |o|
 			o.write oneoffcss
 		end
+		log = "----- Found one-off css in tmp_layout_dir from a previous run, appending to css."
+	else
+		log = "----- No one off css found."
 	end
+	log
+rescue => e
+	return e
 end
 
 def evalTrimPI(html, css)
@@ -89,6 +106,8 @@ def evalTrimPI(html, css)
 		log = "----- A custom trim size of #{size} has been added, per a processing instruction."
 	end
 	log
+rescue => e
+	e
 end
 
 def evalTocPI(html, css)
@@ -124,68 +143,103 @@ def evalTocPI(html, css)
 		end
 		log = "----- The TOC is set to #{toctype}, per a processing instruction."
 	end
-	log
+	true
+rescue => e
+	e
 end
 
 # ---------------------- PROCESSES
 
 # an array of all occurances of chapters in the manuscript
-chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="chapter"/)
+get_chapterheads = lambda {
+	chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="chapter"/)
+	return true, chapterheads
+}
+log_hash['get_chapterheads'], chapterheads = Mcmlln::Tools.methodize(&get_chapterheads)
+log_hash['chapterhead_count'] = chapterheads.count
 
-if File.file?(tmp_pdf_css)
-	Mcmlln::Tools.deleteFile(tmp_pdf_css)
+log_hash['delete_existing_tmp_pdf_css'] = Mcmlln::Tools.methodize do
+	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
+		Mcmlln::Tools.deleteFile(tmp_pdf_css)
+		true
+	else
+		'n-a'
+	end
 end
 
-if File.file?(tmp_epub_css)
-	Mcmlln::Tools.deleteFile(tmp_epub_css)
+log_hash['delete_existing_tmp_epub_css'] = Mcmlln::Tools.methodize do
+	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
+		Mcmlln::Tools.deleteFile(tmp_epub_css)
+		true
+	else
+		'n-a'
+	end
 end
 
 find_pdf_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.printcss)
 find_epub_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.epubcss)
 
+log_hash['evalImports_pdf_css-metadata'],log_hash['evalImports_pdf_css-submitted'] = 'n-a','n-a' #so we get SOME output either way
+
 if File.file?(Metadata.printcss)
-	evalImports(Metadata.printcss, tmp_pdf_css)
-	copyCSS(Metadata.printcss, tmp_pdf_css)
+	log_hash['evalImports_pdf_css-metadata'] = evalImports(Metadata.printcss, tmp_pdf_css)
+	log_hash['copy_pdf_css-metadata'] = copyCSS(Metadata.printcss, tmp_pdf_css)
 elsif File.file?(find_pdf_css_file)
-	evalImports(find_pdf_css_file, tmp_pdf_css)
-	copyCSS(find_pdf_css_file, tmp_pdf_css)
-	Mcmlln::Tools.deleteFile(find_pdf_css_file)
+	log_hash['evalImports_pdf_css-submitted'] = evalImports(find_pdf_css_file, tmp_pdf_css)
+	log_hash['copy_pdf_css-submitted'] = copyCSS(find_pdf_css_file, tmp_pdf_css)
+	log_hash['rm_pdf_css-submitted'] = Mcmlln::Tools.methodize do
+		Mcmlln::Tools.deleteFile(find_pdf_css_file)
+		true
+	end
 else
-	File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |p|
-		p.write "/* no print css supplied */"
+	log_hash['no_pdfcss-notice'] = Mcmlln::Tools.methodize do
+		File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |p|
+			p.write "/* no print css supplied */"
+		end
+		true
 	end
 end
 
-evalOneoffs("oneoff_pdf.css", tmp_pdf_css)
+log_hash['one_off_css_for_pdf'] = evalOneoffs("oneoff_pdf.css", tmp_pdf_css)
 
-trimmessage = evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
+log_hash['evaluate_Trim_PIs'] = evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
 
-tocmessage = evalTocPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
+log_hash['evaluate_Toc_PIs'] = evalTocPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css)
+
+log_hash['evalImports_epub_css-metadata'],log_hash['evalImports_epub_css-submitted'] = 'n-a','n-a'
 
 if File.file?(Metadata.epubcss)
-	evalImports(Metadata.epubcss, tmp_epub_css)
-	copyCSS(Metadata.epubcss, tmp_epub_css)
+	log_hash['evalImports_epub_css-metadata'] = evalImports(Metadata.epubcss, tmp_epub_css)
+	log_hash['copy_epub_css-metadata'] = copyCSS(Metadata.epubcss, tmp_epub_css)
 elsif File.file?(find_epub_css_file)
-	evalImports(find_epub_css_file, tmp_epub_css)
-	copyCSS(find_epub_css_file, tmp_epub_css)
-	Mcmlln::Tools.deleteFile(find_epub_css_file)
+	log_hash['evalImports_epub_css-submitted'] = evalImports(find_epub_css_file, tmp_epub_css)
+	log_hash['copy_epub_css-submitted'] = copyCSS(find_epub_css_file, tmp_epub_css)
+	log_hash['rm_epub_css-submitted'] = Mcmlln::Tools.methodize do
+		Mcmlln::Tools.deleteFile(find_epub_css_file)
+		true
+	end
 else
-	File.open("#{tmp_layout_dir}/epub.css", 'a+') do |e|
-		e.write "/* no epub css supplied */"
+	log_hash['no_epubcss-notice'] = Mcmlln::Tools.methodize do
+		File.open("#{tmp_layout_dir}/epub.css", 'a+') do |e|
+			e.write "/* no epub css supplied */"
+		end
+	true
 	end
 end
 
-evalOneoffs("oneoff_epub.css", tmp_epub_css)
+log_hash['one_off_css_for_epub'] = evalOneoffs("oneoff_epub.css", tmp_epub_css)
 
 # ---------------------- LOGGING
-
-chapterheadsnum = chapterheads.count
 
 # Printing the test results to the log file
 File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 	f.puts "----- STYLESHEETS PROCESSES"
-	f.puts "----- I found #{chapterheadsnum} chapters in this book."
-	f.puts trimmessage
-	f.puts tocmessage
+	f.puts "----- I found #{log_hash['chapter_head_count']} chapters in this book."
+	f.puts log_hash['evaluate_Trim_PIs']
+	f.puts log_hash['evaluate_Toc_PIs']
 	f.puts "finished stylesheets"
 end
+
+# Write json log:
+log_hash['completed'] = Time.now
+Mcmlln::Tools.write_json(json_log_hash, Bkmkr::Paths.json_log)
