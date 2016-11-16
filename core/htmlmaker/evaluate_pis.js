@@ -53,11 +53,13 @@ fs.readFile(file, function processTemplates (err, contents) {
           var eltype = $(prev).attr('class');
           var imagefile = val.split(":").pop().trim().split(" ").shift();
           var imagetag = "<span class='spanillustrationholderilli'><img src='" + imagefile + "'/></span>";
+          $("*[class=" + eltype + "]").addClass("customimage");
           $("*[class=" + eltype + "]").empty().append(imagetag);
         } else {
           var prev = $(this).prev();
           var imagefile = val.split(":").pop().trim().split(" ").shift();
           var imagetag = "<span class='spanillustrationholderilli'><img src='" + imagefile + "'/></span>";
+          $(prev).addClass("customimage");
           $(prev).empty().append(imagetag);
         }
       }
