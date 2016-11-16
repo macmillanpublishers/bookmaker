@@ -47,6 +47,19 @@ fs.readFile(file, function processTemplates (err, contents) {
             $(".temp").prepend(that.firstChild.nextSibling);
         }
         $(".temp").removeClass("temp");
+      } else if (val.indexOf("IMAGE:") > -1) {
+        if (val.indexOf("global") > -1) {
+          var prev = $(this).prev();
+          var eltype = $(prev).attr('class');
+          var imagefile = val.split(":").pop().trim().split(" ").shift();
+          var imagetag = "<span class='spanillustrationholderilli'><img src='" + imagefile + "'/></span>";
+          $("*[class=" + eltype + "]").empty().append(imagetag);
+        } else {
+          var prev = $(this).prev();
+          var imagefile = val.split(":").pop().trim().split(" ").shift();
+          var imagetag = "<span class='spanillustrationholderilli'><img src='" + imagefile + "'/></span>";
+          $(prev).empty().append(imagetag);
+        }
       }
       $(this).remove();
   });
