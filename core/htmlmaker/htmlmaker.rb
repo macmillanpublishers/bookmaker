@@ -41,7 +41,7 @@ readHtml = lambda { |path|
 	return true, filecontents
 }
 
-writeHtml = lambda { |path, filecontents|
+overwriteFile = lambda { |path, filecontents|
 	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true
 }
@@ -122,7 +122,7 @@ filecontents, log_hash['fix_endnotes'] = fixEndnotes(filecontents)
 filecontents, log_hash['fix_entities'] = fixEntities(filecontents)
 
 #write out edited html
-log_hash['overwrite_output_html_a'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &writeHtml)
+log_hash['overwrite_output_html_a'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &overwriteFile)
 
 # # strip extraneous footnote section from html
 Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
@@ -150,7 +150,7 @@ log_hash['read_output_html_b'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Pa
 # run method: stripEndnotes
 filecontents, log_hash['strip_endnotes'] = stripEndnotes(filecontents)
 
-log_hash['overwrite_output_html_b'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &writeHtml)
+log_hash['overwrite_output_html_b'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &overwriteFile)
 
 # set html title to match JSON
 Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")

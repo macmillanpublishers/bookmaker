@@ -23,7 +23,7 @@ readHtml = lambda { |path|
 	return true, filecontents
 }
 
-writeHtml = lambda { |path, filecontents|
+overwriteFile = lambda { |path, filecontents|
 	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true
 }
@@ -159,7 +159,7 @@ log_hash['read_output_html_c'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Pa
 filecontents, log_hash['strip_spaces'] = stripSpaces(filecontents)
 
 #write out edited html
-log_hash['overwrite_output_html_c'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &writeHtml)
+log_hash['overwrite_output_html_c'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &overwriteFile)
 
 # run method: listImages
 imgarr, log_hash['list_images'] = listImages(Bkmkr::Paths.outputtmp_html)
