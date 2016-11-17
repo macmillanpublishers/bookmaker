@@ -60,6 +60,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			end
 			Mcmlln::Tools.copyFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		elsif inputdirlist.include?("#{match}") and match != Metadata.frontcover
+			puts match
 			Mcmlln::Tools.copyFile(matched_file, finaldir)
 			matched << match
 			myres = `identify -format "%y" "#{matched_file}"`
@@ -130,7 +131,7 @@ resolution, missing = checkImages(imgarr, images, finalimages, imagedir, final_d
 writeMissingErrors(missing, image_error)
 
 # run method: writeResErrors
-writeResErrors(missing, image_error)
+writeResErrors(resolution, image_error)
 
 # ---------------------- LOGGING
 
