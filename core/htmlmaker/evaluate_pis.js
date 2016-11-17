@@ -52,15 +52,23 @@ fs.readFile(file, function processTemplates (err, contents) {
           var prev = $(this).prev();
           var eltype = $(prev).attr('class');
           var imagefile = val.split(":").pop().trim().split(" ").shift();
-          var imagetag = "<span class='spanillustrationholderilli'><img src='images/" + imagefile + "'/></span>";
-          $("*[class=" + eltype + "]").empty().append(imagetag);
-          $("*[class=" + eltype + "]").addClass("customimage");
+          var imagetag = "<figure class='Illustrationholderill customimage'><img src='images/" + imagefile + "' alt='" + imagefile + "'/></figure>";
+          $("*[class=" + eltype + "]").after(imagetag);
+          $("*[class=" + eltype + "]").remove();
+          // This code will insert the custom image inside the existing paragraph, instead of as a standard figure tag.
+          //var imagetag = "<span class='spanillustrationholderilli'><img src='images/" + imagefile + "'/></span>";
+          //$("*[class=" + eltype + "]").empty().append(imagetag);
+          //$("*[class=" + eltype + "]").addClass("customimage");
         } else {
           var prev = $(this).prev();
           var imagefile = val.split(":").pop().trim().split(" ").shift();
-          var imagetag = "<span class='spanillustrationholderilli'><img src='images/" + imagefile + "'/></span>";
-          $(prev).empty().append(imagetag);
-          $(prev).addClass("customimage");
+          var imagetag = "<figure class='Illustrationholderill customimage'><img src='images/" + imagefile + "' alt='" + imagefile + "'/></figure>";
+          $(prev).after(imagetag);
+          $(prev).remove();
+          // This code will insert the custom image inside the existing paragraph, instead of as a standard figure tag.
+          //var imagetag = "<span class='spanillustrationholderilli'><img src='images/" + imagefile + "'/></span>";
+          //$(prev).empty().append(imagetag);
+          //$(prev).addClass("customimage");
         }
       }
       $(this).remove();
