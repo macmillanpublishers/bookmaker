@@ -61,7 +61,6 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			end
 			Mcmlln::Tools.copyFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
 		elsif inputdirlist.include?("#{match}") and match != Metadata.frontcover
-			puts match
 			Mcmlln::Tools.copyFile(matched_file, finaldir)
 			matched << match
 			myres = `identify -format "%y" "#{matched_file}"`
@@ -70,6 +69,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 				resolution << match
 			end
 			Mcmlln::Tools.moveFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+			puts "MOVING #{match} to archive dir"
 		elsif !inputdirlist.include?("#{match}") and match != Metadata.frontcover and finaldirlist.include?("#{match}")
 			matched << match
 			Mcmlln::Tools.copyFile(matched_file_pickup, Bkmkr::Paths.project_tmp_dir_img)
