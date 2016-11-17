@@ -48,7 +48,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 	# If no, saves the image file name in the missing array
 	# If yes, copies the image file to the done/pisbn/images folder, and deletes original
 	imglist.each do |m|
-		puts "CHECKING IMAGE #{match}"
+		puts "CHECKING IMAGE #{m}"
 		match = m.split("/").pop.gsub(/"/,'')
 		matched_file = File.join(inputdir, match)
 		matched_file_pickup = File.join(finaldir, match)
