@@ -36,17 +36,37 @@ title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
 preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
-readHtml = lambda { |path|
-	filecontents = File.read(path)
-	return true, filecontents
-}
-
-overwriteFile = lambda { |path, filecontents|
-	Mcmlln::Tools.overwriteFile(path, filecontents)
-	true
-}
-
 # ---------------------- METHODS
+
+def convertdocxtoxml(filetype,docxtoxml_py)
+	unless filetype == "html"
+		Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
+	else
+		'input file is html, skipping'
+	end
+	true
+rescue => e
+	e
+end
+
+def convertxmltohtml(filetype,saxonpath,source_xml,word_to_html_xsl)
+	unless filetype == "html"
+		`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+		true
+	else
+		Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
+		'input file is html, skipping (copied input file to project_tmp)'
+	end
+rescue => e
+	e
+end
+
+def readOutputHtml
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	return true, filecontents
+rescue => e
+	return e, ''
+end
 
 def fixFootnotes(content)
 	# place footnote text inline per htmlbook
@@ -60,27 +80,45 @@ def fixFootnotes(content)
 		filecontents = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 														   .gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 	end
-	return filecontents, true
+	return true, filecontents
 rescue => e
-	return content, e
+	return e, content
 end
 
 def fixEndnotes(content)
 	# add endnote ref id as static content
 	filecontents = content.gsub(/(<span class=")(.ndnote.eference)(" id=")(\d+)(">)(<\/span>)/,"\\1endnotereference\\3endnoteref-\\4\\5\\4\\6")
 												.gsub(/(div class="endnotetext" id=")/,"\\1endnotetext-")
-	return filecontents, true
+	return true, filecontents
 rescue => e
-	return content, e
+	return e, content
 end
 
 def fixEntities(content)
 	filecontents = content.gsub(/&nbsp/,"&#160")
 												.gsub(/(<img.*?)(>)/,"\\1/\\2")
 												.gsub(/(<br)(>)/,"\\1/\\2")
-	return filecontents, true
+	return true, filecontents
 rescue => e
-	return content, e
+	return e, content
+end
+
+def overwriteFile(path,filecontents)
+	Mcmlln::Tools.overwriteFile(path, filecontents)
+	true
+rescue => e
+	e
+end
+
+def htmlmakerRunNode(jsfile, extra_arg=nil)
+	if extra_arg.nil?
+		Bkmkr::Tools.runnode(jsfile, Bkmkr::Paths.outputtmp_html)
+	else
+		Bkmkr::Tools.runnode(jsfile, extra_arg)
+	end
+	true
+rescue => e
+	e
 end
 
 def stripEndnotes(content)
@@ -90,73 +128,67 @@ def stripEndnotes(content)
 	unless endnote_txt.include?("<p ")
 		filecontents = content.gsub(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/,"")
 	end
-	return filecontents, true
+	return true, filecontents
 rescue => e
-	return content, e
+	return e, content
 end
 
 # ---------------------- PROCESSES
 
 # convert docx to xml
-unless filetype == "html"
-	Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
-end
+log_hash['convert_docx_to_xml'] = convertdocxtoxml(filetype, docxtoxml_py)
 
 # convert xml to html
-unless filetype == "html"
-	`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-else
-	Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
-end
+log_hash['convert_xml_to_html'] = convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl)
 
 #read in html
-log_hash['read_output_html_a'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html,&readHtml)
+log_hash['read_output_html_a'], filecontents = readOutputHtml
 
 # run method: fixFootnotes
-filecontents, log_hash['fix_footnotes'] = fixFootnotes(filecontents)
+log_hash['fix_footnotes'], filecontents = fixFootnotes(filecontents)
 
 # run method: fixEndnotes
-filecontents, log_hash['fix_endnotes'] = fixEndnotes(filecontents)
+log_hash['fix_endnotes'], filecontents = fixEndnotes(filecontents)
 
 # run method: fixEntities
-filecontents, log_hash['fix_entities'] = fixEntities(filecontents)
+log_hash['fix_entities'], filecontents = fixEntities(filecontents)
 
 #write out edited html
-log_hash['overwrite_output_html_a'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &overwriteFile)
+log_hash['overwrite_output_html_a'] = overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
 # # strip extraneous footnote section from html
-Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
+log_hash['footnotes_js'] = htmlmakerRunNode(footnotes_js)
 
 # # strip static toc from html
-Bkmkr::Tools.runnode(strip_toc_js, Bkmkr::Paths.outputtmp_html)
+log_hash['strip_toc_js'] = htmlmakerRunNode(strip_toc_js)
 
 # # convert parts to divs
-Bkmkr::Tools.runnode(parts_js, Bkmkr::Paths.outputtmp_html)
+log_hash['parts_js'] = htmlmakerRunNode(parts_js)
 
 # # add headings to all sections
-Bkmkr::Tools.runnode(headings_js, Bkmkr::Paths.outputtmp_html)
+log_hash['headings_js'] = htmlmakerRunNode(headings_js)
 
 # # add correct markup for inlines (em, strong, sup, sub)
-Bkmkr::Tools.runnode(inlines_js, Bkmkr::Paths.outputtmp_html)
+log_hash['inlines_js'] = htmlmakerRunNode(inlines_js)
 
 # # add correct markup for lists
-Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
+log_hash['lists_js'] = htmlmakerRunNode(lists_js)
 
 # # change p children of pre tags to spans
-Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
+log_hash['preformatted_js'] = htmlmakerRunNode(preformatted_js)
 
-log_hash['read_output_html_b'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html,&readHtml)
+log_hash['read_output_html_b'], filecontents = readOutputHtml
 
 # run method: stripEndnotes
-filecontents, log_hash['strip_endnotes'] = stripEndnotes(filecontents)
+log_hash['strip_endnotes'], filecontents = stripEndnotes(filecontents)
 
-log_hash['overwrite_output_html_b'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &overwriteFile)
+log_hash['overwrite_output_html_b'] = overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
 # set html title to match JSON
-Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
+log_hash['title_js'] = htmlmakerRunNode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
 
 # evaluate processing instructions
-Bkmkr::Tools.runnode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
+log_hash['evaluate_pis'] = htmlmakerRunNode(evaluate_pis)
 
 # ---------------------- LOGGING
 
