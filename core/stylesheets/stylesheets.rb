@@ -15,6 +15,30 @@ tmp_pdf_css = File.join(tmp_layout_dir, "pdf.css")
 tmp_epub_css = File.join(tmp_layout_dir, "epub.css")
 
 # ---------------------- METHODS
+def get_chapterheads
+	chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="chapter"/)
+	return true, chapterheads
+rescue =>e
+	return e,''
+end
+
+def deleteLastRunCss(file)
+	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
+		Mcmlln::Tools.deleteFile(file)
+		true
+	else
+		'n-a'
+	end
+rescue => e
+	e
+end
+
+
+
+
+
+
+
 def evalImports(file, path)
 	filecontents = File.read(file)
 	thispath = file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-1].join(File::SEPARATOR)
@@ -61,6 +85,32 @@ def copyCSS(file, path)
 rescue => e
 	e
 end
+
+def deleteSubmittedCss(file)
+	Mcmlln::Tools.deleteFile(file)
+	true
+rescue => e
+	e
+end
+
+def makeNoPdfNotice
+	File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |p|
+		p.write "/* no print css supplied */"
+	end
+	true
+rescue => e
+	e
+end
+
+def makeNoEpubCssNotice
+	File.open("#{tmp_layout_dir}/epub.css", 'a+') do |e|
+		e.write "/* no epub css supplied */"
+	end
+	true
+rescue => e
+	e
+end
+
 
 def evalOneoffs(file, path)
 	tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
@@ -151,30 +201,12 @@ end
 # ---------------------- PROCESSES
 
 # an array of all occurances of chapters in the manuscript
-get_chapterheads = lambda {
-	chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="chapter"/)
-	return true, chapterheads
-}
-log_hash['get_chapterheads'], chapterheads = Mcmlln::Tools.methodize(&get_chapterheads)
+log_hash['get_chapterheads'], chapterheads = get_chapterheads
 log_hash['chapterhead_count'] = chapterheads.count
 
-log_hash['delete_existing_tmp_pdf_css'] = Mcmlln::Tools.methodize do
-	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
-		Mcmlln::Tools.deleteFile(tmp_pdf_css)
-		true
-	else
-		'n-a'
-	end
-end
+log_hash['delete_existing_tmp_pdf_css'] = deleteLastRunCss(tmp_pdf_css)
 
-log_hash['delete_existing_tmp_epub_css'] = Mcmlln::Tools.methodize do
-	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
-		Mcmlln::Tools.deleteFile(tmp_epub_css)
-		true
-	else
-		'n-a'
-	end
-end
+log_hash['delete_existing_tmp_epub_css'] = deleteLastRunCss(tmp_epub_css)
 
 find_pdf_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.printcss)
 find_epub_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.epubcss)
@@ -187,17 +219,9 @@ if File.file?(Metadata.printcss)
 elsif File.file?(find_pdf_css_file)
 	log_hash['evalImports_pdf_css-submitted'] = evalImports(find_pdf_css_file, tmp_pdf_css)
 	log_hash['copy_pdf_css-submitted'] = copyCSS(find_pdf_css_file, tmp_pdf_css)
-	log_hash['rm_pdf_css-submitted'] = Mcmlln::Tools.methodize do
-		Mcmlln::Tools.deleteFile(find_pdf_css_file)
-		true
-	end
+	log_hash['rm_pdf_css-submitted'] = deleteSubmittedCss(find_pdf_css_file)
 else
-	log_hash['no_pdfcss-notice'] = Mcmlln::Tools.methodize do
-		File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |p|
-			p.write "/* no print css supplied */"
-		end
-		true
-	end
+	log_hash['no_pdfcss-notice'] = makeNoPdfCssNotice
 end
 
 log_hash['one_off_css_for_pdf'] = evalOneoffs("oneoff_pdf.css", tmp_pdf_css)
@@ -214,17 +238,9 @@ if File.file?(Metadata.epubcss)
 elsif File.file?(find_epub_css_file)
 	log_hash['evalImports_epub_css-submitted'] = evalImports(find_epub_css_file, tmp_epub_css)
 	log_hash['copy_epub_css-submitted'] = copyCSS(find_epub_css_file, tmp_epub_css)
-	log_hash['rm_epub_css-submitted'] = Mcmlln::Tools.methodize do
-		Mcmlln::Tools.deleteFile(find_epub_css_file)
-		true
-	end
+	log_hash['rm_epub_css-submitted'] = deleteSubmittedCss(find_epub_css_file)
 else
-	log_hash['no_epubcss-notice'] = Mcmlln::Tools.methodize do
-		File.open("#{tmp_layout_dir}/epub.css", 'a+') do |e|
-			e.write "/* no epub css supplied */"
-		end
-	true
-	end
+	log_hash['no_epubcss-notice'] = makeNoEpubCssNotice
 end
 
 log_hash['one_off_css_for_epub'] = evalOneoffs("oneoff_epub.css", tmp_epub_css)

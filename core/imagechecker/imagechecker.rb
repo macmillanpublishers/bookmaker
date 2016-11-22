@@ -18,22 +18,14 @@ final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata
 # full path to the image error file
 image_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "IMAGE_ERROR.txt")
 
-readHtml = lambda { |path|
-	filecontents = File.read(path)
-	return true, filecontents
-}
-
-overwriteFile = lambda { |path, filecontents|
-	Mcmlln::Tools.overwriteFile(path, filecontents)
-	true
-}
-
-getFilesinDir = lambda { |path|
+# ---------------------- METHODS
+def getFilesinDir(path)
 	files = Mcmlln::Tools.dirList(path)
 	return true, files
-}
+rescue => e
+	e
+end
 
-# ---------------------- METHODS
 # If an image_error file exists, delete it
 def checkErrorFile(file)
 	if File.file?(file)
@@ -46,12 +38,26 @@ rescue => e
 	e
 end
 
+def readOutputHtml
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	return true, filecontents
+rescue => e
+	return e, ''
+end
+
 #strips spaces from img names in html
 def stripSpaces(content)
 	filecontents = content.gsub(/img src=".*?"/) {|i| i.gsub(/ /, "").sub(/imgsrc/, "img src")}
-	return filecontents, true
+	return true, filecontents
 rescue => e
-	return content, e
+	return e, content
+end
+
+def overwriteFile(path,filecontents)
+	Mcmlln::Tools.overwriteFile(path, filecontents)
+	true
+rescue => e
+	e
 end
 
 def listImages(file)
@@ -59,9 +65,9 @@ def listImages(file)
 	imgarr = File.read(file).scan(/img src=".*?"/)
 	# remove duplicate image names from source array
 	imgarr = imgarr.uniq
-	return imgarr, true
+	return true, imgarr
 rescue => e
-	return [], e
+	return e, []
 end
 
 def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
@@ -103,9 +109,9 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 			missing << match
 		end
 	end
-	return resolution, missing, true
+	return true, resolution, missing
 rescue => e
-	return [],[],e
+	return e,[],[]
 end
 
 def writeMissingErrors(arr, file)
@@ -147,25 +153,25 @@ end
 
 # ---------------------- PROCESSES
 
-log_hash['get_imagedir_images'], images = Mcmlln::Tools.methodize(imagedir, &getFilesinDir)
+log_hash['check_submitted_images'], images = getFilesinDir(imagedir)
 
-log_hash['get_finaldir_images'], finalimages = Mcmlln::Tools.methodize(final_dir_images, &getFilesinDir)
+log_hash['check_submitted_images'], finalimages = getFilesinDir(final_dir_images)
 
 log_hash['delete_image_errfile'] = checkErrorFile(image_error)
 
-log_hash['read_output_html_c'], filecontents = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html,&readHtml)
+log_hash['read_output_html_c'], filecontents = readOutputHtml
 
 # run method: stripSpaces
-filecontents, log_hash['strip_spaces'] = stripSpaces(filecontents)
+log_hash['strip_spaces'], filecontents = stripSpaces(filecontents)
 
 #write out edited html
-log_hash['overwrite_output_html_c'] = Mcmlln::Tools.methodize(Bkmkr::Paths.outputtmp_html, filecontents, &overwriteFile)
+log_hash['overwrite_output_html_c'] = overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
 # run method: listImages
-imgarr, log_hash['list_images'] = listImages(Bkmkr::Paths.outputtmp_html)
+log_hash['list_images'], imgarr = listImages(Bkmkr::Paths.outputtmp_html)
 
 # run method: checkImages
-resolution, missing, log_hash['check_images'] = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
+log_hash['check_images'], resolution, missing = checkImages(imgarr, images, finalimages, imagedir, final_dir_images)
 
 # run method: writeMissingErrors
 log_hash['write_missing_errors'] = writeMissingErrors(missing, image_error)

@@ -11,31 +11,31 @@ project_dir = data_hash['project']
 stage_dir = data_hash['stage']
 
 # ---------------------- METHODS
+def deleteProjectTmpDir
+	Mcmlln::Tools.deleteDir(Bkmkr::Paths.project_tmp_dir)
+	true
+rescue => e
+	e
+end
+
+def deleteFileifExists(file)
+	if File.file?(file)
+		Mcmlln::Tools.deleteFile(file)
+		true
+	else
+		'n-a'
+	end
+rescue => e
+	e
+end
 
 # ---------------------- PROCESSES
 # Delete all the working files and dirs
-log_hash['delete_project_tmp_folder'] = Mcmlln::Tools.methodize do
-		Mcmlln::Tools.deleteDir(Bkmkr::Paths.project_tmp_dir)
-		true
-end
+log_hash['delete_project_tmp_folder'] = deleteProjectTmpDir
 
-log_hash['delete_input_file'] = Mcmlln::Tools.methodize do
-  if File.file?(Bkmkr::Project.input_file)
-    Mcmlln::Tools.deleteFile(Bkmkr::Project.input_file)
-    true
-  else
-    'n-a'
-  end
-end
+log_hash['delete_input_file'] = deleteFileifExists(Bkmkr::Project.input_file)
 
-log_hash['delete_alert_file'] = Mcmlln::Tools.methodize do
-  if File.file?(Bkmkr::Paths.alert)
-    Mcmlln::Tools.deleteFile(Bkmkr::Paths.alert)
-    true
-  else
-    'n-a'
-  end
-end
+log_hash['delete_alert_file'] = deleteFileifExists(Bkmkr::Paths.alert)
 
 # ---------------------- LOGGING
 # Printing the test results to the log file

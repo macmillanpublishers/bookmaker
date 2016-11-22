@@ -249,9 +249,6 @@ module Bkmkr
 					output.write "You have not configured a PDF processor. Please open config.rb and fill in the pdfprocessor variable with either 'prince' or 'docraptor'."
 				end
 			end
-			true
-		rescue => e
-			e
 		end
 
 		def self.runnode(js, args)

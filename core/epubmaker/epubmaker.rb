@@ -82,16 +82,6 @@ final_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn)
 # second epub conversion
 tmp_epub2 = File.join(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
 
-overwriteFile = lambda { |path, filecontents|
-	Mcmlln::Tools.overwriteFile(path, filecontents)
-	true
-}
-
-getFilesinDir = lambda { |path|
-	files = Mcmlln::Tools.dirList(path)
-	return true, files
-}
-
 
 # ---------------------- METHODS
 # Delete any old conversion stuff
@@ -125,45 +115,114 @@ def firstHTMLEdit(file)
 	filecontents = filecontents.gsub(/<\/head>/,"<meta name='isbn-13' content='#{Metadata.eisbn}' /></head>")
 								 							.gsub(/&nbsp;/,"&#160;")
 								 							.gsub(/src="images\//,"src=\"")
-	return filecontents, true
+	return true, filecontents
 rescue => e
-	return '', e
+	return e,''
 end
 
 # Adding the cover holder to the html file
 def secondHTMLEdit(var)
 	filecontents = var.gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\" id=\"bookcover01\"><img src=\"cover.jpg\"/></figure>")
-	return filecontents, true
+	return true, filecontents
 rescue => e
-	return '', e
+	return e,''
+end
+
+def overwriteFile(path,filecontents)
+	Mcmlln::Tools.overwriteFile(path, filecontents)
+	true
+rescue => e
+	e
+end
+
+def runNode_epubmaker(jsfile, extra_arg=nil)
+	if extra_arg.nil?
+		Bkmkr::Tools.runnode(jsfile, Bkmkr::Paths.outputtmp_html)
+	else
+		Bkmkr::Tools.runnode(jsfile, extra_arg)
+	end
+	true
+rescue => e
+	e
+end
+
+def cdToProjectTmp
+	FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
+	true
+rescue => e
+	e
+end
+
+def processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
+	Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
+	true
+rescue => e
+	e
 end
 
 # fix cover.html doctype
 def firstCoverEdit(file)
 	covercontents = File.read(file).gsub(/&lt;!DOCTYPE html&gt;/,"<!DOCTYPE html>").gsub(/<body>/,"<body><h1 class=\"Nonprinting\">Cover</h1>")
-	return covercontents, true
+	return true, covercontents
 rescue => e
-	return '', e
+	return e,''
 end
 
 # fix cover ncx entry
 def firstNCXEdit(file)
 	ncxcontents = File.read(file).gsub(/<text\/><\/navLabel><content src="\#bookcover01"\/>/,"<text>Cover</text></navLabel><content src=\"cover.html\"/>")
-	return ncxcontents, true
+	return true, ncxcontents
 rescue => e
-	return '', e
+	return e,''
 end
 
 # fix author info in opf
 def firstOPFEdit(file)
 	opfcontents = File.read(file).gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'")
-	return opfcontents, true
+	return true, opfcontents
 rescue => e
-	return '', e
+	return e,''
 end
 
 def convertCoverImg(file)
-	`convert "#{file}" -colorspace RGB -resize "600x800>" "#{file}"`
+	unless Bkmkr::Tools.processimages == "false"
+		`convert "#{file}" -colorspace RGB -resize "600x800>" "#{file}"`
+		true
+	else
+		'processimages is set to false in bookmaker config.rb, skipping'
+	end
+rescue => e
+	e
+end
+
+def copyFile_epubmaker(source, dest)
+	Mcmlln::Tools.copyFile(source, dest)
+	true
+rescue => e
+	e
+end
+
+def getFilesinDir(path)
+	files = Mcmlln::Tools.dirList(path)
+	return true, files
+rescue => e
+	e
+end
+
+def makeEpubImgsDir(path)
+	unless Dir.exist?(Bkmkr::path.tmp_dir)
+		Mcmlln::Tools.makeDir(path)
+		true
+	else
+	 'n-a'
+	end
+rescue => e
+	e
+end
+
+def copyImgFiles(source,dest)
+	Mcmlln::Tools.copyAllFiles(source,dest)
+	true
 rescue => e
 	e
 end
@@ -181,6 +240,20 @@ rescue => e
 	e
 end
 
+def convertInteriorImgs(dir)
+	unless Bkmkr::Tools.processimages == "false"
+		log_hash['get_epub_img_list'], images = getFilesinDir(epub_img_dir)
+		images.each do |i|
+			convertInteriorImg(i, epub_img_dir)
+		end
+		true
+	else
+		'processimages is set to false in bookmaker config.rb, skipping'
+	end
+rescue => e
+	e
+end
+
 def copyInteriorImg(dir, opf, dest)
 	images = Mcmlln::Tools.dirListFiles(dir)
 	opfcontents = File.read(opf)
@@ -192,9 +265,30 @@ def copyInteriorImg(dir, opf, dest)
 			copied << i
 		end
 	end
-	return copied, true
+	return true, copied
 rescue => e
-	return '', e
+	return e,''
+end
+
+def moveFileToDoneFolder(file, dest)
+	Mcmlln::Tools.moveFile(file, dest)
+	true
+rescue => e
+	e
+end
+
+def zipEpub(script, args)
+	Bkmkr::Tools.runpython(script, args)
+	true
+rescue => e
+	e
+end
+
+def deleteTmpEpub(file)
+	Mcmlln::Tools.deleteFile(file)
+	true
+rescue => e
+	e
 end
 
 # ---------------------- PROCESSES
@@ -203,19 +297,19 @@ log_hash['delete_old_METAINF'] = deleteOld(METAINF_dir)
 
 # run method: firstHTMLEdit
 if File.file?(epub_tmp_html)
-	filecontents, log_hash['first_html_edit--epub_tmp_html'] = firstHTMLEdit(epub_tmp_html)
+	log_hash['first_html_edit--epub_tmp_html'], filecontents = firstHTMLEdit(epub_tmp_html)
 else
-	filecontents, log_hash['first_html_edit--outputtmp_html'] = firstHTMLEdit(Bkmkr::Paths.outputtmp_html)
+	log_hash['first_html_edit--outputtmp_html'], filecontents = firstHTMLEdit(Bkmkr::Paths.outputtmp_html)
 end
 
 # run method: secondHTMLEdit
 if !final_cover.nil? and File.file?(final_cover)
-	filecontents, log_hash['second_html_edit'] = secondHTMLEdit(filecontents)
+	log_hash['second_html_edit'], filecontents = secondHTMLEdit(filecontents)
 end
 
-log_hash['overwrite_epubtmp_html'] = Mcmlln::Tools.methodize(epub_tmp_html, filecontents, &overwriteFile)
+log_hash['overwrite_epubtmp_html'] = overwriteFile(epub_tmp_html, filecontents)
 
-Bkmkr::Tools.runnode(strip_tocnodes_js, epub_tmp_html)
+log_hash['strip_tocnodes_js'] = runNode_epubmaker(strip_tocnodes_js, epub_tmp_html)
 
 # Add new section to log file
 File.open(convert_log_txt, 'a+') do |f|
@@ -223,12 +317,9 @@ File.open(convert_log_txt, 'a+') do |f|
 end
 
 # convert to epub and send stderr to log file
-log_hash['cd_to_project_tmpdir'] = Mcmlln::Tools.methodize do
-	FileUtils.cd(Bkmkr::Paths.project_tmp_dir)
-	true
-end
-# log_hash['process_xsl'] = Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)  #for if we add a rescue to processxsl
-Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
+log_hash['cd_to_project_tmpdir'] = cdToProjectTmp
+
+log_hash['process_xsl'] = processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 
 # run method: firstCoverEdit
 # run method: firstNCXEdit
@@ -236,84 +327,50 @@ Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 # run method: convertCoverImg
 if !final_cover.nil? and File.file?(final_cover)
 	log_hash['final_cover_present'] = true
-	covercontents, log_hash['first_cover_edit'] = firstCoverEdit(cover_html)
-	log_hash['overwrite_cover_html'] = Mcmlln::Tools.methodize(cover_html, covercontents, &overwriteFile)
-	ncxcontents, log_hash['first_ncx_edit'] = firstNCXEdit(toc_ncx)
-	log_hash['overwrite_toc_ncx'] = Mcmlln::Tools.methodize(toc_ncx, ncxcontents, &overwriteFile)
-	log_hash['copy_final_cover_file'] = Mcmlln::Tools.methodize do
-		Mcmlln::Tools.copyFile(final_cover, cover_jpg)
-		true
-	end
-	log_hash['process_cover_file'] = Mcmlln::Tools.methodize do
-		unless Bkmkr::Tools.processimages == "false"
-			convertCoverImg(cover_jpg)
-			true
-		else
-			'processimages is set to false in bookmaker config.rb, skipping'
-		end
-	end
+	log_hash['first_cover_edit'], covercontents = firstCoverEdit(cover_html)
+	log_hash['overwrite_cover_html'] = overwriteFile(cover_html, covercontents)
+	log_hash['first_ncx_edit'], ncxcontents = firstNCXEdit(toc_ncx)
+	log_hash['overwrite_toc_ncx'] = overwriteFile(toc_ncx, ncxcontents)
+	log_hash['copy_final_cover_file'] = copyFile_epubmaker(final_cover, cover_jpg)
+	log_hash['process_cover_file'] = convertCoverImg(cover_jpg)
 else
 	log_hash['final_cover_present'] = false
 end
 
 # run method: firstOPFEdit
-opfcontents, log_hash['first_OPF_Edit'] = firstOPFEdit(content_opf)
-log_hash['overwrite_content_opf'] = Mcmlln::Tools.methodize(content_opf, opfcontents, &overwriteFile)
+log_hash['first_OPF_Edit'], opfcontents = firstOPFEdit(content_opf)
+log_hash['overwrite_content_opf'] = overwriteFile(content_opf, opfcontents)
 
 # add epub css to epub folder
-log_hash['copy_epub_css_to_OEBPSdir'] = Mcmlln::Tools.methodize do
-	Mcmlln::Tools.copyFile(epub_css, OEBPS_dir)
-	true
-end
+log_hash['copy_epub_css_to_OEBPSdir'] = copyFile_epubmaker(epub_css, OEBPS_dir)
 
 # add image files to epub folder
-log_hash['get_image_list'], sourceimages = Mcmlln::Tools.methodize(img_dir, &getFilesinDir)
+log_hash['get_image_list'], sourceimages = getFilesinDir(img_dir)
 
 # using imgmagick to optimize image sizes for epub
 # run method: convertInteriorImg
 if sourceimages.any?
-	log_hash['mkdir-epub_images'] = Mcmlln::Tools.methodize do
-		unless File.exist?(epub_img_dir)
-			Dir.mkdir(epub_img_dir)
-			true
-		else
-			'n-a'
-		end
-	end
-	log_hash['copy_img_files'] = Mcmlln::Tools.methodize do
-		Mcmlln::Tools.copyAllFiles(Bkmkr::Paths.project_tmp_dir_img, epub_img_dir)
-		true
-	end
-	log_hash['convert_interior_imgs'] = Mcmlln::Tools.methodize do
-		unless Bkmkr::Tools.processimages == "false"
-			log_hash['get_epub_img_list'], images = Mcmlln::Tools.methodize(epub_img_dir, &getFilesinDir)
-			images.each do |i|
-				convertInteriorImg(i, epub_img_dir)
-			end
-			true
-		else
-			'processimages is set to false in bookmaker config.rb, skipping'
-		end
-	end
-	epubimages, log_hash['copy_interior_imgs'] = copyInteriorImg(epub_img_dir, content_opf, OEBPS_dir)
+	log_hash['mkdir-epub_images'] = makeEpubImgsDir(epub_img_dir)
+
+	log_hash['copy_img_files'] = copyImgFiles(Bkmkr::Paths.project_tmp_dir_img, epub_img_dir)
+
+	log_hash['convert_interior_imgs'] = convertInteriorImgs(epub_img_dir)
+
+	log_hash['copy_interior_imgs'], epubimages = copyInteriorImg(epub_img_dir, content_opf, OEBPS_dir)
 	puts epubimages
+
 	log_hash['interior_img_list'] = epubimages
 end
 
 # zip epub
-Bkmkr::Tools.runpython(zipepub_py, "#{csfilename}.epub #{Bkmkr::Paths.project_tmp_dir}")
+log_hash['zip_epub'] = zipEpub(zipepub_py, "#{csfilename}.epub #{Bkmkr::Paths.project_tmp_dir}")
 
 # move epub into archive folder
-log_hash['mv_epub_to_done_folder'] = Mcmlln::Tools.methodize do
-	Mcmlln::Tools.copyFile(final_epub, final_dir)
-	true
-end
+log_hash['mv_epub_to_done_folder'] = moveFileToDoneFolder(final_epub, final_dir)
 
 # remove temp epub file
-log_hash['rm_tmp_epub_file'] = Mcmlln::Tools.methodize do
-	Mcmlln::Tools.deleteFile(tmp_epub2)
-	true
-end
+log_hash['rm_tmp_epub_file'] = deleteTmpEpub(tmp_epub2)
+
 
 # ---------------------- LOGGING
 # epub file should exist in done dir

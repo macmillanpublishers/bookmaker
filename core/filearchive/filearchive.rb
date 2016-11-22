@@ -29,56 +29,42 @@ final_config = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "confi
 
 # ---------------------- METHODS
 
+def makeDir(path)
+  unless Dir.exist?(path)
+    Mcmlln::Tools.makeDir(path)
+    true
+  else
+    'n-a'
+  end
+rescue => e
+  e
+end
+
+def copyFile(source,dest)
+  Mcmlln::Tools.copyFile(source, dest)
+  true
+rescue => e
+  e
+end
+
 # ---------------------- PROCESSES
 
-log_hash['make_final_dir'] = Mcmlln::Tools.methodize do
-  unless Dir.exist?(final_dir)
-    Mcmlln::Tools.makeDir(final_dir)
-		true
-	else
-		'n-a'
-	end
-end
+log_hash['make_final_dir'] = makeDir(final_dir)
 
-log_hash['make_final_images_dir'] = Mcmlln::Tools.methodize do
-  unless Dir.exist?(final_dir_images)
-    Mcmlln::Tools.makeDir(final_dir_images)
-		true
-	else
-		'n-a'
-	end
-end
+log_hash['make_final_images_dir'] = makeDir(final_dir_images)
 
-log_hash['make_final_cover_dir'] = Mcmlln::Tools.methodize do
-  unless Dir.exist?(final_dir_cover)
-    Mcmlln::Tools.makeDir(final_dir_cover)
-		true
-	else
-		'n-a'
-	end
-end
+log_hash['make_final_cover_dir'] = makeDir(final_dir_cover)
 
-log_hash['make_final_layout_dir'] = Mcmlln::Tools.methodize do
-  unless Dir.exist?(final_dir_layout)
-    Mcmlln::Tools.makeDir(final_dir_layout)
-		true
-	else
-		'n-a'
-	end
-end
+log_hash['make_final_layout_dir'] = makeDir(final_dir_cover)
 
-log_hash['copy_input_file_to_final_dir'] = Mcmlln::Tools.methodize do
-	Mcmlln::Tools.copyFile(Bkmkr::Project.input_file, final_manuscript)
-	true
-end
-log_hash['copy_html_to_final_layout_dir'] = Mcmlln::Tools.methodize do
-	Mcmlln::Tools.copyFile(Bkmkr::Paths.outputtmp_html, final_html)
-	true
-end
-log_hash['copy_tmp_config_final_layout_dir'] = Mcmlln::Tools.methodize do
-	Mcmlln::Tools.copyFile(tmp_config, final_config)
-	true
-end
+log_hash['make_final_layout_dir'] = makeDir(final_dir_layout)
+
+log_hash['copy_input_file_to_final_dir'] = copyFile(Bkmkr::Project.input_file, final_manuscript)
+
+log_hash['copy_html_to_final_layout_dir'] = copyFile(Bkmkr::Paths.outputtmp_html, final_html)
+
+log_hash['copy_tmp_config_final_layout_dir'] = copyFile(tmp_config, final_config)
+
 
 # ---------------------- LOGGING
 

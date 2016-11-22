@@ -57,14 +57,14 @@ def checkCoverFile(arr, file, tmpcover, finalcover, errorfile)
 		end
 		covercheck = "No cover found"
 	end
-	return covercheck, true
+	return true, covercheck
 rescue => e
-	return '',e
+	return e,''
 end
 
 # ---------------------- PROCESSES
-checkErrorFile(cover_error)
-covercheck, log_hash['cover_file_check'] = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error)
+log_hash['rm_cover_error_file'] = checkErrorFile(cover_error)
+log_hash['cover_file_check'], covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error)
 log_hash['cover_check_results'] = covercheck
 
 # ---------------------- LOGGING
