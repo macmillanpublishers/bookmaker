@@ -32,7 +32,7 @@ end
 
 # checks to see if cover is in the submission dir
 # if yes, copies cover to archival location and deletes from submission dir
-# if no, prints an error to the archival directory 
+# if no, prints an error to the archival directory
 def checkCoverFile(arr, file, tmpcover, finalcover, errorfile)
 	if arr.include?("#{file}")
 		FileUtils.mv(tmpcover, finalcover)
@@ -52,6 +52,7 @@ end
 
 # ---------------------- PROCESSES
 checkErrorFile(cover_error)
+sleep 5 #to avoid Errno::EACCES errors re: Fileutils.mv in checkCoverFile method
 covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error)
 
 # ---------------------- LOGGING
