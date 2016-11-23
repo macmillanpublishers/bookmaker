@@ -502,7 +502,8 @@
       <xsl:if
       test="preceding::w:p
             [w:pPr/w:pStyle/@w:val = 'ChapNumbercn']
-            and ./w:pPr/w:pStyle/@w:val = 'ChapTitlect'">
+            and ./w:pPr/w:pStyle/@w:val = 'ChapTitlect'
+            or ./w:pPr/w:pStyle/@w:val = 'ChapTitleALTact'">
       <xsl:attribute name="data-autolabel">
         <xsl:value-of select="'yes'"/>
       </xsl:attribute>
