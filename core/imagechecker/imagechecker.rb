@@ -85,6 +85,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 	# If no, saves the image file name in the missing array
 	# If yes, copies the image file to the done/pisbn/images folder, and deletes original
 	imglist.each do |m|
+		puts "CHECKING IMAGE #{m}"
 		match = m.split("/").pop.gsub(/"/,'')
 		matched_file = File.join(inputdir, match)
 		matched_file_pickup = File.join(finaldir, match)
@@ -105,6 +106,7 @@ def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir)
 				resolution << match
 			end
 			Mcmlln::Tools.moveFile(matched_file, Bkmkr::Paths.project_tmp_dir_img)
+			puts "MOVING #{match} to archive dir"
 		elsif !inputdirlist.include?("#{match}") and match != Metadata.frontcover and finaldirlist.include?("#{match}")
 			matched << match
 			Mcmlln::Tools.copyFile(matched_file_pickup, Bkmkr::Paths.project_tmp_dir_img)
@@ -180,8 +182,9 @@ log_hash['check_images'], resolution, missing = checkImages(imgarr, images, fina
 log_hash['write_missing_errors'] = writeMissingErrors(missing, image_error)
 
 # run method: writeResErrors
-log_hash['write_resolution_errors'] = writeResErrors(missing, image_error)
+log_hash['write_resolution_errors'] = writeResErrors(resolution, image_error)
 
+# write items of interest to json log
 log_hash['imagedir_images'] = images
 log_hash['finaldir_images'] = finalimages
 log_hash['unique_image_array'] = imgarr
