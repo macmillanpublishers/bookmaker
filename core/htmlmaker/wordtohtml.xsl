@@ -21,11 +21,19 @@
     version="5"/>
 
   <!-- =-= Generalized mapping variables. =-= -->
+
+  <!-- paragraphs that are used in many other types of blocks -->
+  <xsl:variable name="versatile-block-paras" as="xs:string*">
+    <xsl:sequence
+      select="'SpaceBreak-Internalint'"/>
+  </xsl:variable>
+
   <!-- Paragraph styles which should get aggregated in an epigraph
        blockquote. -->
   <xsl:variable name="epigraph-paras" as="xs:string*">
     <xsl:sequence
-      select="'PartEpigraph-non-versepepi',
+      select="$versatile-block-paras,
+              'PartEpigraph-non-versepepi',
               'PartEpigraph-versepepiv',
               'PartEpigraphSourcepeps',
               'ChapEpigraph-non-versecepi',
@@ -46,7 +54,8 @@
        pre. -->
   <xsl:variable name="poetry-paras" as="xs:string*">
     <xsl:sequence
-      select="'PoemTitlevt',
+      select="$versatile-block-paras,
+              'PoemTitlevt',
               'PoemSubtitlevst',
               'PoemLevel-1Subheadvh1',
               'PoemLevel-2Subheadvh2',
@@ -61,7 +70,8 @@
        aside. -->
   <xsl:variable name="box-paras" as="xs:string*">
     <xsl:sequence
-      select="'BoxHeadbh',
+      select="$versatile-block-paras,
+              'BoxHeadbh',
               'BoxSubheadbsh',
               'BoxEpigraph-non-versebepi',
               'BoxEpigraphSourcebeps',
@@ -101,7 +111,8 @@
        aside. -->
   <xsl:variable name="sidebar-paras" as="xs:string*">
     <xsl:sequence
-      select="'SidebarHeadsbh',
+      select="$versatile-block-paras,
+              'SidebarHeadsbh',
               'SidebarSubheadsbsh',
               'SidebarEpigraph-non-versesbepi',
               'SidebarEpigraphSourcesbeps',
@@ -221,12 +232,15 @@
     <xsl:sequence
       select="'BMHeadbmh',
               'BMHeadNonprintingbmhnp',
+              'BMHeadALTabmh',
               'ChapTitlect',
               'ChapTitleNonprintingctnp',
+              'ChapTitleALTact',
               'PartNumberpn',
               'PartTitlept',
               'FMHeadfmh',
               'FMHeadNonprintingfmhnp',
+              'FMHeadALTafmh',
               'AboutAuthorTextHeadatah'"/>
   </xsl:variable>
 
@@ -280,6 +294,7 @@
               'PartNumberpn',
               'PartTitlept',
               'ChapTitlect',
+              'ChapTitleALTact',
               'ChapTitleNonprintingctnp',
               'FMHeadfmh',
               'FMHeadNonprintingfmhnp',
@@ -297,7 +312,8 @@
        both. -->
   <xsl:variable name="quotation-paras" as="xs:string*">
     <xsl:sequence
-      select="'Extractext',
+      select="$versatile-block-paras,
+              'Extractext',
               'ExtractSourceexts',
               'Extract-Newspapernews',
               'Extract-Diaryextd',
@@ -393,6 +409,7 @@
                 <xsl:value-of select="'part'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'ChapTitlect' or 
+                              $word-style = 'ChapTitleALTact' or 
                               $word-style = 'ChapTitleNonprintingctnp'">
                 <xsl:value-of select="'chapter'"/>
               </xsl:when>
