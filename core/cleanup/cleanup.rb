@@ -11,6 +11,7 @@ project_dir = data_hash['project']
 stage_dir = data_hash['stage']
 
 # ---------------------- METHODS
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def deleteProjectTmpDir
 	Mcmlln::Tools.deleteDir(Bkmkr::Paths.project_tmp_dir)
 	true
@@ -18,6 +19,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def deleteFileifExists(file)
 	if File.file?(file)
 		Mcmlln::Tools.deleteFile(file)

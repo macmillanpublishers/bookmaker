@@ -28,7 +28,7 @@ tmp_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
 final_config = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "config.json")
 
 # ---------------------- METHODS
-
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def makeDir(path)
   unless Dir.exist?(path)
     Mcmlln::Tools.makeDir(path)
@@ -40,6 +40,7 @@ rescue => e
   e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def copyFile(source,dest)
   Mcmlln::Tools.copyFile(source, dest)
   true

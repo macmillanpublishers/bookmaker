@@ -19,6 +19,7 @@ final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", Metadata
 image_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "IMAGE_ERROR.txt")
 
 # ---------------------- METHODS
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def getFilesinDir(path)
 	files = Mcmlln::Tools.dirList(path)
 	return true, files
@@ -27,6 +28,7 @@ rescue => e
 end
 
 # If an image_error file exists, delete it
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def checkErrorFile(file)
 	if File.file?(file)
 		Mcmlln::Tools.deleteFile(file)
@@ -53,6 +55,7 @@ rescue => e
 	return e, content
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def overwriteFile(path,filecontents)
 	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true

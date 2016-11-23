@@ -36,6 +36,7 @@ rescue => e
 	return e,''
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def makePdfTmpFolder(path)
 	unless File.exist?(path)
 		Mcmlln::Tools.makeDir(path)
@@ -60,6 +61,7 @@ rescue => e
 	return e,''
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def overwriteFile(path,filecontents)
 	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true
@@ -95,6 +97,7 @@ rescue => e
 	return e, content
 end
 
+## wrapping Bkmkr::Tools.makepdf in a new method for this script; to return a result for json_logfile
 def pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value)
 	Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, testing_value, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
 	true
@@ -102,6 +105,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def moveFileToDoneFolder(file, dest)
 	Mcmlln::Tools.moveFile(file, dest)
 	true

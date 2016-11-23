@@ -82,9 +82,9 @@ final_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn)
 # second epub conversion
 tmp_epub2 = File.join(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
 
-
 # ---------------------- METHODS
 # Delete any old conversion stuff
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def deleteOld(dir)
 	if File.exists?(dir)
 		Mcmlln::Tools.deleteDir(dir)
@@ -128,6 +128,7 @@ rescue => e
 	return e,''
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def overwriteFile(path,filecontents)
 	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true
@@ -135,12 +136,9 @@ rescue => e
 	e
 end
 
-def runNode_epubmaker(jsfile, extra_arg=nil)
-	if extra_arg.nil?
-		Bkmkr::Tools.runnode(jsfile, Bkmkr::Paths.outputtmp_html)
-	else
-		Bkmkr::Tools.runnode(jsfile, extra_arg)
-	end
+## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
+def runNode_epubmaker(jsfile, htmlfile)
+	Bkmkr::Tools.runnode(jsfile, htmlfile)
 	true
 rescue => e
 	e
@@ -153,6 +151,7 @@ rescue => e
 	e
 end
 
+## wrapping Bkmkr::Tools.processxsl in a new method for this script; to return a result for json_logfile
 def processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 	Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
 	true
@@ -195,6 +194,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def copyFile_epubmaker(source, dest)
 	Mcmlln::Tools.copyFile(source, dest)
 	true
@@ -202,6 +202,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def getFilesinDir(path)
 	files = Mcmlln::Tools.dirList(path)
 	return true, files
@@ -209,6 +210,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def makeEpubImgsDir(path)
 	unless Dir.exist?(Bkmkr::path.tmp_dir)
 		Mcmlln::Tools.makeDir(path)
@@ -220,6 +222,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def copyImgFiles(source,dest)
 	Mcmlln::Tools.copyAllFiles(source,dest)
 	true
@@ -270,6 +273,7 @@ rescue => e
 	return e,''
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def moveFileToDoneFolder(file, dest)
 	Mcmlln::Tools.moveFile(file, dest)
 	true
@@ -277,6 +281,7 @@ rescue => e
 	e
 end
 
+## wrapping Bkmkr::Tools.runpython in a new method for this script; to return a result for json_logfile
 def zipEpub(script, args)
 	Bkmkr::Tools.runpython(script, args)
 	true
@@ -284,6 +289,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def deleteTmpEpub(file)
 	Mcmlln::Tools.deleteFile(file)
 	true
@@ -354,6 +360,7 @@ if sourceimages.any?
 
 	log_hash['copy_img_files'] = copyImgFiles(Bkmkr::Paths.project_tmp_dir_img, epub_img_dir)
 
+	#this method checks for pis and loops through relevant imgs for method convertInteriorImg
 	log_hash['convert_interior_imgs'] = convertInteriorImgs(epub_img_dir)
 
 	log_hash['copy_interior_imgs'], epubimages = copyInteriorImg(epub_img_dir, content_opf, OEBPS_dir)

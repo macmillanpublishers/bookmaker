@@ -22,6 +22,7 @@ rescue =>e
 	return e,''
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def deleteLastRunCss(file)
 	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
 		Mcmlln::Tools.deleteFile(file)
@@ -32,12 +33,6 @@ def deleteLastRunCss(file)
 rescue => e
 	e
 end
-
-
-
-
-
-
 
 def evalImports(file, path)
 	filecontents = File.read(file)
@@ -86,6 +81,7 @@ rescue => e
 	e
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def deleteSubmittedCss(file)
 	Mcmlln::Tools.deleteFile(file)
 	true
@@ -110,7 +106,6 @@ def makeNoEpubCssNotice
 rescue => e
 	e
 end
-
 
 def evalOneoffs(file, path)
 	tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
@@ -193,7 +188,7 @@ def evalTocPI(html, css)
 		end
 		log = "----- The TOC is set to #{toctype}, per a processing instruction."
 	end
-	true
+	log
 rescue => e
 	e
 end

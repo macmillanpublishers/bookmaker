@@ -14,7 +14,8 @@ tmp_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
 filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
 
 # ---------------------- METHODS
-
+## all methods for this script are Mcmlln::Tools methods wrapped in new methods,
+## in order to return results for json_logfile
 def getFilesinSubmittedImages
 	files = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)
 	return true, files
@@ -22,9 +23,9 @@ rescue => e
 	e
 end
 
-def makeTmpFolder
-	unless Dir.exist?(Bkmkr::Paths.tmp_dir)
-		Mcmlln::Tools.makeDir(Bkmkr::Paths.tmp_dir)
+def makeFolder(path)
+	unless Dir.exist?(path)
+		Mcmlln::Tools.makeDir(path)
 		true
 	else
 	 'n-a'
@@ -40,20 +41,6 @@ def deleteOldProjectTmpFolder
 	else
 		'n-a'
 	end
-rescue => e
-	e
-end
-
-def createProjectTmpFolder
-	Mcmlln::Tools.makeDir(Bkmkr::Paths.project_tmp_dir)
-	true
-rescue => e
-	e
-end
-
-def createProjectTmpImgFolder
-	Mcmlln::Tools.makeDir(Bkmkr::Paths.project_tmp_dir_img)
-	true
 rescue => e
 	e
 end
@@ -84,22 +71,18 @@ rescue => e
 end
 
 # ---------------------- PROCESSES
-
-# For TEST purposes
-# test_images_before = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)  <--can I get rid of this?
-
 # Local path variables
-log_hash['check_submitted_images'], all_submitted_images = getFilesinSubmittedImages	#is this needed in tmparchive? is also in imgchecker (imagedir_images)
+log_hash['check_submitted_images'], all_submitted_images = getFilesinSubmittedImages
 log_hash['submitted_images'] = all_submitted_images
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
-log_hash['tmp_folder_created'] = makeTmpFolder
+log_hash['tmp_folder_created'] = makeFolder(Bkmkr::Paths.tmp_dir)
 
 log_hash['old_project_tmp_folder_deleted'] = deleteOldProjectTmpFolder
 
-log_hash['project_tmp_folder_created'] = createProjectTmpFolder
+log_hash['project_tmp_folder_created'] = makeFolder(Bkmkr::Paths.project_tmp_dir)
 
-log_hash['project_tmp_img_folder_created'] = createProjectTmpImgFolder
+log_hash['project_tmp_img_folder_created'] = makeFolder(Bkmkr::Paths.project_tmp_dir_img)
 
 log_hash['copy_input_file'] = copyInputFile
 

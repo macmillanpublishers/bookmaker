@@ -28,6 +28,7 @@ files = Mcmlln::Tools.dirList(coverdir)
 
 # ---------------------- METHODS
 # If a cover_error file exists, delete it
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def checkErrorFile(file)
 	if File.file?(file)
 		Mcmlln::Tools.deleteFile(file)

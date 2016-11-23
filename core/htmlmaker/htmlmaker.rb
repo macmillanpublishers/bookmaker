@@ -38,6 +38,7 @@ preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js
 
 # ---------------------- METHODS
 
+## wrapping Bkmkr::Tools.runpython in a new method for this script; to return a result for json_logfile
 def convertdocxtoxml(filetype,docxtoxml_py)
 	unless filetype == "html"
 		Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
@@ -103,6 +104,7 @@ rescue => e
 	return e, content
 end
 
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def overwriteFile(path,filecontents)
 	Mcmlln::Tools.overwriteFile(path, filecontents)
 	true
@@ -110,12 +112,9 @@ rescue => e
 	e
 end
 
-def htmlmakerRunNode(jsfile, extra_arg=nil)
-	if extra_arg.nil?
-		Bkmkr::Tools.runnode(jsfile, Bkmkr::Paths.outputtmp_html)
-	else
-		Bkmkr::Tools.runnode(jsfile, extra_arg)
-	end
+## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
+def htmlmakerRunNode(jsfile, args)
+	Bkmkr::Tools.runnode(jsfile, args)
 	true
 rescue => e
 	e
@@ -157,25 +156,25 @@ log_hash['fix_entities'], filecontents = fixEntities(filecontents)
 log_hash['overwrite_output_html_a'] = overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
 # # strip extraneous footnote section from html
-log_hash['footnotes_js'] = htmlmakerRunNode(footnotes_js)
+log_hash['footnotes_js'] = htmlmakerRunNode(footnotes_js, Bkmkr::Paths.outputtmp_html)
 
 # # strip static toc from html
-log_hash['strip_toc_js'] = htmlmakerRunNode(strip_toc_js)
+log_hash['strip_toc_js'] = htmlmakerRunNode(strip_toc_js, Bkmkr::Paths.outputtmp_html)
 
 # # convert parts to divs
-log_hash['parts_js'] = htmlmakerRunNode(parts_js)
+log_hash['parts_js'] = htmlmakerRunNode(parts_js, Bkmkr::Paths.outputtmp_html)
 
 # # add headings to all sections
-log_hash['headings_js'] = htmlmakerRunNode(headings_js)
+log_hash['headings_js'] = htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html)
 
 # # add correct markup for inlines (em, strong, sup, sub)
-log_hash['inlines_js'] = htmlmakerRunNode(inlines_js)
+log_hash['inlines_js'] = htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html)
 
 # # add correct markup for lists
-log_hash['lists_js'] = htmlmakerRunNode(lists_js)
+log_hash['lists_js'] = htmlmakerRunNode(lists_js, Bkmkr::Paths.outputtmp_html)
 
 # # change p children of pre tags to spans
-log_hash['preformatted_js'] = htmlmakerRunNode(preformatted_js)
+log_hash['preformatted_js'] = htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html)
 
 log_hash['read_output_html_b'], filecontents = readOutputHtml
 
@@ -188,7 +187,7 @@ log_hash['overwrite_output_html_b'] = overwriteFile(Bkmkr::Paths.outputtmp_html,
 log_hash['title_js'] = htmlmakerRunNode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
 
 # evaluate processing instructions
-log_hash['evaluate_pis'] = htmlmakerRunNode(evaluate_pis)
+log_hash['evaluate_pis'] = htmlmakerRunNode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
 
 # ---------------------- LOGGING
 
