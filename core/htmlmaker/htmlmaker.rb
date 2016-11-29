@@ -33,6 +33,8 @@ title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
 preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
+bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
+
 # ---------------------- METHODS
 
 def fixFootnotes(content)
@@ -121,6 +123,9 @@ Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
 
 # # change p children of pre tags to spans
 Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
+
+# temporary fixes to potentially be discarded once we switch to javascript conversion
+Bkmkr::Tools.runnode(bandaid_js, Bkmkr::Paths.outputtmp_html)
 
 filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 
