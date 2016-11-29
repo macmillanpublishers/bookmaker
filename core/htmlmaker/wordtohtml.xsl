@@ -905,7 +905,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $quotation-paras]"
+              [(w:pPr/w:pStyle/@w:val = $quotation-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="quotation"/>
   </xsl:template>
 
