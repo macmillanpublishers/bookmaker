@@ -790,7 +790,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $box-paras]"
+              [(w:pPr/w:pStyle/@w:val = $box-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="box"/>
   </xsl:template>
 
@@ -803,7 +803,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $sidebar-paras]"
+              [(w:pPr/w:pStyle/@w:val = $sidebar-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="sidebar"/>
   </xsl:template>
 
@@ -816,7 +816,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $epigraph-paras]"
+              [(w:pPr/w:pStyle/@w:val = $epigraph-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="epigraph"/>
   </xsl:template>
 
@@ -829,7 +829,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $poetry-paras]"
+              [(w:pPr/w:pStyle/@w:val = $poetry-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="poetry"/>
   </xsl:template>
 
