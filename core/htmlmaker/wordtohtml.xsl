@@ -32,8 +32,7 @@
        blockquote. -->
   <xsl:variable name="epigraph-paras" as="xs:string*">
     <xsl:sequence
-      select="$versatile-block-paras,
-              'PartEpigraph-non-versepepi',
+      select="'PartEpigraph-non-versepepi',
               'PartEpigraph-versepepiv',
               'PartEpigraphSourcepeps',
               'ChapEpigraph-non-versecepi',
@@ -54,8 +53,7 @@
        pre. -->
   <xsl:variable name="poetry-paras" as="xs:string*">
     <xsl:sequence
-      select="$versatile-block-paras,
-              'PoemTitlevt',
+      select="'PoemTitlevt',
               'PoemSubtitlevst',
               'PoemLevel-1Subheadvh1',
               'PoemLevel-2Subheadvh2',
@@ -70,8 +68,7 @@
        aside. -->
   <xsl:variable name="box-paras" as="xs:string*">
     <xsl:sequence
-      select="$versatile-block-paras,
-              'BoxHeadbh',
+      select="'BoxHeadbh',
               'BoxSubheadbsh',
               'BoxEpigraph-non-versebepi',
               'BoxEpigraphSourcebeps',
@@ -111,8 +108,7 @@
        aside. -->
   <xsl:variable name="sidebar-paras" as="xs:string*">
     <xsl:sequence
-      select="$versatile-block-paras,
-              'SidebarHeadsbh',
+      select="'SidebarHeadsbh',
               'SidebarSubheadsbsh',
               'SidebarEpigraph-non-versesbepi',
               'SidebarEpigraphSourcesbeps',
@@ -312,8 +308,7 @@
        both. -->
   <xsl:variable name="quotation-paras" as="xs:string*">
     <xsl:sequence
-      select="$versatile-block-paras,
-              'Extractext',
+      select="'Extractext',
               'ExtractSourceexts',
               'Extract-Newspapernews',
               'Extract-Diaryextd',
@@ -521,7 +516,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $epigraph-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $epigraph-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras)]]">
       <blockquote data-type="epigraph">
         <xsl:apply-templates select="." mode="epigraph"/>
       </blockquote>
@@ -533,7 +528,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $poetry-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $poetry-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $poetry-paras or @w:val = $versatile-block-paras)]]">
       <pre class="poetry">
         <xsl:apply-templates select="." mode="poetry"/>
       </pre>
@@ -545,7 +540,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $box-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $box-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $box-paras or @w:val = $versatile-block-paras)]]">
       <aside data-type="sidebar" class="box">
         <xsl:apply-templates select="." mode="box"/>
       </aside>
@@ -557,7 +552,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $sidebar-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $sidebar-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $sidebar-paras or @w:val = $versatile-block-paras)]]">
       <aside data-type="sidebar">
         <xsl:apply-templates select="." mode="sidebar"/>
       </aside>
