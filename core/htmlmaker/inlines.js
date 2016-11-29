@@ -56,6 +56,9 @@ fs.readFile(file, function processTemplates (err, contents) {
     $(this).append(el);
   });
 
+  // remove inline design notes
+  $('span.spandesignnotedni').remove();
+
   var output = $.html();
     fs.writeFile(file, output, function(err) {
 	    if(err) {
