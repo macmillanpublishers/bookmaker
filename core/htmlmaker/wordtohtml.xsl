@@ -689,7 +689,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $quotation-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $quotation-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $quotation-paras or @w:val = $versatile-block-paras)]]">
       <blockquote>
         <xsl:apply-templates select="." mode="quotation"/>
       </blockquote>
