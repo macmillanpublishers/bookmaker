@@ -212,7 +212,7 @@ end
 
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def makeEpubImgsDir(path)
-	unless Dir.exist?(Bkmkr::path.tmp_dir)
+	unless Dir.exist?(path)
 		Mcmlln::Tools.makeDir(path)
 		true
 	else
@@ -243,7 +243,7 @@ rescue => e
 	e
 end
 
-def convertInteriorImgs(dir)
+def convertInteriorImgs(epub_img_dir, log_hash)
 	unless Bkmkr::Tools.processimages == "false"
 		log_hash['get_epub_img_list'], images = getFilesinDir(epub_img_dir)
 		images.each do |i|
@@ -361,7 +361,7 @@ if sourceimages.any?
 	log_hash['copy_img_files'] = copyImgFiles(Bkmkr::Paths.project_tmp_dir_img, epub_img_dir)
 
 	#this method checks for pis and loops through relevant imgs for method convertInteriorImg
-	log_hash['convert_interior_imgs'] = convertInteriorImgs(epub_img_dir)
+	log_hash['convert_interior_imgs'] = convertInteriorImgs(epub_img_dir, log_hash)
 
 	log_hash['copy_interior_imgs'], epubimages = copyInteriorImg(epub_img_dir, content_opf, OEBPS_dir)
 	puts epubimages
