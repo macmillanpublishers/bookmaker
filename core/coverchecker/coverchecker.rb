@@ -65,6 +65,7 @@ end
 
 # ---------------------- PROCESSES
 log_hash['rm_cover_error_file'] = checkErrorFile(cover_error)
+sleep 5 #to avoid Errno::EACCES errors re: Fileutils.mv in checkCoverFile method
 log_hash['cover_file_check'], covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error)
 log_hash['cover_check_results'] = covercheck
 

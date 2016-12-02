@@ -21,6 +21,13 @@
     version="5"/>
 
   <!-- =-= Generalized mapping variables. =-= -->
+
+  <!-- paragraphs that are used in many other types of blocks -->
+  <xsl:variable name="versatile-block-paras" as="xs:string*">
+    <xsl:sequence
+      select="'SpaceBreak-Internalint'"/>
+  </xsl:variable>
+
   <!-- Paragraph styles which should get aggregated in an epigraph
        blockquote. -->
   <xsl:variable name="epigraph-paras" as="xs:string*">
@@ -221,12 +228,15 @@
     <xsl:sequence
       select="'BMHeadbmh',
               'BMHeadNonprintingbmhnp',
+              'BMHeadALTabmh',
               'ChapTitlect',
               'ChapTitleNonprintingctnp',
+              'ChapTitleALTact',
               'PartNumberpn',
               'PartTitlept',
               'FMHeadfmh',
               'FMHeadNonprintingfmhnp',
+              'FMHeadALTafmh',
               'AboutAuthorTextHeadatah'"/>
   </xsl:variable>
 
@@ -280,6 +290,7 @@
               'PartNumberpn',
               'PartTitlept',
               'ChapTitlect',
+              'ChapTitleALTact',
               'ChapTitleNonprintingctnp',
               'FMHeadfmh',
               'FMHeadNonprintingfmhnp',
@@ -393,6 +404,7 @@
                 <xsl:value-of select="'part'"/>
               </xsl:when>
               <xsl:when test="$word-style = 'ChapTitlect' or 
+                              $word-style = 'ChapTitleALTact' or 
                               $word-style = 'ChapTitleNonprintingctnp'">
                 <xsl:value-of select="'chapter'"/>
               </xsl:when>
@@ -485,7 +497,8 @@
       <xsl:if
       test="preceding::w:p
             [w:pPr/w:pStyle/@w:val = 'ChapNumbercn']
-            and ./w:pPr/w:pStyle/@w:val = 'ChapTitlect'">
+            and ./w:pPr/w:pStyle/@w:val = 'ChapTitlect'
+            or ./w:pPr/w:pStyle/@w:val = 'ChapTitleALTact'">
       <xsl:attribute name="data-autolabel">
         <xsl:value-of select="'yes'"/>
       </xsl:attribute>
@@ -503,7 +516,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $epigraph-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $epigraph-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras)]]">
       <blockquote data-type="epigraph">
         <xsl:apply-templates select="." mode="epigraph"/>
       </blockquote>
@@ -515,7 +528,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $poetry-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $poetry-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $poetry-paras or @w:val = $versatile-block-paras)]]">
       <pre class="poetry">
         <xsl:apply-templates select="." mode="poetry"/>
       </pre>
@@ -527,7 +540,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $box-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $box-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $box-paras or @w:val = $versatile-block-paras)]]">
       <aside data-type="sidebar" class="box">
         <xsl:apply-templates select="." mode="box"/>
       </aside>
@@ -539,7 +552,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $sidebar-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $sidebar-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $sidebar-paras or @w:val = $versatile-block-paras)]]">
       <aside data-type="sidebar">
         <xsl:apply-templates select="." mode="sidebar"/>
       </aside>
@@ -671,7 +684,7 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $quotation-paras]">
     <xsl:if
       test="preceding::w:p[1]
-            [w:pPr/w:pStyle[not(@w:val = $quotation-paras)]]">
+            [w:pPr/w:pStyle[not(@w:val = $quotation-paras or @w:val = $versatile-block-paras)]]">
       <blockquote>
         <xsl:apply-templates select="." mode="quotation"/>
       </blockquote>
@@ -777,7 +790,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $box-paras]"
+              [(w:pPr/w:pStyle/@w:val = $box-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="box"/>
   </xsl:template>
 
@@ -790,7 +803,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $sidebar-paras]"
+              [(w:pPr/w:pStyle/@w:val = $sidebar-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="sidebar"/>
   </xsl:template>
 
@@ -803,7 +816,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $epigraph-paras]"
+              [(w:pPr/w:pStyle/@w:val = $epigraph-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="epigraph"/>
   </xsl:template>
 
@@ -816,7 +829,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $poetry-paras]"
+              [(w:pPr/w:pStyle/@w:val = $poetry-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="poetry"/>
   </xsl:template>
 
@@ -892,7 +905,7 @@
     </p>
     <xsl:apply-templates
       select="following::w:p[1]
-              [w:pPr/w:pStyle/@w:val = $quotation-paras]"
+              [(w:pPr/w:pStyle/@w:val = $quotation-paras) or (w:pPr/w:pStyle/@w:val = $versatile-block-paras)]"
       mode="quotation"/>
   </xsl:template>
 
