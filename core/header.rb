@@ -144,6 +144,13 @@ module Bkmkr
 			end
 			json_hash
 		end
+
+		#create local jsonlog_hash for each script
+		def self.setLocalLoghash
+		  local_log_hash = Bkmkr::Paths.jsonlog_hash
+		  local_log_hash[Bkmkr::Paths.thisscript] = {'begun'=>Time.now}
+		  return local_log_hash, local_log_hash[Bkmkr::Paths.thisscript]
+		end
 	end
 
 	class Keys

@@ -80,5 +80,16 @@ module Mcmlln
       end
     end
 
+    def self.logtoJson(log_hash, logkey, logstring)
+      unless logkey.empty?
+        if !defined?(logstring) || logstring.nil?
+          logstring = true
+        end
+        log_hash[logkey] = logstring
+      end
+    rescue => e
+      log_hash[logkey] = "LOGGING_ERROR: #{e}"
+    end
+
   end
 end
