@@ -122,28 +122,4 @@ class Metadata
 			@@data_hash['podtitlepage']
 		end
 	end
-
-	def self.project_dir
-		if @@data_hash['project'].nil? or @@data_hash['project'].empty? or !@@data_hash['project']
-			"bookmaker"
-		else
-			@@data_hash['project']
-		end
-	end
-
-	def self.stage_dir
-		if @@data_hash['stage'].nil? or @@data_hash['stage'].empty? or !@@data_hash['stage']
-			"final"
-		else
-			@@data_hash['stage']
-		end
-	end
-
-	def self.pod_toc
-		if @@data_hash['pod_toc'].nil? or @@data_hash['pod_toc'].empty? or !@@data_hash['pod_toc']
-			"false"
-		else
-			@@data_hash['stage']
-		end
-	end
 end
