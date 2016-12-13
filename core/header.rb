@@ -1,3 +1,4 @@
+require 'bundler/setup'
 require "open-uri"
 require 'fileutils'
 require 'open3'
