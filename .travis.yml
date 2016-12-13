@@ -2,7 +2,6 @@ language: ruby
 rvm:
 - 2.0.0
 bundler_args: --without production
-cache: bundler
 # safelist
 branches:
   only:
