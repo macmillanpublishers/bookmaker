@@ -1,5 +1,7 @@
 # Macmillan's Bookmaker Toolchain  [![Build Status](https://travis-ci.org/macmillanpublishers/bookmaker.svg?branch=master)](https://travis-ci.org/macmillanpublishers/bookmaker)
 
+TEST
+
 Welcome to the Bookmaker toolchain! Bookmaker comprises a series of scripts that turn a Word document into an HTML document, and then into a PDF and/or EPUB file. 
 
 Each script in the Bookmaker sequence performs a distinct set of actions that builds on the scripts that came before, and depends on any number of other scripts or tools. While most of these scripts were originally written for internal use at Macmillan, we've done our best to hone them down to a cross-platform, generic core that can be used out of the box (though there are still a number of dependencies, discussed further down). The scripts all live here, in the _core_ directory.
