@@ -1,11 +1,12 @@
 language: ruby
 rvm:
 - 2.0.0
-script: ruby tc_simple_number.rb
+bundler_args: --without production
 # safelist
 branches:
   only:
   - travis
+script: ruby tc_simple_number.rb
 notifications:
   email: false
   slack:
