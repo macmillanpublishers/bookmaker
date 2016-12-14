@@ -13,10 +13,10 @@ class TestSimpleNumber < Test::Unit::TestCase
 
 end
 
-class Htmlmaker_tests < Test::Unit::TestCase
+class HtmlmakerTests < Test::Unit::TestCase
 
   def demo_method_test
-		assert_equal(5,increment(4))
+		assert_equal(5, HtmlmakerMethods.increment(4))
 	end
 
 end
