@@ -2,7 +2,7 @@
 
 require_relative "./simple_number.rb"
 require "test/unit"
-require_relative "./htmlmaker/htmlmaker.rb"
+require_relative "./core/htmlmaker/htmlmaker.rb"
 
 class TestSimpleNumber < Test::Unit::TestCase
 
