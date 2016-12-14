@@ -37,6 +37,12 @@ bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
 
 # ---------------------- METHODS
 
+#test method
+def increment(int)
+  int+=1
+  int
+end
+
 def fixFootnotes(content)
 	# place footnote text inline per htmlbook
 	filecontents = content.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
