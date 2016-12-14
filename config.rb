@@ -82,9 +82,11 @@ $done_dir = File.join(working_dir, "done")
 # $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
 # $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
 
-# Your API key to create PDFs via DocRaptor
-$docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
+if !ARGV.empty?		#adding this check for testing purposes
+  # Your API key to create PDFs via DocRaptor
+  $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 
-# username and password for online resources
-$http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/http_username.txt")
-$http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/http_pass.txt")
+  # username and password for online resources
+  $http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/http_username.txt")
+  $http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/http_pass.txt")
+end
