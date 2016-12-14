@@ -18,7 +18,7 @@ image_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "IMAGE_ERROR.txt"
 
 # ---------------------- METHODS
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
-def getFilesinDir(path)
+def getFilesinDir(path, logkey='')
 	files = Mcmlln::Tools.dirList(path)
 	return files
 rescue => logstring

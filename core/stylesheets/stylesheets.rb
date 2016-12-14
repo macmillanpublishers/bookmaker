@@ -41,6 +41,7 @@ def evalImports(file, path, logkey='')
 		puts "found a CSS import file"
 		logstring = 'found a CSS import file'
 		imports = filecontents.scan(/@import.*?;{1}/)
+		importpaths = []
 		imports.each do |i|
 			myimport = i.gsub(/@import/,"").gsub(/url/,"").gsub(/ /,"").gsub(/\(/,"").gsub(/\"/,"").gsub(/\'/,"").gsub(/\)/,"").gsub(/;/,"")
 			myimport = myimport.gsub(/^\s*/,"")
@@ -57,7 +58,7 @@ def evalImports(file, path, logkey='')
 			else
 				importpath = File.join(thispath, importfile)
 			end
-			@log_hash['css_import_path'] = importpath
+			importpaths << importpath
 			puts "CSS import file: #{importpath}"
 			if File.file?(importpath)
 				thisimport = File.read(importpath)
@@ -65,9 +66,10 @@ def evalImports(file, path, logkey='')
 					p.write thisimport
 				end
 			end
-		else
-			logstring = 'no CSS import file found'
 		end
+		@log_hash['css_import_paths'] = importpaths
+	else
+		logstring = 'no CSS import files found'
 	end
 rescue => logstring
 ensure
