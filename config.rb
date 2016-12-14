@@ -4,9 +4,9 @@ $currpath = Dir.pwd
 $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 
 if !ARGV.empty?		#adding this check for testing purposes
-  @unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
+  unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
 else
-  @unescapeargv = '/test/test/test.docx'
+  unescapeargv = '/test/test/test.docx'
   puts "WARNING, no input file!!!"
 end
 input_file = File.expand_path(unescapeargv).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
