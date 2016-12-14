@@ -4,9 +4,7 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
-json_log_hash = Bkmkr::Paths.jsonlog_hash
-json_log_hash[Bkmkr::Paths.thisscript] = {}
-log_hash = json_log_hash[Bkmkr::Paths.thisscript]
+local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 # create the archival directory structure and copy xml and html there
 filetype = Bkmkr::Project.filename_split.split(".").pop
@@ -29,42 +27,40 @@ final_config = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "confi
 
 # ---------------------- METHODS
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
-def makeDir(path)
+def makeDir(path, logkey='')
   unless Dir.exist?(path)
     Mcmlln::Tools.makeDir(path)
-    true
   else
-    'n-a'
+    logstring = 'n-a'
   end
-rescue => e
-  e
+rescue => logstring
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
-def copyFile(source,dest)
+def copyFile(source, dest, logkey='')
   Mcmlln::Tools.copyFile(source, dest)
-  true
-rescue => e
-  e
+rescue => logstring
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
 # ---------------------- PROCESSES
 
-log_hash['make_final_dir'] = makeDir(final_dir)
+makeDir(final_dir, 'make_final_dir')
 
-log_hash['make_final_images_dir'] = makeDir(final_dir_images)
+makeDir(final_dir_images, 'make_final_images_dir')
 
-log_hash['make_final_cover_dir'] = makeDir(final_dir_cover)
+makeDir(final_dir_cover, 'make_final_cover_dir')
 
-log_hash['make_final_layout_dir'] = makeDir(final_dir_cover)
+makeDir(final_dir_layout, 'make_final_layout_dir')
 
-log_hash['make_final_layout_dir'] = makeDir(final_dir_layout)
+copyFile(Bkmkr::Project.input_file, final_manuscript, 'copy_input_file_to_final_dir')
 
-log_hash['copy_input_file_to_final_dir'] = copyFile(Bkmkr::Project.input_file, final_manuscript)
+copyFile(Bkmkr::Paths.outputtmp_html, final_html, 'copy_html_to_final_layout_dir')
 
-log_hash['copy_html_to_final_layout_dir'] = copyFile(Bkmkr::Paths.outputtmp_html, final_html)
-
-log_hash['copy_tmp_config_final_layout_dir'] = copyFile(tmp_config, final_config)
+copyFile(tmp_config, final_config, 'copy_tmp_config_final_layout_dir')
 
 
 # ---------------------- LOGGING
@@ -77,5 +73,5 @@ File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 end
 
 # Write json log:
-log_hash['completed'] = Time.now
-Mcmlln::Tools.write_json(json_log_hash, Bkmkr::Paths.json_log)
+Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
+Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)

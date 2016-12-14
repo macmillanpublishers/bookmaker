@@ -4,9 +4,7 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
-json_log_hash = Bkmkr::Paths.jsonlog_hash
-json_log_hash[Bkmkr::Paths.thisscript] = {}
-log_hash = json_log_hash[Bkmkr::Paths.thisscript]
+local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 # the cover filename
 cover = Metadata.frontcover
@@ -29,22 +27,22 @@ files = Mcmlln::Tools.dirList(coverdir)
 # ---------------------- METHODS
 # If a cover_error file exists, delete it
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
-def checkErrorFile(file)
+def checkErrorFile(file, logkey='')
 	if File.file?(file)
 		Mcmlln::Tools.deleteFile(file)
-	true
 	else
-		'n-a'
+		logstring = 'n-a'
 	end
-rescue => e
-	e
+rescue => logstring
+ensure
+    Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
 
 # checks to see if cover is in the submission dir
 # if yes, copies cover to archival location and deletes from submission dir
 # if no, prints an error to the archival directory
-def checkCoverFile(arr, file, tmpcover, finalcover, errorfile)
+def checkCoverFile(arr, file, tmpcover, finalcover, errorfile, logkey='')
 	if arr.include?("#{file}")
 		FileUtils.mv(tmpcover, finalcover)
 		covercheck = "Found a new cover submitted"
@@ -58,16 +56,18 @@ def checkCoverFile(arr, file, tmpcover, finalcover, errorfile)
 		end
 		covercheck = "No cover found"
 	end
-	return true, covercheck
-rescue => e
-	return e,''
+	return covercheck
+rescue => logstring
+	return ''
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
 # ---------------------- PROCESSES
-log_hash['rm_cover_error_file'] = checkErrorFile(cover_error)
+checkErrorFile(cover_error, 'rm_cover_error_file')
 sleep 5 #to avoid Errno::EACCES errors re: Fileutils.mv in checkCoverFile method
-log_hash['cover_file_check'], covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error)
-log_hash['cover_check_results'] = covercheck
+covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error, 'cover_file_check')
+@log_hash['cover_check_results'] = covercheck
 
 # ---------------------- LOGGING
 # Printing the test results to the log file
@@ -78,5 +78,5 @@ File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 end
 
 # Write json log:
-log_hash['completed'] = Time.now
-Mcmlln::Tools.write_json(json_log_hash, Bkmkr::Paths.json_log)
+Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
+Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)

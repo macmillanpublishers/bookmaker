@@ -3,9 +3,7 @@ require 'fileutils'
 require_relative '../header.rb'
 
 # ---------------------- VARIABLES
-json_log_hash = Bkmkr::Paths.jsonlog_hash
-json_log_hash[Bkmkr::Paths.thisscript] = {}
-log_hash = json_log_hash[Bkmkr::Paths.thisscript]
+local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 input_config = File.join(Bkmkr::Paths.submitted_images, "config.json")
 
@@ -16,79 +14,81 @@ filecontents = "The conversion processor is currently running. Please do not sub
 # ---------------------- METHODS
 ## all methods for this script are Mcmlln::Tools methods wrapped in new methods,
 ## in order to return results for json_logfile
-def getFilesinSubmittedImages
+def getFilesinSubmittedImages(logkey='')
 	files = Mcmlln::Tools.dirList(Bkmkr::Paths.submitted_images)
-	return true, files
-rescue => e
-	e
+	files
+rescue => logstring
+	return []
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def makeFolder(path)
+def makeFolder(path, logkey='')
 	unless Dir.exist?(path)
 		Mcmlln::Tools.makeDir(path)
-		true
 	else
-	 'n-a'
+	 logstring = 'n-a'
 	end
-rescue => e
-	e
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def deleteOldProjectTmpFolder
+def deleteOldProjectTmpFolder(logkey='')
 	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
 		Mcmlln::Tools.deleteDir(Bkmkr::Paths.project_tmp_dir)
-		true
 	else
-		'n-a'
+		logstring = 'n-a'
 	end
-rescue => e
-	e
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def copyInputFile
+def copyInputFile(logkey='')
 	Mcmlln::Tools.copyFile("#{Bkmkr::Project.input_file}", Bkmkr::Paths.project_tmp_file)
-	true
-rescue => e
-	e
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def mvInputConfigFile(input_config)
+def mvInputConfigFile(input_config, logkey='')
 	if File.file?(input_config)
 		Mcmlln::Tools.moveFile(input_config, tmp_config)
-		true
 	else
-		'n-a'
+		logstring = 'n-a'
 	end
-rescue => e
-	e
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def writeAlertFile(filecontents)
+def writeAlertFile(filecontents, logkey='')
 	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.alert, filecontents)
-	true
-rescue => e
-	e
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
 # ---------------------- PROCESSES
 # Local path variables
-log_hash['check_submitted_images'], all_submitted_images = getFilesinSubmittedImages
-log_hash['submitted_images'] = all_submitted_images
+all_submitted_images = getFilesinSubmittedImages('check_submitted_images')
+@log_hash['submitted_images'] = all_submitted_images
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
-log_hash['tmp_folder_created'] = makeFolder(Bkmkr::Paths.tmp_dir)
+makeFolder(Bkmkr::Paths.tmp_dir, 'tmp_folder_created')
 
-log_hash['old_project_tmp_folder_deleted'] = deleteOldProjectTmpFolder
+deleteOldProjectTmpFolder('old_project_tmp_folder_deleted')
 
-log_hash['project_tmp_folder_created'] = makeFolder(Bkmkr::Paths.project_tmp_dir)
+makeFolder(Bkmkr::Paths.project_tmp_dir, 'project_tmp_folder_created')
 
-log_hash['project_tmp_img_folder_created'] = makeFolder(Bkmkr::Paths.project_tmp_dir_img)
+makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
 
-log_hash['copy_input_file'] = copyInputFile
+copyInputFile('copy_input_file')
 
-log_hash['moved_input_config_file'] = mvInputConfigFile(input_config)
+mvInputConfigFile(input_config, 'moved_input_config_file')
 
-log_hash['write_alert_file'] = writeAlertFile(filecontents)
+writeAlertFile(filecontents, 'write_alert_file')
 
 # ---------------------- LOGGING
 
@@ -101,5 +101,5 @@ File.open("#{Bkmkr::Paths.log_file}", 'w+') do |f|
 end
 
 # Write json log:
-log_hash['completed'] = Time.now
-Mcmlln::Tools.write_json(json_log_hash, Bkmkr::Paths.json_log)
+Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
+Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)
