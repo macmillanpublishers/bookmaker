@@ -195,9 +195,7 @@ module Bkmkr
 				`python #{py_script} #{args}`
 			elsif os == "windows"
 				pythonpath = File.join(Paths.resource_dir, "Python27", "python.exe")
-				if !ARGV.empty?
-					`#{pythonpath} #{py_script} #{args}`
-				end	
+				`#{pythonpath} #{py_script} #{args}`
 			else
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- PYTHON ERROR"

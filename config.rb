@@ -3,7 +3,11 @@
 $currpath = Dir.pwd
 $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 
-unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
+if !ARGV.empty?		#adding this check for testing purposes
+  unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
+else
+  unescapeargv = '/test/test/test.docx'
+end
 input_file = File.expand_path(unescapeargv).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 project = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop

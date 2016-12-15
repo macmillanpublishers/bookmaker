@@ -3,8 +3,8 @@
 require_relative "./simple_number.rb"
 require "test/unit"
 # require_relative "./core/htmlmaker/htmlmaker.rb"
-# require_relative './core/header.rb'
-# require_relative './core/metadata.rb'
+require_relative './core/header.rb'
+require_relative './core/metadata.rb'
 
 class TestSimpleNumber < Test::Unit::TestCase
 
