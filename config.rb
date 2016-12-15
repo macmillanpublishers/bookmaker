@@ -77,7 +77,7 @@ $done_dir = File.join(working_dir, "done")
 # $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
 # $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
 
-if File.directory?(scripts_dir)	#adding this check for travis ci tests
+if File.directory?($scripts_dir)	#adding this check for travis ci tests
   # Your API key to create PDFs via DocRaptor
   $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 
