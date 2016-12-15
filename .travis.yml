@@ -6,7 +6,7 @@ bundler_args: --without production
 branches:
   only:
   - travis
-script: ruby tc_simple_number.rb
+script: ruby tc_simple_number.rb /test/test/test.docx
 notifications:
   email: false
   slack:

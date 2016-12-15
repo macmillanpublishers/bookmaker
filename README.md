@@ -1,7 +1,6 @@
 # Macmillan's Bookmaker Toolchain  [![Build Status](https://travis-ci.org/macmillanpublishers/bookmaker.svg?branch=master)](https://travis-ci.org/macmillanpublishers/bookmaker)
 
-
-Welcome to the Bookmaker toolchain! Bookmaker comprises a series of scripts that turn a Word document into an HTML document, and then into a PDF and/or EPUB file. 
+Welcome to the Bookmaker toolchain! Bookmaker comprises a series of scripts that turn a Word document into an HTML document, and then into a PDF and/or EPUB file.
 
 Each script in the Bookmaker sequence performs a distinct set of actions that builds on the scripts that came before, and depends on any number of other scripts or tools. While most of these scripts were originally written for internal use at Macmillan, we've done our best to hone them down to a cross-platform, generic core that can be used out of the box (though there are still a number of dependencies, discussed further down). The scripts all live here, in the _core_ directory.
 
@@ -103,14 +102,14 @@ Paths for all of the above four folders must be configured in config.rb. See the
 
 The Bookmaker scripts depend on various other utilities, as follows:
 
-* Java: Saxon requires the Java JDK. 
+* Java: Saxon requires the Java JDK.
 * Node.js: Platform for server-side JavaScript execution, used for content transformations.
 * Python (version 2.7.x): Converts Word .docx files to XML.
-* Saxon: An XSLT processor that runs our Word-to-HTML scripts. 
-* Ruby: The primary scripting language used in the Bookmaker scripts. 
+* Saxon: An XSLT processor that runs our Word-to-HTML scripts.
+* Ruby: The primary scripting language used in the Bookmaker scripts.
 * Prince or docraptor: The external service that performs the HTML-to-PDF conversion. Prince is downloadable software. Docraptor requires a ruby gem, and you'll also need to create an account and get your unique API key.
 * An ftp server (if you'll be creating PDFs and your book contains images, custom fonts, custom CSS, or other resources besides the HTML).
-* SSL Cert (Windows only): The SSL Cert file needs to be updated to allow the scripts to post and receive from DocRaptor. 
+* SSL Cert (Windows only): The SSL Cert file needs to be updated to allow the scripts to post and receive from DocRaptor.
 * Imagemagick: enables command line image edits. Download here and add to path via cmd line: set PATH=C:\Program Files\ImageMagick-6.9.1-Q16n;%PATH% (<-version suffix may change, use your own path)
 
 ## Installation
@@ -191,11 +190,11 @@ $pdf_processor = "prince"
 
 #### FOR DOCRAPTOR: Configure Docraptor Auth Settings
 
-If you choose to use DocRaptor to create PDFs, you'll need to set up a DocRaptor account and give Bookmaker your authentication credentials. 
+If you choose to use DocRaptor to create PDFs, you'll need to set up a DocRaptor account and give Bookmaker your authentication credentials.
 
 To set up a DocRaptor account, go to docraptor.com, and follow the instructions to create an account. You'll need to know your API key to use Bookmaker; you can find your API key at the top right of your Dashboard.
 
-You also need to install the DocRaptor ruby gem. In terminal or command prompt, type: 
+You also need to install the DocRaptor ruby gem. In terminal or command prompt, type:
 
 ```
 $ gem install doc_raptor
@@ -211,7 +210,7 @@ $pdf_processor = "docraptor"
 $docraptor_key = "YOUR_API_KEY_HERE"
 ```
 
-Note that Docraptor requires all images that you want to include in the text to be hosted somewhere online, so you'll need to make sure your image src's in your Word or HTML file point to this online location. You can store these images behind a basic http auth barrier--you'll just need to provide the auth credentials in config.rb by editing the following fields: 
+Note that Docraptor requires all images that you want to include in the text to be hosted somewhere online, so you'll need to make sure your image src's in your Word or HTML file point to this online location. You can store these images behind a basic http auth barrier--you'll just need to provide the auth credentials in config.rb by editing the following fields:
 
 ```ruby
 $http_username = "YOUR_USERNAME_HERE"
@@ -282,15 +281,15 @@ To convert a project, drop the input text file along with any assets (interior i
 
 ## Layout and Design
 
-Bookmaker uses CSS to layout both the print (PDF) and ebook files. The CSS should be supplied with the project and included in the project metadata (see Project Metadata above). 
+Bookmaker uses CSS to layout both the print (PDF) and ebook files. The CSS should be supplied with the project and included in the project metadata (see Project Metadata above).
 
-Bookmaker can support local CSS imports. Imported CSS files will be placed at the top of the compiled CSS file. Imports must be local files (i.e., Bookmaker can not yet support web resources), and must be structured as follows: 
+Bookmaker can support local CSS imports. Imported CSS files will be placed at the top of the compiled CSS file. Imports must be local files (i.e., Bookmaker can not yet support web resources), and must be structured as follows:
 
 ```css
-@import "path/to/file.css"; 
+@import "path/to/file.css";
 ```
 
-or 
+or
 
 ```css
 @import 'path/to/file.css';
