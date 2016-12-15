@@ -61,15 +61,19 @@ module Mcmlln
     end
 
     def self.readjson(inputfile)
-      file = File.open(inputfile, "r:utf-8")
-      content = file.read
-      file.close
-      json_hash = JSON.parse(content)
+      if File.exist?(file)
+        file = File.open(inputfile, "r:utf-8")
+        content = file.read
+        file.close
+        json_hash = JSON.parse(content)
+      else
+        json_hash={}
+      end
       json_hash
     end
 
     def self.overwriteFile(file, content)
-      File.open(file, 'w') do |output| 
+      File.open(file, 'w') do |output|
         output.write content
       end
     end
