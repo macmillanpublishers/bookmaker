@@ -3,12 +3,7 @@
 $currpath = Dir.pwd
 $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 
-if !ARGV.empty?		#adding this check for testing purposes
-  unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
-else
-  unescapeargv = '/test/test/test.docx'
-  puts "WARNING, no input file!!!"
-end
+unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
 input_file = File.expand_path(unescapeargv).split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 working_dir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
 project = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].pop
@@ -82,7 +77,7 @@ $done_dir = File.join(working_dir, "done")
 # $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
 # $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
 
-if !ARGV.empty?		#adding this check for testing purposes
+if File.directory?(scripts_dir)	#adding this check for travis ci tests
   # Your API key to create PDFs via DocRaptor
   $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 
