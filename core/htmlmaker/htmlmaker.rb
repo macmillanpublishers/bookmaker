@@ -38,11 +38,9 @@ bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
 # ---------------------- METHODS
 
 #test method
-class HtmlmakerMethods
-	def self.increment(int)
-	  int+=1
-	  int
-	end
+def increment(int)
+  int+=1
+  int
 end
 
 def fixFootnotes(content)
