@@ -61,7 +61,7 @@ module Mcmlln
     end
 
     def self.readjson(inputfile)
-      if File.exist?(file)
+      if File.exist?(inputfile)
         file = File.open(inputfile, "r:utf-8")
         content = file.read
         file.close
