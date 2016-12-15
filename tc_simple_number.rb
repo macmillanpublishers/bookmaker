@@ -2,9 +2,9 @@
 
 require_relative "./simple_number.rb"
 require "test/unit"
-# require_relative "./core/htmlmaker/htmlmaker.rb"
-require_relative './core/header.rb'
-require_relative './core/metadata.rb'
+require_relative "./core/htmlmaker/htmlmaker.rb"
+# require_relative './core/header.rb'
+# require_relative './core/metadata.rb'
 
 class TestSimpleNumber < Test::Unit::TestCase
 
@@ -15,10 +15,10 @@ class TestSimpleNumber < Test::Unit::TestCase
 
 end
 
-# class HtmlmakerTests < Test::Unit::TestCase
-#
-#   def demo_method_test
-# 		assert_equal(5, HtmlmakerMethods.increment(4))
-# 	end
-#
-# end
+class HtmlmakerTests < Test::Unit::TestCase
+
+  def demo_method_test
+		assert_equal(5, HtmlmakerMethods.increment(4))
+	end
+
+end

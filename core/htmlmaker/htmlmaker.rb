@@ -85,81 +85,84 @@ def stripEndnotes(content)
 end
 
 # ---------------------- PROCESSES
+if !ARGV.empty?		#adding this check for testing purposes
 
-# convert docx to xml
-unless filetype == "html"
-	Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
-end
+	# convert docx to xml
+	unless filetype == "html"
+		Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
+	end
 
-# convert xml to html
-unless filetype == "html"
-	`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-else
-	Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
-end
+	# convert xml to html
+	unless filetype == "html"
+		`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+	else
+		Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
+	end
 
-filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 
-# run method: fixFootnotes
-filecontents = fixFootnotes(filecontents)
+	# run method: fixFootnotes
+	filecontents = fixFootnotes(filecontents)
 
-# run method: fixEndnotes
-filecontents = fixEndnotes(filecontents)
+	# run method: fixEndnotes
+	filecontents = fixEndnotes(filecontents)
 
-# run method: fixEntities
-filecontents = fixEntities(filecontents)
+	# run method: fixEntities
+	filecontents = fixEntities(filecontents)
 
-Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
-# # strip extraneous footnote section from html
-Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
+	# # strip extraneous footnote section from html
+	Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
 
-# # strip static toc from html
-Bkmkr::Tools.runnode(strip_toc_js, Bkmkr::Paths.outputtmp_html)
+	# # strip static toc from html
+	Bkmkr::Tools.runnode(strip_toc_js, Bkmkr::Paths.outputtmp_html)
 
-# # convert parts to divs
-Bkmkr::Tools.runnode(parts_js, Bkmkr::Paths.outputtmp_html)
+	# # convert parts to divs
+	Bkmkr::Tools.runnode(parts_js, Bkmkr::Paths.outputtmp_html)
 
-# # add headings to all sections
-Bkmkr::Tools.runnode(headings_js, Bkmkr::Paths.outputtmp_html)
+	# # add headings to all sections
+	Bkmkr::Tools.runnode(headings_js, Bkmkr::Paths.outputtmp_html)
 
-# # add correct markup for inlines (em, strong, sup, sub)
-Bkmkr::Tools.runnode(inlines_js, Bkmkr::Paths.outputtmp_html)
+	# # add correct markup for inlines (em, strong, sup, sub)
+	Bkmkr::Tools.runnode(inlines_js, Bkmkr::Paths.outputtmp_html)
 
-# # add correct markup for lists
-Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
+	# # add correct markup for lists
+	Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
 
-# # change p children of pre tags to spans
-Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
+	# # change p children of pre tags to spans
+	Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
 
-# temporary fixes to potentially be discarded once we switch to javascript conversion
-Bkmkr::Tools.runnode(bandaid_js, Bkmkr::Paths.outputtmp_html)
+	# temporary fixes to potentially be discarded once we switch to javascript conversion
+	Bkmkr::Tools.runnode(bandaid_js, Bkmkr::Paths.outputtmp_html)
 
-filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 
-# run method: stripEndnotes
-filecontents = stripEndnotes(filecontents)
+	# run method: stripEndnotes
+	filecontents = stripEndnotes(filecontents)
 
-Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
 
-# set html title to match JSON
-Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
+	# set html title to match JSON
+	Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
 
-# evaluate processing instructions
-Bkmkr::Tools.runnode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
+	# evaluate processing instructions
+	Bkmkr::Tools.runnode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
 
-# ---------------------- LOGGING
+	# ---------------------- LOGGING
 
-# html file should exist
-if File.file?("#{Bkmkr::Paths.outputtmp_html}")
-	test_html_status = "pass: html file was created successfully"
-else
-	test_html_status = "FAIL: html file was created successfully"
-end
+	# html file should exist
+	if File.file?("#{Bkmkr::Paths.outputtmp_html}")
+		test_html_status = "pass: html file was created successfully"
+	else
+		test_html_status = "FAIL: html file was created successfully"
+	end
 
-# Printing the test results to the log file
-File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
-	f.puts "----- HTMLMAKER PROCESSES"
-	f.puts test_html_status
-	f.puts "finished htmlmaker"
+	# Printing the test results to the log file
+	File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
+		f.puts "----- HTMLMAKER PROCESSES"
+		f.puts test_html_status
+		f.puts "finished htmlmaker"
+	end
+
 end
