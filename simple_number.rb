@@ -5,7 +5,6 @@
 # Bundler.require(:default)
 
 require 'json'
-require 'doc_raptor'
 
 class SimpleNumber
 
