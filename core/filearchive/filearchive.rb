@@ -48,6 +48,7 @@ end
 
 # ---------------------- PROCESSES
 
+#make archival dirs
 makeDir(final_dir, 'make_final_dir')
 
 makeDir(final_dir_images, 'make_final_images_dir')
@@ -56,6 +57,7 @@ makeDir(final_dir_cover, 'make_final_cover_dir')
 
 makeDir(final_dir_layout, 'make_final_layout_dir')
 
+#move input file, outputtmp_html, config.json to archival dirs
 copyFile(Bkmkr::Project.input_file, final_manuscript, 'copy_input_file_to_final_dir')
 
 copyFile(Bkmkr::Paths.outputtmp_html, final_html, 'copy_html_to_final_layout_dir')

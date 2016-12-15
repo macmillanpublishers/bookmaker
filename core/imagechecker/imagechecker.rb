@@ -166,12 +166,15 @@ end
 
 # ---------------------- PROCESSES
 
+#get arrays of submitted images & images in archival folders
 images = getFilesinDir(imagedir, 'check_submitted_images')
 
 finalimages = getFilesinDir(final_dir_images, 'check_final_images')
 
+#delete image error file if it exists
 checkErrorFile(image_error, 'delete_image_errfile')
 
+#read in html for manipulations
 filecontents = readOutputHtml('read_output_html')
 
 # run method: stripSpaces

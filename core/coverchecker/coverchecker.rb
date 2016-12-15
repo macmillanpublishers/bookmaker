@@ -38,7 +38,6 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-
 # checks to see if cover is in the submission dir
 # if yes, copies cover to archival location and deletes from submission dir
 # if no, prints an error to the archival directory
@@ -64,10 +63,17 @@ ensure
 end
 
 # ---------------------- PROCESSES
+# remove any existing cover error alert
 checkErrorFile(cover_error, 'rm_cover_error_file')
+
 sleep 5 #to avoid Errno::EACCES errors re: Fileutils.mv in checkCoverFile method
+
+# checks to see if cover is in the submission dir
+# if yes, copies cover to archival location and deletes from submission dir
+# if no, prints an error to the archival directory
 covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error, 'cover_file_check')
 @log_hash['cover_check_results'] = covercheck
+
 
 # ---------------------- LOGGING
 # Printing the test results to the log file

@@ -205,17 +205,21 @@ end
 chapterheads = get_chapterheads('get_chapterheads')
 @log_hash['chapterhead_count'] = chapterheads.count
 
+# delete pdf & epub css from previous runs
 deleteLastRunCss(tmp_pdf_css, 'delete_existing_tmp_pdf_css')
 
 deleteLastRunCss(tmp_epub_css, 'delete_existing_tmp_epub_css')
 
+# look for custom css in submitted_images dir
 find_pdf_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.printcss)
 find_epub_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.epubcss)
 
-#so we get SOME log output either way
+# so we get logging re: evalImports even if it's not run
 @log_hash['evalImports_pdf_css-metadata'] = 'n-a'
 @log_hash['evalImports_pdf_css-submitted'] = 'n-a'
 
+# read css and append contents of any referenced imports directly into tmp css
+# prefer metadata.css, then css from submitted images
 if File.file?(Metadata.printcss)
 	evalImports(Metadata.printcss, tmp_pdf_css, 'evalImports_pdf_css-metadata')
 	copyCSS(Metadata.printcss, tmp_pdf_css, 'copy_pdf_css-metadata')
@@ -227,16 +231,21 @@ else
 	makeNoPdfCssNotice('no_pdfcss-notice')
 end
 
+# append one-off css (from submitted_images or archival dirs) to tmp css
 evalOneoffs("oneoff_pdf.css", tmp_pdf_css, 'one_off_css_for_pdf')
 
+# apply bookmaker processing instructions for trim to tmp pdf css
 evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css, 'evaluate_Trim_PIs')
 
+# apply bookmaker processing instructions for TOC to tmp pdf css
 evalTocPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css, 'evaluate_Toc_PIs')
 
-#so we get SOME log output either way
+# so we get logging re: evalImports even if it's not run
 @log_hash['evalImports_epub_css-metadata'] = 'n-a'
 @log_hash['evalImports_epub_css-submitted'] = 'n-a'
 
+# read css and append contents of any referenced imports directly into tmp css
+# prefer metadata.css, then css from submitted images
 if File.file?(Metadata.epubcss)
 	evalImports(Metadata.epubcss, tmp_epub_css, 'evalImports_epub_css-metadata')
 	copyCSS(Metadata.epubcss, tmp_epub_css, 'copy_epub_css-metadata')
@@ -248,6 +257,7 @@ else
 	makeNoEpubCssNotice('no_epubcss-notice')
 end
 
+# append one-off css (from submitted_images or archival dirs) to tmp css
 evalOneoffs("oneoff_epub.css", tmp_epub_css, 'one_off_css_for_epub')
 
 # ---------------------- LOGGING

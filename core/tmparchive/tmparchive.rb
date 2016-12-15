@@ -9,8 +9,6 @@ input_config = File.join(Bkmkr::Paths.submitted_images, "config.json")
 
 tmp_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
 
-filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
-
 # ---------------------- METHODS
 ## all methods for this script are Mcmlln::Tools methods wrapped in new methods,
 ## in order to return results for json_logfile
@@ -73,6 +71,7 @@ end
 # ---------------------- PROCESSES
 # Local path variables
 all_submitted_images = getFilesinSubmittedImages('check_submitted_images')
+# log submitted image list
 @log_hash['submitted_images'] = all_submitted_images
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
@@ -87,6 +86,8 @@ makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
 copyInputFile('copy_input_file')
 
 mvInputConfigFile(input_config, 'moved_input_config_file')
+
+filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
 
 writeAlertFile(filecontents, 'write_alert_file')
 

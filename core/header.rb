@@ -116,15 +116,15 @@ module Bkmkr
 			end
 		end
 
-		@@thisscript = File.basename($0)		#for easy reference to script's own name in logs
-		def self.thisscript
-			@@thisscript
-		end
-
 		# Full path to project log file
 		@@log_file = File.join(log_dir, "#{Project.filename}.txt")
 		def self.log_file
 			@@log_file
+		end
+
+		@@thisscript = File.basename($0)		#for easy reference to script's own name in json-logs
+		def self.thisscript
+			@@thisscript
 		end
 
 		# Full path to project json logfile
@@ -145,7 +145,9 @@ module Bkmkr
 			json_hash
 		end
 
-		#create local jsonlog_hash for each script
+		# for any script that calls this method:
+		# create 'local_log' hash nested in the jsonlog_hash named after the script basename
+		# add a 'begun' key/value to the new local hash
 		def self.setLocalLoghash
 		  local_log_hash = Bkmkr::Paths.jsonlog_hash
 		  local_log_hash[Bkmkr::Paths.thisscript] = {'begun'=>Time.now}

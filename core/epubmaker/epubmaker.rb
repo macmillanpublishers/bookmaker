@@ -302,8 +302,10 @@ ensure
 end
 
 # ---------------------- PROCESSES
-############# #local definition(s) based on config.json
+
 data_hash = readConfigJson('read_config_json')
+
+##### local definition(s) based on data from config.json
 cover = data_hash['frontcover']
 
 # cover html file within the epub
@@ -318,8 +320,8 @@ end
 
 # the path for the converted epub cover file
 cover_jpg = File.join(oebps_dir, "cover.jpg")
-##############
 
+# delete existing epub dirs
 deleteOld(oebps_dir, 'delete_old_OEBPS')
 deleteOld(metainf_dir, 'delete_old_METAINF')
 
@@ -346,7 +348,6 @@ end
 
 # convert to epub and send stderr to log file
 cdToProjectTmp('cd_to_project_tmpdir')
-
 processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt, 'process_xsl')
 
 # run method: firstCoverEdit
