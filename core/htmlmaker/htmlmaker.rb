@@ -37,12 +37,6 @@ bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
 
 # ---------------------- METHODS
 
-#test method
-def increment(int)
-  int+=1
-  int
-end
-
 def fixFootnotes(content)
 	# place footnote text inline per htmlbook
 	filecontents = content.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
@@ -83,8 +77,8 @@ def stripEndnotes(content)
 end
 
 # ---------------------- PROCESSES
-if !ARGV.empty?		#adding this check for testing purposes
-
+# if !ARGV.empty?		#adding this check for testing purposes
+begin
 	# convert docx to xml
 	unless filetype == "html"
 		Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
@@ -163,4 +157,6 @@ if !ARGV.empty?		#adding this check for testing purposes
 		f.puts "finished htmlmaker"
 	end
 
+# end
+rescue => e
 end
