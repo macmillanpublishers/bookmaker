@@ -77,7 +77,6 @@ def stripEndnotes(content)
 end
 
 # ---------------------- PROCESSES
-# if !ARGV.empty?		#adding this check for testing purposes
 begin
 	# convert docx to xml
 	unless filetype == "html"
@@ -157,6 +156,6 @@ begin
 		f.puts "finished htmlmaker"
 	end
 
-# end
 rescue => e
+	puts '(Ignore for unit-tests:) ERROR encountered in process block: ', e
 end
