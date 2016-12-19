@@ -8,7 +8,7 @@ require_relative 'utilities/mcmlln-tools.rb'
 
 module Bkmkr
 	class Project
-		if !ARGV.empty?		#adding this check for testing purposes
+		unless ARGV.empty?		#adding this check for testing purposes
 			@unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
 		else
 			@unescapeargv = '/test/test/test.docx'
