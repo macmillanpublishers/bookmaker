@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
 
-#default
+#default 
 gem 'json', '~> 1.8.3'
 gem 'nokogiri', '~> 1.6.8'
 gem 'htmlentities', '~> 4.3.4'
