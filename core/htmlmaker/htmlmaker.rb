@@ -143,7 +143,7 @@ ensure
 end
 
 # ---------------------- PROCESSES
-begin
+
 # convert docx to xml
 convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
 
@@ -211,16 +211,18 @@ else
 	test_html_status = "FAIL: html file was created successfully"
 end
 
-# Printing the test results to the log file
-File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
-	f.puts "----- HTMLMAKER PROCESSES"
-	f.puts test_html_status
-	f.puts "finished htmlmaker"
+# wrapping this legacy log in a begin block so it doesn't hose travis tests.
+begin
+	# Printing the test results to the log file
+	File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
+		f.puts "----- HTMLMAKER PROCESSES"
+		f.puts test_html_status
+		f.puts "finished htmlmaker"
+	end
+rescue => e
+ 	puts '(Ignore for unit-tests:) ERROR encountered in process block: ', e
 end
 
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)
-rescue => e
- 	puts '(Ignore for unit-tests:) ERROR encountered in process block: ', e
-end
