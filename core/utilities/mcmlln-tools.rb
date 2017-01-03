@@ -74,8 +74,11 @@ module Mcmlln
     end
 
     def self.write_json(hash, json)
-      finaljson = JSON.pretty_generate(hash)
-      File.open(json, 'w+:UTF-8') { |f| f.puts finaljson }
+    	#the 'unless' prevents Travis from erroring on writing json_log file at end of every script
+  		unless ARGV.empty?
+        finaljson = JSON.pretty_generate(hash)
+        File.open(json, 'w+:UTF-8') { |f| f.puts finaljson }
+      end
     end
 
     def self.overwriteFile(file, content)
@@ -84,7 +87,7 @@ module Mcmlln
       end
     end
 
-    # for logging all methods in bookmaker to the json_log 
+    # for logging all methods in bookmaker to the json_log
     def self.logtoJson(log_hash, logkey, logstring)
       #if the logkey is empty we skip writing to the log
       unless logkey.empty?
