@@ -143,7 +143,7 @@ ensure
 end
 
 # ---------------------- PROCESSES
-
+begin
 # convert docx to xml
 convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
 
@@ -221,3 +221,6 @@ end
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)
+rescue => e
+ 	puts '(Ignore for unit-tests:) ERROR encountered in process block: ', e
+end
