@@ -225,4 +225,8 @@ end
 
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
-Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)
+begin
+	Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)
+rescue => e
+ 	puts '(Ignore for unit-tests:) ERROR encountered writing json logfile: ', e
+end
