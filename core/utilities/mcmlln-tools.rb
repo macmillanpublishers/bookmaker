@@ -53,6 +53,7 @@ module Mcmlln
 
     # An array listing everything in a directory
     def self.dirList(directory)
+      # the - ['..', '.'] below removes the current dir '.' & parent dir '..' from the Dir.entries array
       Dir.entries(directory) - ['..', '.']
     end
 
@@ -80,11 +81,11 @@ module Mcmlln
       end
     end
 
-    # for logging all methods in bookmaker to the json_log 
+    # for logging all methods in bookmaker to the json_log
     def self.logtoJson(log_hash, logkey, logstring)
       #if the logkey is empty we skip writing to the log
       unless logkey.empty?
-        #if the logstring is mil or undefined, set logstring to true
+        #if the logstring is nil or undefined, set logstring to true
         if !defined?(logstring) || logstring.nil?
           logstring = true
         end

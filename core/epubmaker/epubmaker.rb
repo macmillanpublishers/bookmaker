@@ -36,11 +36,17 @@ oebps_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
 # the path for the temp META-INF dir
 metainf_dir = File.join(Bkmkr::Paths.project_tmp_dir, "META-INF")
 
+# cover html file within the epub
+cover_html = File.join(oebps_dir, "cover.html")
+
 # ncx file within the epub
 toc_ncx = File.join(oebps_dir, "toc.ncx")
 
 # opf file within the epub
 content_opf = File.join(oebps_dir, "content.opf")
+
+# the path for the converted epub cover file
+cover_jpg = File.join(oebps_dir, "cover.jpg")
 
 # the path to the holding dir for epub image conversion
 epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
@@ -308,18 +314,12 @@ data_hash = readConfigJson('read_config_json')
 ##### local definition(s) based on data from config.json
 cover = data_hash['frontcover']
 
-# cover html file within the epub
-cover_html = File.join(oebps_dir, "cover.html")
-
 # the path to the cover file
 unless data_hash['frontcover'].nil? or data_hash['frontcover'].empty? or !data_hash['frontcover']
 	final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
 else
 	final_cover = ""
 end
-
-# the path for the converted epub cover file
-cover_jpg = File.join(oebps_dir, "cover.jpg")
 
 # delete existing epub dirs
 deleteOld(oebps_dir, 'delete_old_OEBPS')

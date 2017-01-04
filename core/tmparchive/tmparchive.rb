@@ -74,7 +74,6 @@ all_submitted_images = getFilesinSubmittedImages('check_submitted_images')
 # log submitted image list
 @log_hash['submitted_images'] = all_submitted_images
 
-# Rename and move input files to tmp folder to eliminate possibility of overwriting
 makeFolder(Bkmkr::Paths.tmp_dir, 'tmp_folder_created')
 
 deleteOldProjectTmpFolder('old_project_tmp_folder_deleted')
@@ -83,6 +82,7 @@ makeFolder(Bkmkr::Paths.project_tmp_dir, 'project_tmp_folder_created')
 
 makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
 
+# Rename and move input files to tmp folder to eliminate possibility of overwriting
 copyInputFile('copy_input_file')
 
 mvInputConfigFile(input_config, 'moved_input_config_file')
