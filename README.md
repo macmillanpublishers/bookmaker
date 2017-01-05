@@ -311,7 +311,7 @@ Print layout is based on the new CSS 3 Paged Media spec. To learn how to write C
 * [Building Books with CSS3 by Nellie McKesson](http://alistapart.com/article/building-books-with-css3)
 
 ## Logging to json
-For all ruby scripts in Bookmaker, each method is set to log  to a json file.  This provides a clean, formatted log for troubleshooting, and allows scripts later in the bookmaker toolchain to read (and act upon) output from scripts that have already run.
+For each run of the Bookmaker toolchain, every method in any ruby script writes to a json logfile. This provides a clean, formatted log for troubleshooting, and allows scripts later in the bookmaker toolchain to read (and act upon) output from scripts that have already run.
 
 The json log file is created in your $logdir (as set in your config.rb) and named *input_filename*.json.  It is overwritten on subsequent runs of the same input file.
 
