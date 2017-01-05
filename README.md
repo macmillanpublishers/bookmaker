@@ -315,8 +315,8 @@ For all ruby scripts in Bookmaker, each method is set to log  to a json file.  T
 
 The json log file is created in your $logdir (as set in your config.rb) and named *input_filename*.json.  It is overwritten on subsequent runs of the same input file.
 
-All methods are set to log a value of ‘true’ on success, or log the exception string in case of error. Additional key values and useful output are be logged as well.
-All methods and logged output from a given script are nested under that script’s name, and logged in order of runtime.  The start and completion times for each script are logged as well.
+All methods are set to log a value of ‘true’ on success, or log the exception string in case of error. Additional key values and useful output are logged as well.
+All methods and logged output from a given script are nested under that script’s name, and logged in order of runtime.  The start and completion times for each script are also included.
 
 ## Extend Bookmaker
 
