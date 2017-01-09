@@ -17,8 +17,7 @@ class HtmlmakerTests < Test::Unit::TestCase
     assert_equal(no_endnotes, stripEndnotes(no_endnotes))
     # testing with empty string, probably not necessary--
     assert_equal('', stripEndnotes(''))
-    # other tests (for raising exception?) could include passing an undefined var, or nil, or no argument.
-    #likely overkill
+    # other tests (for raising exception?) could include passing an undefined var, or nil, or no argument. Possibly overkill
 
   end
 
