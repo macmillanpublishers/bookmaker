@@ -15,9 +15,9 @@ class HtmlmakerTests < Test::Unit::TestCase
     assert_equal(no_endnotes, stripEndnotes(endnotes_without_content))
     # test to verify our method doesn't err or make undesired transformations with no endnotes
     assert_equal(no_endnotes, stripEndnotes(no_endnotes))
-    #testing with empty string, probably not necessary--
+    # testing with empty string, probably not necessary--
     assert_equal('', stripEndnotes(''))
-    #other tests (for raising exception?) could include passing an undefined var, or nil, or no argument.
+    # other tests (for raising exception?) could include passing an undefined var, or nil, or no argument.
     #likely overkill
 
   end
