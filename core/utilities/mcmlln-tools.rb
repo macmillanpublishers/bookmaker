@@ -76,7 +76,7 @@ module Mcmlln
 
     def self.write_json(hash, json)
     	#the 'unless' prevents Travis from erroring on writing json_log file at end of every script
-  		unless ARGV.empty?
+      unless ARGV.empty?
         finaljson = JSON.pretty_generate(hash)
         File.open(json, 'w+:UTF-8') { |f| f.puts finaljson }
       end
