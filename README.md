@@ -164,6 +164,7 @@ gem install htmlentities
 gem install unidecoder
 gem install to_xml
 gem install ruby-oci8
+gem install bundler
 ```
 
 #### Python
