@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'json'
 
 module Mcmlln
   class Tools
@@ -52,7 +53,8 @@ module Mcmlln
 
     # An array listing everything in a directory
     def self.dirList(directory)
-      Dir.entries(directory)
+      # the - ['..', '.'] below removes the current dir '.' & parent dir '..' from the Dir.entries array
+      Dir.entries(directory) - ['..', '.']
     end
 
     # An array listing all files in a directory
@@ -68,10 +70,29 @@ module Mcmlln
       json_hash
     end
 
+    def self.write_json(hash, json)
+      finaljson = JSON.pretty_generate(hash)
+      File.open(json, 'w+:UTF-8') { |f| f.puts finaljson }
+    end
+
     def self.overwriteFile(file, content)
-      File.open(file, 'w') do |output| 
+      File.open(file, 'w') do |output|
         output.write content
       end
+    end
+
+    # for logging all methods in bookmaker to the json_log
+    def self.logtoJson(log_hash, logkey, logstring)
+      #if the logkey is empty we skip writing to the log
+      unless logkey.empty?
+        #if the logstring is nil or undefined, set logstring to true
+        if !defined?(logstring) || logstring.nil?
+          logstring = true
+        end
+        log_hash[logkey] = logstring
+      end
+    rescue => e
+      log_hash[logkey] = "LOGGING_ERROR: #{e}"
     end
 
   end

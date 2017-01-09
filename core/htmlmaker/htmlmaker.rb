@@ -4,6 +4,7 @@ require_relative '../header.rb'
 require_relative '../metadata.rb'
 
 # ---------------------- VARIABLES
+local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
@@ -37,7 +38,40 @@ bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
 
 # ---------------------- METHODS
 
-def fixFootnotes(content)
+## wrapping Bkmkr::Tools.runpython in a new method for this script; to return a result for json_logfile
+def convertdocxtoxml(filetype, docxtoxml_py, logkey='')
+	unless filetype == "html"
+		Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
+	else
+		logstring = 'input file is html, skipping'
+	end
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, logkey='')
+	unless filetype == "html"
+		`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+	else
+		Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
+		logstring = 'input file is html, skipping (copied input file to project_tmp)'
+	end
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def readOutputHtml(logkey='')
+	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+	return filecontents
+rescue => logstring
+	return ''
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def fixFootnotes(content, logkey='')
 	# place footnote text inline per htmlbook
 	filecontents = content.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
 												.gsub(/(<span class="spansuperscriptcharacterssup">)(<span class="FootnoteReference" id="\d+"><\/span>)(<\/span>)/,"\\2")
@@ -49,96 +83,124 @@ def fixFootnotes(content)
 		filecontents = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 														   .gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
 	end
-	filecontents
+	return filecontents
+rescue => logstring
+	return content
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def fixEndnotes(content)
+def fixEndnotes(content, logkey='')
 	# add endnote ref id as static content
 	filecontents = content.gsub(/(<span class=")(.ndnote.eference)(" id=")(\d+)(">)(<\/span>)/,"\\1endnotereference\\3endnoteref-\\4\\5\\4\\6")
 												.gsub(/(div class="endnotetext" id=")/,"\\1endnotetext-")
-	filecontents
+	return filecontents
+rescue => logstring
+	return content
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def fixEntities(content)
+def fixEntities(content, logkey='')
 	filecontents = content.gsub(/&nbsp/,"&#160")
 												.gsub(/(<img.*?)(>)/,"\\1/\\2")
 												.gsub(/(<br)(>)/,"\\1/\\2")
-	filecontents
+	return filecontents
+rescue => logstring
+	return content
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def stripEndnotes(content)
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
+def overwriteFile(path,filecontents, logkey='')
+	Mcmlln::Tools.overwriteFile(path, filecontents)
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
+def htmlmakerRunNode(jsfile, args, logkey='')
+	Bkmkr::Tools.runnode(jsfile, args)
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def stripEndnotes(content, logkey='')
 	# removes endnotes section if no content
 	filecontents = content
 	endnote_txt = content.match(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/).to_s
 	unless endnote_txt.include?("<p ")
 		filecontents = content.gsub(/(<section data-type=\"appendix\" class=\"endnotes\".*?\">)((.|\n)*?)(<\/section>)/,"")
 	end
-	filecontents
+	return filecontents
+rescue => logstring
+	return content
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
 # ---------------------- PROCESSES
 
 # convert docx to xml
-unless filetype == "html"
-	Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
-end
+convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
 
 # convert xml to html
-unless filetype == "html"
-	`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-else
-	Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
-end
+convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, 'convert_xml_to_html')
 
-filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+#read in html
+filecontents = readOutputHtml('read_output_html_a')
 
 # run method: fixFootnotes
-filecontents = fixFootnotes(filecontents)
+filecontents = fixFootnotes(filecontents, 'fix_footnotes')
 
 # run method: fixEndnotes
-filecontents = fixEndnotes(filecontents)
+filecontents = fixEndnotes(filecontents, 'fix_endnotes')
 
 # run method: fixEntities
-filecontents = fixEntities(filecontents)
+filecontents = fixEntities(filecontents, 'fix_entities')
 
-Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+#write out edited html
+overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
 
 # # strip extraneous footnote section from html
-Bkmkr::Tools.runnode(footnotes_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(footnotes_js, Bkmkr::Paths.outputtmp_html, 'footnotes_js')
 
 # # strip static toc from html
-Bkmkr::Tools.runnode(strip_toc_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(strip_toc_js, Bkmkr::Paths.outputtmp_html, 'strip_toc_js')
 
 # # convert parts to divs
-Bkmkr::Tools.runnode(parts_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(parts_js, Bkmkr::Paths.outputtmp_html, 'parts_js')
 
 # # add headings to all sections
-Bkmkr::Tools.runnode(headings_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
 
 # # add correct markup for inlines (em, strong, sup, sub)
-Bkmkr::Tools.runnode(inlines_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html, 'inlines_js')
 
 # # add correct markup for lists
-Bkmkr::Tools.runnode(lists_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(lists_js, Bkmkr::Paths.outputtmp_html, 'lists_js')
 
 # # change p children of pre tags to spans
-Bkmkr::Tools.runnode(preformatted_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js')
 
 # temporary fixes to potentially be discarded once we switch to javascript conversion
-Bkmkr::Tools.runnode(bandaid_js, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(bandaid_js, Bkmkr::Paths.outputtmp_html, 'bandaid_js')
 
-filecontents = File.read(Bkmkr::Paths.outputtmp_html)
+filecontents = readOutputHtml('read_output_html_b')
 
 # run method: stripEndnotes
-filecontents = stripEndnotes(filecontents)
+filecontents = stripEndnotes(filecontents, 'strip_endnotes')
 
-Mcmlln::Tools.overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents)
+overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_b')
 
 # set html title to match JSON
-Bkmkr::Tools.runnode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"")
+htmlmakerRunNode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"", 'title_js')
 
 # evaluate processing instructions
-Bkmkr::Tools.runnode(evaluate_pis, Bkmkr::Paths.outputtmp_html)
+htmlmakerRunNode(evaluate_pis, Bkmkr::Paths.outputtmp_html, 'evaluate_pis')
 
 # ---------------------- LOGGING
 
@@ -155,3 +217,7 @@ File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
 	f.puts test_html_status
 	f.puts "finished htmlmaker"
 end
+
+# Write json log:
+Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
+Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)
