@@ -1,0 +1,13 @@
+language: ruby
+rvm:
+- 2.0.0
+bundler_args: --without production
+# safelist
+branches:
+  only:
+  - travis
+script: ruby unit_tests.rb
+notifications:
+  email: false
+  slack:
+    secure: jhW1auXo52CyDUN8teXbhoyIIkkcLEHZ8E3pyoLeDWVq/huG9/skSy0tN28SZlmJBTtdKxPaZgMfRPBDDbGnBTjnHJfesGKh9PiTlK1L62RlVBVq7+gUA3vGdLHqPGpOg2nEWa5DKBw6E4/adpFrvFJLLx+XL0akO/kYQVx6QCNHC7SSbv+rSLSq6NwjJVeLi0rVZ/f74V8tUnZHIuUGOjHhT+3sqzxNliEcKY2fAoPJY7ySF7lyHlOJJGbu9IzsF1H+oqiBhnIIWJ+YOl2aBYoDh9TgJI4Yd0xHUvJdnZoyXd6ODCJQ+nEnaIPdjZZ5XXr3hY0xo5eWZ/MGfUFe2eWyYhJF3Mb6CJJfBbLukNLB/BYo7OnOrcQ6zxrhEltUcvxsUJxZLBs4yJ1tccpFeNSJhCQRKHsEcN0ZieyzzAMLUz7C3y+IgqMGtZZDMoKG1bHel17ytI+Mun47nZUGCFE8K5q/rh5timyhmD/BidoS/oXeDIlLFKeY8+shVK/CRfS5879ptbfmw6g4nU8vd0h3BWwoD4jgh/ma9UZIS85n0LiCNrkfbVNyBbQUV7RhaljtfikTC4WgljmwSfVGLwRBKP5ixiD8WdRlwMeLnhf6Y/FizzmceNJ8BKxvq4m+EUkFneNIyhEuhpQeuAWqPSzeH5+SMfxqWfgICTFDbjo=
