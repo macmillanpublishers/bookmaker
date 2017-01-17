@@ -25,7 +25,8 @@
   <!-- paragraphs that are used in many other types of blocks -->
   <xsl:variable name="versatile-block-paras" as="xs:string*">
     <xsl:sequence
-      select="'SpaceBreak-Internalint'"/>
+      select="'SpaceBreak-Internalint',
+              'BookmakerProcessingInstructionbpi'"/>
   </xsl:variable>
 
   <!-- Paragraph styles which should get aggregated in an epigraph

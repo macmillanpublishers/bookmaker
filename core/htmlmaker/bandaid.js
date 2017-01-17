@@ -20,6 +20,7 @@ fs.readFile(file, function processTemplates (err, contents) {
 
   //selections
   $('blockquote + p.SpaceBreak-Internalint, aside + p.SpaceBreak-Internalint, pre + p.SpaceBreak-Internalint').remove();
+  $('blockquote + p.BookmakerProcessingInstructionbpi, aside + p.BookmakerProcessingInstructionbpi, pre + p.BookmakerProcessingInstructionbpi').remove();
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
