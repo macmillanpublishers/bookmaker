@@ -27,9 +27,6 @@ epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub
 # the path for the temporary epub file
 tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 
-# the path for the conversion log file
-convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}-stdout-and-err.txt")
-
 # the path for the temp OEBPS dir
 oebps_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
 
@@ -152,8 +149,8 @@ ensure
 end
 
 ## wrapping Bkmkr::Tools.processxsl in a new method for this script; to return a result for json_logfile
-def processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt, logkey='')
-	Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt)
+def processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, logkey='')
+	Bkmkr::Tools.processxsl(epub_tmp_html, epub_xsl, tmp_epub, '')
 rescue => logstring
 ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
@@ -341,13 +338,8 @@ overwriteFile(epub_tmp_html, filecontents, 'overwrite_epubtmp_html')
 
 runNode_epubmaker(strip_tocnodes_js, epub_tmp_html, 'strip_tocnodes_js')
 
-# Add new section to log file
-File.open(convert_log_txt, 'a+') do |f|
-	f.puts "----- EPUBMAKER XSL STDERR"
-end
-
-# convert to epub and send stderr to log file
-processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt, 'process_xsl')
+# convert to epub!
+processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, 'process_xsl')
 
 # run method: firstCoverEdit
 # run method: firstNCXEdit
