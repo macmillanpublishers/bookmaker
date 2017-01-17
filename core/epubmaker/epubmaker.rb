@@ -28,7 +28,7 @@ epub_xsl = File.join(Bkmkr::Paths.scripts_dir, "HTMLBook", "htmlbook-xsl", "epub
 tmp_epub = File.join(Bkmkr::Paths.project_tmp_dir, "tmp.epub")
 
 # the path for the conversion log file
-convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}.txt")
+convert_log_txt = File.join(Bkmkr::Paths.log_dir, "#{Bkmkr::Project.filename}-stdout-and-err.txt")
 
 # the path for the temp OEBPS dir
 oebps_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
@@ -343,11 +343,10 @@ runNode_epubmaker(strip_tocnodes_js, epub_tmp_html, 'strip_tocnodes_js')
 
 # Add new section to log file
 File.open(convert_log_txt, 'a+') do |f|
-	f.puts "----- EPUBMAKER PROCESSES"
+	f.puts "----- EPUBMAKER XSL STDERR"
 end
 
 # convert to epub and send stderr to log file
-cdToProjectTmp('cd_to_project_tmpdir')
 processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, convert_log_txt, 'process_xsl')
 
 # run method: firstCoverEdit
