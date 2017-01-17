@@ -182,21 +182,6 @@ overwriteFile(cssfile, revertcss, 'overwrite_css_rm-ing_escapechars')
 
 # ---------------------- LOGGING
 
-# is there custom javascript?
-
-if File.file?(Metadata.printjs)
-	test_custom_js = Metadata.printjs
-else
-	test_custom_js = "none"
-end
-
-# Printing the test results to the log file
-File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-	f.puts "----- PDFMAKER PROCESSES"
-	f.puts "----- I found the following custom javascript: #{test_custom_js}"
-	f.puts "finished pdfmaker"
-end
-
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)

@@ -262,15 +262,6 @@ evalOneoffs("oneoff_epub.css", tmp_epub_css, 'one_off_css_for_epub')
 
 # ---------------------- LOGGING
 
-# Printing the test results to the log file
-File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-	f.puts "----- STYLESHEETS PROCESSES"
-	f.puts "----- I found #{@log_hash['chapter_head_count']} chapters in this book."
-	f.puts @log_hash['evaluate_Trim_PIs']
-	f.puts @log_hash['evaluate_Toc_PIs']
-	f.puts "finished stylesheets"
-end
-
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)

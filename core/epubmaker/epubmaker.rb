@@ -409,15 +409,7 @@ else
 	test_epub_status = "FAIL: the EPUB was created successfully"
 end
 
-# Add new section to log file
-File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-	f.puts " "
-	f.puts "-----"
-	f.puts test_epub_status
-	f.puts "----- ebook ISBN: #{Metadata.eisbn}"
-	f.puts "finished epubmaker"
-end
-
+@log_hash['print_ISBN']=Metadata.pisbn
 @log_hash['test_epub_status'] = test_epub_status
 
 # Write json log:

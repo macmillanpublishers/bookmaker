@@ -49,12 +49,6 @@ deleteFileifExists(Bkmkr::Project.input_file, 'delete_input_file')
 deleteFileifExists(Bkmkr::Paths.alert, 'delete_alert_file')
 
 # ---------------------- LOGGING
-# Printing the test results to the log file
-File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-  f.puts "----- CLEANUP PROCESSES"
-  f.puts "finished cleanup"
-end
-
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)

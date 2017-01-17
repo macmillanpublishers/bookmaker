@@ -195,31 +195,16 @@ writeMissingErrors(missing, image_error, 'write_missing_errors')
 # run method: writeResErrors
 writeResErrors(resolution, image_error, 'write_resolution_errors')
 
+
+# ---------------------- LOGGING
+
 # write items of interest to json log
+@log_hash['image_references_in_ms']=imgarr.count
 @log_hash['imagedir_images'] = images
 @log_hash['finaldir_images'] = finalimages
 @log_hash['unique_image_array'] = imgarr
 @log_hash['lowres_images'] = resolution
 @log_hash['missing_images'] = missing
-
-# ---------------------- LOGGING
-
-# Count how many images are referenced in the book
-test_img_src = imgarr.count
-
-if missing.any?
-	test_missing_img = "FAIL: These image files seem to be missing: #{missing}"
-else
-	test_missing_img = "pass: There are no missing image files!"
-end
-
-# Printing the test results to the log file
-File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-	f.puts "----- IMAGECHECKER PROCESSES"
-	f.puts "I found #{test_img_src} image references in this book"
-	f.puts "#{test_missing_img}"
-	f.puts "finished imagechecker"
-end
 
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)

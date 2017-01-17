@@ -154,8 +154,13 @@ module Bkmkr
 		# for any script that calls this method:
 		# create 'local_log' hash nested in the jsonlog_hash named after the script basename
 		# add a 'begun' key/value to the new local hash
-		def self.setLocalLoghash
-		  local_log_hash = Bkmkr::Paths.jsonlog_hash
+		def self.setLocalLoghash(new_hash=false)
+			# if we receive optional new_hash value of 'true', we overwrite jsonlog contents & starting with a fresh new hash
+			unless new_hash == true
+		  	local_log_hash = Bkmkr::Paths.jsonlog_hash
+			else
+				local_log_hash = {}
+			end
 		  local_log_hash[Bkmkr::Paths.thisscript] = {'begun'=>Time.now}
 		  return local_log_hash, local_log_hash[Bkmkr::Paths.thisscript]
 		end
