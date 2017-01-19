@@ -400,7 +400,7 @@ else
 	test_epub_status = "FAIL: the EPUB was created successfully"
 end
 
-@log_hash['print_ISBN']=Metadata.pisbn
+@log_hash['ebook_ISBN']=Metadata.eisbn
 @log_hash['test_epub_status'] = test_epub_status
 
 # Write json log:
