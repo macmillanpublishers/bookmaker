@@ -3,7 +3,7 @@ require 'fileutils'
 require_relative '../header.rb'
 
 # ---------------------- VARIABLES
-local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
+local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash(true)
 
 input_config = File.join(Bkmkr::Paths.submitted_images, "config.json")
 
@@ -92,15 +92,6 @@ filecontents = "The conversion processor is currently running. Please do not sub
 writeAlertFile(filecontents, 'write_alert_file')
 
 # ---------------------- LOGGING
-
-# Write test results
-File.open("#{Bkmkr::Paths.log_file}", 'w+') do |f|
-	f.puts "-----"
-	f.puts Time.now
-	f.puts "----- TMPARCHIVE PROCESSES"
-	f.puts "finished tmparchive"
-end
-
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)

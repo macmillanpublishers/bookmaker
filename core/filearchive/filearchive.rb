@@ -64,15 +64,7 @@ copyFile(Bkmkr::Paths.outputtmp_html, final_html, 'copy_html_to_final_layout_dir
 
 copyFile(tmp_config, final_config, 'copy_tmp_config_final_layout_dir')
 
-
-# ---------------------- LOGGING
-
-# Printing the test results to the log file
-File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-	f.puts "----- FILEARCHIVE PROCESSES"
-	f.puts "----- Print ISBN: #{Metadata.pisbn}"
-	f.puts "finished filearchive"
-end
+@log_hash['print_ISBN']=Metadata.pisbn
 
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)

@@ -154,8 +154,13 @@ module Bkmkr
 		# for any script that calls this method:
 		# create 'local_log' hash nested in the jsonlog_hash named after the script basename
 		# add a 'begun' key/value to the new local hash
-		def self.setLocalLoghash
-		  local_log_hash = Bkmkr::Paths.jsonlog_hash
+		def self.setLocalLoghash(new_hash=false)
+			# if we receive optional new_hash value of 'true', we overwrite jsonlog contents & starting with a fresh new hash
+			unless new_hash == true
+		  	local_log_hash = Bkmkr::Paths.jsonlog_hash
+			else
+				local_log_hash = {}
+			end
 		  local_log_hash[Bkmkr::Paths.thisscript] = {'begun'=>Time.now}
 		  return local_log_hash, local_log_hash[Bkmkr::Paths.thisscript]
 		end
@@ -207,10 +212,10 @@ module Bkmkr
 		def self.processxsl(html_file, xsl_file, epub_file, convert_log_txt)
 			if $xsl_processor
 				xsl_command = $xsl_processor.gsub(/\S*\.html/,"#{html_file}").gsub(/\S*\.xsl/,"#{xsl_file}").gsub(/\S*\.epub/,"#{epub_file}")
-				`#{xsl_command} 2>>"#{convert_log_txt}"`
+				`#{xsl_command}` #2>>"#{convert_log_txt}"`
 			else
 				saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{xslprocessor}.jar")
-				`java -jar "#{saxonpath}" -s:"#{html_file}" -xsl:"#{xsl_file}" -o:"#{epub_file}" 2>>"#{convert_log_txt}"`
+				`java -jar "#{saxonpath}" -s:"#{html_file}" -xsl:"#{xsl_file}" -o:"#{epub_file}"` # 2>>"#{convert_log_txt}"`
 			end
 		end
 

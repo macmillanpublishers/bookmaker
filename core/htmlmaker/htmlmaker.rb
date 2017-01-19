@@ -202,27 +202,16 @@ htmlmakerRunNode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitl
 # evaluate processing instructions
 htmlmakerRunNode(evaluate_pis, Bkmkr::Paths.outputtmp_html, 'evaluate_pis')
 
-# ---------------------- LOGGING
-
 # html file should exist
 if File.file?("#{Bkmkr::Paths.outputtmp_html}")
 	test_html_status = "pass: html file was created successfully"
 else
 	test_html_status = "FAIL: html file was created successfully"
 end
+@log_hash['html_status']=test_html_status
 
-# wrapping this legacy log in a begin block so it doesn't hose travis tests.
-begin
-	# Printing the test results to the log file
-	File.open("#{Bkmkr::Paths.log_file}", 'a+') do |f|
-		f.puts "----- HTMLMAKER PROCESSES"
-		f.puts test_html_status
-		f.puts "finished htmlmaker"
-	end
-rescue => e
- 	puts '(Ignore for unit-tests:) ERROR encountered in process block: ', e
-end
 
+# ---------------------- LOGGING
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)

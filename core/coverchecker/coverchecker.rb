@@ -76,13 +76,6 @@ covercheck = checkCoverFile(files, cover, tmp_cover, final_cover, cover_error, '
 
 
 # ---------------------- LOGGING
-# Printing the test results to the log file
-File.open(Bkmkr::Paths.log_file, 'a+') do |f|
-	f.puts "----- COVERCHECKER PROCESSES"
-	f.puts covercheck
-	f.puts "finished coverchecker"
-end
-
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
 Mcmlln::Tools.write_json(local_log_hash, Bkmkr::Paths.json_log)
