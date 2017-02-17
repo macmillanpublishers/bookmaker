@@ -11,8 +11,8 @@ fs.readFile(file, function processTemplates (err, contents) {
 // insert <fig> placeholder for cover image immediately following <body>
   $("body[data-type='book']").prepend(
     $("<figure>")
-    .attr('id','bookcover01')
-    .attr('data-type','cover').append(
+    .attr('data-type','cover')
+    .attr('id','bookcover01').append(
       $("<img>")
       .attr('src','cover.jpg')
     ))
