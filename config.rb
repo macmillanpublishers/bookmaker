@@ -20,31 +20,31 @@ logsubdir = input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR
 # reflect your current system setup.
 
 # Are you on a windows, mac, or unix system?
-$op_system = "mac"
+$op_system = "windows"
+#$op_system = "mac"
 #$op_system = "unix"
 
 # The location of the temporary working folder.
 # This is where bookmaker will perform most actions
 # before moving the finalized files to the "done" directory.
-$tmp_dir = File.join("/", "Users", "matthew.retzer", "bookmaker-dev", "bookmaker_tmp", project)
+$tmp_dir = File.join($currvol, "bookmaker_tmp", project)
 
-# The location to store the log file that gets created 
+# The location to store the log file that gets created
 # for each conversion.
-# $log_dir = File.join(logdir, "bookmaker_logs", logsubdir, project)
-$log_dir = File.join("/", "Users", "matthew.retzer", "bookmaker-dev", "logs")
+$log_dir = File.join(logdir, "bookmaker_logs", logsubdir, project)
 
 # The location where your bookmaker scripts live.
-$scripts_dir = File.join("/", "Users", "matthew.retzer", "bookmaker-dev")
+$scripts_dir = File.join("S:", "resources", "bookmaker_scripts")
 
-# The location that any other resources are installed, 
+# The location that any other resources are installed,
 # for example your pdf processor, zip utility, etc.
 # (on Windows zip is expected at path: $resource_dir\zip\zip.exe)
-$resource_dir = File.join("/", "Users", "matthew.retzer", "bookmaker-dev")
+$resource_dir = "C:"
 
 # Which version of saxon are you using?
 # Uncomment the correct version and update the version number if needed.
-#$saxon_version = "saxon9pe"
-$saxon_version = "saxon9he"
+$saxon_version = "saxon9pe"
+#$saxon_version = "saxon9he"
 #$saxon_version = "saxon9ee"
 
 # Choose either prince or docraptor to create your PDFs.
@@ -78,14 +78,14 @@ $done_dir = File.join(working_dir, "done")
 
 # If you're using your own xslt processor, you can specify
 # the command here, including file placeholders as shown below.
-$xsl_processor = "xsltproc file.xsl file.html -o file.epub"
+# $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
 # $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
 
 if File.directory?($scripts_dir)	#adding this check for travis ci tests
   # Your API key to create PDFs via DocRaptor
-  $docraptor_key = File.read("/Users/matthew.retzer/bookmaker-dev/bookmaker_authkeys/api_key.txt")
+  $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")
 
   # username and password for online resources
-  $http_username = File.read("/Users/matthew.retzer/bookmaker-dev/bookmaker_authkeys/http_username.txt")
-  $http_password = File.read("/Users/matthew.retzer/bookmaker-dev/bookmaker_authkeys/http_pass.txt")
+  $http_username = File.read("#{$scripts_dir}/bookmaker_authkeys/http_username.txt")
+  $http_password = File.read("#{$scripts_dir}/bookmaker_authkeys/http_pass.txt")
 end
