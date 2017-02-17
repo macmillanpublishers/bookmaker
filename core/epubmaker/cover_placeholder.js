@@ -13,7 +13,7 @@ fs.readFile(file, function processTemplates (err, contents) {
     $("<figure>")
     .attr('id','bookcover01')
     .attr('data-type','cover').append(
-      $("img")
+      $("<img>")
       .attr('src','cover.jpg')
     ))
 
