@@ -18,6 +18,9 @@ epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
 # the path for strip-tocnodes.js
 strip_tocnodes_js = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-tocnodes.js")
 
+# the path for strip-tocnodes.js
+cover_placeholder_js = File.join(Bkmkr::Paths.core_dir, "epubmaker", "cover_placeholder.js")
+
 # the path for strip-halftitle.js
 strip_halftitle_xsl = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-halftitle.xsl")
 
@@ -115,16 +118,6 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-# Adding the cover holder to the html file
-def secondHTMLEdit(var, logkey='')
-	filecontents = var.gsub(/<body data-type="book">/,"<body data-type=\"book\"><figure data-type=\"cover\" id=\"bookcover01\"><img src=\"cover.jpg\"/></figure>")
-	return filecontents
-rescue => logstring
-	return ''
-ensure
-	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
-end
-
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def overwriteFile(path, filecontents, logkey='')
 	Mcmlln::Tools.overwriteFile(path, filecontents)
@@ -134,7 +127,7 @@ ensure
 end
 
 ## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
-def runNode_epubmaker(jsfile, htmlfile, logkey='')
+def localRunNode(jsfile, htmlfile, logkey='')
 	Bkmkr::Tools.runnode(jsfile, htmlfile)
 rescue => logstring
 ensure
@@ -329,14 +322,14 @@ else
 	filecontents = firstHTMLEdit(Bkmkr::Paths.outputtmp_html, 'first_html_edit--outputtmp_html')
 end
 
-# run method: secondHTMLEdit
-if !final_cover.nil? and File.file?(final_cover)
-	filecontents = secondHTMLEdit(filecontents, 'second_html_edit')
-end
-
 overwriteFile(epub_tmp_html, filecontents, 'overwrite_epubtmp_html')
 
-runNode_epubmaker(strip_tocnodes_js, epub_tmp_html, 'strip_tocnodes_js')
+# run node method: add cover placeholder to html file
+if !final_cover.nil? and File.file?(final_cover)
+  localRunNode(cover_placeholder_js, epub_tmp_html, 'cover_placeholder_js')
+end
+
+localRunNode(strip_tocnodes_js, epub_tmp_html, 'strip_tocnodes_js')
 
 # convert to epub!
 processxsl_epubmaker(epub_tmp_html, epub_xsl, tmp_epub, 'process_xsl')
