@@ -24,6 +24,6 @@ fs.readFile(file, function processTemplates (err, contents) {
 	        return console.log(err);
 	    }
 
-	    console.log("TOC has been emptied!");
+	    console.log("Cover placeholder has been inserted!");
 	});
 });
