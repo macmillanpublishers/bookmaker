@@ -246,7 +246,8 @@ module Bkmkr
 		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, http_username, http_password)
 			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if pdfprocessor == "prince"
-				`prince -s #{pdf_css} --javascript #{pdf_html_file} -o #{pdffile}`
+				princecmd = File.join("C:", "Program Files (x86)", "Prince", "engine", "bin", "prince.exe")
+				`\"#{princecmd}\" -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
 			elsif pdfprocessor == "docraptor"
 				File.open(pdffile, "w+b") do |f|
 				f.write DocRaptor.create(:document_content => pdf_html,
