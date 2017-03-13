@@ -22,6 +22,15 @@ fs.readFile(file, function processTemplates (err, contents) {
   $('blockquote + p.SpaceBreak-Internalint, aside + p.SpaceBreak-Internalint, pre + p.SpaceBreak-Internalint').remove();
   $('blockquote + p.BookmakerProcessingInstructionbpi, aside + p.BookmakerProcessingInstructionbpi, pre + p.BookmakerProcessingInstructionbpi').remove();
 
+  // fix fig ids in case of duplication
+  $('figure').each(function(){
+    var myId = $(this).attr('id');
+    if ( myId !== undefined ) {
+      var newId = "fig-" + myId;
+      $(this).attr('id', newId); 
+    }
+  });
+
   var output = $.html();
     fs.writeFile(file, output, function(err) {
 	    if(err) {
