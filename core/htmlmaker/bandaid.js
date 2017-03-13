@@ -25,8 +25,10 @@ fs.readFile(file, function processTemplates (err, contents) {
   // fix fig ids in case of duplication
   $('figure').each(function(){
     var myId = $(this).attr('id');
-    var newId = "fig-" + myId;
-    $(this).attr('id', newId);
+    if ( myId !== undefined ) {
+      var newId = "fig-" + myId;
+      $(this).attr('id', newId); 
+    }
   });
 
   var output = $.html();
