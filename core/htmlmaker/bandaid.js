@@ -35,10 +35,6 @@ fs.readFile(file, function processTemplates (err, contents) {
   $('figure img').each(function(){
     var mySrc = $(this).attr('src');
     var myAlt = $(this).attr('alt');
-    var replaceAlt = false;
-    if ( myAlt == mySrc ) {
-      var replaceAlt = true;
-    };
     var mypattern1 = new RegExp( "^images/\\[", "g");
     var mypattern2 = new RegExp( "\\]$", "g");
     var result1 = mypattern1.test(mySrc);
@@ -49,9 +45,8 @@ fs.readFile(file, function processTemplates (err, contents) {
       mySrc = mySrc.replace("[", "%5B").replace("]", "%5D");
     }
     $(this).attr('src', mySrc);
-    if (replaceAlt == true) {
-      $(this).attr('alt', mySrc);
-    };
+    myAlt = myAlt.replace("[", "%5B").replace("]", "%5D");
+    $(this).attr('alt', myAlt);
   });
 
   // fix brackets in urls
