@@ -48,10 +48,18 @@ fs.readFile(file, function processTemplates (err, contents) {
   });
 
   // fix brackets in urls
-  $('a').each(function(){
+  $('a[href]').each(function(){
     var myHref = $(this).attr('href');
     myHref = myHref.replace("[", "%5B").replace("]", "%5D");
     $(this).attr('href', myHref);
+    console.log(myHref);
+  });
+
+  $('span.spanhyperlinkurl:not(":has(a)")').each(function(){
+    var myText = $(this).text();
+    myText = myText.replace("[", "%5B").replace("]", "%5D");
+    $(this).empty();
+    $(this).append(myText);
   });
 
   var output = $.html();
