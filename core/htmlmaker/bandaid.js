@@ -54,7 +54,6 @@ fs.readFile(file, function processTemplates (err, contents) {
     var myHref = $(this).attr('href');
     myHref = myHref.replace("[", "%5B").replace("]", "%5D");
     $(this).attr('href', myHref);
-    console.log(myHref);
   });
 
   $('span.spanhyperlinkurl:not(":has(a)")').each(function(){
