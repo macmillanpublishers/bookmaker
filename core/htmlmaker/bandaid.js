@@ -18,7 +18,7 @@ fs.readFile(file, function processTemplates (err, contents) {
     });
   }
 
-  //selections
+  // paragraphs to remove after conversion
   $('blockquote + p.SpaceBreak-Internalint, aside + p.SpaceBreak-Internalint, pre + p.SpaceBreak-Internalint').remove();
   $('blockquote + p.BookmakerProcessingInstructionbpi, aside + p.BookmakerProcessingInstructionbpi, pre + p.BookmakerProcessingInstructionbpi').remove();
 
@@ -29,6 +29,38 @@ fs.readFile(file, function processTemplates (err, contents) {
       var newId = "fig-" + myId;
       $(this).attr('id', newId); 
     }
+  });
+
+  // remove leading and trailing brackets from image filenames
+  $('figure img').each(function(){
+    var mySrc = $(this).attr('src');
+    var myAlt = $(this).attr('alt');
+    var mypattern1 = new RegExp( "^images/\\[", "g");
+    var mypattern2 = new RegExp( "\\]$", "g");
+    var result1 = mypattern1.test(mySrc);
+    var result2 = mypattern2.test(mySrc);
+    if ( result1 === true && result2 === true ) {
+      mySrc = mySrc.replace("[", "").replace("]", "");
+    } else {
+      mySrc = mySrc.replace("[", "%5B").replace("]", "%5D");
+    }
+    $(this).attr('src', mySrc);
+    myAlt = myAlt.replace("[", "%5B").replace("]", "%5D");
+    $(this).attr('alt', myAlt);
+  });
+
+  // fix brackets in urls
+  $('a[href]').each(function(){
+    var myHref = $(this).attr('href');
+    myHref = myHref.replace("[", "%5B").replace("]", "%5D");
+    $(this).attr('href', myHref);
+  });
+
+  $('span.spanhyperlinkurl:not(":has(a)")').each(function(){
+    var myText = $(this).text();
+    myText = myText.replace("[", "%5B").replace("]", "%5D");
+    $(this).empty();
+    $(this).append(myText);
   });
 
   var output = $.html();
