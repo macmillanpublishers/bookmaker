@@ -16,17 +16,11 @@ source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}
 
 word_to_html_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "wordtohtml.xsl")
 
-footnotes_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.js")
-
 strip_toc_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.js")
-
-parts_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.js")
 
 headings_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.js")
 
 inlines_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.js")
-
-lists_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "lists.js")
 
 evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
 
@@ -165,23 +159,14 @@ filecontents = fixEntities(filecontents, 'fix_entities')
 #write out edited html
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
 
-# # strip extraneous footnote section from html
-htmlmakerRunNode(footnotes_js, Bkmkr::Paths.outputtmp_html, 'footnotes_js')
-
 # # strip static toc from html
 htmlmakerRunNode(strip_toc_js, Bkmkr::Paths.outputtmp_html, 'strip_toc_js')
-
-# # convert parts to divs
-htmlmakerRunNode(parts_js, Bkmkr::Paths.outputtmp_html, 'parts_js')
 
 # # add headings to all sections
 htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
 
 # # add correct markup for inlines (em, strong, sup, sub)
 htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html, 'inlines_js')
-
-# # add correct markup for lists
-htmlmakerRunNode(lists_js, Bkmkr::Paths.outputtmp_html, 'lists_js')
 
 # # change p children of pre tags to spans
 htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js')
