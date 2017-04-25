@@ -18,8 +18,6 @@ word_to_html_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "wordtohtml.xsl
 
 footnotes_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.js")
 
-strip_toc_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.js")
-
 parts_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.js")
 
 headings_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.js")
@@ -167,9 +165,6 @@ overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_
 
 # # strip extraneous footnote section from html
 htmlmakerRunNode(footnotes_js, Bkmkr::Paths.outputtmp_html, 'footnotes_js')
-
-# # strip static toc from html
-htmlmakerRunNode(strip_toc_js, Bkmkr::Paths.outputtmp_html, 'strip_toc_js')
 
 # # convert parts to divs
 htmlmakerRunNode(parts_js, Bkmkr::Paths.outputtmp_html, 'parts_js')
