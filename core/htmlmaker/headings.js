@@ -10,10 +10,10 @@ fs.readFile(file, function processTemplates (err, contents) {
 
 //select sections without first-child h1's
 var noHeadSection = $("section:not(:has(h1:first-child))");
-//select sections' nested elements (<p>s, h1's) with classes or text matching key criteria 
-var ataSection = $("section").find("p.AboutAuthorTextNo-Indentatatx1,p.AboutAuthorTextHeadatah,p.AboutAuthorTextatatx,h1:contains(About the Author)");
-var bobadSection = $("section").find("h1.BOBAdTitlebobt,p.BOBAdTextbobtx")
-var fsSection = $("section").find("p.FrontSalesTitlefst,p.FrontSalesSubtitlefsst,p.FrontSalesQuoteHeadfsqh,p.FrontSalesTextfstx,p.FrontSalesTextNoIndentfstx1,p.FrontSalesQuotefsq,p.FrontSalesQuoteNoIndentfsq1")
+// //select sections' nested elements (<p>s, h1's) with classes or text matching key criteria
+// var ataSection = $("section").find("p.AboutAuthorTextNo-Indentatatx1,p.AboutAuthorTextHeadatah,p.AboutAuthorTextatatx,h1:contains(About the Author)");
+// var bobadSection = $("section").find("h1.BOBAdTitlebobt,p.BOBAdTextbobtx")
+// var fsSection = $("section").find("p.FrontSalesTitlefst,p.FrontSalesSubtitlefsst,p.FrontSalesQuoteHeadfsqh,p.FrontSalesTextfstx,p.FrontSalesTextNoIndentfstx1,p.FrontSalesQuotefsq,p.FrontSalesQuoteNoIndentfsq1")
 
 //for each section without first-child h1's, create one with .Nonprinting and approporate h1 text
 noHeadSection.each (function() {
@@ -35,16 +35,17 @@ noHeadSection.each (function() {
     }
   $(this).prepend("<h1 class='Nonprinting'>"+hText+"</h1>");
 });
-//addClass for sections containing related selections
-ataSection.each(function() {
-  $(this).parents("section").addClass("abouttheauthor");
-});
-bobadSection.each(function() {
-  $(this).parents("section").addClass("bobad");
-});
-fsSection.each(function() {
-  $(this).parents("section").addClass("frontsales");
-});
+
+// //addClass for sections containing related selections
+// ataSection.each(function() {
+//   $(this).parents("section").addClass("abouttheauthor");
+// });
+// bobadSection.each(function() {
+//   $(this).parents("section").addClass("bobad");
+// });
+// fsSection.each(function() {
+//   $(this).parents("section").addClass("frontsales");
+// });
 
 
 
