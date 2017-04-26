@@ -68,6 +68,22 @@ bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
 # 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 # end
 
+## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
+def htmlmakerRunNode(jsfile, args, logkey='')
+	Bkmkr::Tools.runnode(jsfile, args)
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
+def copyFile(srcFile, destFile, logkey='')
+	Mcmlln::Tools.copyFile(srcFile, destFile)
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 def readOutputHtml(logkey='')
 	filecontents = File.read(Bkmkr::Paths.outputtmp_html)
 	return filecontents
@@ -126,14 +142,6 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
-def htmlmakerRunNode(jsfile, args, logkey='')
-	Bkmkr::Tools.runnode(jsfile, args)
-rescue => logstring
-ensure
-	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
-end
-
 def stripEndnotes(content, logkey='')
 	# removes endnotes section if no content
 	filecontents = content
@@ -149,7 +157,6 @@ ensure
 end
 
 # ---------------------- PROCESSES
-
 # # convert docx to xml
 # convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
 #
@@ -157,7 +164,14 @@ end
 # convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, 'convert_xml_to_html')
 
 # convert docx to html
-htmlmakerRunNode(htmlmaker, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.outputtmp_html} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
+htmlmakerRunNode(htmlmaker, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
+
+# make copy of output html to match name 'outputtmp_html'
+# <<this is a quick workaround, since htmlmaker_js outputs an html file with basename matching in-file..
+# .. and subsequent items in the toolchain expect outputtmp.html
+# Another alternative would be set outputtmp_html in header.rb to match project_html_file below: >>
+project_html_file = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.html")
+copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'rename_html_to_outputtmphtml')
 
 # convert html to htmlbook
 htmlmakerRunNode(htmltohtmlbook_js, Bkmkr::Paths.outputtmp_html, 'convert_to_htmlbook')
