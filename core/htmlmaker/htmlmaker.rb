@@ -163,21 +163,29 @@ end
 # # convert xml to html
 # convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, 'convert_xml_to_html')
 
-# convert docx to html
-htmlmakerRunNode(htmlmaker, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
 
-# make copy of output html to match name 'outputtmp_html'
-# <<this is a quick workaround, since htmlmaker_js outputs an html file with basename matching in-file..
-# .. and subsequent items in the toolchain expect outputtmp.html
-# Another alternative would be set outputtmp_html in header.rb to match project_html_file below: >>
 project_html_file = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.html")
-copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'rename_html_to_outputtmphtml')
 
-# convert html to htmlbook
-htmlmakerRunNode(htmltohtmlbook_js, Bkmkr::Paths.outputtmp_html, 'convert_to_htmlbook')
+# if infile is docx, convert to htmlbook html & generate TOC; otherwise bypass
+# elsif infile is already html, make a copy of file named outputtmp.html
+if File.file?(Bkmkr::Paths.project_docx_file)
+  htmlmakerRunNode(htmlmaker, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
 
-# generateTOC
-htmlmakerRunNode(generateTOC_js, Bkmkr::Paths.outputtmp_html, 'generateTOC_js')
+  # make copy of output html to match name 'outputtmp_html'
+  # <<this is a quick workaround, since htmlmaker_js outputs an html file with basename matching in-file..
+  # .. and subsequent items in the toolchain expect outputtmp.html
+  # Another alternative would be set outputtmp_html in header.rb to match project_html_file below: >>
+  copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
+
+  # convert html to htmlbook
+  htmlmakerRunNode(htmltohtmlbook_js, Bkmkr::Paths.outputtmp_html, 'convert_to_htmlbook')
+
+  # generateTOC
+  htmlmakerRunNode(generateTOC_js, Bkmkr::Paths.outputtmp_html, 'generateTOC_js')
+
+elsif File.file?(project_html_file)
+  copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
+end
 
 # read in html
 filecontents = readOutputHtml('read_output_html_a')
