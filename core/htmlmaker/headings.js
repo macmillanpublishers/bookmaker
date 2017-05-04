@@ -30,7 +30,10 @@ noHeadSection.each (function() {
   if (headerText) {
     hText = headerText
   } else if (dataTypeText) {
-    hText = dataTypeText
+    var sanitizedDataTypeText = dataTypeText.toLowerCase().replace(/-/g, " ").replace(/\b[a-z]/g, function(letter) {
+      return letter.toUpperCase();
+    });
+    hText = sanitizedDataTypeText
   } else {
     var hText = "Frontmatter";
     if ($(".CopyrightTextsinglespacecrtx", this).length || $(".CopyrightTextdoublespacecrtxd", this).length) {
