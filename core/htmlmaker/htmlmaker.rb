@@ -16,8 +16,6 @@ source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}
 
 word_to_html_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "wordtohtml.xsl")
 
-strip_toc_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.js")
-
 headings_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.js")
 
 inlines_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.js")
@@ -158,9 +156,6 @@ filecontents = fixEntities(filecontents, 'fix_entities')
 
 #write out edited html
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
-
-# # strip static toc from html
-htmlmakerRunNode(strip_toc_js, Bkmkr::Paths.outputtmp_html, 'strip_toc_js')
 
 # # add headings to all sections
 htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
