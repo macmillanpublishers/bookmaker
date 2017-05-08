@@ -8,16 +8,34 @@ fs.readFile(file, function processTemplates (err, contents) {
         });
 
 
-//select sections without first-child h1's
-var noHeadSection = $("section:not(:has(h1:first-child))");
-//select sections' nested elements (<p>s, h1's) with classes or text matching key criteria 
-var ataSection = $("section").find("p.AboutAuthorTextNo-Indentatatx1,p.AboutAuthorTextHeadatah,p.AboutAuthorTextatatx,h1:contains(About the Author)");
-var bobadSection = $("section").find("h1.BOBAdTitlebobt,p.BOBAdTextbobtx")
-var fsSection = $("section").find("p.FrontSalesTitlefst,p.FrontSalesSubtitlefsst,p.FrontSalesQuoteHeadfsqh,p.FrontSalesTextfstx,p.FrontSalesTextNoIndentfstx1,p.FrontSalesQuotefsq,p.FrontSalesQuoteNoIndentfsq1")
+//select sections without direct-child h1's
+var noHeadSection = $("section:not(:has(>h1))");
 
-//for each section without first-child h1's, create one with .Nonprinting and approporate h1 text
+//for each section without direct-child h1's, create one with .Nonprinting and approporate h1 text
 noHeadSection.each (function() {
-  var hText = "Frontmatter";
+
+  // the var for new h1 text
+  var hText = ''
+
+  // find the header element
+  var header = $(this).children("header")
+
+  // get text from h1 in the header element
+  var headerText = header.children("h1").text()
+
+  // get text from the section data-type
+  var dataTypeText = $(this).attr("data-type")
+
+  // set new h1 text using, in order of preference: header text if available, then try section data-type, then scan classes of the section elements
+  if (headerText) {
+    hText = headerText
+  } else if (dataTypeText) {
+    var sanitizedDataTypeText = dataTypeText.toLowerCase().replace(/-/g, " ").replace(/\b[a-z]/g, function(letter) {
+      return letter.toUpperCase();
+    });
+    hText = sanitizedDataTypeText
+  } else {
+    var hText = "Frontmatter";
     if ($(".CopyrightTextsinglespacecrtx", this).length || $(".CopyrightTextdoublespacecrtxd", this).length) {
       hText = "Copyright Page";
     }
@@ -33,19 +51,15 @@ noHeadSection.each (function() {
     if ($(".FrontSalesSubtitlefsst", this).length || $(".FrontSalesQuoteHeadfsqh", this).length || $(".FrontSalesTextfstx", this).length || $(".FrontSalesTextNoIndentfstx1", this).length || $(".FrontSalesQuotefsq", this).length || $(".FrontSalesQuoteNoIndentfsq1", this).length) {
       hText = "Praise";
     }
-  $(this).prepend("<h1 class='Nonprinting'>"+hText+"</h1>");
-});
-//addClass for sections containing related selections
-ataSection.each(function() {
-  $(this).parents("section").addClass("abouttheauthor");
-});
-bobadSection.each(function() {
-  $(this).parents("section").addClass("bobad");
-});
-fsSection.each(function() {
-  $(this).parents("section").addClass("frontsales");
-});
+  }
 
+  // insert our new h1 after header element; if header is not present, otherwise prepend inside section
+  if (header.length) {
+    header.after("<h1 class='Nonprinting'>"+hText+"</h1>");
+  } else {
+    $(this).prepend("<h1 class='Nonprinting'>"+hText+"</h1>");
+  }
+});
 
 
   var output = $.html();
