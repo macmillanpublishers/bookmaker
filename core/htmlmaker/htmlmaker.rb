@@ -38,8 +38,6 @@ title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
 preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
-bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
-
 # ---------------------- METHODS
 
 # ## wrapping Bkmkr::Tools.runpython in a new method for this script; to return a result for json_logfile
@@ -208,9 +206,6 @@ htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html, 'inlines_js')
 
 # # change p children of pre tags to spans
 htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js')
-
-# temporary fixes to potentially be discarded once we switch to javascript conversion
-htmlmakerRunNode(bandaid_js, Bkmkr::Paths.outputtmp_html, 'bandaid_js')
 
 filecontents = readOutputHtml('read_output_html_b')
 
