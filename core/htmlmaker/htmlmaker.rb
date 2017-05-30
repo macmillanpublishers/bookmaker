@@ -40,7 +40,7 @@ evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
 
 title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
-version_metatag_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "templateversion_metatag.js")
+version_metatag_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "version_metatag.js")
 
 preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
