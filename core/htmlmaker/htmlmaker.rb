@@ -40,6 +40,8 @@ evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
 
 title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
+version_metatag_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "templateversion_metatag.js")
+
 preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
 # ---------------------- METHODS
@@ -286,6 +288,11 @@ overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_
 
 # set html title to match JSON
 htmlmakerRunNode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"", 'title_js')
+
+# add meta tag to html with template_version
+unless template_version.nil? || template_version.empty?
+  htmlmakerRunNode(version_metatag_js, "#{Bkmkr::Paths.outputtmp_html} \"#{template_version}\"", 'add_template-version_meta_tag')
+end
 
 # evaluate processing instructions
 htmlmakerRunNode(evaluate_pis, Bkmkr::Paths.outputtmp_html, 'evaluate_pis')
