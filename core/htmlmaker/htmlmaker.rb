@@ -34,6 +34,8 @@ generateTOC_js = File.join(htmlmakerjs_path, 'lib', 'generateTOC.js')
 
 headings_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.js")
 
+xsl_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "xsl_only.js")
+
 inlines_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.js")
 
 evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
@@ -222,6 +224,7 @@ template_version = data_hash['template_version']
 #   template_version < required_version_for_jsconvert
 #   template_version is 'not-found' or has any other non-digit or characters (besides '.')
 htmlmaker_js_version_test = versionCompare(template_version, required_version_for_jsconvert, 'version_compare')
+@log_hash['htmlmaker_js_version_test'] = htmlmaker_js_version_test
 
 # convert a .docx tp HTML, via js or xsl: depending on value of htmlmaker_js_version_test from above
 if htmlmaker_js_version_test == true
@@ -270,8 +273,18 @@ filecontents = fixEntities(filecontents, 'fix_entities')
 #write out edited html
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
 
-# # add headings to all sections
-htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
+if htmlmaker_js_version_test == true
+
+  # # add headings to all sections
+  htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
+
+elsif htmlmaker_js_version_test == false
+
+  # # run supplemental js transformations for the xsl-conversion, consolidating legacy files:
+  # #   footnotes.js, strip-toc.js, parts.js, headings.js, lists.js, + 1 item from bandaid.js
+  htmlmakerRunNode(xsl_js, Bkmkr::Paths.outputtmp_html, 'xsl_only_js')
+
+end
 
 # # add correct markup for inlines (em, strong, sup, sub)
 htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html, 'inlines_js')
