@@ -66,7 +66,7 @@ def versionCompare(v1, v2, logkey='')
     logstring = "template_version is empty, indicating an html file, no conversion necessary"
     return true
   elsif v1.match(/[^\d.]/) || v2.match(/[^\d.]/)
-    logstring = "template_version string includes nondigit chars: returning false for xsl conversion"
+    logstring = "template_version string includes nondigit chars: returning false, xsl conversion"
     return false
   elsif v1 == v2
     logstring = "template_version meets requirements for jsconvert"
@@ -83,7 +83,7 @@ def versionCompare(v1, v2, logkey='')
         logstring = "template_version meets requirements for jsconvert"
         return true
       elsif v1split < v2split
-        logstring = "template_version is older than required version for jsconvert: returning false for xsl conversion"
+        logstring = "template_version is older than required version for jsconvert: returning false, xsl conversion"
         return false
       elsif n == maxlength-1 && v1split == v2split
         logstring = "template_version meets requirements for jsconvert"
