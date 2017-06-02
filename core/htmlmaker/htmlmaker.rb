@@ -48,22 +48,13 @@ preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js
 
 # ---------------------- METHODS
 
-def readConfigJson(logkey='')
-  data_hash = Mcmlln::Tools.readjson(Metadata.configfile)
-  return data_hash
-rescue => logstring
-  return {}
-ensure
-  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
-end
-
 # returns true if v1 is nil, empty, or >= v2. Otherwise returns false
 def versionCompare(v1, v2, logkey='')
   if v1.nil?
-    logstring = "template_version is nil, indicating a non-Macmillan bookmaker instance; returning 'true' for js conversion"
+    logstring = "template_version is nil; htmlmaker_preprocessing.rb may have crashed? proceeding with js conversion"
     return true
   elsif v1.empty?
-    logstring = "template_version is empty, indicating an html file, no conversion necessary"
+    logstring = "template_version is empty; input file is html or this is a non-Macmillan bookmaker instance"
     return true
   elsif v1.match(/[^\d.]/) || v2.match(/[^\d.]/)
     logstring = "template_version string includes nondigit chars: returning false, xsl conversion"
@@ -211,32 +202,28 @@ end
 
 # ---------------------- PROCESSES
 
-# get template_version value from config.json.
-data_hash = readConfigJson('read_config_json')
-# If no config.json file is present or it does not have a 'template_version' key, this value will be nil:
-template_version = data_hash['template_version']
+# get template_version value from json logfile (local_log_hash is a hash of the json logfile, read in at the beginning of each script)
+if local_log_hash.key?('htmlmaker_preprocessing.rb')
+  template_version = local_log_hash['htmlmaker_preprocessing.rb']['template_version']
+else
+  # if htmlmaker_preprocessing.rb was not run, set this value to an empty string
+  template_version = ''
+end
 
-# this method will return true if:
-#   template_version is nil (this would be the case if htmlpreprocessing.rb was not run, as in the case of a non-Macmillan bookmaker-instance),
-#   template_version is empty (this would be the case when the input file is an html file)
-#   template_version >= required_version_for_jsconvert
-# it will return false if
-#   template_version < required_version_for_jsconvert
-#   template_version is 'not-found' or has any other non-digit or characters (besides '.')
+# the versionCompare method returns true if:  template_version is empty, or if template_version >= required_version_for_jsconvert
+# it returns false if: template_version < required_version_for_jsconvert, or if template_version has any non-digit characters (besides '.')
 htmlmaker_js_version_test = versionCompare(template_version, required_version_for_jsconvert, 'version_compare')
 @log_hash['htmlmaker_js_version_test'] = htmlmaker_js_version_test
 
-# convert a .docx tp HTML, via js or xsl: depending on value of htmlmaker_js_version_test from above
+# if htmlmaker_js_version_test is true, convert .docx to HTML via js
 if htmlmaker_js_version_test == true
-  # if infile is docx, convert to htmlbook html & generate TOC; otherwise bypass
-  # else, if infile is already html, rename a copy of file to 'outputtmp.html'
+
+  # if the docx file exists, convert to html via js
   if File.file?(Bkmkr::Paths.project_docx_file)
+    # convert to html via htmlmaker_js
     htmlmakerRunNode(htmlmaker, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
 
     # make copy of output html to match name 'outputtmp_html'
-    # <<this is a quick workaround, since htmlmaker_js outputs an html file with basename matching in-file..
-    # .. and subsequent items in the toolchain expect outputtmp.html
-    # Another alternative would be set outputtmp_html in header.rb to match project_html_file below: >>
     copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
 
     # convert html to htmlbook
@@ -246,9 +233,12 @@ if htmlmaker_js_version_test == true
     htmlmakerRunNode(generateTOC_js, Bkmkr::Paths.outputtmp_html, 'generateTOC_js')
 
   elsif File.file?(project_html_file)
+
+    # if infile was already html, rename a copy of file to 'outputtmp.html'
     copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
   end
 
+# if htmlmaker_js_version_test is false, convert .docx to HTML via xsl
 elsif htmlmaker_js_version_test == false
 
   # convert docx to xml
