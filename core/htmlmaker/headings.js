@@ -55,9 +55,9 @@ noHeadSection.each (function() {
 
   // insert our new h1 after header element; if header is not present, otherwise prepend inside section
   if (header.length) {
-    header.after("<h1 class='Nonprinting'>"+hText+"</h1>");
+    header.after("<h1 class='ChapTitleNonprintingctnp'>"+hText+"</h1>");
   } else {
-    $(this).prepend("<h1 class='Nonprinting'>"+hText+"</h1>");
+    $(this).prepend("<h1 class='ChapTitleNonprintingctnp'>"+hText+"</h1>");
   }
 });
 
