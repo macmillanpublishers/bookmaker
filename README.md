@@ -6,6 +6,8 @@ Each script in the Bookmaker sequence performs a distinct set of actions that bu
 
 It's important to note that correct transformation depends on correct application of the Macmillan Word template, a set of styles and rules for Microsoft Word manuscripts that create the initial structure each manuscript needs in order to cleanly transform into valid HTMLBook HTML. You can learn more about styling and the Word template [here](https://macmillan.atlassian.net/wiki/display/PBL/Manuscript+Styling+with+MS+Word).
 
+Click <a href="#chapter4">here</a> to read chapter 4. 
+
 <div id="bc">
 ## Bookmaker Components
 
@@ -141,6 +143,7 @@ The source code for the Bookmaker scripts is hosted in the Macmillan GitHub acco
 
 If you plan to make changes to the source code, you will want to fork those repositories and then clone them, so that you can maintain your version of the code.
 
+<a name="chapter4"></a>
 ### Install the Dependencies
 
 Install the utilities listed in the previous section, as needed. For reference, you need to install the following in order to create these outputs:
