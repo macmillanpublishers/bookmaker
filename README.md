@@ -6,6 +6,7 @@ Each script in the Bookmaker sequence performs a distinct set of actions that bu
 
 It's important to note that correct transformation depends on correct application of the Macmillan Word template, a set of styles and rules for Microsoft Word manuscripts that create the initial structure each manuscript needs in order to cleanly transform into valid HTMLBook HTML. You can learn more about styling and the Word template [here](https://macmillan.atlassian.net/wiki/display/PBL/Manuscript+Styling+with+MS+Word).
 
+<div id="bc">
 ## Bookmaker Components
 
 The scripts are as follows:
@@ -49,7 +50,7 @@ The scripts are as follows:
 [cleanup](https://github.com/macmillanpublishers/bookmaker/blob/master/core/cleanup/cleanup.rb): Removes all temporary working files and working dirs.
 
 *Dependencies: tmparchive, htmlmaker, filearchive, imagechecker, coverchecker, stylesheets
-
+</div>
 ## Project Metadata
 
 Bookmaker requires a few pieces of metadata to accompany each project, which you can provide in a JSON file. Here's a sample:
