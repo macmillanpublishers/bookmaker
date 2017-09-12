@@ -6,7 +6,7 @@ Each script in the Bookmaker sequence performs a distinct set of actions that bu
 
 It's important to note that correct transformation depends on correct application of the Macmillan Word template, a set of styles and rules for Microsoft Word manuscripts that create the initial structure each manuscript needs in order to cleanly transform into valid HTMLBook HTML. You can learn more about styling and the Word template [here](https://macmillan.atlassian.net/wiki/display/PBL/Manuscript+Styling+with+MS+Word).
 
-Click <a href="#chapter4">here</a> to read chapter 4. 
+Click [here](#chapter4) to read chapter 4. 
 
 <div id="bc">
 ## Bookmaker Components
