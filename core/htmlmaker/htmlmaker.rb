@@ -210,43 +210,43 @@ else
   template_version = ''
 end
 
-# the versionCompare method returns true if:  template_version is empty, or if template_version >= required_version_for_jsconvert
-# it returns false if: template_version < required_version_for_jsconvert, or if template_version has any non-digit characters (besides '.')
-htmlmaker_js_version_test = versionCompare(template_version, required_version_for_jsconvert, 'version_compare')
-@log_hash['htmlmaker_js_version_test'] = htmlmaker_js_version_test
+# # the versionCompare method returns true if:  template_version is empty, or if template_version >= required_version_for_jsconvert
+# # it returns false if: template_version < required_version_for_jsconvert, or if template_version has any non-digit characters (besides '.')
+# htmlmaker_js_version_test = versionCompare(template_version, required_version_for_jsconvert, 'version_compare')
+# @log_hash['htmlmaker_js_version_test'] = htmlmaker_js_version_test
 
-# if htmlmaker_js_version_test is true, convert .docx to HTML via js
-if htmlmaker_js_version_test == true
+# # if htmlmaker_js_version_test is true, convert .docx to HTML via js
+# if htmlmaker_js_version_test == true
 
-  # if the docx file exists, convert to html via js
-  if File.file?(Bkmkr::Paths.project_docx_file)
-    # convert to html via htmlmaker_js
-    htmlmakerRunNode(htmlmaker, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
+# if the docx file exists, convert to html via js
+if File.file?(Bkmkr::Paths.project_docx_file)
+  # convert to html via htmlmaker_js
+  htmlmakerRunNode(htmlmaker, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
 
-    # make copy of output html to match name 'outputtmp_html'
-    copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
+  # make copy of output html to match name 'outputtmp_html'
+  copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
 
-    # convert html to htmlbook
-    htmlmakerRunNode(htmltohtmlbook_js, Bkmkr::Paths.outputtmp_html, 'convert_to_htmlbook')
+  # convert html to htmlbook
+  htmlmakerRunNode(htmltohtmlbook_js, Bkmkr::Paths.outputtmp_html, 'convert_to_htmlbook')
 
-    # generateTOC
-    htmlmakerRunNode(generateTOC_js, Bkmkr::Paths.outputtmp_html, 'generateTOC_js')
+  # generateTOC
+  htmlmakerRunNode(generateTOC_js, Bkmkr::Paths.outputtmp_html, 'generateTOC_js')
 
-  elsif File.file?(project_html_file)
+elsif File.file?(project_html_file)
 
-    # if infile was already html, rename a copy of file to 'outputtmp.html'
-    copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
-  end
-
-# if htmlmaker_js_version_test is false, convert .docx to HTML via xsl
-elsif htmlmaker_js_version_test == false
-
-  # convert docx to xml
-  convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
-
-  # convert xml to html
-  convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, 'convert_xml_to_html')
+  # if infile was already html, rename a copy of file to 'outputtmp.html'
+  copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
 end
+
+# # if htmlmaker_js_version_test is false, convert .docx to HTML via xsl
+# elsif htmlmaker_js_version_test == false
+#
+#   # convert docx to xml
+#   convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
+#
+#   # convert xml to html
+#   convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, 'convert_xml_to_html')
+# end
 
 # read in html
 filecontents = readOutputHtml('read_output_html_a')
@@ -263,18 +263,18 @@ filecontents = fixEntities(filecontents, 'fix_entities')
 #write out edited html
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
 
-if htmlmaker_js_version_test == true
+# if htmlmaker_js_version_test == true
 
-  # # add headings to all sections
-  htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
+# # add headings to all sections
+htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
 
-elsif htmlmaker_js_version_test == false
-
-  # # run supplemental js transformations for the xsl-conversion, consolidating legacy files:
-  # #   footnotes.js, strip-toc.js, parts.js, headings.js, lists.js, + 1 item from bandaid.js
-  htmlmakerRunNode(xsl_js, Bkmkr::Paths.outputtmp_html, 'xsl_only_js')
-
-end
+# elsif htmlmaker_js_version_test == false
+#
+#   # # run supplemental js transformations for the xsl-conversion, consolidating legacy files:
+#   # #   footnotes.js, strip-toc.js, parts.js, headings.js, lists.js, + 1 item from bandaid.js
+#   htmlmakerRunNode(xsl_js, Bkmkr::Paths.outputtmp_html, 'xsl_only_js')
+#
+# end
 
 # # add correct markup for inlines (em, strong, sup, sub)
 htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html, 'inlines_js')
