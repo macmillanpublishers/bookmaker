@@ -48,45 +48,45 @@ preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js
 
 # ---------------------- METHODS
 
-# returns true if v1 is nil, empty, or >= v2. Otherwise returns false
-def versionCompare(v1, v2, logkey='')
-  if v1.nil?
-    logstring = "template_version is nil; htmlmaker_preprocessing.rb may have crashed? proceeding with js conversion"
-    return true
-  elsif v1.empty?
-    logstring = "template_version is empty; input file is html or this is a non-Macmillan bookmaker instance"
-    return true
-  elsif v1.match(/[^\d.]/) || v2.match(/[^\d.]/)
-    logstring = "template_version string includes nondigit chars: returning false, xsl conversion"
-    return false
-  elsif v1 == v2
-    logstring = "template_version meets requirements for jsconvert"
-    return true
-  else
-    v1long = v1.split('.').length
-    v2long = v2.split('.').length
-    maxlength = v1long > v2long ? v1long : v2long
-    0.upto(maxlength-1) { |n|
-      puts "n is #{n}"
-      v1split = v1.split('.')[n].to_i
-      v2split = v2.split('.')[n].to_i
-      if v1split > v2split
-        logstring = "template_version meets requirements for jsconvert"
-        return true
-      elsif v1split < v2split
-        logstring = "template_version is older than required version for jsconvert: returning false, xsl conversion"
-        return false
-      elsif n == maxlength-1 && v1split == v2split
-        logstring = "template_version meets requirements for jsconvert"
-        return true
-      end
-    }
-  end
-rescue => logstring
-  return true
-ensure
-  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
-end
+# # returns true if v1 is nil, empty, or >= v2. Otherwise returns false
+# def versionCompare(v1, v2, logkey='')
+#   if v1.nil?
+#     logstring = "template_version is nil; htmlmaker_preprocessing.rb may have crashed? proceeding with js conversion"
+#     return true
+#   elsif v1.empty?
+#     logstring = "template_version is empty; input file is html or this is a non-Macmillan bookmaker instance"
+#     return true
+#   elsif v1.match(/[^\d.]/) || v2.match(/[^\d.]/)
+#     logstring = "template_version string includes nondigit chars: returning false, xsl conversion"
+#     return false
+#   elsif v1 == v2
+#     logstring = "template_version meets requirements for jsconvert"
+#     return true
+#   else
+#     v1long = v1.split('.').length
+#     v2long = v2.split('.').length
+#     maxlength = v1long > v2long ? v1long : v2long
+#     0.upto(maxlength-1) { |n|
+#       puts "n is #{n}"
+#       v1split = v1.split('.')[n].to_i
+#       v2split = v2.split('.')[n].to_i
+#       if v1split > v2split
+#         logstring = "template_version meets requirements for jsconvert"
+#         return true
+#       elsif v1split < v2split
+#         logstring = "template_version is older than required version for jsconvert: returning false, xsl conversion"
+#         return false
+#       elsif n == maxlength-1 && v1split == v2split
+#         logstring = "template_version meets requirements for jsconvert"
+#         return true
+#       end
+#     }
+#   end
+# rescue => logstring
+#   return true
+# ensure
+#   Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+# end
 
 ## wrapping Bkmkr::Tools.runpython in a new method for this script; to return a result for json_logfile
 def convertdocxtoxml(filetype, docxtoxml_py, logkey='')
