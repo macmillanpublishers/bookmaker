@@ -160,6 +160,11 @@ module Bkmkr
 		  	local_log_hash = Bkmkr::Paths.jsonlog_hash
 			else
 				local_log_hash = {}
+        # archive existing json_logfile:
+				if File.exist?(Bkmkr::Paths.json_log)
+					archived_jsonlog = File.join(log_dir, "past", "#{Project.filename}_ARCHIVED_#{Time.now.strftime('%Y-%m-%d-%H%M')}.json")
+					Mcmlln::Tools.moveFile(Bkmkr::Paths.json_log, archived_jsonlog)
+				end        
 			end
 		  local_log_hash[Bkmkr::Paths.thisscript] = {'begun'=>Time.now}
 		  return local_log_hash, local_log_hash[Bkmkr::Paths.thisscript]
