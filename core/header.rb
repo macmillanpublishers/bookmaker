@@ -54,6 +54,11 @@ module Bkmkr
 	      $log_dir
 	    end
 
+      @@log_archive_dir = File.join(log_dir, "past")
+      def self.log_archive_dir
+	      @@log_archive_dir
+	    end
+
 	    def self.scripts_dir
 	      $scripts_dir
 	    end
@@ -160,6 +165,14 @@ module Bkmkr
 		  	local_log_hash = Bkmkr::Paths.jsonlog_hash
 			else
 				local_log_hash = {}
+        # archive existing json_logfile:
+				if File.exist?(Bkmkr::Paths.json_log)
+					archived_jsonlog = File.join(Bkmkr::Paths.log_archive_dir, "#{Project.filename}_ARCHIVED_#{Time.now.strftime('%Y-%m-%d-%H%M')}.json")
+          if !Dir.exist?(Bkmkr::Paths.log_archive_dir)
+            Mcmlln::Tools.makeDir(Bkmkr::Paths.log_archive_dir)
+          end
+          Mcmlln::Tools.moveFile(Bkmkr::Paths.json_log, archived_jsonlog)
+				end
 			end
 		  local_log_hash[Bkmkr::Paths.thisscript] = {'begun'=>Time.now}
 		  return local_log_hash, local_log_hash[Bkmkr::Paths.thisscript]
