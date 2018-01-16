@@ -48,8 +48,8 @@ $saxon_version = "saxon9pe"
 #$saxon_version = "saxon9ee"
 
 # Choose either prince or docraptor to create your PDFs.
-$pdf_processor = "docraptor"
-#$pdf_processor = "prince"
+#$pdf_processor = "docraptor"
+$pdf_processor = "prince"
 
 # Do you want to use image magick to process your images
 # for optimal epub display?
