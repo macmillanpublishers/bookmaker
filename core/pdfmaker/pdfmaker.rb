@@ -174,7 +174,7 @@ filecontents = insertAssets(filecontents, embedjs, embedcss, 'insertAssets')
 overwriteFile(pdf_tmp_html, filecontents, 'overwrite_pdf_html')
 
 # create PDF
-pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css 'make_pdf')
+pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css, 'make_pdf')
 
 # moves rendered pdf to archival dir
 moveFileToDoneFolder(tmppdf, finalpdf, 'move_pdf_to_done_dir')
