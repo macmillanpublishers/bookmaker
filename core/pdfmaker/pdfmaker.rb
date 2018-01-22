@@ -1,5 +1,5 @@
 require 'rubygems'
-# require 'doc_raptor'
+require 'doc_raptor'
 require 'fileutils'
 
 require_relative '../header.rb'
@@ -145,7 +145,7 @@ end
 # Authentication data is required to use docraptor and
 # to post images and other assets to an ftp for inclusion
 # via docraptor.
-# DocRaptor.api_key "#{Bkmkr::Keys.docraptor_key}"
+DocRaptor.api_key "#{Bkmkr::Keys.docraptor_key}"
 
 # run method: testingValue
 testing_value = testingValue(testing_value_file, 'testing_value_test')
