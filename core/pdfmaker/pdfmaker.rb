@@ -23,6 +23,9 @@ tmppdf = File.join(Bkmkr::Paths.project_tmp_dir, "#{Metadata.pisbn}.pdf")
 
 finalpdf = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "#{Metadata.pisbn}_POD.pdf")
 
+watermark_css = File.join(Bkmkr::Paths.scripts_dir, "bookmaker_assets", "pdfmaker", "css", "generic", "watermark.css")
+
+
 # ---------------------- METHODS
 
 def testingValue(file, logkey='')
@@ -107,7 +110,8 @@ end
 
 ## wrapping Bkmkr::Tools.makepdf in a new method for this script; to return a result for json_logfile
 def pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, logkey='')
-	Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, testing_value, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
+	output = Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
+  logstring = output
 rescue => logstring
 ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
@@ -170,7 +174,7 @@ filecontents = insertAssets(filecontents, embedjs, embedcss, 'insertAssets')
 overwriteFile(pdf_tmp_html, filecontents, 'overwrite_pdf_html')
 
 # create PDF
-pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, 'make_pdf')
+pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css 'make_pdf')
 
 # moves rendered pdf to archival dir
 moveFileToDoneFolder(tmppdf, finalpdf, 'move_pdf_to_done_dir')

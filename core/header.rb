@@ -256,7 +256,7 @@ module Bkmkr
 			end
 		end
 
-		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, http_username, http_password)
+		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, watermark_css, http_username, http_password)
 			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if os == "mac" or os == "unix"
 				princecmd = "prince"
@@ -264,8 +264,13 @@ module Bkmkr
 				princecmd = File.join(Paths.resource_dir, "Program Files (x86)", "Prince", "engine", "bin", "prince.exe")
 				princecmd = "\"#{princecmd}\""
 			end
-			if pdfprocessor == "prince"
-				`#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+      if pdfprocessor == "prince"
+        if testing_value == "false"
+          prince_output = `#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+        elsif testing_value == "true"
+          prince_output = `#{princecmd} -s \"#{pdf_css}\" -s \"#{watermark_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+        end
+        return "used prince, any output here: #{prince_output}"
 			elsif pdfprocessor == "docraptor"
 				File.open(pdffile, "w+b") do |f|
 				f.write DocRaptor.create(:document_content => pdf_html,
@@ -281,11 +286,13 @@ module Bkmkr
 				                       		)
 
 				end
+        return 'pdf processed via docraptor'
 			else
 				pdf_error = File.join(Paths.done_dir, "PDF_ERROR.txt")
 				File.open(pdf_error, 'w+') do |output|
 					output.write "You have not configured a PDF processor. Please open config.rb and fill in the pdfprocessor variable with either 'prince' or 'docraptor'."
 				end
+        return 'no pdf processor configured'
 			end
 		end
 
