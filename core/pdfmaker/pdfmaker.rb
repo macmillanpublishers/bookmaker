@@ -109,7 +109,7 @@ ensure
 end
 
 ## wrapping Bkmkr::Tools.makepdf in a new method for this script; to return a result for json_logfile
-def pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, logkey='')
+def pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css, logkey='')
 	output = Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
   logstring = output
 rescue => logstring
