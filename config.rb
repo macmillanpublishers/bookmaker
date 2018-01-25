@@ -81,6 +81,12 @@ $done_dir = File.join(working_dir, "done")
 # $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
 # $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
 
+# If you are using prince for pdf generation & want to specify a pdf profile and output intent, they should go here.
+# Both items must be specified (and valid). See prince_xml 'pdf-profile' & 'color management' documentation for more info.
+$pdf_profile = 'PDF/X-4'
+# make sure the icc profile file (.icc) is in Prince's icc folder
+$pdf_output_intent = 'GRACoL2013UNC_CRPC3.icc'
+
 if File.directory?($scripts_dir)	#adding this check for travis ci tests
   # Your API key to create PDFs via DocRaptor
   $docraptor_key = File.read("#{$scripts_dir}/bookmaker_authkeys/api_key.txt")

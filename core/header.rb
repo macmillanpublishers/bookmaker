@@ -222,6 +222,20 @@ module Bkmkr
 			$processimages
 		end
 
+    # def self.pdf_profile
+    #   if $pdf_profile
+    #     $pdf_profile
+    #   else
+    #     ""
+		# end
+    #
+    # def self.pdf_output_intent
+    #   if $pdf_output_intent
+    #     $pdf_output_intent
+    #   else
+    #     ""
+		# end
+
 		def self.processxsl(html_file, xsl_file, epub_file, convert_log_txt)
 			if $xsl_processor
 				xsl_command = $xsl_processor.gsub(/\S*\.html/,"#{html_file}").gsub(/\S*\.xsl/,"#{xsl_file}").gsub(/\S*\.epub/,"#{epub_file}")
@@ -265,11 +279,26 @@ module Bkmkr
 				princecmd = "\"#{princecmd}\""
 			end
       if pdfprocessor == "prince"
-        if testing_value == "false"
-          prince_output = `#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
-        elsif testing_value == "true"
-          prince_output = `#{princecmd} -s \"#{pdf_css}\" -s \"#{watermark_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+        princecmd = "#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\""
+        if testing_value == "true"
+          princecmd = "#{princecmd} -s \"#{watermark_css}\""
         end
+        if $pdf_profile && $pdf_output_intent
+          princecmd = "#{princecmd} --pdf-profile=\"#{$pdf_profile}\" --pdf-output-intent=\"#{$pdf_output_intent}\""
+        end
+        # if $pdf_profile && $pdf_output_intent
+        #   if testing_value == "false"
+        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+        #   elsif testing_value == "true"
+        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" -s \"#{watermark_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+        #   end
+        # else
+        #   if testing_value == "false"
+        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+        #   elsif testing_value == "true"
+        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" -s \"#{watermark_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
+        #   end
+        # end
         return "used prince, any output here: #{prince_output}"
 			elsif pdfprocessor == "docraptor"
 				File.open(pdffile, "w+b") do |f|
