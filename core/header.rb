@@ -299,6 +299,7 @@ module Bkmkr
         #     prince_output = `#{princecmd} -s \"#{pdf_css}\" -s \"#{watermark_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
         #   end
         # end
+        prince_output = `#{princecmd}`
         return "used prince, any output here: #{prince_output}"
 			elsif pdfprocessor == "docraptor"
 				File.open(pdffile, "w+b") do |f|
