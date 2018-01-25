@@ -222,20 +222,6 @@ module Bkmkr
 			$processimages
 		end
 
-    # def self.pdf_profile
-    #   if $pdf_profile
-    #     $pdf_profile
-    #   else
-    #     ""
-		# end
-    #
-    # def self.pdf_output_intent
-    #   if $pdf_output_intent
-    #     $pdf_output_intent
-    #   else
-    #     ""
-		# end
-
 		def self.processxsl(html_file, xsl_file, epub_file, convert_log_txt)
 			if $xsl_processor
 				xsl_command = $xsl_processor.gsub(/\S*\.html/,"#{html_file}").gsub(/\S*\.xsl/,"#{xsl_file}").gsub(/\S*\.epub/,"#{epub_file}")
