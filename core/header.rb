@@ -286,19 +286,6 @@ module Bkmkr
         if $pdf_profile && $pdf_output_intent
           princecmd = "#{princecmd} --pdf-profile=\"#{$pdf_profile}\" --pdf-output-intent=\"#{$pdf_output_intent}\""
         end
-        # if $pdf_profile && $pdf_output_intent
-        #   if testing_value == "false"
-        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
-        #   elsif testing_value == "true"
-        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" -s \"#{watermark_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
-        #   end
-        # else
-        #   if testing_value == "false"
-        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
-        #   elsif testing_value == "true"
-        #     prince_output = `#{princecmd} -s \"#{pdf_css}\" -s \"#{watermark_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\"`
-        #   end
-        # end
         prince_output = `#{princecmd}`
         return "used prince, any output here: #{prince_output}"
 			elsif pdfprocessor == "docraptor"
