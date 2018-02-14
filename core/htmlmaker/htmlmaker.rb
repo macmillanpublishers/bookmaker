@@ -6,8 +6,6 @@ require_relative '../metadata.rb'
 # ---------------------- VARIABLES
 local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
-required_version_for_jsconvert = '4.1.0'
-
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
 project_html_file = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.html")
@@ -170,8 +168,6 @@ filecontents = fixEntities(filecontents, 'fix_entities')
 
 #write out edited html
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
-
-# if htmlmaker_js_version_test == true
 
 # # add headings to all sections
 htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
