@@ -27,7 +27,7 @@ fs.readFile(file, function processTemplates (err, contents) {
     var myId = $(this).attr('id');
     if ( myId !== undefined ) {
       var newId = "fig-" + myId;
-      $(this).attr('id', newId); 
+      $(this).attr('id', newId);
     }
   });
 
@@ -62,6 +62,14 @@ fs.readFile(file, function processTemplates (err, contents) {
     $(this).empty();
     $(this).append(myText);
   });
+
+  // remove links to headings with no non-whitespace content from <nav>
+  navListItems = $("nav[data-type='toc'] li");
+  navListItems.each(function() {
+    if($(this).find("a").text().trim() == '') {
+      $(this).remove();
+    }
+  })
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
