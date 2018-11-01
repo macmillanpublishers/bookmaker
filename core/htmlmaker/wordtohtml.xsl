@@ -517,7 +517,10 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $epigraph-paras] | w:p[w:pPr/w:pStyle/@w:val = $versatile-block-paras]">
     <xsl:variable name="firstnotversatileortarget" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras)]][1]" />
     <xsl:variable name="firsttargetincurrentblock" select="$firstnotversatileortarget/following-sibling::w:p[w:pPr/w:pStyle[@w:val = $epigraph-paras]][1]" />
-      <xsl:if test="$firsttargetincurrentblock is .">
+    <xsl:variable name="firstnot_any_target" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras or @w:val = $poetry-paras or @w:val = $box-paras or @w:val = $sidebar-paras or @w:val = $quotation-paras)]][1]" />
+    <xsl:variable name="solo_orleadingversatile" select="$firstnot_any_target/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:choose>
+      <xsl:when test="$firsttargetincurrentblock is .">
         <!-- for Debug purpose while testing"
          <xsl:message>
             <xsl:value-of select="$firstnotversatileortarget"/>
@@ -526,19 +529,38 @@
         <blockquote data-type="epigraph">
           <xsl:apply-templates select="." mode="epigraph"/>
         </blockquote>
-      </xsl:if>
+      </xsl:when>
+      <xsl:when test="$solo_orleadingversatile is .">
+        <p>
+          <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+          <xsl:apply-templates select=".//w:r"/>
+        </p>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
+
+
 
   <!-- Group poetry components into a single container. -->
   <xsl:template
     match="w:p[w:pPr/w:pStyle/@w:val = $poetry-paras] | w:p[w:pPr/w:pStyle/@w:val = $versatile-block-paras]">
     <xsl:variable name="firstnotversatileortarget" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $poetry-paras or @w:val = $versatile-block-paras)]][1]" />
     <xsl:variable name="firsttargetincurrentblock" select="$firstnotversatileortarget/following-sibling::w:p[w:pPr/w:pStyle[@w:val = $poetry-paras]][1]" />
-    <xsl:if test="$firsttargetincurrentblock is .">
-      <pre class="poetry">
-        <xsl:apply-templates select="." mode="poetry"/>
-      </pre>
-    </xsl:if>
+    <xsl:variable name="firstnot_any_target" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras or @w:val = $poetry-paras or @w:val = $box-paras or @w:val = $sidebar-paras or @w:val = $quotation-paras)]][1]" />
+    <xsl:variable name="solo_orleadingversatile" select="$firstnot_any_target/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:choose>
+      <xsl:when test="$firsttargetincurrentblock is .">
+        <pre class="poetry">
+          <xsl:apply-templates select="." mode="poetry"/>
+        </pre>
+      </xsl:when>
+      <xsl:when test="$solo_orleadingversatile is .">
+        <p>
+          <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+          <xsl:apply-templates select=".//w:r"/>
+        </p>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Group box components into a single container. -->
@@ -546,11 +568,21 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $box-paras] | w:p[w:pPr/w:pStyle/@w:val = $versatile-block-paras]">
     <xsl:variable name="firstnotversatileortarget" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $box-paras or @w:val = $versatile-block-paras)]][1]" />
     <xsl:variable name="firsttargetincurrentblock" select="$firstnotversatileortarget/following-sibling::w:p[w:pPr/w:pStyle[@w:val = $box-paras]][1]" />
-    <xsl:if test="$firsttargetincurrentblock is .">
-      <aside data-type="sidebar" class="box">
-        <xsl:apply-templates select="." mode="box"/>
-      </aside>
-    </xsl:if>
+    <xsl:variable name="firstnot_any_target" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras or @w:val = $poetry-paras or @w:val = $box-paras or @w:val = $sidebar-paras or @w:val = $quotation-paras)]][1]" />
+    <xsl:variable name="solo_orleadingversatile" select="$firstnot_any_target/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:choose>
+      <xsl:when test="$firsttargetincurrentblock is .">
+        <aside data-type="sidebar" class="box">
+          <xsl:apply-templates select="." mode="box"/>
+        </aside>
+      </xsl:when>
+      <xsl:when test="$solo_orleadingversatile is .">
+        <p>
+          <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+          <xsl:apply-templates select=".//w:r"/>
+        </p>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Group sidebar components into a single container. -->
@@ -558,11 +590,21 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $sidebar-paras] | w:p[w:pPr/w:pStyle/@w:val = $versatile-block-paras]">
     <xsl:variable name="firstnotversatileortarget" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $sidebar-paras or @w:val = $versatile-block-paras)]][1]" />
     <xsl:variable name="firsttargetincurrentblock" select="$firstnotversatileortarget/following-sibling::w:p[w:pPr/w:pStyle[@w:val = $sidebar-paras]][1]" />
-    <xsl:if test="$firsttargetincurrentblock is .">
-      <aside data-type="sidebar">
-        <xsl:apply-templates select="." mode="sidebar"/>
-      </aside>
-    </xsl:if>
+    <xsl:variable name="firstnot_any_target" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras or @w:val = $poetry-paras or @w:val = $box-paras or @w:val = $sidebar-paras or @w:val = $quotation-paras)]][1]" />
+    <xsl:variable name="solo_orleadingversatile" select="$firstnot_any_target/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:choose>
+      <xsl:when test="$firsttargetincurrentblock is .">
+        <aside data-type="sidebar">
+          <xsl:apply-templates select="." mode="sidebar"/>
+        </aside>
+      </xsl:when>
+      <xsl:when test="$solo_orleadingversatile is .">
+        <p>
+          <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+          <xsl:apply-templates select=".//w:r"/>
+        </p>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Handle figure placeholders, and possibly associated
@@ -690,11 +732,21 @@
     match="w:p[w:pPr/w:pStyle/@w:val = $quotation-paras] | w:p[w:pPr/w:pStyle/@w:val = $versatile-block-paras]">
     <xsl:variable name="firstnotversatileortarget" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $quotation-paras or @w:val = $versatile-block-paras)]][1]" />
     <xsl:variable name="firsttargetincurrentblock" select="$firstnotversatileortarget/following-sibling::w:p[w:pPr/w:pStyle[@w:val = $quotation-paras]][1]" />
-    <xsl:if test="$firsttargetincurrentblock is .">
-      <blockquote>
-        <xsl:apply-templates select="." mode="quotation"/>
-      </blockquote>
-    </xsl:if>
+    <xsl:variable name="firstnot_any_target" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras or @w:val = $poetry-paras or @w:val = $box-paras or @w:val = $sidebar-paras or @w:val = $quotation-paras)]][1]" />
+    <xsl:variable name="solo_orleadingversatile" select="$firstnot_any_target/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:choose>
+      <xsl:when test="$firsttargetincurrentblock is .">
+        <blockquote>
+          <xsl:apply-templates select="." mode="quotation"/>
+        </blockquote>
+      </xsl:when>
+      <xsl:when test="$solo_orleadingversatile is .">
+        <p>
+          <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
+          <xsl:apply-templates select=".//w:r"/>
+        </p>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Preserve footnote text as paras to be moved via ruby -->
