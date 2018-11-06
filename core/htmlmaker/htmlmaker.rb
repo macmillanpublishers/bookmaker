@@ -70,8 +70,8 @@ def fixFootnotes(content, logkey='')
 	footnotes.each do |f|
 		noteref = f[1]
 		notetext = f[4].gsub(/<p/,"<span").gsub(/<\/p/,"</span")
-		filecontents = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
-														   .gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote-#{noteref}\">#{notetext}</span>")
+		filecontents = filecontents.gsub(/<span class="FootnoteReference" id="#{noteref}"><\/span>/,"<span data-type=\"footnote\" id=\"footnote_#{noteref}\">#{notetext}</span>")
+														   .gsub(/<span class="FootnoteReference" id="#{noteref}"\/>/,"<span data-type=\"footnote\" id=\"footnote_#{noteref}\">#{notetext}</span>")
 	end
 	return filecontents
 rescue => logstring
@@ -82,8 +82,8 @@ end
 
 def fixEndnotes(content, logkey='')
 	# add endnote ref id as static content
-	filecontents = content.gsub(/(<span class=")(.ndnote.eference)(" id=")(\d+)(">)(<\/span>)/,"\\1endnotereference\\3endnoteref-\\4\\5\\4\\6")
-												.gsub(/(div class="endnotetext" id=")/,"\\1endnotetext-")
+	filecontents = content.gsub(/(<span class=")(.ndnote.eference)(" id=")(\d+)(">)(<\/span>)/,"\\1endnotereference\\3endnoteref_\\4\\5\\4\\6")
+												.gsub(/(div class="endnotetext" id=")/,"\\1endnotetext_")
 	return filecontents
 rescue => logstring
 	return content

@@ -48,8 +48,8 @@ $saxon_version = "saxon9pe"
 #$saxon_version = "saxon9ee"
 
 # Choose either prince or docraptor to create your PDFs.
-$pdf_processor = "docraptor"
-#$pdf_processor = "prince"
+#$pdf_processor = "docraptor"
+$pdf_processor = "prince"
 
 # Do you want to use image magick to process your images
 # for optimal epub display?
@@ -80,6 +80,12 @@ $done_dir = File.join(working_dir, "done")
 # the command here, including file placeholders as shown below.
 # $xsl_processor = "xsltproc file.xsl file.html -o file.epub"
 # $xsl_processor = "java -jar S:\saxon\saxon9pe.jar -s:"file.html" -xsl:"file.xsl" -o:"file.epub""
+
+# If you are using prince for pdf generation & want to specify a pdf profile and output intent, they should go here.
+# Both items must be specified (and valid). See prince_xml 'pdf-profile' & 'color management' documentation for more info.
+$pdf_profile = 'PDF/X-4'
+# include the full path to the icc file (prince on Mac will check the 'lib/icc' folder... Windows needs the full path)
+$pdf_output_intent = File.join("C:", "Program Files (x86)", "Prince", "engine", "icc", 'GRACoL2013UNC_CRPC3.icc')
 
 if File.directory?($scripts_dir)	#adding this check for travis ci tests
   # Your API key to create PDFs via DocRaptor
