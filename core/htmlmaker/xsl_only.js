@@ -124,6 +124,14 @@ tagLists ("BoxListNumbnl", "ol");
 $('blockquote + p.SpaceBreak-Internalint, aside + p.SpaceBreak-Internalint, pre + p.SpaceBreak-Internalint').remove();
 $('blockquote + p.BookmakerProcessingInstructionbpi, aside + p.BookmakerProcessingInstructionbpi, pre + p.BookmakerProcessingInstructionbpi').remove();
 
+// (adding this back, was left out from orig. xsl_only capture)
+// remove links to headings with no non-whitespace content from <nav>
+navListItems = $("nav[data-type='toc'] li");
+navListItems.each(function() {
+  if($(this).find("a").text().trim() == '') {
+    $(this).remove();
+  }
+})
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
