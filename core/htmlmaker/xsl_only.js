@@ -25,8 +25,8 @@ var footnoteNestedP = $("span[data-type='footnote'] p");
 replaceEl (footnoteNestedP, "<span data-type='footnote' />");
 //remove unwanted sections/ empty divs put there by Word
 $("section[data-type='footnotes']").remove();
-$("#endnotetext-0").remove();
-$("#endnotetext--1").remove();
+$("#endnotetext_0").remove();
+$("#endnotetext_-1").remove();
 
 
 ///////////////////////////// STRIP-TOC
