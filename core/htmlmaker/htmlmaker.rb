@@ -252,11 +252,11 @@ htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js'
 # for xsl-only: I think this includes stuff from formerly included:
   # footnotes.js, lists.js, parts.js, strip-toc.js, headings.js(for xsl) and some from band-aid.js
   # more items from bandaid were moved to htmlpostprocessing
-if doctemplate_version == 'pre-sectionstart'
-  htmlmakerRunNode(xslonly_js, Bkmkr::Paths.outputtmp_html, 'xslonly_js')
-else
+unless doctemplatetype == 'pre-sectionstart'
   # # add headings to all sections for sectionstart
   htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
+else
+  htmlmakerRunNode(xslonly_js, Bkmkr::Paths.outputtmp_html, 'xslonly_js')
 end
 
 filecontents = readOutputHtml('read_output_html_b')
