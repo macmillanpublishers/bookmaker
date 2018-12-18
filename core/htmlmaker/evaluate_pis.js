@@ -1,14 +1,24 @@
 var fs = require('fs');
 var cheerio = require('cheerio');
 var file = process.argv[2];
+var doctemplatetype = process.argv[3];
 
 fs.readFile(file, function processTemplates (err, contents) {
   $ = cheerio.load(contents, {
           xmlMode: true
         });
 
+  //vars for target styles based on doctemplatetype
+  if (doctemplatetype == 'rsuite') {
+    var bookmakerinstruction_style = "Bookmaker-Processing-InstructionBpi";
+    var imageholder_style = "Image-PlacementImg";
+  } else {
+    var bookmakerinstruction_style = "BookmakerProcessingInstructionbpi";
+    var imageholder_style = "Illustrationholderill";
+  }
+
   // evaluate processing instructions
-  $("p.BookmakerProcessingInstructionbpi").each(function () {
+  $("p." + bookmakerinstruction_style).each(function () {
       var val = $( this ).text();
       if (val == "Ebook-only") {
         $( this ).parent().attr('data-format','ebook');
@@ -52,7 +62,7 @@ fs.readFile(file, function processTemplates (err, contents) {
           var prev = $(this).prev();
           var eltype = $(prev).attr('class');
           var imagefile = val.split(":").pop().trim().split(" ").shift();
-          var imagetag = "<figure class='Illustrationholderill customimage'><img src='images/" + imagefile + "' alt='" + imagefile + "'/></figure>";
+          var imagetag = "<figure class='" + imageholder_style + " customimage'><img src='images/" + imagefile + "' alt='" + imagefile + "'/></figure>";
           $("*[class=" + eltype + "]").after(imagetag);
           $("*[class=" + eltype + "]").remove();
           // This code will insert the custom image inside the existing paragraph, instead of as a standard figure tag.
@@ -62,7 +72,7 @@ fs.readFile(file, function processTemplates (err, contents) {
         } else {
           var prev = $(this).prev();
           var imagefile = val.split(":").pop().trim().split(" ").shift();
-          var imagetag = "<figure class='Illustrationholderill customimage'><img src='images/" + imagefile + "' alt='" + imagefile + "'/></figure>";
+          var imagetag = "<figure class='" + imageholder_style + " customimage'><img src='images/" + imagefile + "' alt='" + imagefile + "'/></figure>";
           $(prev).after(imagetag);
           $(prev).remove();
           // This code will insert the custom image inside the existing paragraph, instead of as a standard figure tag.

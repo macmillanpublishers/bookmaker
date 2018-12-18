@@ -35,6 +35,9 @@ noHeadSection.each (function() {
     });
     hText = sanitizedDataTypeText
   } else {
+    // This section includes several hardcoded non-RSuite stylenames; however since there is a data-type for all
+    //  of the sections listed below, applied at time of conversion to html, these conditionals will never be invoked as far as I can tell.
+    //  it had more value prior to SectionStart implementation.
     var hText = "Frontmatter";
     if ($(".CopyrightTextsinglespacecrtx", this).length || $(".CopyrightTextdoublespacecrtxd", this).length) {
       hText = "Copyright Page";

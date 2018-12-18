@@ -10,18 +10,6 @@ filetype = Bkmkr::Project.filename_split.split(".").pop
 
 project_html_file = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.html")
 
-htmlmakerjs_path = File.join(Bkmkr::Paths.scripts_dir, "htmlmaker_js")
-
-htmlmaker_bin = File.join(htmlmakerjs_path, 'bin', 'htmlmaker')
-
-styles_json = File.join(htmlmakerjs_path, 'styles.json')
-
-stylefunctions_js = File.join(htmlmakerjs_path, 'style-functions.js')
-
-htmltohtmlbook_js = File.join(htmlmakerjs_path, 'lib', 'htmltohtmlbook.js')
-
-generateTOC_js = File.join(htmlmakerjs_path, 'lib', 'generateTOC.js')
-
 docxtoxml_py = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "docxtoxml.py")
 
 saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
@@ -106,10 +94,10 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
  end
 
-def fixFootnotes(content, logkey='')
+def fixFootnotes(content, super_cs, logkey='')
 	# place footnote text inline per htmlbook
-	filecontents = content.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
-												.gsub(/(<span class="spansuperscriptcharacterssup">)(<span class="FootnoteReference" id="\d+"><\/span>)(<\/span>)/,"\\2")
+	filecontents = content.gsub(/(<span class=")(#{super_cs})(" id="\d+")/,"\\1FootnoteReference\\3")
+												.gsub(/(<span class="#{super_cs}">)(<span class="FootnoteReference" id="\d+"><\/span>)(<\/span>)/,"\\2")
 	footnotes = content.scan(/(<div class="footnotetext" id=")(\d+)(">)(\s?)(.*?)(<\/div>)/)
 
 	footnotes.each do |f|
@@ -175,15 +163,22 @@ data_hash = readConfigJson('read_config_json')
 #local definition(s) based on config.json
 doctemplate_version = data_hash['doctemplate_version']
 doctemplatetype = data_hash['doctemplatetype']
+# setting name of htmlmaker_js files based on doctemplatetype
+#   also setting names of hardcoded styles by template:
+if doctemplatetype == 'rsuite'
+  htmlmakerjs_path = File.join(Bkmkr::Paths.scripts_dir, "htmlmaker_js_rsuite")
+  super_cs = 'supersup'
+else
+  htmlmakerjs_path = File.join(Bkmkr::Paths.scripts_dir, "htmlmaker_js")
+  super_cs = 'spansuperscriptcharacterssup'
+end
+# setting path for all htmlmaker_js files based on repo / doctemplatetype
+htmlmaker_bin = File.join(htmlmakerjs_path, 'bin', 'htmlmaker')
+styles_json = File.join(htmlmakerjs_path, 'styles.json')
+stylefunctions_js = File.join(htmlmakerjs_path, 'style-functions.js')
+htmltohtmlbook_js = File.join(htmlmakerjs_path, 'lib', 'htmltohtmlbook.js')
+generateTOC_js = File.join(htmlmakerjs_path, 'lib', 'generateTOC.js')
 
-#### replacing \/ with /\
-# # get template_version value from json logfile (local_log_hash is a hash of the json logfile, read in at the beginning of each script)
-# if local_log_hash.key?('htmlmaker_preprocessing.rb')
-#   template_version = local_log_hash['htmlmaker_preprocessing.rb']['template_version']
-# else
-#   # if htmlmaker_preprocessing.rb was not run, set this value to an empty string
-#   template_version = ''
-# end
 
 # if the docx file exists, convert to html
 #   use doctemplatetype to determine which conversion method
@@ -192,7 +187,6 @@ doctemplatetype = data_hash['doctemplatetype']
 if File.file?(Bkmkr::Paths.project_docx_file)
   case doctemplatetype
   when 'rsuite'
-  # if doctemplate_version == 'rsuite'
     # convert to html via htmlmaker_js
     htmlmakerRunNode(htmlmaker_bin, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
 
@@ -232,7 +226,7 @@ end
 filecontents = readOutputHtml('read_output_html_a')
 
 # run method: fixFootnotes
-filecontents = fixFootnotes(filecontents, 'fix_footnotes')
+filecontents = fixFootnotes(filecontents, super_cs, 'fix_footnotes')
 
 # run method: fixEndnotes
 filecontents = fixEndnotes(filecontents, 'fix_endnotes')
@@ -244,7 +238,7 @@ filecontents = fixEntities(filecontents, 'fix_entities')
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
 
 # # add correct markup for inlines (em, strong, sup, sub)
-htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html, 'inlines_js')
+htmlmakerRunNode(inlines_js, "#{Bkmkr::Paths.outputtmp_html} #{doctemplatetype}", 'inlines_js')
 
 # # change p children of pre tags to spans
 htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js')
@@ -275,7 +269,7 @@ unless doctemplate_version.nil? || doctemplate_version.empty?
 end
 
 # evaluate processing instructions
-htmlmakerRunNode(evaluate_pis, Bkmkr::Paths.outputtmp_html, 'evaluate_pis')
+htmlmakerRunNode(evaluate_pis, "#{Bkmkr::Paths.outputtmp_html} #{doctemplatetype}", 'evaluate_pis')
 
 # html file should exist
 if File.file?("#{Bkmkr::Paths.outputtmp_html}")

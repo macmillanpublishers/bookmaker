@@ -9,10 +9,10 @@ fs.readFile(file, function processTemplates (err, contents) {
         });
 
   // add meta info for template_version
-  var metatemplateversion = '<meta name="templateversion" content="' + templateversion + '"/>';
-
-  $('head').append(metatemplateversion);
-
+  if (! $("meta[name='templateversion']")) {
+    var metatemplateversion = '<meta name="templateversion" content="' + templateversion + '"/>';
+    $('head').append(metatemplateversion);
+  }
 
   var output = $.html();
     fs.writeFile(file, output, function(err) {
