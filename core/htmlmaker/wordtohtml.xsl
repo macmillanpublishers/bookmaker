@@ -734,13 +734,21 @@
     <xsl:variable name="firsttargetincurrentblock" select="$firstnotversatileortarget/following-sibling::w:p[w:pPr/w:pStyle[@w:val = $quotation-paras]][1]" />
     <xsl:variable name="firstnot_any_target" select="preceding-sibling::w:p[w:pPr/w:pStyle[not(@w:val = $epigraph-paras or @w:val = $versatile-block-paras or @w:val = $poetry-paras or @w:val = $box-paras or @w:val = $sidebar-paras or @w:val = $quotation-paras)]][1]" />
     <xsl:variable name="solo_orleadingversatile" select="$firstnot_any_target/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:variable name="second_leadingversatile" select="$solo_orleadingversatile/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:variable name="third_leadingversatile" select="$second_leadingversatile/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:variable name="fourth_leadingversatile" select="$third_leadingversatile/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
+    <xsl:variable name="fifth_leadingversatile" select="$fourth_leadingversatile/following-sibling::w:p[1][w:pPr/w:pStyle[@w:val = $versatile-block-paras]]" />
     <xsl:choose>
       <xsl:when test="$firsttargetincurrentblock is .">
         <blockquote>
           <xsl:apply-templates select="." mode="quotation"/>
         </blockquote>
       </xsl:when>
-      <xsl:when test="$solo_orleadingversatile is .">
+      <xsl:when test="$solo_orleadingversatile is .
+        or $second_leadingversatile is .
+        or $third_leadingversatile is .
+        or $fourth_leadingversatile is .
+        or $fifth_leadingversatile is .">
         <p>
           <xsl:apply-templates select="w:pPr/w:pStyle/@w:val"/>
           <xsl:apply-templates select=".//w:r"/>
