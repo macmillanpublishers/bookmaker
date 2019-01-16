@@ -206,6 +206,16 @@ module Bkmkr
 	end
 
 	class Tools
+    @@sectionstart_template_version = '5.0'
+    def self.sectionstart_template_version
+      @@sectionstart_template_version
+    end
+
+    @@rsuite_template_version = '6.0'
+    def self.rsuite_template_version
+      @@rsuite_template_version
+    end
+
 		def self.os
 			$op_system
 		end

@@ -95,7 +95,7 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def makeNoPdfNotice(logkey='')
+def makeNoPdfCssNotice(logkey='')
 	File.open("#{tmp_layout_dir}/pdf.css", 'a+') do |p|
 		p.write "/* no print css supplied */"
 	end

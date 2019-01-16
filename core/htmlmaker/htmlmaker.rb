@@ -8,55 +8,52 @@ local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
-saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
+project_html_file = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.html")
 
 docxtoxml_py = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "docxtoxml.py")
+
+saxonpath = File.join(Bkmkr::Paths.resource_dir, "saxon", "#{Bkmkr::Tools.xslprocessor}.jar")
 
 source_xml = File.join(Bkmkr::Paths.project_tmp_dir, "#{Bkmkr::Project.filename}.xml")
 
 word_to_html_xsl = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "wordtohtml.xsl")
 
-footnotes_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "footnotes.js")
-
-strip_toc_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "strip-toc.js")
-
-parts_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "parts.js")
-
 headings_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "headings.js")
 
 inlines_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "inlines.js")
-
-lists_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "lists.js")
 
 evaluate_pis = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "evaluate_pis.js")
 
 title_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "title.js")
 
-preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
+xslonly_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "xsl_only.js")
 
-bandaid_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "bandaid.js")
+version_metatag_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "version_metatag.js")
+
+preformatted_js = File.join(Bkmkr::Paths.core_dir, "htmlmaker", "preformatted.js")
 
 # ---------------------- METHODS
 
-## wrapping Bkmkr::Tools.runpython in a new method for this script; to return a result for json_logfile
-def convertdocxtoxml(filetype, docxtoxml_py, logkey='')
-	unless filetype == "html"
-		Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
-	else
-		logstring = 'input file is html, skipping'
-	end
+def readConfigJson(logkey='')
+  data_hash = Mcmlln::Tools.readjson(Metadata.configfile)
+  return data_hash
+rescue => logstring
+  return {}
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
+def htmlmakerRunNode(jsfile, args, logkey='')
+	Bkmkr::Tools.runnode(jsfile, args)
 rescue => logstring
 ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, logkey='')
-	unless filetype == "html"
-		`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
-	else
-		Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
-		logstring = 'input file is html, skipping (copied input file to project_tmp)'
-	end
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
+def copyFile(srcFile, destFile, logkey='')
+	Mcmlln::Tools.copyFile(srcFile, destFile)
 rescue => logstring
 ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
@@ -71,10 +68,36 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def fixFootnotes(content, logkey='')
+# for xsl conversion
+## wrapping Bkmkr::Tools.runpython in a new method for this script; to return a result for json_logfile
+def convertdocxtoxml(filetype, docxtoxml_py, logkey='')
+	unless filetype == "html"
+		Bkmkr::Tools.runpython(docxtoxml_py, Bkmkr::Paths.project_docx_file)
+	else
+		logstring = 'input file is html, skipping'
+	end
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+# for xsl conversion
+def convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, logkey='')
+	unless filetype == "html"
+		`java -jar "#{saxonpath}" -s:"#{source_xml}" -xsl:"#{word_to_html_xsl}" -o:"#{Bkmkr::Paths.outputtmp_html}"`
+	else
+		Mcmlln::Tools.copyFile(Bkmkr::Paths.project_tmp_file, Bkmkr::Paths.outputtmp_html)
+		logstring = 'input file is html, skipping (copied input file to project_tmp)'
+	end
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+ end
+
+def fixFootnotes(content, super_cs, logkey='')
 	# place footnote text inline per htmlbook
-	filecontents = content.gsub(/(<span class=")(spansuperscriptcharacterssup)(" id="\d+")/,"\\1FootnoteReference\\3")
-												.gsub(/(<span class="spansuperscriptcharacterssup">)(<span class="FootnoteReference" id="\d+"><\/span>)(<\/span>)/,"\\2")
+	filecontents = content.gsub(/(<span class=")(#{super_cs})(" id="\d+")/,"\\1FootnoteReference\\3")
+												.gsub(/(<span class="#{super_cs}">)(<span class="FootnoteReference" id="\d+"><\/span>)(<\/span>)/,"\\2")
 	footnotes = content.scan(/(<div class="footnotetext" id=")(\d+)(">)(\s?)(.*?)(<\/div>)/)
 
 	footnotes.each do |f|
@@ -120,14 +143,6 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
-def htmlmakerRunNode(jsfile, args, logkey='')
-	Bkmkr::Tools.runnode(jsfile, args)
-rescue => logstring
-ensure
-	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
-end
-
 def stripEndnotes(content, logkey='')
 	# removes endnotes section if no content
 	filecontents = content
@@ -144,17 +159,74 @@ end
 
 # ---------------------- PROCESSES
 
-# convert docx to xml
-convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
+data_hash = readConfigJson('read_config_json')
+#local definition(s) based on config.json
+doctemplate_version = data_hash['doctemplate_version']
+doctemplatetype = data_hash['doctemplatetype']
+# setting name of htmlmaker_js files based on doctemplatetype
+#   also setting names of hardcoded styles by template:
+if doctemplatetype == 'rsuite'
+  htmlmakerjs_path = File.join(Bkmkr::Paths.scripts_dir, "htmlmaker_js_rsuite")
+  super_cs = 'supersup'
+else
+  htmlmakerjs_path = File.join(Bkmkr::Paths.scripts_dir, "htmlmaker_js")
+  super_cs = 'spansuperscriptcharacterssup'
+end
+# setting path for all htmlmaker_js files based on repo / doctemplatetype
+htmlmaker_bin = File.join(htmlmakerjs_path, 'bin', 'htmlmaker')
+styles_json = File.join(htmlmakerjs_path, 'styles.json')
+stylefunctions_js = File.join(htmlmakerjs_path, 'style-functions.js')
+htmltohtmlbook_js = File.join(htmlmakerjs_path, 'lib', 'htmltohtmlbook.js')
+generateTOC_js = File.join(htmlmakerjs_path, 'lib', 'generateTOC.js')
 
-# convert xml to html
-convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, 'convert_xml_to_html')
 
-#read in html
+# if the docx file exists, convert to html
+#   use doctemplatetype to determine which conversion method
+#   later, when we want to discontinue a method, just skip the conversion, and create errfile in filearchive_postprocessing?
+#   if we want to make sure no wrongly constructed files are picked up, we can rm then in cleanup/cleanup_preprocessing too.
+if File.file?(Bkmkr::Paths.project_docx_file)
+  case doctemplatetype
+  when 'rsuite'
+    # convert to html via htmlmaker_js
+    htmlmakerRunNode(htmlmaker_bin, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
+
+    # make copy of output html to match name 'outputtmp_html'
+    copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
+
+    # convert html to htmlbook
+    htmlmakerRunNode(htmltohtmlbook_js, Bkmkr::Paths.outputtmp_html, 'convert_to_htmlbook')
+
+    # generateTOC
+    htmlmakerRunNode(generateTOC_js, Bkmkr::Paths.outputtmp_html, 'generateTOC_js')
+  when 'sectionstart'
+    # convert to html via htmlmaker_js
+    htmlmakerRunNode(htmlmaker_bin, "#{Bkmkr::Paths.project_docx_file} #{Bkmkr::Paths.project_tmp_dir} #{styles_json} #{stylefunctions_js}", 'convertdocx_to_html')
+
+    # make copy of output html to match name 'outputtmp_html'
+    copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
+
+    # convert html to htmlbook
+    htmlmakerRunNode(htmltohtmlbook_js, Bkmkr::Paths.outputtmp_html, 'convert_to_htmlbook')
+
+    # generateTOC
+    htmlmakerRunNode(generateTOC_js, Bkmkr::Paths.outputtmp_html, 'generateTOC_js')
+  when 'pre-sectionstart'
+    # convert docx to xml
+    convertdocxtoxml(filetype, docxtoxml_py, 'convert_docx_to_xml')
+
+    # convert xml to html
+    convertxmltohtml(filetype, saxonpath, source_xml, word_to_html_xsl, 'convert_xml_to_html')
+  end
+# if infile was already html, rename a copy of file to 'outputtmp.html'
+elsif File.file?(project_html_file)
+  copyFile(project_html_file, Bkmkr::Paths.outputtmp_html, 'copy_and_rename_html_to_outputtmphtml')
+end
+
+# read in html
 filecontents = readOutputHtml('read_output_html_a')
 
 # run method: fixFootnotes
-filecontents = fixFootnotes(filecontents, 'fix_footnotes')
+filecontents = fixFootnotes(filecontents, super_cs, 'fix_footnotes')
 
 # run method: fixEndnotes
 filecontents = fixEndnotes(filecontents, 'fix_endnotes')
@@ -165,29 +237,21 @@ filecontents = fixEntities(filecontents, 'fix_entities')
 #write out edited html
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
 
-# # strip extraneous footnote section from html
-htmlmakerRunNode(footnotes_js, Bkmkr::Paths.outputtmp_html, 'footnotes_js')
-
-# # strip static toc from html
-htmlmakerRunNode(strip_toc_js, Bkmkr::Paths.outputtmp_html, 'strip_toc_js')
-
-# # convert parts to divs
-htmlmakerRunNode(parts_js, Bkmkr::Paths.outputtmp_html, 'parts_js')
-
-# # add headings to all sections
-htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
-
 # # add correct markup for inlines (em, strong, sup, sub)
-htmlmakerRunNode(inlines_js, Bkmkr::Paths.outputtmp_html, 'inlines_js')
-
-# # add correct markup for lists
-htmlmakerRunNode(lists_js, Bkmkr::Paths.outputtmp_html, 'lists_js')
+htmlmakerRunNode(inlines_js, "#{Bkmkr::Paths.outputtmp_html} #{doctemplatetype}", 'inlines_js')
 
 # # change p children of pre tags to spans
 htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js')
 
-# temporary fixes to potentially be discarded once we switch to javascript conversion
-htmlmakerRunNode(bandaid_js, Bkmkr::Paths.outputtmp_html, 'bandaid_js')
+# for xsl-only: I think this includes stuff from formerly included:
+  # footnotes.js, lists.js, parts.js, strip-toc.js, headings.js(for xsl) and some from band-aid.js
+  # more items from bandaid were moved to htmlpostprocessing
+unless doctemplatetype == 'pre-sectionstart'
+  # # add headings to all sections for sectionstart
+  htmlmakerRunNode(headings_js, Bkmkr::Paths.outputtmp_html, 'headings_js')
+else
+  htmlmakerRunNode(xslonly_js, Bkmkr::Paths.outputtmp_html, 'xslonly_js')
+end
 
 filecontents = readOutputHtml('read_output_html_b')
 
@@ -199,8 +263,13 @@ overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_
 # set html title to match JSON
 htmlmakerRunNode(title_js, "#{Bkmkr::Paths.outputtmp_html} \"#{Metadata.booktitle}\"", 'title_js')
 
+# add meta tag to html with template_version
+unless doctemplate_version.nil? || doctemplate_version.empty?
+  htmlmakerRunNode(version_metatag_js, "#{Bkmkr::Paths.outputtmp_html} \"#{doctemplate_version}\"", 'add_doctemplate-version_meta_tag')
+end
+
 # evaluate processing instructions
-htmlmakerRunNode(evaluate_pis, Bkmkr::Paths.outputtmp_html, 'evaluate_pis')
+htmlmakerRunNode(evaluate_pis, "#{Bkmkr::Paths.outputtmp_html} #{doctemplatetype}", 'evaluate_pis')
 
 # html file should exist
 if File.file?("#{Bkmkr::Paths.outputtmp_html}")
