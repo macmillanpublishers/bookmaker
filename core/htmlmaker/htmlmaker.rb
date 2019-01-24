@@ -240,8 +240,8 @@ overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_
 # # add correct markup for inlines (em, strong, sup, sub)
 htmlmakerRunNode(inlines_js, "#{Bkmkr::Paths.outputtmp_html} #{doctemplatetype}", 'inlines_js')
 
-# # change p children of pre tags to spans
-htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js')
+# # # change p children of pre tags to spans
+# htmlmakerRunNode(preformatted_js, Bkmkr::Paths.outputtmp_html, 'preformatted_js')
 
 # for xsl-only: I think this includes stuff from formerly included:
   # footnotes.js, lists.js, parts.js, strip-toc.js, headings.js(for xsl) and some from band-aid.js
