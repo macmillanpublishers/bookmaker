@@ -498,11 +498,11 @@ module Bkmkr
 			Bkmkr::Tools.runnode(jsfile, "\"#{inputfile}\" \"#{srccontainer}\" \"#{srctype}\" \"#{srcclass}\" \"#{srcseq}\" \"#{destcontainer}\" \"#{desttype}\" \"#{destclass}\" \"#{destseq}\"")
 		end
 
-		def self.compileJS(file)
+		def self.compileJS(file, link_stylename)
 			jsfile = File.join(Paths.core_dir, "utilities", "evaltemplates.js")
 			templates = File.read(file).scan(/(")(eval-\S+)(")/)
 			templates.each do |t|
-				Bkmkr::Tools.runnode(jsfile, "\"#{file}\" \"#{t[1]}\"")
+				Bkmkr::Tools.runnode(jsfile, "\"#{file}\" \"#{link_stylename}\" \"#{t[1]}\"")
 			end
 		end
 
