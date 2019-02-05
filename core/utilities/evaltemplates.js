@@ -1,7 +1,8 @@
 var fs = require('fs');
 var cheerio = require('cheerio');
 var file = process.argv[2];
-var template = process.argv[3];
+var link_stylename = process.argv[3];
+var template = process.argv[4];
 
 fs.readFile(file, function processTemplates (err, contents) {
   $ = cheerio.load(contents, {
@@ -56,15 +57,15 @@ fs.readFile(file, function processTemplates (err, contents) {
         }
       } else if (baseArgs[0] == "toc") {
         var LinkId = "z_TOC";
-        $('nav[data-type="toc"]').attr('id', LinkId); 
+        $('nav[data-type="toc"]').attr('id', LinkId);
       };
 
       target = "#" + LinkId;
-      
+
       $('a[class="eval-link"][id="' + baseArgs[0] + '"]').attr('href', target);
 
       // replace sourceEl class so it doesn't get reprocessed
-      $(thisNode).attr('class', 'spanhyperlink');
+      $(thisNode).attr('class', link_stylename);
     };
   };
 
