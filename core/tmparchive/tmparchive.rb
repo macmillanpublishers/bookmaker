@@ -50,7 +50,7 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def mvInputConfigFile(input_config, logkey='')
+def mvInputConfigFile(input_config, tmp_config, logkey='')
 	if File.file?(input_config)
 		Mcmlln::Tools.moveFile(input_config, tmp_config)
 	else
@@ -85,7 +85,7 @@ makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
 copyInputFile('copy_input_file')
 
-mvInputConfigFile(input_config, 'moved_input_config_file')
+mvInputConfigFile(input_config, tmp_config, 'moved_input_config_file')
 
 filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
 
