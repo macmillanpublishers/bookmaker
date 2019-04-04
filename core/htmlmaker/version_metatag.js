@@ -8,8 +8,9 @@ fs.readFile(file, function processTemplates (err, contents) {
           xmlMode: true
         });
 
-  // add meta info for template_version
-  if (! $("meta[name='templateversion']")) {
+  // add meta info for template_version if it doesn't already exist
+  metacheck = $("meta[name='templateversion']")
+  if (metacheck.length == 0) {
     var metatemplateversion = '<meta name="templateversion" content="' + templateversion + '"/>';
     $('head').append(metatemplateversion);
   }
