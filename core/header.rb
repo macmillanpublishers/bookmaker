@@ -192,7 +192,7 @@ module Bkmkr
 	      if $http_username
 	      	$http_username
 	      else
-	      	"none"
+	      	""
 	      end
 	    end
 
@@ -200,7 +200,7 @@ module Bkmkr
 	      if $http_password
 	      	$http_password
 	      else
-	      	"none"
+	      	""
 	      end
 	    end
 	end
@@ -275,7 +275,11 @@ module Bkmkr
 				princecmd = "\"#{princecmd}\""
 			end
       if pdfprocessor == "prince"
-        princecmd = "#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\""
+        if !http_username.empty? && !http_password.empty?
+          princecmd = "#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\""
+        else
+          princecmd = "#{princecmd} -s \"#{pdf_css}\" --javascript \"#{pdf_html_file}\" -o \"#{pdffile}\""
+        end
         if testing_value == "true"
           princecmd = "#{princecmd} -s \"#{watermark_css}\""
         end
