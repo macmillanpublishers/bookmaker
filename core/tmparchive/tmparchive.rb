@@ -116,7 +116,6 @@ filecontents = "The conversion processor is currently running. Please do not sub
 
 writeAlertFile(filecontents, 'write_alert_file')
 
-puts "current projecttmpdir is: (bottom tmp)", Bkmkr::Paths.project_tmp_dir
 # ---------------------- LOGGING
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)

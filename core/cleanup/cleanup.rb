@@ -4,7 +4,7 @@ require_relative '../metadata.rb'
 # ---------------------- VARIABLES
 local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
-unused_submitted_dir = File.join(Bkmkr::Paths.done_dir, "Metadata.pisbn", "unused_submitted_files")
+unused_submitted_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "unused_submitted_files")
 
 # ---------------------- METHODS
 def readConfigJson(logkey='')
