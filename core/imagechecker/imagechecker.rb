@@ -7,7 +7,7 @@ require_relative '../metadata.rb'
 local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 # The locations to check for images
-imagedir = Bkmkr::Paths.submitted_images
+imagedir = Bkmkr::Paths.project_tmp_dir_submitted
 
 final_dir_images = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
 

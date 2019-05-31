@@ -115,7 +115,7 @@ end
 
 def evalOneoffs(file, path, logkey='')
 	tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
-	oneoffcss_new = File.join(Bkmkr::Paths.submitted_images, file)
+	oneoffcss_new = File.join(Bkmkr::Paths.project_tmp_dir_submitted, file)
 	oneoffcss_pickup = File.join(tmp_layout_dir, file)
 
 	if File.file?(oneoffcss_new)
@@ -211,8 +211,8 @@ deleteLastRunCss(tmp_pdf_css, 'delete_existing_tmp_pdf_css')
 deleteLastRunCss(tmp_epub_css, 'delete_existing_tmp_epub_css')
 
 # look for custom css in submitted_images dir
-find_pdf_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.printcss)
-find_epub_css_file = File.join(Bkmkr::Paths.submitted_images, Metadata.epubcss)
+find_pdf_css_file = File.join(Bkmkr::Paths.project_tmp_dir_submitted, Metadata.printcss)
+find_epub_css_file = File.join(Bkmkr::Paths.project_tmp_dir_submitted, Metadata.epubcss)
 
 # so we get logging re: evalImports even if it's not run
 @log_hash['evalImports_pdf_css-metadata'] = 'n-a'

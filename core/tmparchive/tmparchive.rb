@@ -32,12 +32,18 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def deleteOldProjectTmpFolder(logkey='')
-	if Dir.exist?(Bkmkr::Paths.project_tmp_dir)
-		Mcmlln::Tools.deleteDir(Bkmkr::Paths.project_tmp_dir)
-	else
-		logstring = 'n-a'
-	end
+def deleteOldProjectTmpFolders(project_tmp_dir, logkey='')
+  pathroot, u, count = project_tmp_dir.rpartition('_')
+  dircount = 0
+  Dir.glob("#{pathroot}*") do |p_tmpdir|
+      if p_tmpdir.rpartition('_')[2].to_i > count.to_i
+        dircount += 1
+        Mcmlln::Tools.deleteDir(p_tmpdir)
+      end
+  end
+  if dircount > 0
+    logstring = "deleted #{dircount} tmpdir(s) with higher increment than new one"
+  end
 rescue => logstring
 ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
@@ -61,6 +67,17 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+def mvSubmittedFiles(dir, dest, logkey='')
+  Mcmlln::Tools.copyAllFiles(dir, dest)
+  Dir.foreach(dir) {|f|
+    fn = File.join(dir, f)
+    File.delete(fn) if !File.directory?(fn)
+  }
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 def writeAlertFile(filecontents, logkey='')
 	Mcmlln::Tools.overwriteFile(Bkmkr::Paths.alert, filecontents)
 rescue => logstring
@@ -76,21 +93,30 @@ all_submitted_images = getFilesinSubmittedImages('check_submitted_images')
 
 makeFolder(Bkmkr::Paths.tmp_dir, 'tmp_folder_created')
 
-deleteOldProjectTmpFolder('old_project_tmp_folder_deleted')
-
+# make project tmp folder: create new if current exists.
 makeFolder(Bkmkr::Paths.project_tmp_dir, 'project_tmp_folder_created')
 
+# rm any old unique tmp folders for this project with higher increments
+deleteOldProjectTmpFolders(Bkmkr::Paths.project_tmp_dir, 'old_project_tmp_folders_delete')
+
 makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
+
+makeFolder(Bkmkr::Paths.project_tmp_dir_submitted, 'project_tmp_submitted_folder created')
 
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
 copyInputFile('copy_input_file')
 
 mvInputConfigFile(input_config, tmp_config, 'moved_input_config_file')
 
+# move all submitted files to project_tmp_dir_submitted
+# => except input file and config.json (already moved above)
+mvSubmittedFiles(Bkmkr::Paths.submitted_images, Bkmkr::Paths.project_tmp_dir_submitted, 'moving_submitted_items_to_tmp')
+
 filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
 
 writeAlertFile(filecontents, 'write_alert_file')
 
+puts "current projecttmpdir is: (bottom tmp)", Bkmkr::Paths.project_tmp_dir
 # ---------------------- LOGGING
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)

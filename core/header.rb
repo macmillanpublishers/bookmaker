@@ -82,10 +82,34 @@ module Bkmkr
 			end
 		end
 
-		# Path to the temporary working directory
-		@@project_tmp_dir = File.join(tmp_dir, Project.filename)
+		# Path to the temporary working directory has to be calculated.. checking for highest increment present
+		# => the dir is actually created in tmparchive.rb (or rsuite equivalent (TK))
+		project_tmp_dir_base = File.join(tmp_dir, Project.filename)
+		if Project.filename.match(/_\d+$/)
+			# adding a hyphen as pre-suffix to filenames that happen to end in our std naming: '_\d'
+			projtmpdir_root = "#{project_tmp_dir_base}-_"
+		else
+			projtmpdir_root = "#{project_tmp_dir_base}_"
+		end
+		count = 1
+		project_tmp_dir = "#{projtmpdir_root}#{count}"
+		while Dir.exists?(project_tmp_dir)
+			count +=1
+			project_tmp_dir = "#{projtmpdir_root}#{count}"
+		end
+		# tmparchive loads header before the tmpdir has been created, so count is > by 1
+		if File.basename($0) != 'tmparchive.rb' && File.basename($0) != 'tmparchive_rsuite.rb'
+			project_tmp_dir = "#{projtmpdir_root}#{count-1}"
+		end
+
+		@@project_tmp_dir = project_tmp_dir
 		def self.project_tmp_dir
 			@@project_tmp_dir
+		end
+
+		@@project_tmp_dir_submitted = File.join(project_tmp_dir, "submitted_files")
+		def self.project_tmp_dir_submitted
+			@@project_tmp_dir_submitted
 		end
 
 		# Path to the images subdirectory of the temporary working directory

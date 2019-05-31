@@ -10,10 +10,10 @@ local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 cover = Metadata.frontcover
 
 # The directory where the cover was submitted
-coverdir = Bkmkr::Paths.submitted_images
+coverdir = Bkmkr::Paths.project_tmp_dir_submitted
 
 # the full path to the cover in tmp, including file name
-tmp_cover = File.join(Bkmkr::Paths.submitted_images, cover)
+tmp_cover = File.join(Bkmkr::Paths.project_tmp_dir_submitted, cover)
 
 # the full path to the cover in the archival location, including file name
 final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
