@@ -41,9 +41,10 @@ ensure
 end
 
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
-def deleteFileifExists(file, logkey='')
-	if File.file?(file)
-		Mcmlln::Tools.deleteFile(file)
+def deleteFileifExists(logkey='')
+  donedir_lockfile_pathroot = File.join(Metadata.final_dir, "layout", "lockfile_*.txt")
+  if !Dir.glob(donedir_lockfile_pathroot).empty?
+		Mcmlln::Tools.deleteFile(Dir.glob(donedir_lockfile_pathroot)[0])
 	else
 		logstring = 'n-a'
 	end
@@ -67,6 +68,8 @@ deleteProjectTmpDir('delete_project_tmp_folder')
 deleteFileifExists(Bkmkr::Project.input_file, 'delete_input_file')
 
 deleteFileifExists(Bkmkr::Paths.alert, 'delete_alert_file')
+
+deleteFileifExists('delete_final_dir_lockfile')
 
 # ---------------------- LOGGING
 # Write json log:

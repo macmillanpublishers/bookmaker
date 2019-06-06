@@ -99,7 +99,15 @@ module Bkmkr
 		end
 		# tmparchive loads header before the tmpdir has been created, so count is > by 1
 		if File.basename($0) != 'tmparchive.rb' && File.basename($0) != 'tmparchive_rsuite.rb'
-			project_tmp_dir = "#{projtmpdir_root}#{count-1}"
+			count -= 1
+			project_tmp_dir = "#{projtmpdir_root}#{count}"
+		end
+
+		# for use in naming done_dir lockfile
+		# @@unique_run_id = project_tmp_dir.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+		@@unique_run_id = count
+		def self.unique_run_id
+			@@unique_run_id
 		end
 
 		@@project_tmp_dir = project_tmp_dir
@@ -150,6 +158,8 @@ module Bkmkr
 				Project.input_dir
 			end
 		end
+
+
 
 		# Full path to project log file
 		@@log_file = File.join(log_dir, "#{Project.filename}.txt")

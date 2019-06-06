@@ -9,21 +9,21 @@ local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 # create the archival directory structure and copy xml and html there
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
-final_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn)
+final_dir = File.join(Metadata.final_dir)
 
-final_dir_images = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
+final_dir_images = File.join(Metadata.final_dir, "images")
 
-final_dir_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover")
+final_dir_cover = File.join(Metadata.final_dir, "cover")
 
-final_dir_layout = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout")
+final_dir_layout = File.join(Metadata.final_dir, "layout")
 
-final_manuscript = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "#{Metadata.pisbn}_MNU.#{filetype}")
+final_manuscript = File.join(Metadata.final_dir, "#{Metadata.pisbn}_MNU.#{filetype}")
 
-final_html = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "#{Metadata.pisbn}.html")
+final_html = File.join(Metadata.final_dir, "layout", "#{Metadata.pisbn}.html")
 
 tmp_config = File.join(Bkmkr::Paths.project_tmp_dir, "config.json")
 
-final_config = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "config.json")
+final_config = File.join(Metadata.final_dir, "layout", "config.json")
 
 # ---------------------- METHODS
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
