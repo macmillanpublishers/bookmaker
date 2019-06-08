@@ -196,9 +196,9 @@ class Metadata
     # write alertfile if we had to create an alternate final_dir
     if locked == true
       lock_alert_file = File.join(final_dir, "ERROR-Concurrent_Bookmaker_Runs.txt")
-      lockalert_text = 'A "done" folder already exists for this title, and appears to be in use.'\
-      'Wait 15 minutes and run this file again to ensure all resources are available.'\
-      'If you think you\'re getting this malert in error, contact workflows@macmillan.com'
+      lockalert_text = 'A "done" folder already exists for this title, and appears to be in use. '\
+      'Wait 15 minutes and run this file again to ensure all resources are available. '\
+      'If you think you\'re getting this alert in error, contact workflows@macmillan.com'
       writeFileWithContents(lock_alert_file, lockalert_text, log_hash, 'metadata.rb-writing_lock_alert_file')
     end
   rescue => logstring

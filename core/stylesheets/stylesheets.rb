@@ -6,7 +6,7 @@ require_relative '../metadata.rb'
 # ---------------------- VARIABLES
 local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
-tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
+tmp_layout_dir = File.join(Metadata.final_dir, "layout")
 
 tmp_pdf_css = File.join(tmp_layout_dir, "pdf.css")
 
@@ -114,7 +114,7 @@ ensure
 end
 
 def evalOneoffs(file, path, logkey='')
-	tmp_layout_dir = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout")
+	tmp_layout_dir = File.join(Metadata.final_dir, "layout")
 	oneoffcss_new = File.join(Bkmkr::Paths.project_tmp_dir_submitted, file)
 	oneoffcss_pickup = File.join(tmp_layout_dir, file)
 
