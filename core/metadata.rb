@@ -128,21 +128,17 @@ class Metadata
     final_dir = File.join(Bkmkr::Paths.done_dir, @@data_hash['printid'])
     # now find true final_dir based on lockfiles
     tmpdir_lockfile_pathroot = File.join(Bkmkr::Paths.project_tmp_dir, "lockfile_*.txt")
-    puts "check 1"
     if !Dir.glob(tmpdir_lockfile_pathroot).empty?
       # get lockfile
       tmpdir_lockfile = Dir.glob(tmpdir_lockfile_pathroot)[0]
       tmpdir_lockfile_basename = tmpdir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
       # look for matching lockfile in Done dirs
       final_dir_lockfile_arr = Dir.glob(File.join(Bkmkr::Paths.done_dir,"#{@@data_hash['printid']}*","layout",tmpdir_lockfile_basename))
-      puts "check 2"
       if !final_dir_lockfile_arr.empty?
         final_dir_lockfile = final_dir_lockfile_arr[0]
         final_dir = final_dir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
-        puts "check 3"
       end
     end
-    puts "final_dir: #{final_dir}"
     final_dir
   end
 
