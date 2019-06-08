@@ -55,16 +55,16 @@ epub_img_dir = File.join(Bkmkr::Paths.project_tmp_dir, "epubimg")
 csfilename = "#{Metadata.eisbn}_EPUB"
 
 # epub css file
-epub_css = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "layout", "epub.css")
+epub_css = File.join(Metadata.final_dir, "layout", "epub.css")
 
 # final image directory
-img_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "images")
+img_dir = File.join(Metadata.final_dir, "images")
 
 # final converted epub
 final_epub = File.join(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
 
 # final archive dir
-final_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn)
+final_dir = Metadata.final_dir
 
 # second epub conversion
 tmp_epub2 = File.join(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
@@ -306,7 +306,7 @@ cover = data_hash['frontcover']
 
 # the path to the cover file
 unless data_hash['frontcover'].nil? or data_hash['frontcover'].empty? or !data_hash['frontcover']
-	final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
+	final_cover = File.join(Metadata.final_dir, "cover", cover)
 else
 	final_cover = ""
 end
@@ -387,7 +387,7 @@ deleteTmpEpub(tmp_epub2, 'rm_tmp_epub_file')
 
 # ---------------------- LOGGING
 # epub file should exist in done dir
-if File.file?("#{Bkmkr::Paths.done_dir}/#{Metadata.pisbn}/#{csfilename}.epub")
+if File.file?("#{Metadata.final_dir}/#{csfilename}.epub")
 	test_epub_status = "pass: the EPUB was created successfully"
 else
 	test_epub_status = "FAIL: the EPUB was created successfully"

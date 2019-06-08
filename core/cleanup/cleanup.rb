@@ -4,7 +4,9 @@ require_relative '../metadata.rb'
 # ---------------------- VARIABLES
 local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
-unused_submitted_dir = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "unused_submitted_files")
+final_dir = Metadata.final_dir
+
+unused_submitted_dir = File.join(final_dir, "unused_submitted_files")
 
 # ---------------------- METHODS
 def readConfigJson(logkey='')
@@ -41,8 +43,20 @@ ensure
 end
 
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
-def deleteFileifExists(logkey='')
-  donedir_lockfile_pathroot = File.join(Metadata.final_dir, "layout", "lockfile_*.txt")
+def deleteFileifExists(file, logkey='')
+	if File.file?(file)
+		Mcmlln::Tools.deleteFile(file)
+	else
+		logstring = 'n-a'
+	end
+rescue => logstring
+ensure
+    Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
+def deleteLockfileifExists(final_dir, logkey='')
+  donedir_lockfile_pathroot = File.join(final_dir, "layout", "lockfile_*.txt")
   if !Dir.glob(donedir_lockfile_pathroot).empty?
 		Mcmlln::Tools.deleteFile(Dir.glob(donedir_lockfile_pathroot)[0])
 	else
@@ -69,7 +83,7 @@ deleteFileifExists(Bkmkr::Project.input_file, 'delete_input_file')
 
 deleteFileifExists(Bkmkr::Paths.alert, 'delete_alert_file')
 
-deleteFileifExists('delete_final_dir_lockfile')
+deleteLockfileifExists(final_dir, 'delete_final_dir_lockfile')
 
 # ---------------------- LOGGING
 # Write json log:

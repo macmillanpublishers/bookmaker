@@ -16,10 +16,10 @@ coverdir = Bkmkr::Paths.project_tmp_dir_submitted
 tmp_cover = File.join(Bkmkr::Paths.project_tmp_dir_submitted, cover)
 
 # the full path to the cover in the archival location, including file name
-final_cover = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "cover", cover)
+final_cover = File.join(Metadata.final_dir, "cover", cover)
 
 # full path of cover error file
-cover_error = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "COVER_ERROR.txt")
+cover_error = File.join(Metadata.final_dir, "COVER_ERROR.txt")
 
 # An array listing all files in the submission dir
 files = Mcmlln::Tools.dirList(coverdir)
