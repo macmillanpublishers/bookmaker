@@ -17,11 +17,11 @@ pdf_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "pdf_tmp.html")
 
 testing_value_file = File.join(Bkmkr::Paths.resource_dir, "staging.txt")
 
-cssfile = File.join(Bkmkr::Project.working_dir, "done", Metadata.pisbn, "layout", "pdf.css")
+cssfile = File.join(Metadata.final_dir, "layout", "pdf.css")
 
 tmppdf = File.join(Bkmkr::Paths.project_tmp_dir, "#{Metadata.pisbn}.pdf")
 
-finalpdf = File.join(Bkmkr::Paths.done_dir, Metadata.pisbn, "#{Metadata.pisbn}_POD.pdf")
+finalpdf = File.join(Metadata.final_dir, "#{Metadata.pisbn}_POD.pdf")
 
 watermark_css = File.join(Bkmkr::Paths.scripts_dir, "bookmaker_assets", "pdfmaker", "css", "generic", "watermark.css")
 
