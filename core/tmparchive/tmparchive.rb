@@ -103,10 +103,10 @@ makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
 
 makeFolder(Bkmkr::Paths.project_tmp_dir_submitted, 'project_tmp_submitted_folder created')
 
+mvInputConfigFile(input_config, tmp_config, 'moved_input_config_file')
+
 # Rename and move input files to tmp folder to eliminate possibility of overwriting
 copyInputFile('copy_input_file')
-
-mvInputConfigFile(input_config, tmp_config, 'moved_input_config_file')
 
 # move all submitted files to project_tmp_dir_submitted
 # => except input file and config.json (already moved above)
