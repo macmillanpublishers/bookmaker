@@ -1,7 +1,7 @@
 # ------------------ CUSTOM VARIABLES
 # Add any custom variables you'd like to use in the global variables below.
-$currpath = Dir.pwd
-$currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
+# $currpath = Dir.pwd
+# $currvol = $currpath.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).shift
 
 unless ARGV.empty?		#adding this check for testing purposes
   unescapeargv = ARGV[0].chomp('"').reverse.chomp('"').reverse
@@ -27,7 +27,7 @@ $op_system = "windows"
 # The location of the temporary working folder.
 # This is where bookmaker will perform most actions
 # before moving the finalized files to the "done" directory.
-$tmp_dir = File.join($currvol, "bookmaker_tmp", project)
+$tmp_dir = File.join("S:", "bookmaker_tmp", project)
 
 # The location to store the log file that gets created
 # for each conversion.
