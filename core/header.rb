@@ -98,7 +98,7 @@ module Bkmkr
 			project_tmp_dir = "#{projtmpdir_root}#{count}"
 		end
 		# tmparchive loads header before the tmpdir has been created, so count is > by 1
-		if File.basename($0) != 'tmparchive.rb' && File.basename($0) != 'tmparchive_rsuite.rb'
+		if File.basename($0) != 'tmparchive.rb'
 			count -= 1
 			project_tmp_dir = "#{projtmpdir_root}#{count}"
 		end

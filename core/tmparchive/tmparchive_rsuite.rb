@@ -103,7 +103,7 @@ end
 @log_hash['tmpdir_from_rsuite'] = tmpdir_from_rsuite
 
 # verify that python & bookmaker's calculated tmpdirs match
-unless tmpdir_from_rsuite != Bkmkr::Paths.project_tmp_dir
+if tmpdir_from_rsuite != Bkmkr::Paths.project_tmp_dir
   @log_hash['tmpdirs_dont_match'] = "tmpdir_from_rsuite does not match bkmkr tmp_dir: #{Bkmkr::Paths.project_tmp_dir}"
 else
   all_submitted_files = getSubmittedFilesList(Bkmkr::Paths.project_tmp_dir_submitted, 'check_submitted_files_besides_docx')
