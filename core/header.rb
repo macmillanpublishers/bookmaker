@@ -121,7 +121,7 @@ module Bkmkr
 		end
 
     @@fromrsuite_Metadata_json = File.join(project_tmp_dir_submitted, "bookmakerMetadata.json")
-		def self.bookmakerMetadata_json
+		def self.fromrsuite_Metadata_json
 			@@fromrsuite_Metadata_json
 		end
 
