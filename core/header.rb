@@ -120,6 +120,11 @@ module Bkmkr
 			@@project_tmp_dir_submitted
 		end
 
+    @@fromrsuite_Metadata_json = File.join(project_tmp_dir_submitted, "bookmakerMetadata.json")
+		def self.bookmakerMetadata_json
+			@@fromrsuite_Metadata_json
+		end
+
 		# Path to the images subdirectory of the temporary working directory
 		@@project_tmp_dir_img = File.join(project_tmp_dir, "images")
 		def self.project_tmp_dir_img
