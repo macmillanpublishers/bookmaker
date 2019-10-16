@@ -98,7 +98,7 @@ module Bkmkr
 			project_tmp_dir = "#{projtmpdir_root}#{count}"
 		end
 		# tmparchive loads header before the tmpdir has been created, so count is > by 1
-		if File.basename($0) != 'tmparchive.rb' && File.basename($0) != 'tmparchive_rsuite.rb'
+		if File.basename($0) != 'tmparchive.rb'
 			count -= 1
 			project_tmp_dir = "#{projtmpdir_root}#{count}"
 		end
@@ -118,6 +118,11 @@ module Bkmkr
 		@@project_tmp_dir_submitted = File.join(project_tmp_dir, "submitted_files")
 		def self.project_tmp_dir_submitted
 			@@project_tmp_dir_submitted
+		end
+
+    @@fromrsuite_Metadata_json = File.join(project_tmp_dir_submitted, "bookmakerMetadata.json")
+		def self.fromrsuite_Metadata_json
+			@@fromrsuite_Metadata_json
 		end
 
 		# Path to the images subdirectory of the temporary working directory
