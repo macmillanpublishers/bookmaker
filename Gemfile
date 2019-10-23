@@ -3,7 +3,7 @@ source "https://rubygems.org"
 
 #default 
 gem 'json', '~> 1.8.3'
-gem 'nokogiri', '~> 1.6.8'
+gem 'nokogiri', '~> 1.10.4'
 gem 'htmlentities', '~> 4.3.4'
 gem 'unidecoder', '~> 1.1.2'
 gem 'to_xml', '~> 0.1.1'
