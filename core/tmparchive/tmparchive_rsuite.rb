@@ -55,8 +55,8 @@ def getDesignTemplateCSS(all_submitted_files, logkey='')
     if filename.include?('__')
       templatecss_name = filename
       all_submitted_files.delete(filename)
+      break
     end
-    break
   end
   return templatecss_name, all_submitted_files
 rescue => logstring
@@ -83,14 +83,14 @@ def consolidateSubmittedCSS(css_type, all_submitted_files, dir, logkey='')
 
   # check if we have snippet files _and_ oneoff of this type; if so: consolidate into tmp oneoff, then overwrite existing oneoff
   if !css_snippetfiles.empty? && all_submitted_files.include?(oneoff_filename)
-    tmp_cssfile = "tmp_#{css_type}.css"
+    tmpcss_filename = "tmp_#{css_type}.css"
     tmp_cssfile = File.join(dir, tmpcss_filename)
     for snippet_filename in css_snippetfiles
-      css_comment = "Writing css from \"#{snippet_filename}\", to #{oneoff_filename}"
+      css_comment = "Prepending snippet \"#{snippet_filename}\" to #{oneoff_filename}"
       writeCSStoFile(File.join(dir, snippet_filename), tmp_cssfile, css_comment, "writing_#{css_type}_snippet_to_tmpcss")
     end
     # write oneoff contents to tmp css
-    css_comment = "Writing css from \"#{oneoff_filename}\" back into #{oneoff_filename} via tmpfile"
+    css_comment = "Appending \"#{oneoff_filename}\" contents back into self, via tmpfile"
     writeCSStoFile(oneoff_file, tmp_cssfile, css_comment, "writing_#{css_type}_oneoff_to_tmpcss")
     # now read all contents of tmp css, overwrite oneoff_pdf.css
     tmpcss = File.read(tmp_cssfile)
@@ -176,7 +176,7 @@ else
   if !templatecss_name.empty?
     # could delete the dummy css file here but doesn't really matter
     @log_hash['rs_templatecss_name'] = templatecss_name
-    rsuite_metadata_hash['rs_design_template'] = rs_server
+    rsuite_metadata_hash['rs_design_template'] = templatecss_name
   end
 
   # users may have submitted css snippets from snippet library in RSuite. These (plus any oneoffcss) need to be consolidated,
