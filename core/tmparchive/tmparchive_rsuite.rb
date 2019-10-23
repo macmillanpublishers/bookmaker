@@ -49,6 +49,67 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+def getDesignTemplateCSS(all_submitted_files, logkey='')
+  templatecss_name = ''
+  for filename in all_submitted_files
+    if filename.include?('__')
+      templatecss_name = filename
+      all_submitted_files.delete(filename)
+      break
+    end
+  end
+  return templatecss_name, all_submitted_files
+rescue => logstring
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def writeCSStoFile(sourcefile, targetfile, css_comment, logkey='')
+  css = File.read(sourcefile)
+  File.open(targetfile, 'a+') do |o|
+    o.puts " "
+    o.puts "/* #{css_comment} */"
+    o.write css
+  end
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def consolidateSubmittedCSS(css_type, all_submitted_files, dir, logkey='')
+  oneoff_filename = "oneoff_#{css_type}.css"
+  oneoff_file = File.join(dir, oneoff_filename)
+  css_snippetfiles = all_submitted_files.select {|x| x.include?('.css') && x.include?("#{css_type}_")}
+
+  # check if we have snippet files _and_ oneoff of this type; if so: consolidate into tmp oneoff, then overwrite existing oneoff
+  if !css_snippetfiles.empty? && all_submitted_files.include?(oneoff_filename)
+    tmpcss_filename = "tmp_#{css_type}.css"
+    tmp_cssfile = File.join(dir, tmpcss_filename)
+    for snippet_filename in css_snippetfiles
+      css_comment = "Prepending snippet \"#{snippet_filename}\" to #{oneoff_filename}"
+      writeCSStoFile(File.join(dir, snippet_filename), tmp_cssfile, css_comment, "writing_#{css_type}_snippet_to_tmpcss")
+    end
+    # write oneoff contents to tmp css
+    css_comment = "Appending \"#{oneoff_filename}\" contents back into self, via tmpfile"
+    writeCSStoFile(oneoff_file, tmp_cssfile, css_comment, "writing_#{css_type}_oneoff_to_tmpcss")
+    # now read all contents of tmp css, overwrite oneoff_pdf.css
+    tmpcss = File.read(tmp_cssfile)
+    Mcmlln::Tools.overwriteFile(oneoff_file, tmpcss)
+    logstring = "----- Found snippet files #{css_snippetfiles} and #{oneoff_filename}. Consolidated all into #{oneoff_filename}"
+
+  # now  if we just have snippet files (no pre-existing oneoff)
+  elsif !css_snippetfiles.empty?
+    for snippet_filename in css_snippetfiles
+      css_comment = "Writing css from \"#{snippet_filename}\", to #{oneoff_filename}"
+      writeCSStoFile(File.join(dir, snippet_filename), oneoff_file, css_comment, "writing_#{css_type}_snippet_to_oneoffcss")
+    end
+    logstring = "----- Found snippet files: #{css_snippetfiles}. Consolidated into #{oneoff_filename}"
+  end
+rescue => logstring
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 def deleteOldProjectTmpFolders(project_tmp_dir, logkey='')
   pathroot, u, count = project_tmp_dir.rpartition('_')
   dircount = 0
@@ -110,6 +171,19 @@ else
   all_submitted_files = getSubmittedFilesList(Bkmkr::Paths.project_tmp_dir_submitted, 'check_submitted_files_besides_docx')
   # log submitted files list
   @log_hash['submitted_files'] = all_submitted_files
+
+  templatecss_name, all_submitted_files = getDesignTemplateCSS(all_submitted_files, 'get_design_template_CSS')
+  if !templatecss_name.empty?
+    # could delete the dummy css file here but doesn't really matter
+    @log_hash['rs_templatecss_name'] = templatecss_name
+    rsuite_metadata_hash['rs_design_template'] = templatecss_name
+  end
+
+  # users may have submitted css snippets from snippet library in RSuite. These (plus any oneoffcss) need to be consolidated,
+  #   into oneoff_pdf.css and oneoff_epub.css.
+  #   snippet filenames should begin with 'epub_' or 'pdf_'
+  consolidateSubmittedCSS('pdf', all_submitted_files, Bkmkr::Paths.project_tmp_dir_submitted, 'consolidate_rsuite_submitted_css-pdf')
+  consolidateSubmittedCSS('epub', all_submitted_files, Bkmkr::Paths.project_tmp_dir_submitted, 'consolidate_rsuite_submitted_css-epub')
 
   # rm any old unique tmp folders for this project with higher increments
   deleteOldProjectTmpFolders(Bkmkr::Paths.project_tmp_dir, 'old_project_tmp_folders_delete')
