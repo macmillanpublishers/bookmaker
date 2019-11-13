@@ -215,7 +215,7 @@ class Metadata
     # => just checking for presence of rsuite_metadata.json as evidence of rsuite run
     if File.exist?(Bkmkr::Paths.fromrsuite_Metadata_json)
       final_dir = File.join(done_dir, "#{pisbn}_#{Time.now.strftime("%y%m%d-%H%M%S")}")
-      logstring = "this is an rs->bkmkr run, spawning new donedir: \"#{pisbn}_#{unique_run_id}\""
+      logstring = "this is an rs->bkmkr run, spawning new donedir: \"#{pisbn}_#{Time.now.strftime("%y%m%d-%H%M%S")}\""
     # other cases are non-rsuite>bkmkr runs:
     # => test if default final_dir is already locked
     elsif !Dir.glob(donedir_lockfile_pathroot).empty?
