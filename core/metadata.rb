@@ -210,12 +210,11 @@ class Metadata
   def self.setFinalDir(project_tmpdir, done_dir, pisbn, unique_run_id, log_hash, logkey='')
     locked = false
     final_dir = File.join(done_dir, pisbn)
-    final_dir_alternate = File.join(done_dir, "#{pisbn}_#{unique_run_id}")
     donedir_lockfile_pathroot = File.join(final_dir, "layout", "lockfile_*.txt")
     # if we are running files dropped from rsuite, we always create/use a unique done folder.
     # => just checking for presence of rsuite_metadata.json as evidence of rsuite run
     if File.exist?(Bkmkr::Paths.fromrsuite_Metadata_json)
-      final_dir = final_dir_alternate
+      final_dir = File.join(done_dir, "#{pisbn}_#{Time.now.strftime("%y%m%d-%H%M%S")}")
       logstring = "this is an rs->bkmkr run, spawning new donedir: \"#{pisbn}_#{unique_run_id}\""
     # other cases are non-rsuite>bkmkr runs:
     # => test if default final_dir is already locked
@@ -234,7 +233,7 @@ class Metadata
       end
       # check again after whileloop
       if File.exist?(strange_lockfile) # still locked :(
-        final_dir = final_dir_alternate
+        final_dir = File.join(done_dir, "#{pisbn}_#{unique_run_id}")
         locked = true
         logstring = "final_dir locked for #{n} minutes, setting new one: #{final_dir}"
       else
