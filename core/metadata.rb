@@ -211,8 +211,14 @@ class Metadata
     locked = false
     final_dir = File.join(done_dir, pisbn)
     donedir_lockfile_pathroot = File.join(final_dir, "layout", "lockfile_*.txt")
-    # test if default final_dir is already locked
-    if !Dir.glob(donedir_lockfile_pathroot).empty?
+    # if we are running files dropped from rsuite, we always create/use a unique done folder.
+    # => just checking for presence of rsuite_metadata.json as evidence of rsuite run
+    if File.exist?(Bkmkr::Paths.fromrsuite_Metadata_json)
+      final_dir = File.join(done_dir, "#{pisbn}_#{Time.now.strftime("%y%m%d-%H%M%S")}")
+      logstring = "this is an rs->bkmkr run, spawning new donedir: \"#{pisbn}_#{Time.now.strftime("%y%m%d-%H%M%S")}\""
+    # other cases are non-rsuite>bkmkr runs:
+    # => test if default final_dir is already locked
+    elsif !Dir.glob(donedir_lockfile_pathroot).empty?
       strange_lockfile = Dir.glob(donedir_lockfile_pathroot)[0]
       wait_increment = 60 # < production
       if $op_system == "mac"
