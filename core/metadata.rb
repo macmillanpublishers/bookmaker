@@ -126,17 +126,27 @@ class Metadata
   def self.final_dir
     # set a default final_dir
     final_dir = File.join(Bkmkr::Paths.done_dir, @@data_hash['printid'])
-    # now find true final_dir based on lockfiles
-    tmpdir_lockfile_pathroot = File.join(Bkmkr::Paths.project_tmp_dir, "lockfile_*.txt")
-    if !Dir.glob(tmpdir_lockfile_pathroot).empty?
-      # get lockfile
-      tmpdir_lockfile = Dir.glob(tmpdir_lockfile_pathroot)[0]
-      tmpdir_lockfile_basename = tmpdir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
-      # look for matching lockfile in Done dirs
-      final_dir_lockfile_arr = Dir.glob(File.join(Bkmkr::Paths.done_dir,"#{@@data_hash['printid']}*","layout",tmpdir_lockfile_basename))
-      if !final_dir_lockfile_arr.empty?
-        final_dir_lockfile = final_dir_lockfile_arr[0]
-        final_dir = final_dir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+    # we don't need ot use lockfiles for rs>bkmkr final_dir; they increment with timestamp
+    #   so we can just use a sort to get the most recently named dir for this isbn
+    if File.exist?(Bkmkr::Paths.fromrsuite_Metadata_json)
+      finaldir_root = File.join(Bkmkr::Paths.done_dir, "#{@@data_hash['printid']}_*")
+      if Dir.glob(finaldir_root)
+        final_dir = Dir.glob(finaldir_root).sort.pop
+      end  
+    else
+      # not doing uniquie finaldirs as in rs>bkmkr above..
+      #   so find final_dir based on lockfiles
+      tmpdir_lockfile_pathroot = File.join(Bkmkr::Paths.project_tmp_dir, "lockfile_*.txt")
+      if !Dir.glob(tmpdir_lockfile_pathroot).empty?
+        # get lockfile
+        tmpdir_lockfile = Dir.glob(tmpdir_lockfile_pathroot)[0]
+        tmpdir_lockfile_basename = tmpdir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+        # look for matching lockfile in Done dirs
+        final_dir_lockfile_arr = Dir.glob(File.join(Bkmkr::Paths.done_dir,"#{@@data_hash['printid']}*","layout",tmpdir_lockfile_basename))
+        if !final_dir_lockfile_arr.empty?
+          final_dir_lockfile = final_dir_lockfile_arr[0]
+          final_dir = final_dir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+        end
       end
     end
     final_dir
