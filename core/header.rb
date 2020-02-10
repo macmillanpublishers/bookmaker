@@ -368,7 +368,7 @@ module Bkmkr
 			end
 		end
 
-		def self.insertaddons(inputfile, sectionparams, addonparams)
+		def self.insertaddons(inputfile, sectionparams, addonparams, epub_project)
 			# The section types JSON
 			sectionfile = sectionparams
 			file2 = File.read(sectionfile)
@@ -379,11 +379,16 @@ module Bkmkr
 			file3 = File.read(addonfile)
 			addon_hash = JSON.parse(file3)
 
-			# figure out which addon files to apply
+			# figure out which addon files to apply ; get projectname from 'epub_project' var (from rsuite) if available
 			addons = []
+			if epub_project.empty?
+				projectname = Project.working_dir.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+			else
+				projectname = epub_project
+			end
 
 			addon_hash['projects'].each do |p|
-				if p['name'] == Project.working_dir.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+				if p['name'] == projectname
 					addons = p['addons']
 				end
 			end
