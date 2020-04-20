@@ -170,7 +170,7 @@ api_metadata_hash = readJson(Bkmkr::Paths.api_Metadata_json, 'read_api_metadata_
 # log some basic info to json:
 @log_hash['infile'] = Bkmkr::Project.input_file_normalized
 @log_hash['tmpdir'] = Bkmkr::Paths.project_tmp_dir
-@log_hash['runtype'] = Bkmkr::Paths.runtype
+@log_hash['runtype'] = Bkmkr::Project.runtype
 
 all_submitted_files = getSubmittedFilesList(Bkmkr::Paths.project_tmp_dir_submitted, 'check_submitted_files_besides_docx')
 # log submitted files list
