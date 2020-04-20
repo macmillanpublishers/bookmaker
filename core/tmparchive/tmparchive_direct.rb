@@ -1,3 +1,7 @@
+# reworking tis to skip convert/submitted_images setup entirely.
+# ideally this can handle files form rsuite &/or drive
+# since we're behind closed doors we can use timestamps working dirs and don't need lockfiles any more.
+
 require 'fileutils'
 
 require_relative '../header.rb'
@@ -7,9 +11,12 @@ require_relative '../header.rb'
 
 local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash(true)
 
-tmpdir_from_rsuite = ARGV[1].chomp('"').reverse.chomp('"').reverse.gsub('\\', '/')
-
-rs_server = ARGV[2].chomp('"').reverse.chomp('"').reverse
+if Bkmkr::Project.runtype == 'rsuite'
+  rs_server = ARGV[2].chomp('"').reverse.chomp('"').reverse
+elsif Bkmkr::Project.runtype == 'direct'
+  submitter_email = ARGV[2].chomp('"').reverse.chomp('"').reverse
+  submitter_name = ARGV[3].chomp('"').reverse.chomp('"').reverse
+end
 
 input_config = File.join(Bkmkr::Paths.project_tmp_dir_submitted, "config.json")
 
@@ -162,16 +169,21 @@ api_metadata_hash = readJson(Bkmkr::Paths.api_Metadata_json, 'read_api_metadata_
 
 # log some basic info to json:
 @log_hash['infile'] = Bkmkr::Project.input_file_normalized
-@log_hash['tmpdir_from_rsuite'] = tmpdir_from_rsuite
+@log_hash['tmpdir'] = Bkmkr::Paths.project_tmp_dir
+@log_hash['runtype'] = Bkmkr::Paths.runtype
 
-# verify that python & bookmaker's calculated tmpdirs match
-if tmpdir_from_rsuite != Bkmkr::Paths.project_tmp_dir
-  @log_hash['tmpdirs_dont_match'] = "tmpdir_from_rsuite does not match bkmkr tmp_dir: #{Bkmkr::Paths.project_tmp_dir}"
-else
-  all_submitted_files = getSubmittedFilesList(Bkmkr::Paths.project_tmp_dir_submitted, 'check_submitted_files_besides_docx')
-  # log submitted files list
-  @log_hash['submitted_files'] = all_submitted_files
+all_submitted_files = getSubmittedFilesList(Bkmkr::Paths.project_tmp_dir_submitted, 'check_submitted_files_besides_docx')
+# log submitted files list
+@log_hash['submitted_files'] = all_submitted_files
 
+# create necessary subdir
+makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
+
+# # write bookmaker 'busy' file to project dir <-- not really supported for simultaneous runs, but leaving, commented, in case we want to rework
+# filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
+# writeAlertFile(filecontents, 'write_alert_file')
+
+if Bkmkr::Project.runtype == 'rsuite'
   templatecss_name, all_submitted_files = getDesignTemplateCSS(all_submitted_files, 'get_design_template_CSS')
   if !templatecss_name.empty?
     # could delete the dummy css file here but doesn't really matter
@@ -188,21 +200,20 @@ else
   # rm any old unique tmp folders for this project with higher increments
   deleteOldProjectTmpFolders(Bkmkr::Paths.project_tmp_dir, 'old_project_tmp_folders_delete')
 
-  # create necessary subdir
-  makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
-
   # move input config file to root of tmpdir (if present)
   mvInputConfigFile(input_config, tmp_config, 'moved_input_config_file')
-
-  # # write bookmaker 'busy' file to project dir <-- not really supported for simultaneous runs, but leaving, commented, in case we want to rework
-  # filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
-  # writeAlertFile(filecontents, 'write_alert_file')
 
   # write rs_servername value to metadata_json
   @log_hash['rsuite_server'] = rs_server
   api_metadata_hash['rsuite_server'] = rs_server
-  writeHashToJSON(api_metadata_hash, Bkmkr::Paths.api_Metadata_json, 'write_RSserver_info_to_json')
+else
+  # set submitter email and dosplay name as parameters in api_Metadata_json
+  api_metadata_hash['submitter_email'] = submitter_email
+  api_metadata_hash['submitter_name'] = submitter_name
 end
+
+writeHashToJSON(api_metadata_hash, Bkmkr::Paths.api_Metadata_json, 'write_RSserver_info_to_json')
+
 
 # ---------------------- LOGGING
 # Write json log:
