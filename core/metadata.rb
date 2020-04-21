@@ -214,7 +214,7 @@ class Metadata
     # if we are running files dropped from rsuite, we always create/use a unique done folder.
     # => just checking for presence of api_metadata.json as evidence of rsuite run
     # if File.exist?(Bkmkr::Paths.api_Metadata_json)
-    unless Bkmkr::Project.runtype == 'dropbox'
+    if Bkmkr::Project.runtype != 'dropbox'
       final_dir = File.join(project_tmpdir, "done")
       logstring = "this is a \"#{Bkmkr::Project.runtype}\" run, spawning new donedir inside tmpdir"
     # other cases are non-rsuite>bkmkr runs:
