@@ -124,21 +124,25 @@ class Metadata
 	end
 
   def self.final_dir
-    # set a default final_dir
-    final_dir = File.join(Bkmkr::Paths.done_dir, @@data_hash['printid'])
-    # now find true final_dir based on lockfiles
-    tmpdir_lockfile_pathroot = File.join(Bkmkr::Paths.project_tmp_dir, "lockfile_*.txt")
-    if !Dir.glob(tmpdir_lockfile_pathroot).empty?
-      # get lockfile
-      tmpdir_lockfile = Dir.glob(tmpdir_lockfile_pathroot)[0]
-      tmpdir_lockfile_basename = tmpdir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
-      # look for matching lockfile in Done dirs
-      final_dir_lockfile_arr = Dir.glob(File.join(Bkmkr::Paths.done_dir,"#{@@data_hash['printid']}*","layout",tmpdir_lockfile_basename))
-      if !final_dir_lockfile_arr.empty?
-        final_dir_lockfile = final_dir_lockfile_arr[0]
-        final_dir = final_dir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
-      end
-    end
+		if Bkmkr::Project.runtype != 'dropbox'
+			final_dir = File.join(Bkmkr::Paths.project_tmp_dir, "done")
+		else
+	    # set a default final_dir
+	    final_dir = File.join(Bkmkr::Paths.done_dir, @@data_hash['printid'])
+	    # now find true final_dir based on lockfiles
+	    tmpdir_lockfile_pathroot = File.join(Bkmkr::Paths.project_tmp_dir, "lockfile_*.txt")
+	    if !Dir.glob(tmpdir_lockfile_pathroot).empty?
+	      # get lockfile
+	      tmpdir_lockfile = Dir.glob(tmpdir_lockfile_pathroot)[0]
+	      tmpdir_lockfile_basename = tmpdir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
+	      # look for matching lockfile in Done dirs
+	      final_dir_lockfile_arr = Dir.glob(File.join(Bkmkr::Paths.done_dir,"#{@@data_hash['printid']}*","layout",tmpdir_lockfile_basename))
+	      if !final_dir_lockfile_arr.empty?
+	        final_dir_lockfile = final_dir_lockfile_arr[0]
+	        final_dir = final_dir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact))[0...-2].join(File::SEPARATOR)
+	      end
+	    end
+		end
     final_dir
   end
 
@@ -216,7 +220,7 @@ class Metadata
     # if File.exist?(Bkmkr::Paths.api_Metadata_json)
     if Bkmkr::Project.runtype != 'dropbox'
       final_dir = File.join(project_tmpdir, "done")
-      logstring = "this is a \"#{Bkmkr::Project.runtype}\" run, spawning new donedir inside tmpdir"
+      logstring = "this is a _#{Bkmkr::Project.runtype}_ run, creating donedir inside tmpdir"
     # other cases are non-rsuite>bkmkr runs:
     # => test if default final_dir is already locked
     elsif !Dir.glob(donedir_lockfile_pathroot).empty?
@@ -248,6 +252,7 @@ class Metadata
     final_dir = ''
     locked = false
   ensure
+		log_hash['final_dir'] = final_dir
     Mcmlln::Tools.logtoJson(log_hash, logkey, logstring)
     return final_dir, locked, log_hash
   end
@@ -258,7 +263,13 @@ class Metadata
       # lockfiles aren't setup! do it!
       final_dir, locked = setFinalDir(project_tmpdir, done_dir, pisbn, unique_run_id, log_hash, 'metadata.rb-set_final_dir')
       # make Lockfiles, error texts, etc!
-      makeLockFiles(final_dir, locked, project_tmpdir, log_hash, 'metadata.rb-make_lockfiles')
+			if Bkmkr::Project.runtype == 'dropbox'
+      	makeLockFiles(final_dir, locked, project_tmpdir, log_hash, 'metadata.rb-make_lockfiles')
+			# skip for direct/rsuite runs; we don't need lockfiles, just create the folders
+			else
+				makeFolder(final_dir, log_hash, 'metadata.rb-create_final_dir')
+				makeFolder(File.join(final_dir, "layout"), log_hash, 'metadata.rb-create_final_dir_layout')
+			end
     else
       tmpdir_lockfile = Dir.glob(tmpdir_lockfile_pathroot)[0]
       tmpdir_lockfile_basename = tmpdir_lockfile.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop

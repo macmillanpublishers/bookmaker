@@ -9,7 +9,7 @@ local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 # create the archival directory structure and copy xml and html there
 filetype = Bkmkr::Project.filename_split.split(".").pop
 
-final_dir = File.join(Metadata.final_dir)
+final_dir = Metadata.final_dir
 
 final_dir_images = File.join(Metadata.final_dir, "images")
 
