@@ -172,12 +172,13 @@ api_metadata_hash = readJson(Bkmkr::Paths.api_Metadata_json, 'read_api_metadata_
 @log_hash['tmpdir'] = Bkmkr::Paths.project_tmp_dir
 @log_hash['runtype'] = Bkmkr::Project.runtype
 
+# create necessary subdirs
+makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
+makeFolder(Bkmkr::Paths.project_tmp_dir_submitted, 'project_tmp_submitted_folder_created')
+
 all_submitted_files = getSubmittedFilesList(Bkmkr::Paths.project_tmp_dir_submitted, 'check_submitted_files_besides_docx')
 # log submitted files list
 @log_hash['submitted_files'] = all_submitted_files
-
-# create necessary subdir
-makeFolder(Bkmkr::Paths.project_tmp_dir_img, 'project_tmp_img_folder_created')
 
 # # write bookmaker 'busy' file to project dir <-- not really supported for simultaneous runs, but leaving, commented, in case we want to rework
 # filecontents = "The conversion processor is currently running. Please do not submit any new files or images until the process completes."
