@@ -175,21 +175,28 @@ module Bkmkr
 			end
 		end
 
-
-
-		# Full path to project log file
-		@@log_file = File.join(log_dir, "#{Project.filename}.txt")
-		def self.log_file
-			@@log_file
-		end
-
 		@@thisscript = File.basename($0)		#for easy reference to script's own name in json-logs
 		def self.thisscript
 			@@thisscript
 		end
 
+		if Project.runtype == 'dropbox' # 'direct' or 'rsuite'
+		  logfile_basename = Project.filename
+		else
+			# not just using input_dirname because that may not reflect the docx name, rather the .zip
+			input_dirname = File.basename(Project.input_dir)
+			input_timstamp = input_dirname.split("_").pop
+			logfile_basename = "#{Project.filename}_#{input_timstamp}"
+		end
+
+		# Full path to project log file
+		@@log_file = File.join(log_dir, "#{logfile_basename}.txt")
+		def self.log_file
+			@@log_file
+		end
+
 		# Full path to project json logfile
-		@@json_log = File.join(log_dir, "#{Project.filename}.json")
+		@@json_log = File.join(log_dir, "#{logfile_basename}.json")
 		def self.json_log
 			@@json_log
 		end
