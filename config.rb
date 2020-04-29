@@ -35,7 +35,7 @@ $tmp_dir = File.join("S:", "bookmaker_tmp", project)
 # =>    for 'direct' runs we want a static root base_path for the logdir.
 $log_dir = File.join(logdir, "bookmaker_logs", logsubdir, project)
 if !ARGV[1].nil? && ARGV[1] == 'direct'
-  $log_dir = File.join("S:", "bookmaker_tmp", project)
+  $log_dir = File.join("S:", "bookmaker_logs", project)
 end
 
 # The location where your bookmaker scripts live.
