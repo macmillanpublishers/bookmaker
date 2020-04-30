@@ -14,6 +14,15 @@ module Bkmkr
 			@unescapeargv = '/test/test/test.docx'
 			puts "WARNING, no input file!!!"
 		end
+    # capture args for _direct_ (non-dropbox) runs
+    unless ARGV[1].nil?
+      @@runtype = ARGV[1]
+    else
+      @@runtype = 'dropbox'
+    end
+    def self.runtype
+			@@runtype
+		end
   		@input_file = File.expand_path(@unescapeargv)
   		@@input_file = @input_file.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).join(File::SEPARATOR)
 		def self.input_file
@@ -81,28 +90,30 @@ module Bkmkr
 				Project.input_dir
 			end
 		end
-
-		# Path to the temporary working directory has to be calculated.. checking for highest increment present
-		# => the dir is actually created in tmparchive.rb (or rsuite equivalent (TK))
-		project_tmp_dir_base = File.join(tmp_dir, Project.filename)
-		if Project.filename.match(/_\d+$/)
-			# adding a hyphen as pre-suffix to filenames that happen to end in our std naming: '_\d'
-			projtmpdir_root = "#{project_tmp_dir_base}-_"
-		else
-			projtmpdir_root = "#{project_tmp_dir_base}_"
-		end
-		count = 1
-		project_tmp_dir = "#{projtmpdir_root}#{count}"
-		while Dir.exists?(project_tmp_dir)
-			count +=1
-			project_tmp_dir = "#{projtmpdir_root}#{count}"
-		end
-		# tmparchive loads header before the tmpdir has been created, so count is > by 1
-		if File.basename($0) != 'tmparchive.rb'
-			count -= 1
-			project_tmp_dir = "#{projtmpdir_root}#{count}"
-		end
-
+    if Project.runtype != 'dropbox' # 'direct' or 'rsuite'
+      project_tmp_dir = Project.input_dir
+    elsif Project.runtype == 'dropbox'
+  		# Path to the temporary working directory has to be calculated.. checking for highest increment present
+  		# => the dir is actually created in tmparchive.rb (or rsuite equivalent (TK))
+  		project_tmp_dir_base = File.join(tmp_dir, Project.filename)
+  		if Project.filename.match(/_\d+$/)
+  			# adding a hyphen as pre-suffix to filenames that happen to end in our std naming: '_\d'
+  			projtmpdir_root = "#{project_tmp_dir_base}-_"
+  		else
+  			projtmpdir_root = "#{project_tmp_dir_base}_"
+  		end
+  		count = 1
+  		project_tmp_dir = "#{projtmpdir_root}#{count}"
+  		while Dir.exists?(project_tmp_dir)
+  			count +=1
+  			project_tmp_dir = "#{projtmpdir_root}#{count}"
+  		end
+  		# tmparchive loads header before the tmpdir has been created, so count is > by 1
+  		if File.basename($0) != 'tmparchive.rb'
+  			count -= 1
+  			project_tmp_dir = "#{projtmpdir_root}#{count}"
+  		end
+    end
 		# for use in naming done_dir lockfile
 		# @@unique_run_id = project_tmp_dir.split(Regexp.union(*[File::SEPARATOR, File::ALT_SEPARATOR].compact)).pop
 		@@unique_run_id = count
@@ -120,9 +131,9 @@ module Bkmkr
 			@@project_tmp_dir_submitted
 		end
 
-    @@fromrsuite_Metadata_json = File.join(project_tmp_dir_submitted, "bookmakerMetadata.json")
-		def self.fromrsuite_Metadata_json
-			@@fromrsuite_Metadata_json
+    @@api_Metadata_json = File.join(project_tmp_dir_submitted, "bookmakerMetadata.json")
+		def self.api_Metadata_json
+			@@api_Metadata_json
 		end
 
 		# Path to the images subdirectory of the temporary working directory
@@ -164,21 +175,28 @@ module Bkmkr
 			end
 		end
 
-
-
-		# Full path to project log file
-		@@log_file = File.join(log_dir, "#{Project.filename}.txt")
-		def self.log_file
-			@@log_file
-		end
-
 		@@thisscript = File.basename($0)		#for easy reference to script's own name in json-logs
 		def self.thisscript
 			@@thisscript
 		end
 
+		if Project.runtype == 'dropbox' # 'direct' or 'rsuite'
+		  logfile_basename = Project.filename
+		else
+			# not just using input_dirname because that may not reflect the docx name, rather the .zip
+			input_dirname = File.basename(Project.input_dir)
+			input_timstamp = input_dirname.split("_").pop
+			logfile_basename = "#{Project.filename}_#{input_timstamp}"
+		end
+
+		# Full path to project log file
+		@@log_file = File.join(log_dir, "#{logfile_basename}.txt")
+		def self.log_file
+			@@log_file
+		end
+
 		# Full path to project json logfile
-		@@json_log = File.join(log_dir, "#{Project.filename}.json")
+		@@json_log = File.join(log_dir, "#{logfile_basename}.json")
 		def self.json_log
 			@@json_log
 		end
