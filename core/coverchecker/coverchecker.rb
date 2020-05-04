@@ -51,7 +51,7 @@ def checkCoverFile(arr, file, tmpcover, finalcover, errorfile, logkey='')
 		File.open(errorfile, 'w') do |output|
 			output.puts "There is no cover image for this title."
 			output.puts "Place the cover image file in the submitted_images folder, then re-submit the manuscript for conversion."
-			output.puts "Cover image must be named #{Metadata.frontcover}."
+			output.puts "Cover image must be named '(isbn)_FC.jpg' (e.g., '9781234567890_FC.jpg')."
 		end
 		covercheck = "No cover found"
 	end
