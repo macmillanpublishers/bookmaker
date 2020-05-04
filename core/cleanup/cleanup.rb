@@ -9,8 +9,9 @@ final_dir = Metadata.final_dir
 unused_submitted_dir = File.join(final_dir, "unused_submitted_files")
 
 # ---------------------- METHODS
-def readConfigJson(logkey='')
-  data_hash = Mcmlln::Tools.readjson(Metadata.configfile)
+## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
+def readJson(jsonfile, logkey='')
+  data_hash = Mcmlln::Tools.readjson(jsonfile)
   return data_hash
 rescue => logstring
   return {}
@@ -68,10 +69,12 @@ ensure
 end
 
 # ---------------------- PROCESSES
-data_hash = readConfigJson('read_config_json')
-#local definition(s) based on config.json
-project_dir = data_hash['project']
-stage_dir = data_hash['stage']
+# write jsonfile data to jsonlog for troubleshooting
+config_hash = readJson(Metadata.configfile, 'read_config_json')
+@log_hash['config_json_data'] = config_hash
+
+api_md_hash = readJson(Bkmkr::Paths.api_Metadata_json, 'read_api_Metadata_json')
+@log_hash['api_Metadata_json_data'] = api_md_hash
 
 # move any remaining files from submitted-tmpdir to done dir
 cpUnusedSubmitted(Bkmkr::Paths.project_tmp_dir_submitted, unused_submitted_dir, 'cp_unused_submitted_items_to_donedir')
