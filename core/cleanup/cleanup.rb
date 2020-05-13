@@ -79,10 +79,11 @@ api_md_hash = readJson(Bkmkr::Paths.api_Metadata_json, 'read_api_Metadata_json')
 # move any remaining files from submitted-tmpdir to done dir
 cpUnusedSubmitted(Bkmkr::Paths.project_tmp_dir_submitted, unused_submitted_dir, 'cp_unused_submitted_items_to_donedir')
 
-# Delete all the working files and dirs
-deleteProjectTmpDir('delete_project_tmp_folder')
-
-deleteFileifExists(Bkmkr::Project.input_file, 'delete_input_file')
+# \/ Disabling tmpdir & inputfile deletion for direct and rsuite runs (which is now all runs)
+# # Delete all the working files and dirs
+# deleteProjectTmpDir('delete_project_tmp_folder')
+#
+# deleteFileifExists(Bkmkr::Project.input_file, 'delete_input_file')
 
 deleteFileifExists(Bkmkr::Paths.alert, 'delete_alert_file')
 
