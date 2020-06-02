@@ -323,7 +323,7 @@ module Bkmkr
 			end
 		end
 
-		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, testing_value, watermark_css, http_username, http_password)
+		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, pdf_js, testing_value, watermark_css, http_username, http_password)
 			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if os == "mac" or os == "unix"
 				princecmd = "prince"
@@ -332,10 +332,12 @@ module Bkmkr
 				princecmd = "\"#{princecmd}\""
 			end
       if pdfprocessor == "prince"
+        # 20/5/20: adding -i xml flag so input is handled as xml, to allow for handling some self-closing tags not supported in html
+        # => (these tags are introduced via 'xml = true' in node/cheerio transforms)
         if !http_username.empty? && !http_password.empty?
-          princecmd = "#{princecmd} -s \"#{pdf_css}\" --javascript --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\""
+          princecmd = "#{princecmd} -i xml -s \"#{pdf_css}\" --script=\"#{pdf_js}\" --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\""
         else
-          princecmd = "#{princecmd} -s \"#{pdf_css}\" --javascript \"#{pdf_html_file}\" -o \"#{pdffile}\""
+          princecmd = "#{princecmd} -i xml -s \"#{pdf_css}\" --script=\"#{pdf_js}\" \"#{pdf_html_file}\" -o \"#{pdffile}\""
         end
         if testing_value == "true"
           princecmd = "#{princecmd} -s \"#{watermark_css}\""

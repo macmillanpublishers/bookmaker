@@ -109,8 +109,8 @@ ensure
 end
 
 ## wrapping Bkmkr::Tools.makepdf in a new method for this script; to return a result for json_logfile
-def pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css, logkey='')
-	output = Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
+def pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, jsfile, testing_value, watermark_css, logkey='')
+	output = Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, jsfile, testing_value, watermark_css, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
   logstring = output
 rescue => logstring
 ensure
@@ -162,19 +162,17 @@ overwriteFile(cssfile,embedcss, 'overwrite_pdfcss_escaping_specialchars')
 # run method: readJS
 embedjs = readJS(Metadata.printjs, 'read_pdf_js_file')
 
+# prepare html as raw filecontents for doc_raptor
 if File.file?(pdf_tmp_html)
 	filecontents = readHtmlContents(pdf_tmp_html, 'read_in_html')
 else
 	filecontents = readHtmlContents(Bkmkr::Paths.outputtmp_html, 'read_in_html')
 end
-
 # run method: insertAssets
 filecontents = insertAssets(filecontents, embedjs, embedcss, 'insertAssets')
 
-overwriteFile(pdf_tmp_html, filecontents, 'overwrite_pdf_html')
-
 # create PDF
-pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, testing_value, watermark_css, 'make_pdf')
+pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, Metadata.printjs, testing_value, watermark_css, 'make_pdf')
 
 # moves rendered pdf to archival dir
 moveFileToDoneFolder(tmppdf, finalpdf, 'move_pdf_to_done_dir')
