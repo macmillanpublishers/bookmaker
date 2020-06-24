@@ -201,9 +201,6 @@ if Bkmkr::Project.runtype == 'rsuite'
   # rm any old unique tmp folders for this project with higher increments
   deleteOldProjectTmpFolders(Bkmkr::Paths.project_tmp_dir, 'old_project_tmp_folders_delete')
 
-  # move input config file to root of tmpdir (if present)
-  mvInputConfigFile(input_config, tmp_config, 'moved_input_config_file')
-
   # write rs_servername value to metadata_json
   @log_hash['rsuite_server'] = rs_server
   api_metadata_hash['rsuite_server'] = rs_server
@@ -212,6 +209,10 @@ else
   api_metadata_hash['submitter_email'] = submitter_email
   api_metadata_hash['submitter_name'] = submitter_name
 end
+
+# move input config file to root of tmpdir (if present)
+# => for direct runs this only comes into play with bookmaker_tests
+mvInputConfigFile(input_config, tmp_config, 'moved_input_config_file')
 
 writeHashToJSON(api_metadata_hash, Bkmkr::Paths.api_Metadata_json, 'write_RSserver_info_to_json')
 
