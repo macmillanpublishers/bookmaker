@@ -219,7 +219,9 @@
               'SpaceBreak',
               'SpaceBreakwithOrnamentorn',
               'SpaceBreakOrnamentorn',
-              'SpaceBreakwithALTOrnamentorn2'"/>
+              'SpaceBreakwithALTOrnamentorn2',
+              'SpaceBreak-Internalint',
+              'SpaceBreak-PrintOnlypo'"/>
   </xsl:variable>
 
   <!-- Top-level divider paragraphs, any of which might signal the
