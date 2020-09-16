@@ -13,7 +13,7 @@ epub_dir = Bkmkr::Paths.project_tmp_dir
 zipepub_py = File.join(Bkmkr::Paths.core_dir, "epubmaker", "zipepub.py")
 
 # the path for the adjusted epub html file
-epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.html")
+epub_tmp_html = File.join(Bkmkr::Paths.project_tmp_dir, "epub_tmp.xhtml")
 
 # the path for strip-tocnodes.js
 strip_tocnodes_js = File.join(Bkmkr::Paths.core_dir, "epubmaker", "strip-tocnodes.js")
@@ -37,7 +37,7 @@ oebps_dir = File.join(Bkmkr::Paths.project_tmp_dir, "OEBPS")
 metainf_dir = File.join(Bkmkr::Paths.project_tmp_dir, "META-INF")
 
 # cover html file within the epub
-cover_html = File.join(oebps_dir, "cover.html")
+cover_html = File.join(oebps_dir, "cover.xhtml")
 
 # ncx file within the epub
 toc_ncx = File.join(oebps_dir, "toc.ncx")
@@ -161,7 +161,7 @@ end
 
 # fix cover ncx entry
 def firstNCXEdit(file, logkey='')
-	ncxcontents = File.read(file).gsub(/<text\/><\/navLabel><content src="\#bookcover01"\/>/,"<text>Cover</text></navLabel><content src=\"cover.html\"/>")
+	ncxcontents = File.read(file).gsub(/<text\/><\/navLabel><content src="\#bookcover01"\/>/,"<text>Cover</text></navLabel><content src=\"cover.xhtml\"/>")
 	return ncxcontents
 rescue => logstring
 	return ''
