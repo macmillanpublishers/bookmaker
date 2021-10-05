@@ -137,6 +137,7 @@ end
 
 # WDV-314: multiple gsubs to facilitate leading/trailing whitespace that should be there,
 # => but may not due to html tags &/or sentences beginning or ending with ellipses
+# Best case, user runs cleanup macro prior. This is a fallback
 def fixEllipseCharacter(content, logkey='')
 	filecontents = content.gsub(/(\w)(\s?&#x2026;\s?)(\w)/,'\1 . . . \3')
                         .gsub(/(\w)(\s?&#x2026;)/,'\1 . . .')
