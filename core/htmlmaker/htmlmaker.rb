@@ -249,7 +249,7 @@ filecontents = fixEndnotes(filecontents, 'fix_endnotes')
 # run method: fixEntities
 filecontents = fixEntities(filecontents, 'fix_entities')
 
-# run method: fixEntities
+# run method: fixEllipseCharacter
 filecontents = fixEllipseCharacter(filecontents, 'fix_ellipse_character')
 
 #write out edited html
