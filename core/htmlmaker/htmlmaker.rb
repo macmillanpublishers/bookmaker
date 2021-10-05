@@ -135,8 +135,13 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+# WDV-314: multiple gsubs to facilitate leading/trailing whitespace that should be there,
+# => but may not due to html tags &/or sentences beginning or ending with ellipses
 def fixEllipseCharacter(content, logkey='')
-	filecontents = content.gsub(/ ?&#x2026; ?/," . . . ")
+	filecontents = content.gsub(/(\w)(\s?&#x2026;\s?)(\w)/,'\1 . . . \3')
+                        .gsub(/(\w)(\s?&#x2026;)/,'\1 . . .')
+                        .gsub(/(&#x2026;\s?)(\w)/,'. . . \2')
+                        .gsub(/&#x2026;/,'. . .')
 	return filecontents
 rescue => logstring
 	return content
