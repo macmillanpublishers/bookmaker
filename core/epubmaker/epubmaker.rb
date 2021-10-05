@@ -121,8 +121,8 @@ end
 # WDV-314: using nbsp's to try to keep ellipses and their preceding word together
 # => where there's not a preceding word we still try to still add nbsps to the ellipsis itself
 def makeEllipsesNonbreaking(content, logkey='')
-	filecontents = content.gsub(/ . . ./,"&#160;.&#160;.&#160;.")
-                        .gsub(/. . ./,".&#160;.&#160;.")
+	filecontents = content.gsub(/ \. \. \./,"&#160;.&#160;.&#160;.")
+                        .gsub(/\. \. \./,".&#160;.&#160;.")
 	return filecontents
 rescue => logstring
 	return content
