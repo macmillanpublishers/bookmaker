@@ -118,6 +118,18 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+# WDV-314: using nbsp's to try to keep ellipses and their preceding word together
+# => where there's not a preceding word we still try to still add nbsps to teh ellisis itself
+def makeEllipsesNonbreaking(content, logkey='')
+	filecontents = content.gsub(/ . . ./,"&#160;.&#160;.&#160;.")
+												.gsub(/. . ./,".&#160;.&#160;.")
+	return filecontents
+rescue => logstring
+	return content
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def overwriteFile(path, filecontents, logkey='')
 	Mcmlln::Tools.overwriteFile(path, filecontents)
@@ -321,6 +333,9 @@ if File.file?(epub_tmp_html)
 else
 	filecontents = firstHTMLEdit(Bkmkr::Paths.outputtmp_html, 'first_html_edit--outputtmp_html')
 end
+
+# run method: makeEllipsesNonbreaking
+filecontents = makeEllipsesNonbreaking(filecontents, 'make_ellipses_nonbreaking')
 
 overwriteFile(epub_tmp_html, filecontents, 'overwrite_epubtmp_html')
 
