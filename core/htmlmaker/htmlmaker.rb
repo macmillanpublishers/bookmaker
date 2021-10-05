@@ -136,7 +136,7 @@ ensure
 end
 
 def fixEllipseCharacter(content, logkey='')
-	filecontents = content.gsub(/ ?&#x2026; ?/,"&#160;.&#160;.&#160;. ")
+	filecontents = content.gsub(/ ?&#x2026; ?/," . . . ")
 	return filecontents
 rescue => logstring
 	return content
