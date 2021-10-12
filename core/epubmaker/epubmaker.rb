@@ -170,8 +170,8 @@ ensure
 end
 
 # fix author info in opf
-def firstOPFEdit(file, logkey='')
-	opfcontents = File.read(file).gsub(/<dc:creator/,"<dc:identifier id='isbn'>#{Metadata.eisbn}</dc:identifier><dc:creator id='creator'")
+def firstOPFEdit(file, isbn, logkey='')
+	opfcontents = File.read(file).gsub(/<dc:creator/,"<dc:identifier id=\"isbn\">#{isbn}</dc:identifier><dc:creator id=\"creator\"")
 	return opfcontents
 rescue => logstring
 	return ''
@@ -303,6 +303,8 @@ data_hash = readConfigJson('read_config_json')
 
 ##### local definition(s) based on data from config.json
 cover = data_hash['frontcover']
+stage_dir = data_hash['stage']
+project_name = data_hash['project']
 
 # the path to the cover file
 unless data_hash['frontcover'].nil? or data_hash['frontcover'].empty? or !data_hash['frontcover']
@@ -350,8 +352,13 @@ else
 	@log_hash['final_cover_present'] = false
 end
 
-# run method: firstOPFEdit
-opfcontents = firstOPFEdit(content_opf, 'first_OPF_Edit')
+# run method: firstOPFEdit, checking first to see if we are using pisbn or eisbn:
+if stage_dir.include?("egalley") || stage_dir.include?("galley") || stage_dir.include?("firstpass") || \
+	(project_name == 'validator' && stage_dir == 'direct')
+	opfcontents = firstOPFEdit(content_opf, Metadata.pisbn, 'first_OPF_Edit')
+else
+	opfcontents = firstOPFEdit(content_opf, Metadata.eisbn, 'first_OPF_Edit')
+end
 overwriteFile(content_opf, opfcontents, 'overwrite_content_opf')
 
 # add epub css to epub folder
