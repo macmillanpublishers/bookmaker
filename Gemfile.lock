@@ -19,21 +19,28 @@ GEM
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
+    nokogiri (1.12.5-x86-mingw32)
+      racc (~> 1.4)
+    nokogiri (1.12.5-x86_64-darwin)
+      racc (~> 1.4)
     racc (1.6.0)
     ruby-oci8 (2.2.9)
+    ruby-oci8 (2.2.9-x86-mingw32)
     to_xml (0.1.1)
     unidecoder (1.1.2)
 
 PLATFORMS
   ruby
+  x86-mingw32
+  x86_64-darwin-18
 
 DEPENDENCIES
   doc_raptor (~> 0.5.0)
   htmlentities (~> 4.3.4)
   json
   net-sftp (~> 2.1.2)
-  nokogiri
-  ruby-oci8
+  nokogiri (>= 1.12, < 2)
+  ruby-oci8 (>= 2.2, < 3)
   to_xml (~> 0.1.1)
   unidecoder (~> 1.1.2)
 
