@@ -64,7 +64,32 @@ fs.readFile(file, function processTemplates (err, contents) {
     });
   });
 
-  // support for inline images
+  // support for inline images:
+  //  first combine contiguous inlineimage spans ...
+  //    (this function reused from htmlmaker_postprocessing.js)
+  $('span.' + inlineimageholder_cs).each(function () {
+    var that = this.previousSibling;
+    var thisclass = $(this).attr('class');
+    console.log(thisclass);
+    var previousclass = $(that).attr('class');
+    if ((that && that.nodeType === 1 && that.tagName === this.tagName && typeof $(that).attr('class') !== 'undefined' && thisclass === previousclass)) {
+      var mytag = this.tagName.toString();
+      var el = $("<" + mytag + "/>").addClass("temp");
+      $(this).after(el);
+      var node = $(".temp");
+      while (that.firstChild) {
+          node.append(that.firstChild);
+      }
+      while (this.firstChild) {
+          node.append(this.firstChild);
+      }
+      $(that).remove();
+      $(this).remove();
+    }
+    $(".temp").addClass(thisclass).removeClass("temp");
+  });
+
+  // .. and then add their <img> tags
   $('span.' + inlineimageholder_cs).each(function () {
     var mytext = $(this).text().trim();
     var el = $('<img src="images/' + mytext + '"></img>');
