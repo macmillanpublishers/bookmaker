@@ -4,32 +4,45 @@ GEM
     doc_raptor (0.5.0)
       httparty (>= 0.7.0)
     htmlentities (4.3.4)
-    httparty (0.14.0)
+    httparty (0.20.0)
+      mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    json (1.8.3)
-    mini_portile2 (2.1.0)
+    json (2.6.0)
+    mime-types (3.3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2021.0901)
+    mini_portile2 (2.6.1)
     multi_xml (0.6.0)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (3.2.0)
-    nokogiri (1.6.8.1)
-      mini_portile2 (~> 2.1.0)
-    ruby-oci8 (2.2.2)
+    net-ssh (6.1.0)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
+      racc (~> 1.4)
+    nokogiri (1.12.5-x64-mingw32)
+      racc (~> 1.4)
+    nokogiri (1.12.5-x86_64-darwin)
+      racc (~> 1.4)
+    racc (1.6.0)
+    ruby-oci8 (2.2.9)
+    ruby-oci8 (2.2.9-x64-mingw32)
     to_xml (0.1.1)
     unidecoder (1.1.2)
 
 PLATFORMS
   ruby
+  x64-mingw32
+  x86_64-darwin-18
 
 DEPENDENCIES
   doc_raptor (~> 0.5.0)
   htmlentities (~> 4.3.4)
-  json (~> 1.8.3)
+  json
   net-sftp (~> 2.1.2)
-  nokogiri (~> 1.6.8)
-  ruby-oci8 (~> 2.2.1)
+  nokogiri (>= 1.12, < 2)
+  ruby-oci8 (>= 2.2, < 3)
   to_xml (~> 0.1.1)
   unidecoder (~> 1.1.2)
 
 BUNDLED WITH
-   1.13.6
+   2.1.4
