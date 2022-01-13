@@ -135,6 +135,21 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+# WDV-314: multiple gsubs to facilitate leading/trailing whitespace that should be there,
+# => but may not due to html tags &/or sentences beginning or ending with ellipses
+# Best case, user runs cleanup macro prior. This is a fallback
+def fixEllipseCharacter(content, logkey='')
+	filecontents = content.gsub(/(\w)(\s?&#x2026;\s?)(\w)/,'\1 . . . \3')
+                        .gsub(/(\w)(\s?&#x2026;)/,'\1 . . .')
+                        .gsub(/(&#x2026;\s?)(\w)/,'. . . \2')
+                        .gsub(/&#x2026;/,'. . .')
+	return filecontents
+rescue => logstring
+	return content
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 ## wrapping a Mcmlln::Tools method in a new method for this script; to return a result for json_logfile
 def overwriteFile(path,filecontents, logkey='')
 	Mcmlln::Tools.overwriteFile(path, filecontents)
@@ -233,6 +248,9 @@ filecontents = fixEndnotes(filecontents, 'fix_endnotes')
 
 # run method: fixEntities
 filecontents = fixEntities(filecontents, 'fix_entities')
+
+# run method: fixEllipseCharacter
+filecontents = fixEllipseCharacter(filecontents, 'fix_ellipse_character')
 
 #write out edited html
 overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_a')
