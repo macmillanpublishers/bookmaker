@@ -35,6 +35,11 @@ fs.readFile(file, function processTemplates (err, contents) {
         console.log("TOC: " + toctype);
         var metatoctype = '<meta name="toc" content="' + toctype + '"/>';
         $('head').append(metatoctype);
+      } else if (val.indexOf("PITSTOP:") > -1) {
+        var pitstopval = val.split(":").pop().toLowerCase().replace(/\s+/g, '');
+        console.log("PITSTOP: " + pitstopval);
+        var metapitstopval = '<meta name="pitstop" content="' + pitstopval + '"/>';
+        $('head').append(metapitstopval);
       } else if (val.indexOf("DATA:") > -1) {
         var datavalue = val.split("DATA:").pop().replace(/^\s+/g, '');
         var datatype = val.split("DATA:").shift().toLowerCase().replace(/\s+/g, '');
