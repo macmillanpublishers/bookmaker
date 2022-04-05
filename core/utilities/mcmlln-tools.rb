@@ -103,7 +103,7 @@ module Mcmlln
       log_hash[logkey] = "LOGGING_ERROR: #{e}"
     end
 
-    def self.sendAlertMailtoWF(errtype, alertdetails, stg, filename)
+    def self.sendAlertMailtoWF(errtype, alertdetails, stgfile, filename)
 message = <<MESSAGE_END
 From: Workflows <workflows@macmillan.com>
 To: Workflows <workflows@macmillan.com>
@@ -111,7 +111,7 @@ Subject: ERROR: #{errtype} err for #{filename}
 
 #{alertdetails}
 MESSAGE_END
-      if stg == 'staging'
+      if File.file?(stgfile)
         message+="\n\nThis message sent from bookmaker-STAGING server"
       end
       # send mail
