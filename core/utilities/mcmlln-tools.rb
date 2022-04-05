@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'json'
+require 'net/smtp'
 
 module Mcmlln
   class Tools
@@ -102,5 +103,22 @@ module Mcmlln
       log_hash[logkey] = "LOGGING_ERROR: #{e}"
     end
 
+    def self.sendAlertMailtoWF(errtype, alertdetails, stg, filename)
+message = <<MESSAGE_END
+From: Workflows <workflows@macmillan.com>
+To: Workflows <workflows@macmillan.com>
+Subject: ERROR: #{errtype} err for #{filename}
+
+#{alertdetails}
+MESSAGE_END
+      if stg == 'staging'
+        message+="\n\nThis message sent from bookmaker-STAGING server"
+      end
+      # send mail
+      Net::SMTP.start(@smtp_address) do |smtp|
+        smtp.send_message message, 'workflows@macmillan.com',
+                                   'workflows@macmillan.com'
+      end
+    end
   end
 end
