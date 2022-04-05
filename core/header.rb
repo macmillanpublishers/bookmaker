@@ -260,6 +260,11 @@ module Bkmkr
 	      	""
 	      end
 	    end
+
+	    @@smtp_address = Mcmlln::Tools.readFile("#{$scripts_dir}/bookmaker_authkeys/smtp.txt").strip()
+	    def self.smtp_address
+				@@smtp_address
+	    end
 	end
 
 	class Tools
