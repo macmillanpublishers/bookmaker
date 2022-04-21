@@ -103,7 +103,7 @@ module Mcmlln
       log_hash[logkey] = "LOGGING_ERROR: #{e}"
     end
 
-    def self.sendAlertMailtoWF(errtype, alertdetails, stgfile, filename)
+    def self.sendAlertMailtoWF(errtype, alertdetails, stgfile, filename, smtp_address)
 message = <<MESSAGE_END
 From: Workflows <workflows@macmillan.com>
 To: Workflows <workflows@macmillan.com>
@@ -115,7 +115,7 @@ MESSAGE_END
         message+="\n\nThis message sent from bookmaker-STAGING server"
       end
       # send mail
-      Net::SMTP.start(@smtp_address) do |smtp|
+      Net::SMTP.start(smtp_address) do |smtp|
         smtp.send_message message, 'workflows@macmillan.com',
                                    'workflows@macmillan.com'
       end
