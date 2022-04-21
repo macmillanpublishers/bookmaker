@@ -24,8 +24,8 @@ GEM
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
     racc (1.6.0)
-    ruby-oci8 (2.2.9)
-    ruby-oci8 (2.2.9-x64-mingw32)
+    ruby-oci8 (2.2.11)
+    ruby-oci8 (2.2.11-x64-mingw32)
     to_xml (0.1.1)
     unidecoder (1.1.2)
 
@@ -40,7 +40,7 @@ DEPENDENCIES
   json
   net-sftp (~> 2.1.2)
   nokogiri (>= 1.12, < 2)
-  ruby-oci8 (>= 2.2, < 3)
+  ruby-oci8 (>= 2.2.11, < 3)
   to_xml (~> 0.1.1)
   unidecoder (~> 1.1.2)
 
