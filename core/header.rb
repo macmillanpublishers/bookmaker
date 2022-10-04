@@ -304,10 +304,10 @@ module Bkmkr
 			end
 		end
 
-		def self.runjar(jar_script, input_file)
+		def self.runjar(java_opts, jar_script, input_file)
 			puts "---RUNNING #{jar_script}---"
-			stdout_stderr, status = Open3.capture2e("java -jar #{jar_script} \"#{input_file}\"")
-			return stdout_stderr
+			stdout_stderr, status = Open3.capture2e("java #{java_opts} -jar #{jar_script} \"#{input_file}\"")
+			return stdout_stderr, status
 		end
 
 		def self.runpython(py_script, args)
