@@ -50,7 +50,14 @@ fs.readFile(file, function processTemplates (err, contents) {
         var el = $(this);
         var stylearr = val.split(":").pop().split(" ").filter(Boolean);
         for (i = 0; i < stylearr.length; i++) {
-          $(el).prev().addClass(stylearr[i]);
+          if ($(el).prev()[0].tagName == "blockquote" && $(el).prev().children().length > 0) {
+            // WDV-475
+            //  for paras that were wrapped up in blockquotes by htmlmaker
+            //  and their trailing bpi para was not: navigate to last para of preceding blockquote
+            $(el).prev().children().last().addClass(stylearr[i]);
+          } else {
+            $(el).prev().addClass(stylearr[i]);
+          }
         };
       } else if (val.indexOf("LINKTO:") > -1) {
         var linkdest = val.split("LINKTO:").pop().replace(/^\s+/g, '');
