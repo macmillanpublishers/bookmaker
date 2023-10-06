@@ -26,7 +26,7 @@ fs.readFile(file, function processTemplates (err, contents) {
         $( this ).parent().attr('data-format','print');
       } else if (val.indexOf("TRIM:") > -1) {
         var trimsize = val.split(":").pop().replace(/\s+/g, '');
-        trimsize = trimsize.replace(/x/g, ' ');
+        trimsize = trimsize.replace(/[xX]/g, ' ');
         console.log("TRIM: " + trimsize);
         var metabooktrim = '<meta name="size" content="' + trimsize + '"/>';
         $('head').append(metabooktrim);

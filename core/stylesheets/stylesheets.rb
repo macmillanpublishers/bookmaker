@@ -8,11 +8,30 @@ local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 tmp_layout_dir = File.join(Metadata.final_dir, "layout")
 
-tmp_pdf_css = File.join(tmp_layout_dir, "pdf.css")
+tmp_pdf_scss = File.join(tmp_layout_dir, "pdf.scss")
+
+pdf_css = File.join(tmp_layout_dir, "pdf.css")
 
 tmp_epub_css = File.join(tmp_layout_dir, "epub.css")
 
+print_scss = Metadata.printcss
+
+global_templates_dir = File.join(Bkmkr::Paths.scripts_dir, "bookmaker_assets", "rsuite_assets", "pdfmaker", "css", "global_templates")
+
+override_js_file = File.join(Bkmkr::Paths.project_tmp_dir, "override_pdf.js")
+
+
 # ---------------------- METHODS
+
+def readConfigJson(logkey='')
+  data_hash = Mcmlln::Tools.readjson(Metadata.configfile)
+  return data_hash
+rescue => logstring
+  return {}
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 def get_chapterheads(logkey='')
 	chapterheads = File.read(Bkmkr::Paths.outputtmp_html).scan(/section data-type="chapter"/)
 	return chapterheads
@@ -113,6 +132,63 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+def applyGlobalTemplate(html, print_scss, tmp_pdf_scss, global_templates_dir, logkey='')
+	scss_load_path = ""
+	orig_template_name = File.basename(print_scss, ".*")
+	filecontents = File.read(html)
+	ms_template_name = filecontents.scan(/<meta name="template"/)
+	unless ms_template_name.nil? or ms_template_name.empty? or !ms_template_name
+		ms_template_name = filecontents.match(/(<meta name="template" content=")(\S*)(")/)[2]
+	else
+		logstring = "no template applied in this ms"
+	end
+	unless ms_template_name.nil? or ms_template_name.empty? or !ms_template_name
+		# check if template name matches, if not check if it exists in global_templates
+		if orig_template_name != ms_template_name
+			global_template_scss_file = File.join(global_templates_dir, "#{ms_template_name}.scss")
+			# if global template scss exists, pick it up!
+			if File.exist?(global_template_scss_file)
+				logstring = "Found css for requested global template: #{ms_template_name}.scss, moving to layout dir with gsub."
+				# read in scss, replace IMPRINT val, write to layout dir
+				orig_template_dirname = File.basename(File.dirname(print_scss))
+				gt_scss = File.read(global_template_scss_file).gsub(/IMPRINT/, orig_template_dirname)
+				File.open(tmp_pdf_scss, 'a+') do |p|
+					p.write gt_scss
+				end
+				scss_load_path = File.dirname(global_template_scss_file)
+			else
+				logstring = "no global template found for #{ms_template_name}.css"
+			end
+		else
+			logstring = "imprint specific template used"
+		end
+		puts logstring
+	end
+	return scss_load_path
+rescue => logstring
+ensure
+    Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def moveSCSStoLayoutDir(tmp_pdf_scss, scss_load_path, print_scss, logkey='')
+	if scss_load_path.empty?
+			Mcmlln::Tools.copyFile(print_scss, tmp_pdf_scss)
+			scss_load_path = File.dirname(print_scss)
+	end
+	return scss_load_path
+rescue => logstring
+ensure
+    Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
+def localCompileSCSS(tmp_pdf_scss, pdf_css, scss_load_path, logkey='')
+	Bkmkr::Tools.compilescss(tmp_pdf_scss, pdf_css, scss_load_path,)
+rescue => logstring
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 def evalOneoffs(file, path, logkey='')
 	tmp_layout_dir = File.join(Metadata.final_dir, "layout")
 	oneoffcss_new = File.join(Bkmkr::Paths.project_tmp_dir_submitted, file)
@@ -161,104 +237,142 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def evalTocPI(html, css, logkey='')
+def evalTocPI(html, css, pod_toc, logkey='')
+	# check for TOC PI
 	filecontents = File.read(html)
-	csscontents = File.read(css)
+	tocstring = "TOC present, no TOC PI"
+	override = ""
 	toctype = filecontents.scan(/<meta name="toc"/)
 	unless toctype.nil? or toctype.empty? or !toctype
 		toctype = filecontents.match(/(<meta name="toc" content=")(auto|manual|none)("\/>)/)[2]
+		tocstring = "Adjusting TOC display per processing instruction (#{toctype})"
 	end
-	logstring = "----- TOC will be hidden in PDF."
 	if toctype.include?("auto")
 		override = "nav[data-type=\"toc\"] { display: block; } .texttoc { display: none; }"
-		File.open(css, 'a+') do |o|
-			o.puts " "
-			o.puts "/* Adjusting TOC display per processing instruction */"
-			o.puts override
-		end
-		logstring = "----- The TOC is set to #{toctype}, per a processing instruction."
 	elsif toctype.include?("manual")
 		override = "nav[data-type=\"toc\"] { display: none; } .texttoc { display: block; }"
-		File.open(css, 'a+') do |o|
-			o.puts " "
-			o.puts "/* Adjusting TOC display per processing instruction */"
-			o.puts override
-		end
-		logstring = "----- The TOC is set to #{toctype}, per a processing instruction."
 	elsif toctype.include?("none")
 		override = "nav[data-type=\"toc\"] { display: none; } .texttoc { display: none; }"
+	elsif pod_toc != "true"
+		tocstring = "no TOC, no toc-PI, hiding TOC element."
+		override = 'nav[data-type="toc"]{display:none;}'
+	end
+	# if we have an override let's write to CSS!
+	unless override.empty?
 		File.open(css, 'a+') do |o|
 			o.puts " "
-			o.puts "/* Adjusting TOC display per processing instruction */"
+			o.puts "/* #{tocstring} */"
 			o.puts override
 		end
-		logstring = "----- The TOC is set to #{toctype}, per a processing instruction."
 	end
+	logstring = "----- #{tocstring}"
 rescue => logstring
 ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+# hide chaptertitle for books with only 1 chapter
+def appendSoloChapterPdfCss(pdf_css_file, chapterheads, logkey='')#, pod_toc, toc_override, logkey='')
+	if File.file?(pdf_css_file)
+		suppress_titles = "section[data-type='chapter']>h1{display:none;}"
+		unless chapterheads.count > 1
+			# append chaptertitle change to pdf css
+			File.open(pdf_css_file, 'a+') do |p|
+				p.puts " "
+				p.puts "/* Suppressing Chapter h1 for novella */"
+				p.puts suppress_titles
+			end
+		end
+	else
+		logstring = 'no pdf_css_file'
+	end
+rescue => logstring
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def appendSoloChapterEpubCss(epub_css_file, chapterheads, logkey='')
+	if File.file?(epub_css_file)
+		unless chapterheads.count > 1
+			File.open(epub_css_file, 'a+') do |e|
+				e.puts "h1.ChapTitlect{display:none;}"
+			end
+		end
+	else
+		logstring = 'no epub_css_file'
+	end
+rescue => logstring
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+def copyOverrideJStoDone(override_js_file, tmp_layout_dir, logkey='')
+  if File.file?(override_js_file)
+    dest_path = File.join(tmp_layout_dir, "override_pdf.js")
+    FileUtils.cp(override_js_file, dest_path)
+  else
+    logstring = "n-a"
+  end
+rescue => logstring
+ensure
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 # ---------------------- PROCESSES
+
+# get pod_toc data from config
+data_hash = readConfigJson('read_config_json')
+pod_toc = data_hash['pod_toc']
 
 # an array of all occurances of chapters in the manuscript
 chapterheads = get_chapterheads('get_chapterheads')
 @log_hash['chapterhead_count'] = chapterheads.count
 
 # delete pdf & epub css from previous runs
-deleteLastRunCss(tmp_pdf_css, 'delete_existing_tmp_pdf_css')
-
+deleteLastRunCss(tmp_pdf_scss, 'delete_existing_tmp_pdf_scss')
+deleteLastRunCss(pdf_css, 'delete_existing_pdf_css')
 deleteLastRunCss(tmp_epub_css, 'delete_existing_tmp_epub_css')
 
-# look for custom css in submitted_images dir
-find_pdf_css_file = File.join(Bkmkr::Paths.project_tmp_dir_submitted, Metadata.printcss)
-find_epub_css_file = File.join(Bkmkr::Paths.project_tmp_dir_submitted, Metadata.epubcss)
+# apply global templates - these are currently based on sizing/hitting signatures
+scss_load_path = applyGlobalTemplate(Bkmkr::Paths.outputtmp_html, print_scss, tmp_pdf_scss, global_templates_dir, "apply_global_templates")
 
-# so we get logging re: evalImports even if it's not run
-@log_hash['evalImports_pdf_css-metadata'] = 'n-a'
-@log_hash['evalImports_pdf_css-submitted'] = 'n-a'
+# set scss file, get load path for imports, compile css from scss
+scss_load_path = moveSCSStoLayoutDir(tmp_pdf_scss, scss_load_path, print_scss, "move_scss_to_layout_dir")
+@log_hash['scss_load_path'] = scss_load_path
 
-# read css and append contents of any referenced imports directly into tmp css
-# prefer metadata.css, then css from submitted images
-if File.file?(Metadata.printcss)
-	evalImports(Metadata.printcss, tmp_pdf_css, 'evalImports_pdf_css-metadata')
-	copyCSS(Metadata.printcss, tmp_pdf_css, 'copy_pdf_css-metadata')
-elsif File.file?(find_pdf_css_file)
-	evalImports(find_pdf_css_file, tmp_pdf_css, 'evalImports_pdf_css-submitted')
-	copyCSS(find_pdf_css_file, tmp_pdf_css, 'copy_pdf_css-submitted')
-	deleteSubmittedCss(find_pdf_css_file, 'rm_pdf_css-submitted')
-else
-	makeNoPdfCssNotice('no_pdfcss-notice')
-end
-
-# append one-off css (from submitted_images or archival dirs) to tmp css
-evalOneoffs("oneoff_pdf.css", tmp_pdf_css, 'one_off_css_for_pdf')
+localCompileSCSS(tmp_pdf_scss, pdf_css, scss_load_path, "compile_css_from_scss")
 
 # apply bookmaker processing instructions for trim to tmp pdf css
-evalTrimPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css, 'evaluate_Trim_PIs')
+evalTrimPI(Bkmkr::Paths.outputtmp_html, pdf_css, 'evaluate_Trim_PIs')
 
 # apply bookmaker processing instructions for TOC to tmp pdf css
-evalTocPI(Bkmkr::Paths.outputtmp_html, tmp_pdf_css, 'evaluate_Toc_PIs')
+evalTocPI(Bkmkr::Paths.outputtmp_html, pdf_css, pod_toc, 'evaluate_Toc_PIs')
+
+# apply css for solo chapter title to tmp pdf css
+appendSoloChapterPdfCss(pdf_css, chapterheads, 'append_solo_chapter_css')
+
+# append one-off css (from submitted_images or archival dirs) to tmp css
+evalOneoffs("oneoff_pdf.css", pdf_css, 'one_off_css_for_pdf')
 
 # so we get logging re: evalImports even if it's not run
 @log_hash['evalImports_epub_css-metadata'] = 'n-a'
-@log_hash['evalImports_epub_css-submitted'] = 'n-a'
 
 # read css and append contents of any referenced imports directly into tmp css
-# prefer metadata.css, then css from submitted images
 if File.file?(Metadata.epubcss)
 	evalImports(Metadata.epubcss, tmp_epub_css, 'evalImports_epub_css-metadata')
 	copyCSS(Metadata.epubcss, tmp_epub_css, 'copy_epub_css-metadata')
-elsif File.file?(find_epub_css_file)
-	evalImports(find_epub_css_file, tmp_epub_css, 'evalImports_epub_css-submitted')
-	copyCSS(find_epub_css_file, tmp_epub_css, 'copy_epub_css-submitted')
-	deleteSubmittedCss(find_epub_css_file, 'rm_epub_css-submitted')
 else
 	makeNoEpubCssNotice('no_epubcss-notice')
 end
 
+# hide chaptertitle for epubs with only 1 chapter
+appendSoloChapterEpubCss(tmp_epub_css, chapterheads, 'append_pdf_css')
+
 # append one-off css (from submitted_images or archival dirs) to tmp css
 evalOneoffs("oneoff_epub.css", tmp_epub_css, 'one_off_css_for_epub')
+
+# copy override_pdf_js file to done/layout for re-use/pickup
+copyOverrideJStoDone(override_js_file, tmp_layout_dir, 'copy_override_js_file_to_Done')
 
 # ---------------------- LOGGING
 
