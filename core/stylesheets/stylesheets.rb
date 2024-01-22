@@ -216,11 +216,11 @@ end
 
 def convertInchesToPts(inches)
   inchnum = inches.gsub("in","")
-  puts inchnum
+  # puts inchnum
   ptnum = inchnum.to_f * 72
-  puts ptnum
+  # puts ptnum
   pts = "#{ptnum}pt"
-  puts pts
+  # puts pts
   return pts
 end
 
@@ -247,7 +247,7 @@ def applyTrimSCSS(html, tmp_pdf_scss, logkey='')
     File.open(tmp_pdf_scss, 'w') do |p|
       p.write tmp_scss
     end
-    # logstring = "----- A custom trim size of #{size} has been implemented, per a processing instruction."
+    logstring = "----- A custom trim size of #{pagewidthinches} x #{pageheightinches} has been implemented, per a processing instruction."
   end
 rescue => logstring
 ensure
