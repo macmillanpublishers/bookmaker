@@ -143,7 +143,7 @@ def applyGlobalTemplate(html, print_scss, tmp_pdf_scss, global_templates_dir, lo
 		logstring = "no template applied in this ms"
 	end
 	unless ms_template_name.nil? or ms_template_name.empty? or !ms_template_name
-		# check if template name matches, if not check if it exists in global_templates
+		# check if template name matches (if it does we are already set to use imprint template), if not check if it exists in global_templates
 		if orig_template_name != ms_template_name
 			global_template_scss_file = File.join(global_templates_dir, "#{ms_template_name}.scss")
 			# if global template scss exists, pick it up!
@@ -181,7 +181,6 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-## wrapping Bkmkr::Tools.runnode in a new method for this script; to return a result for json_logfile
 def localCompileSCSS(tmp_pdf_scss, pdf_css, scss_load_path, logkey='')
 	Bkmkr::Tools.compilescss(tmp_pdf_scss, pdf_css, scss_load_path,)
 rescue => logstring
@@ -215,26 +214,44 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def evalTrimPI(html, css, logkey='')
-	filecontents = File.read(html)
-	csscontents = File.read(css)
+def convertInchesToPts(inches)
+  inchnum = inches.gsub("in","")
+  puts inchnum
+  ptnum = inchnum.to_f * 72
+  puts ptnum
+  pts = "#{ptnum}pt"
+  puts pts
+  return pts
+end
+
+def applyTrimSCSS(html, tmp_pdf_scss, logkey='')
+  filecontents = File.read(html)
+	csscontents = File.read(tmp_pdf_scss)
 	size = filecontents.scan(/<meta name="size"/)
 	unless size.nil? or size.empty? or !size
-		size = filecontents.match(/(<meta name="size" content=")(\d*\.*\d*in \d*\.*\d*in)("\/>)/)[2]
+		size = filecontents.match(/(<meta name="size" content=")(\d*\.*\d*in \d*\.*\d*in)("\s?\/>)/)[2]
+    pagewidthinches = size.split[0]
+    pageheightinches = size.split[1]
+    pagewidthpts = convertInchesToPts(size.split[0])
+    pageheightpts = convertInchesToPts(size.split[1])
 	end
-	logstring = "----- No trim size customizations found."
-	unless size.nil? or size.empty? or !size
-		trim = "@page { size: #{size}; }"
-		File.open(css, 'a+') do |o|
-			o.puts " "
-			o.puts "/* Adjusting trim per processing instruction */"
-			o.puts trim
-		end
-		logstring = "----- A custom trim size of #{size} has been added, per a processing instruction."
-	end
+  logstring = "----- No trim size customizations found."
+  # puts "size: #{size} pagewidthinches: #{pagewidthinches}, pageheightinches: #{pageheightinches}"
+  unless pageheightpts.nil? or pageheightpts.empty? or !pageheightpts or pagewidthpts.nil? or pagewidthpts.empty? or !pagewidthpts
+    tmp_scss = File.read(tmp_pdf_scss).gsub(/TRIM VARS Placeholder/, "Trim vars in use */")
+            .gsub(/PAGEWIDTHINCHES/, pagewidthinches)
+            .gsub(/PAGEHEIGHTINCHES/, pageheightinches)
+            .gsub(/PAGEWIDTHPTS/, pagewidthpts)
+            .gsub(/PAGEHEIGHTPTS/, pageheightpts)
+            .gsub(/TRIM VARS \*\//, "")
+    File.open(tmp_pdf_scss, 'w') do |p|
+      p.write tmp_scss
+    end
+    # logstring = "----- A custom trim size of #{size} has been implemented, per a processing instruction."
+  end
 rescue => logstring
 ensure
-    Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+  Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
 def evalTocPI(html, css, pod_toc, logkey='')
@@ -340,10 +357,10 @@ scss_load_path = applyGlobalTemplate(Bkmkr::Paths.outputtmp_html, print_scss, tm
 scss_load_path = moveSCSStoLayoutDir(tmp_pdf_scss, scss_load_path, print_scss, "move_scss_to_layout_dir")
 @log_hash['scss_load_path'] = scss_load_path
 
-localCompileSCSS(tmp_pdf_scss, pdf_css, scss_load_path, "compile_css_from_scss")
+# set trim with appended scss vars, also imports specified trim_vars to recalculate trim dependent measurements
+applyTrimSCSS(Bkmkr::Paths.outputtmp_html, tmp_pdf_scss, 'apply_trim_scss')
 
-# apply bookmaker processing instructions for trim to tmp pdf css
-evalTrimPI(Bkmkr::Paths.outputtmp_html, pdf_css, 'evaluate_Trim_PIs')
+localCompileSCSS(tmp_pdf_scss, pdf_css, scss_load_path, "compile_css_from_scss")
 
 # apply bookmaker processing instructions for TOC to tmp pdf css
 evalTocPI(Bkmkr::Paths.outputtmp_html, pdf_css, pod_toc, 'evaluate_Toc_PIs')
