@@ -9,7 +9,7 @@ require_relative '../metadata.rb'
 local_log_hash, @log_hash = Bkmkr::Paths.setLocalLoghash
 
 # Local path var(s)
-pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
+# pdftmp_dir = File.join(Bkmkr::Paths.project_tmp_dir_img, "pdftmp")
 
 pdfmaker_dir = File.join(Bkmkr::Paths.core_dir, "pdfmaker")
 
@@ -74,20 +74,20 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
-def readJS(file, logkey='')
-	# Custom javascript to be added to the html head
-	if File.file?(file)
-		embedjs = File.read(file).to_s
-	else
-		embedjs = " "
-		logstring = 'no custom js file to embed'
-	end
-	return embedjs
-rescue => logstring
-	return ''
-ensure
-	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
-end
+# def readJS(file, logkey='')
+# 	# Custom javascript to be added to the html head
+# 	if File.file?(file)
+# 		embedjs = File.read(file).to_s
+# 	else
+# 		embedjs = " "
+# 		logstring = 'no custom js file to embed'
+# 	end
+# 	return embedjs
+# rescue => logstring
+# 	return ''
+# ensure
+# 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+# end
 
 def readHtmlContents(file, logkey='')
 	filecontents = File.read(file)
@@ -109,8 +109,8 @@ ensure
 end
 
 ## wrapping Bkmkr::Tools.makepdf in a new method for this script; to return a result for json_logfile
-def pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, jsfile, testing_value, watermark_css, logkey='')
-	output = Bkmkr::Tools.makepdf(Bkmkr::Tools.pdfprocessor, Metadata.pisbn, pdf_tmp_html, filecontents, cssfile, jsfile, testing_value, watermark_css, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
+def pdfmaker_makePdf(pdf_tmp_html, cssfile, jsfile, testing_value, watermark_css, logkey='')
+	output = Bkmkr::Tools.makepdf("prince", Metadata.pisbn, pdf_tmp_html, cssfile, jsfile, testing_value, watermark_css, Bkmkr::Keys.http_username, Bkmkr::Keys.http_password)
   logstring = output
 rescue => logstring
 ensure
@@ -142,45 +142,46 @@ end
 
 # ---------------------- PROCESSES
 
-# Authentication data is required to use docraptor and
-# to post images and other assets to an ftp for inclusion
-# via docraptor.
-DocRaptor.api_key "#{Bkmkr::Keys.docraptor_key}"
+# # Authentication data is required to use docraptor and
+# # to post images and other assets to an ftp for inclusion
+# # via docraptor.
+# DocRaptor.api_key "#{Bkmkr::Keys.docraptor_key}"
 
 # run method: testingValue
 testing_value = testingValue(testing_value_file, 'testing_value_test')
 @log_hash['running_on_testing_server'] = testing_value
 
-# create pdf tmp directory
-makePdfTmpFolder(pdftmp_dir, 'pdf_tmp_folder_created')
+# # create pdf tmp directory
+# makePdfTmpFolder(pdftmp_dir, 'pdf_tmp_folder_created')
 
-# run method: readCSS
-embedcss = readCSS(cssfile, 'read_pdfcss_file')
+# # run method: readCSS
+# embedcss = readCSS(cssfile, 'read_pdfcss_file')
+#
+# overwriteFile(cssfile,embedcss, 'overwrite_pdfcss_escaping_specialchars')
 
-overwriteFile(cssfile,embedcss, 'overwrite_pdfcss_escaping_specialchars')
+# # run method: readJS
+# embedjs = readJS(Metadata.printjs, 'read_pdf_js_file')
 
-# run method: readJS
-embedjs = readJS(Metadata.printjs, 'read_pdf_js_file')
+# # prepare html as raw filecontents for doc_raptor
+# if File.file?(pdf_tmp_html)
+# 	filecontents = readHtmlContents(pdf_tmp_html, 'read_in_html')
+# else
+# 	filecontents = readHtmlContents(Bkmkr::Paths.outputtmp_html, 'read_in_html')
+# end
+# # run method: insertAssets
+# filecontents = insertAssets(filecontents, embedjs, embedcss, 'insertAssets')
 
-# prepare html as raw filecontents for doc_raptor
-if File.file?(pdf_tmp_html)
-	filecontents = readHtmlContents(pdf_tmp_html, 'read_in_html')
-else
-	filecontents = readHtmlContents(Bkmkr::Paths.outputtmp_html, 'read_in_html')
-end
-# run method: insertAssets
-filecontents = insertAssets(filecontents, embedjs, embedcss, 'insertAssets')
 
 # create PDF
-pdfmaker_makePdf(pdf_tmp_html, filecontents, cssfile, Metadata.printjs, testing_value, watermark_css, 'make_pdf')
+pdfmaker_makePdf(pdf_tmp_html, cssfile, Metadata.printjs, testing_value, watermark_css, 'make_pdf')
 
 # moves rendered pdf to archival dir
 moveFileToDoneFolder(tmppdf, finalpdf, 'move_pdf_to_done_dir')
 
-# run method: revertCSS
-revertcss = revertCSS(cssfile, 'read_css_file_sans_specialchar_escapes')
-
-overwriteFile(cssfile, revertcss, 'overwrite_css_rm-ing_escapechars')
+# # run method: revertCSS
+# revertcss = revertCSS(cssfile, 'read_css_file_sans_specialchar_escapes')
+#
+# overwriteFile(cssfile, revertcss, 'overwrite_css_rm-ing_escapechars')
 
 # ---------------------- LOGGING
 
