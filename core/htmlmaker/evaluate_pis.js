@@ -46,6 +46,12 @@ fs.readFile(file, function processTemplates (err, contents) {
         console.log(datatype + ": " + datavalue);
         var metabookdata = '<meta name="' + datatype + '" content="' + datavalue + '"/>';
         $('head').append(metabookdata);
+      // allowing user to use TEMPLATE as well as TEMPLATE DATA above..
+    } else if (val.indexOf("TEMPLATE:") > -1) {
+        var templateval = val.split(":").pop().toLowerCase().replace(/\s+/g, '');
+        console.log("TEMPLATE: " + templateval);
+        var metatemplateval = '<meta name="template" content="' + templateval + '"/>';
+        $('head').append(metatemplateval);
       } else if (val.indexOf("STYLES:") > -1) {
         var el = $(this);
         var stylearr = val.split(":").pop().split(" ").filter(Boolean);
@@ -59,6 +65,13 @@ fs.readFile(file, function processTemplates (err, contents) {
             $(el).prev().addClass(stylearr[i]);
           }
         };
+      } else if (val.toLowerCase().replace(/ /g,"").trim() == 'pagebreak') {
+        // turn this para into a pagebreak marker
+        $( this ).addClass("PageBreakpb");
+        $( this ).removeClass(bookmakerinstruction_style);
+        console.log("adding pagebreak para");
+        // skip element removal
+        return true;
       } else if (val.indexOf("LINKTO:") > -1) {
         var linkdest = val.split("LINKTO:").pop().replace(/^\s+/g, '');
         var that = this.previousSibling;
