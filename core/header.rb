@@ -327,8 +327,8 @@ module Bkmkr
 				File.delete(Project.alert)
 			end
 		end
-
-		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_html, pdf_css, pdf_js, testing_value, watermark_css, http_username, http_password)
+		
+		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_css, pdf_js, testing_value, watermark_css, http_username, http_password)
 			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if os == "mac" or os == "unix"
 				princecmd = "prince"
@@ -336,45 +336,45 @@ module Bkmkr
 				princecmd = File.join(Paths.resource_dir, "Program Files (x86)", "Prince", "engine", "bin", "prince.exe")
 				princecmd = "\"#{princecmd}\""
 			end
-      if pdfprocessor == "prince"
-        # 20/5/20: adding -i xml flag so input is handled as xml, to allow for handling some self-closing tags not supported in html
-        # => (these tags are introduced via 'xml = true' in node/cheerio transforms)
-        if !http_username.empty? && !http_password.empty?
-          princecmd = "#{princecmd} -i xml -s \"#{pdf_css}\" --script=\"#{pdf_js}\" --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\""
-        else
-          princecmd = "#{princecmd} -i xml -s \"#{pdf_css}\" --script=\"#{pdf_js}\" \"#{pdf_html_file}\" -o \"#{pdffile}\""
-        end
-        if testing_value == "true"
-          princecmd = "#{princecmd} -s \"#{watermark_css}\""
-        end
-        if $pdf_profile && $pdf_output_intent
-          princecmd = "#{princecmd} --pdf-profile=\"#{$pdf_profile}\" --pdf-output-intent=\"#{$pdf_output_intent}\""
-        end
-        prince_output = `#{princecmd}`
-        return "used prince, any output here: #{prince_output}"
-			elsif pdfprocessor == "docraptor"
-				File.open(pdffile, "w+b") do |f|
-				f.write DocRaptor.create(:document_content => pdf_html,
-				                           :name             => "#{pisbn}.pdf",
-				                           :document_type    => "pdf",
-				                           :strict			 => "none",
-				                           :test             => "#{testing_value}",
-					                         :prince_options	 => {
-					                           :http_user		 => "#{http_username}",
-					                           :http_password	 => "#{http_password}",
-					                           :javascript 		 => "true"
-											             }
-				                       		)
-
-				end
-        return 'pdf processed via docraptor'
-			else
-				pdf_error = File.join(Paths.done_dir, "PDF_ERROR.txt")
-				File.open(pdf_error, 'w+') do |output|
-					output.write "You have not configured a PDF processor. Please open config.rb and fill in the pdfprocessor variable with either 'prince' or 'docraptor'."
-				end
-        return 'no pdf processor configured'
-			end
+      # if pdfprocessor == "prince"
+      # 20/5/20: adding -i xml flag so input is handled as xml, to allow for handling some self-closing tags not supported in html
+      # => (these tags are introduced via 'xml = true' in node/cheerio transforms)
+      if !http_username.empty? && !http_password.empty?
+        princecmd = "#{princecmd} -i xml -s \"#{pdf_css}\" --script=\"#{pdf_js}\" --http-user=#{http_username} --http-password=#{http_password} \"#{pdf_html_file}\" -o \"#{pdffile}\""
+      else
+        princecmd = "#{princecmd} -i xml -s \"#{pdf_css}\" --script=\"#{pdf_js}\" \"#{pdf_html_file}\" -o \"#{pdffile}\""
+      end
+      if testing_value == "true"
+        princecmd = "#{princecmd} -s \"#{watermark_css}\""
+      end
+      if $pdf_profile && $pdf_output_intent
+        princecmd = "#{princecmd} --pdf-profile=\"#{$pdf_profile}\" --pdf-output-intent=\"#{$pdf_output_intent}\""
+      end
+      prince_output = `#{princecmd}`
+      return "used prince, any output here: #{prince_output}"
+			# elsif pdfprocessor == "docraptor"
+			# 	File.open(pdffile, "w+b") do |f|
+			# 	f.write DocRaptor.create(:document_content => pdf_html,
+			# 	                           :name             => "#{pisbn}.pdf",
+			# 	                           :document_type    => "pdf",
+			# 	                           :strict			 => "none",
+			# 	                           :test             => "#{testing_value}",
+			# 		                         :prince_options	 => {
+			# 		                           :http_user		 => "#{http_username}",
+			# 		                           :http_password	 => "#{http_password}",
+			# 		                           :javascript 		 => "true"
+			# 								             }
+			# 	                       		)
+			#
+			# 	end
+      #   return 'pdf processed via docraptor'
+			# else
+			# 	pdf_error = File.join(Paths.done_dir, "PDF_ERROR.txt")
+			# 	File.open(pdf_error, 'w+') do |output|
+			# 		output.write "You have not configured a PDF processor. Please open config.rb and fill in the pdfprocessor variable with either 'prince' or 'docraptor'."
+			# 	end
+      #   return 'no pdf processor configured'
+			# end
 		end
 
 		def self.runnode(js, args)
@@ -387,6 +387,22 @@ module Bkmkr
 				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
 					f.puts "----- NODE ERROR"
 					f.puts "ERROR: I can't seem to run node. Is it installed and part of your system PATH?"
+					f.puts "ABORTING. All following processes will fail."
+				end
+				File.delete(Project.alert)
+			end
+		end
+
+		def self.compilescss(scss, css_output, scss_load_path)
+			if os == "mac" or os == "unix"
+				`sass --no-source-map --load-path="#{scss_load_path}" "#{scss}" "#{css_output}"`
+			elsif os == "windows"
+				sasspath = File.join(Paths.resource_dir, "dart-sass", "sass.bat")
+				`#{sasspath} --no-source-map --load-path="#{scss_load_path}" "#{scss}" "#{css_output}"`
+			else
+				File.open(Bkmkr::Paths.log_file, 'a+') do |f|
+					f.puts "----- SASS ERROR"
+					f.puts "ERROR: I can't seem to run sass. Is it installed and part of your system PATH?"
 					f.puts "ABORTING. All following processes will fail."
 				end
 				File.delete(Project.alert)
