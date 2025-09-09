@@ -17,6 +17,16 @@ fs.readFile(file, function processTemplates (err, contents) {
     var imageholder_style = "Illustrationholderill";
   }
 
+  function recursiveImgApplyAltText($element, alttext){
+    $element.children().each(function () {
+      if ($(this)[0].tagName == "img") {
+        $(this).attr("alt", alttext);
+      }
+      var $currentElement = $(this);
+      recursiveImgApplyAltText($currentElement, alttext);
+    });
+  }
+
   // evaluate processing instructions
   $("p." + bookmakerinstruction_style).each(function () {
       var val = $( this ).text();
@@ -35,8 +45,18 @@ fs.readFile(file, function processTemplates (err, contents) {
         console.log("TOC: " + toctype);
         var metatoctype = '<meta name="toc" content="' + toctype + '"/>';
         $('head').append(metatoctype);
+      } else if (val.indexOf("ALT_TP:") > -1) {
+        var alttextTP = val.split("ALT_TP:").pop().replace(/^\s+/,'').replace(/\s+$/,'');
+        console.log("ALT_TP: " + alttextTP);
+        var metaAltTP = '<meta name="altTP" content="' + alttextTP + '"/>';
+        $('head').append(metaAltTP);
+      } else if (val.indexOf("ALT_COVER:") > -1) {
+        var alttextCover = val.split("ALT_COVER:").pop().replace(/^\s+/,'').replace(/\s+$/,'');
+        console.log("ALT_COVER: " + alttextCover);
+        var metaAltCover = '<meta name="altCover" content="' + alttextCover + '"/>';
+        $('head').append(metaAltCover);
       } else if (val.indexOf("PITSTOP:") > -1) {
-        var pitstopval = val.split(":").pop().toLowerCase().replace(/\s+/g, '');
+        var pitstopval = val.split(":").pop().toLowerCase().replace(/^\s+.*^\s+$/, '');
         console.log("PITSTOP: " + pitstopval);
         var metapitstopval = '<meta name="pitstop" content="' + pitstopval + '"/>';
         $('head').append(metapitstopval);
@@ -65,6 +85,13 @@ fs.readFile(file, function processTemplates (err, contents) {
             $(el).prev().addClass(stylearr[i]);
           }
         };
+      } else if (val.indexOf("ALT:") > -1) {
+        var alttextval = val.split("ALT:").pop().replace(/^\s+/,'').replace(/\s+$/,'');
+        console.log("ALT: " + alttextval);
+        var el = $(this);
+        if ($(el).prev().children().length > 0) {
+          recursiveImgApplyAltText($(el).prev(), alttextval);
+        }
       } else if (val.toLowerCase().replace(/ /g,"").trim() == 'pagebreak') {
         // turn this para into a pagebreak marker
         $( this ).addClass("PageBreakpb");

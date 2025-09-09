@@ -69,6 +69,12 @@ final_dir = Metadata.final_dir
 # second epub conversion
 tmp_epub2 = File.join(Bkmkr::Paths.project_tmp_dir, "#{csfilename}.epub")
 
+# default cover ALT text
+cover_ALT_default = "Generic text-only cover: book title, author and publisher logo"
+
+# cover ALT text placeholder
+cover_ALT_placeholder = 'ALT_TEXT_COVER_IMAGE'
+
 # ---------------------- METHODS
 def readConfigJson(logkey='')
   data_hash = Mcmlln::Tools.readjson(Metadata.configfile)
@@ -309,6 +315,31 @@ ensure
     Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+def altCoverHTMLEdit(file, cover_ALT_default, cover_ALT_placeholder, logkey='')
+  filecontents = File.read(file)
+
+  # get user provided alt text for cover, or prepare to use default
+  ms_cover_alt_txt = cover_ALT_default
+  ms_cover_alt = filecontents.scan(/<meta name="altCover"/)
+  unless ms_cover_alt.nil? or ms_cover_alt.empty? or !ms_cover_alt
+    ms_cover_alt_txt = filecontents.match(/(<meta name="altCover" content=")(.*?)(")/)[2]
+    logstring = "found user provided alt text for Cover image, updating placeholder text"
+  else
+    logstring = "no user provided alt text for Cover image found, using default"
+  end
+
+  # overwrite cover alt text placeholder with default
+  filecontents = filecontents.gsub(/#{cover_ALT_placeholder}/, ms_cover_alt_txt)
+
+  return filecontents
+rescue => logstring
+  return ''
+ensure
+    Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
+
+
 # ---------------------- PROCESSES
 
 data_hash = readConfigJson('read_config_json')
@@ -370,6 +401,7 @@ end
 # run method: firstOPFEdit, checking first to see if we are using pisbn or eisbn:
 if stage_dir.include?("egalley") || stage_dir.include?("galley") || stage_dir.include?("firstpass") || \
 	(project_name == 'validator' && stage_dir == 'direct')
+  cover_ALT_default = cover_ALT_default + " Also, 'Uncorrected Digital Galley' disclaimer: 'This copyrighted digital galley may not be sold or redistributed without permission. Quotations for reviews should be checked against a finished copy of the book or with the appropriate publicity department, if the book is unavailable.'"
 	opfcontents = firstOPFEdit(content_opf, Metadata.pisbn, 'first_OPF_Edit')
 else
 	opfcontents = firstOPFEdit(content_opf, Metadata.eisbn, 'first_OPF_Edit')
@@ -396,6 +428,9 @@ if sourceimages.any?
 	puts epubimages
 	@log_hash['interior_img_list'] = epubimages
 end
+
+filecontents = altCoverHTMLEdit(epub_tmp_html, cover_ALT_default, cover_ALT_placeholder, 'update_cover_alt_text')
+overwriteFile(epub_tmp_html, filecontents, 'overwrite_epubtmp_html-post_cover_alt_update')
 
 # zip epub
 zipEpub(zipepub_py, "#{csfilename}.epub #{Bkmkr::Paths.project_tmp_dir}", 'zip_epub')
