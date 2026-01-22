@@ -317,6 +317,7 @@ end
 
 def altCoverHTMLEdit(file, cover_ALT_default, cover_ALT_placeholder, logkey='')
   filecontents = File.read(file)
+  coverAlt = "none"
 
   # get user provided alt text for cover, or prepare to use default
   ms_cover_alt_txt = cover_ALT_default
@@ -324,9 +325,12 @@ def altCoverHTMLEdit(file, cover_ALT_default, cover_ALT_placeholder, logkey='')
   unless ms_cover_alt.nil? or ms_cover_alt.empty? or !ms_cover_alt
     ms_cover_alt_txt = filecontents.match(/(<meta name="altCover" content=")(.*?)(")/)[2]
     logstring = "found user provided alt text for Cover image, updating placeholder text"
+    coverAlt = "custom"
   else
     logstring = "no user provided alt text for Cover image found, using default"
+    coverAlt = "default"
   end
+  @log_hash['coverALT'] = coverAlt
 
   # overwrite cover alt text placeholder with default
   filecontents = filecontents.gsub(/#{cover_ALT_placeholder}/, ms_cover_alt_txt)

@@ -79,6 +79,24 @@ ensure
 	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
 end
 
+def checkAltTxt(file, logkey='')
+	altmatch = []
+	# An array of all the image files referenced in the source html file, with alttexts
+	imgaltarr = File.read(file).scan(/img src=".*?" alt=".*?"/)
+	imgaltarr.each do |m|
+		imagename = m.split("\"")[1].gsub("images/", "")
+		alttxt = m.split("\"")[3]
+		if imagename == alttxt
+			altmatch.push(imagename)
+		end
+	end
+	return altmatch
+rescue => logstring
+	return []
+ensure
+	Mcmlln::Tools.logtoJson(@log_hash, logkey, logstring)
+end
+
 def checkImages(imglist, inputdirlist, finaldirlist, inputdir, finaldir, logkey='')
 	# An empty array to store the list of any missing images
 	missing = []
@@ -186,6 +204,9 @@ overwriteFile(Bkmkr::Paths.outputtmp_html, filecontents, 'overwrite_output_html_
 # run method: listImages
 imgarr = listImages(Bkmkr::Paths.outputtmp_html, 'list_images')
 
+# run method: checkAltTxt
+altTxtMatch = checkAltTxt(Bkmkr::Paths.outputtmp_html, 'check_img_Alt_Txt')
+
 # run method: checkImages
 resolution, missing = checkImages(imgarr, images, finalimages, imagedir, final_dir_images, 'check_images')
 
@@ -205,6 +226,8 @@ writeResErrors(resolution, image_error, 'write_resolution_errors')
 @log_hash['unique_image_array'] = imgarr
 @log_hash['lowres_images'] = resolution
 @log_hash['missing_images'] = missing
+@log_hash['alt_txt_is_image_name'] = altTxtMatch
+
 
 # Write json log:
 Mcmlln::Tools.logtoJson(@log_hash, 'completed', Time.now)
