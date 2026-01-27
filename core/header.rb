@@ -310,6 +310,12 @@ module Bkmkr
 			return stdout_stderr, status
 		end
 
+		def self.runace(report_dir, input_file)
+			puts "---RUNNING daisy ace epubcheck ---"
+			stdout_stderr, status = Open3.capture2e("ace -o #{report_dir} -f \"#{input_file}\"")
+			return stdout_stderr, status
+		end
+
 		def self.runpython(py_script, args)
 			if $python_processor
 				`#{$python_processor} #{py_script} #{args}`
@@ -327,7 +333,7 @@ module Bkmkr
 				File.delete(Project.alert)
 			end
 		end
-		
+
 		def self.makepdf(pdfprocessor, pisbn, pdf_html_file, pdf_css, pdf_js, testing_value, watermark_css, http_username, http_password)
 			pdffile = File.join(Paths.project_tmp_dir, "#{pisbn}.pdf")
 			if os == "mac" or os == "unix"

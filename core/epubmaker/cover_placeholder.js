@@ -15,6 +15,7 @@ fs.readFile(file, function processTemplates (err, contents) {
     .attr('id','bookcover01').append(
       $("<img>")
       .attr('src','cover.jpg')
+      .attr('alt','ALT_TEXT_COVER_IMAGE')
     ))
 
 
